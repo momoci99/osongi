@@ -1,34 +1,53 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
+// import "./reset.css";
 import "./App.css";
+import { useState } from "react";
+import { ThemeProvider } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import { createAppTheme } from "./theme";
+import { Typography, AppBar, Toolbar } from "@mui/material";
+import ThemeToggleButton from "./components/ThemeToggleButton";
+import Dashboard from "./pages/Dashboard";
+import { Routes, Route } from "react-router";
+import DataAnalysis from "./pages/DataAnalysis";
+import RawData from "./pages/RawData";
+import Help from "./pages/Help";
+import type { PaletteMode } from "@mui/material/styles";
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [mode, setMode] = useState<PaletteMode>(() => {
+    const savedMode = localStorage.getItem("theme-mode");
+    return (savedMode as PaletteMode) || "light";
+  });
+
+  const toggleTheme = () => {
+    const newMode = mode === "light" ? "dark" : "light";
+    setMode(newMode);
+    localStorage.setItem("theme-mode", newMode);
+  };
+
+  const currentTheme = createAppTheme(mode);
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <ThemeProvider theme={currentTheme}>
+      <CssBaseline />
+      {/* 앱바 추가 */}
+      <AppBar position="sticky" elevation={1}>
+        <Toolbar>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            오송이
+          </Typography>
+          <ThemeToggleButton mode={mode} toggleTheme={toggleTheme} />
+        </Toolbar>
+      </AppBar>
+
+      <Routes>
+        <Route index element={<Dashboard />} />
+        <Route path="dashboard" element={<Dashboard />} />
+        <Route path="data-analysis" element={<DataAnalysis />} />
+        <Route path="raw-data" element={<RawData />} />
+        <Route path="help" element={<Help />} />
+      </Routes>
+    </ThemeProvider>
   );
 }
 
