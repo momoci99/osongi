@@ -1,0 +1,42 @@
+[
+  {
+    "region": "강원",
+    "union": "양양",
+    "date": "2023-9-11",
+    "lastUpdated": "2023-09-11 17:45:13.0",
+    "auctionQuantity": {
+      "untilYesterday": "0kg",
+      "today": "21.37kg",
+      "total": "21.37kg"
+    },
+    "auctionAmount": {
+      "untilYesterday": "0원",
+      "today": "10,346,002원",
+      "total": "10,346,002원"
+    },
+    "grade1": {
+      "quantity": "2.58kg",
+      "unitPrice": "1,100,000원"
+    },
+    "grade2": {
+      "quantity": "2.65kg",
+      "unitPrice": "551,100원"
+    },
+    "grade3Stopped": {
+      "quantity": "5.87kg",
+      "unitPrice": "451,100원"
+    },
+    "grade3Estimated": {
+      "quantity": "1.95kg",
+      "unitPrice": "361,000원"
+    },
+    "gradeBelow": {
+      "quantity": "8.32kg",
+      "unitPrice": "324,000원"
+    },
+    "mixedGrade": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    }
+  }
+]
