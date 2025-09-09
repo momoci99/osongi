@@ -12,6 +12,7 @@ import DataAnalysis from "./pages/DataAnalysis";
 import RawData from "./pages/RawData";
 import Help from "./pages/Help";
 import type { PaletteMode } from "@mui/material/styles";
+import GlobalNavbar from "./components/GlobalNavbar";
 
 function App() {
   const [mode, setMode] = useState<PaletteMode>(() => {
@@ -30,15 +31,7 @@ function App() {
   return (
     <ThemeProvider theme={currentTheme}>
       <CssBaseline />
-      {/* 앱바 추가 */}
-      <AppBar position="sticky" elevation={1}>
-        <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            오송이
-          </Typography>
-          <ThemeToggleButton mode={mode} toggleTheme={toggleTheme} />
-        </Toolbar>
-      </AppBar>
+      <GlobalNavbar mode={mode} toggleTheme={toggleTheme} />
 
       <Routes>
         <Route index element={<Dashboard />} />
