@@ -35,6 +35,10 @@ const commonTypography = {
     fontFamily: '"Noto Sans KR", Roboto, Arial, sans-serif',
     fontWeight: 500,
   },
+  titleBold: {
+    fontFamily: '"Noto Sans KR", Roboto, Arial, sans-serif',
+    fontWeight: 700,
+  },
   subtitle1: {
     fontFamily: '"Noto Sans KR", Roboto, Arial, sans-serif',
     fontWeight: 400,
@@ -42,6 +46,10 @@ const commonTypography = {
   subtitle2: {
     fontFamily: '"Noto Sans KR", Roboto, Arial, sans-serif',
     fontWeight: 500,
+  },
+  subtitle3: {
+    fontFamily: '"Noto Sans KR", Roboto, Arial, sans-serif',
+    fontWeight: 600,
   },
   body1: {
     fontFamily: '"Noto Sans KR", Roboto, Arial, sans-serif',
@@ -94,23 +102,23 @@ export const createAppTheme = (mode: PaletteMode) => {
     },
     typography: commonTypography,
     components: {
-      // 컴포넌트별 커스텀 스타일
-      MuiButton: {
-        styleOverrides: {
-          root: {
-            borderRadius: 8,
-            textTransform: "none",
-            fontWeight: 500,
-          },
-        },
-      },
-      MuiPaper: {
-        styleOverrides: {
-          root: {
-            backgroundImage: "none", // Material-UI 기본 그라디언트 제거
-          },
-        },
-      },
+      // // 컴포넌트별 커스텀 스타일
+      // MuiButton: {
+      //   styleOverrides: {
+      //     root: {
+      //       borderRadius: 8,
+      //       textTransform: "none",
+      //       fontWeight: 500,
+      //     },
+      //   },
+      // },
+      // MuiPaper: {
+      //   styleOverrides: {
+      //     root: {
+      //       backgroundImage: "none", // Material-UI 기본 그라디언트 제거
+      //     },
+      //   },
+      // },
     },
   });
 };
