@@ -6,6 +6,7 @@ import { Card, Container, Grid, Typography } from "@mui/material";
 import DashboardInfoCard from "../components/DashboardInfoCard";
 import { useEffect, useState } from "react";
 import { DailyDataScheme, type DailyDataType } from "../types/DailyData";
+import { GradeKeyToKorean } from "../const/Common";
 
 const Dashboard = () => {
   const [dailyData, setDailyData] = useState<DailyDataType | null>(null);
@@ -50,8 +51,13 @@ const Dashboard = () => {
         </Grid>
         <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <DashboardInfoCard
-            title="평균 거래가"
-            content="15,200원/kg"
+            title="거래량이 가장 많은 등급"
+            content={`${
+              GradeKeyToKorean[
+                dailyData.latestDaily.topGradeByQuantity
+                  .gradeKey as keyof typeof GradeKeyToKorean
+              ]
+            } `}
             caption={dailyData.latestDate}
             icon={<PaymentIcon fontSize="small" />}
           />

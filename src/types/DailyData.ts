@@ -5,7 +5,6 @@ export const DailyDataScheme = z.object({
   latestDate: z.string(),
   latestDaily: z.object({
     totalQuantityTodayKg: z.number(),
-    averageUnitPriceWonPerKg: z.number(),
     topRegion: z.object({
       region: z.string(),
       quantityKg: z.number(),
@@ -14,6 +13,17 @@ export const DailyDataScheme = z.object({
       union: z.string(),
       quantityKg: z.number(),
     }),
+    topGradeByQuantity: z.object({
+      gradeKey: z.string(),
+      quantityKg: z.number(),
+    }),
+    gradeBreakdown: z.array(
+      z.object({
+        gradeKey: z.string(),
+        quantityKg: z.number(),
+        unitPriceWon: z.number(),
+      })
+    ),
   }),
 });
 
