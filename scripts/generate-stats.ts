@@ -58,9 +58,10 @@ interface SummaryOutputShape {
   latestDate: string | null;
   latestDaily: null | {
     totalQuantityTodayKg: number;
-    averageUnitPriceWonPerKg: number;
     topRegion: { region: string; quantityKg: number } | null;
     topUnion: { union: string; quantityKg: number } | null;
+  topGradeByQuantity: { gradeKey: string; quantityKg: number } | null;
+  gradeBreakdown: Array<{ gradeKey: string; quantityKg: number; unitPriceWon: number }>;
   };
 }
 
@@ -204,7 +205,7 @@ if (latestDateStr) {
     const regionTotals: Record<string, number> = {};
     const unionTotals: Record<string, number> = {};
     let totalTodayQty = 0;
-    let weightedAmount = 0; // sum( gradeTodayQty * unitPrice )
+  // (averageUnitPriceWonPerKg removed per updated requirements)
     // We derive today's grade quantity by diff: grade.quantity today? Data has only cumulative? Actually gradeX.quantity is per-day (not cumulative) in snapshot context.
     const gradeKeys = [
       "grade1",
@@ -214,6 +215,7 @@ if (latestDateStr) {
       "gradeBelow",
       "mixedGrade",
     ] as const;
+    const gradeAggregate: Record<string, { quantity: number; unitPrice: number; entries: number }> = {};
     for (const rec of raw) {
       const todayQty = parseNumber(rec.auctionQuantity.today);
       regionTotals[rec.region] = (regionTotals[rec.region] || 0) + todayQty;
@@ -222,17 +224,28 @@ if (latestDateStr) {
       for (const g of gradeKeys) {
         const gQty = parseNumber(rec[g].quantity);
         const unitPrice = parseNumber(rec[g].unitPrice); // 원/kg 가정
-        weightedAmount += gQty * unitPrice;
+        const entry = gradeAggregate[g] || (gradeAggregate[g] = { quantity: 0, unitPrice: 0, entries: 0 });
+        entry.quantity += gQty;
+        // 단가 평균: 단순 산술 평균 대신 가중 평균? 명세 모호 → 여기선 가중 평균(수량 기준)으로.
+        // 누적 방식: sum(quantity*unitPrice) / totalQuantity 나중 계산
+        entry.unitPrice += gQty * unitPrice; // 임시로 가중 합 저장
+        entry.entries += gQty; // 가중치 누적
       }
     }
     const topRegionKV = pickTop(regionTotals);
     const topUnionKV = pickTop(unionTotals);
+    const gradeBreakdown = Object.entries(gradeAggregate).map(([gradeKey, v]) => ({
+      gradeKey,
+      quantityKg: parseFloat(v.quantity.toFixed(2)),
+      unitPriceWon: v.entries > 0 ? parseFloat((v.unitPrice / v.entries).toFixed(2)) : 0,
+    })).sort((a,b) => a.gradeKey.localeCompare(b.gradeKey));
+    const topGradeEntry = gradeBreakdown.reduce<{ gradeKey: string; quantityKg: number } | null>((acc, cur) => {
+      if (!acc || cur.quantityKg > acc.quantityKg) return { gradeKey: cur.gradeKey, quantityKg: cur.quantityKg };
+      return acc;
+    }, null);
+
     latestDaily = {
       totalQuantityTodayKg: parseFloat(totalTodayQty.toFixed(2)),
-      averageUnitPriceWonPerKg:
-        totalTodayQty > 0
-          ? parseFloat((weightedAmount / totalTodayQty).toFixed(2))
-          : 0,
       topRegion: topRegionKV
         ? {
             region: topRegionKV.key,
@@ -245,6 +258,8 @@ if (latestDateStr) {
             quantityKg: parseFloat(topUnionKV.value.toFixed(2)),
           }
         : null,
+      topGradeByQuantity: topGradeEntry,
+      gradeBreakdown,
     };
   } catch (e) {
     console.error("Failed to process latest date file", e);

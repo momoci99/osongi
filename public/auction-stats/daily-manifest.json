@@ -1,9 +1,8 @@
 {
-  "generatedAt": "2025-09-14T02:00:36.110Z",
+  "generatedAt": "2025-09-14T03:01:41.980Z",
   "latestDate": "2024-10-31",
   "latestDaily": {
     "totalQuantityTodayKg": 622.74,
-    "averageUnitPriceWonPerKg": 214740.11,
     "topRegion": {
       "region": "경북",
       "quantityKg": 501.62
@@ -11,6 +10,42 @@
     "topUnion": {
       "union": "영덕",
       "quantityKg": 277.76
-    }
+    },
+    "topGradeByQuantity": {
+      "gradeKey": "gradeBelow",
+      "quantityKg": 254.82
+    },
+    "gradeBreakdown": [
+      {
+        "gradeKey": "grade1",
+        "quantityKg": 8.13,
+        "unitPriceWon": 519929.4
+      },
+      {
+        "gradeKey": "grade2",
+        "quantityKg": 14.94,
+        "unitPriceWon": 446774.97
+      },
+      {
+        "gradeKey": "grade3Estimated",
+        "quantityKg": 187.82,
+        "unitPriceWon": 281394.12
+      },
+      {
+        "gradeKey": "grade3Stopped",
+        "quantityKg": 24.57,
+        "unitPriceWon": 353493.77
+      },
+      {
+        "gradeKey": "gradeBelow",
+        "quantityKg": 254.82,
+        "unitPriceWon": 178812.11
+      },
+      {
+        "gradeKey": "mixedGrade",
+        "quantityKg": 132.46,
+        "unitPriceWon": 118705.48
+      }
+    ]
   }
 }
