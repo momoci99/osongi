@@ -1,0 +1,53 @@
+{
+  "generatedAt": "2025-09-14T02:00:36.109Z",
+  "yearly": {
+    "2021": {
+      "totalQuantityKg": 102193.11,
+      "totalAmountWon": 22576206750.32,
+      "topRegion": {
+        "region": "경북",
+        "quantityKg": 86252.8
+      },
+      "topUnion": {
+        "union": "영덕",
+        "quantityKg": 28189.68
+      }
+    },
+    "2022": {
+      "totalQuantityKg": 63025.98,
+      "totalAmountWon": 15224946223.12,
+      "topRegion": {
+        "region": "경북",
+        "quantityKg": 39645.31
+      },
+      "topUnion": {
+        "union": "영덕",
+        "quantityKg": 11563.49
+      }
+    },
+    "2023": {
+      "totalQuantityKg": 153419.37,
+      "totalAmountWon": 29063117607.19,
+      "topRegion": {
+        "region": "경북",
+        "quantityKg": 120215.25
+      },
+      "topUnion": {
+        "union": "영덕",
+        "quantityKg": 32394.18
+      }
+    },
+    "2024": {
+      "totalQuantityKg": 69174.07,
+      "totalAmountWon": 16263329804.69,
+      "topRegion": {
+        "region": "경북",
+        "quantityKg": 35692.47
+      },
+      "topUnion": {
+        "union": "영덕",
+        "quantityKg": 15301.67
+      }
+    }
+  }
+}
