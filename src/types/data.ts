@@ -1,6 +1,8 @@
 export type MushroomAuctionDataRaw = {
   region: string; // 지역: 산림 조합이 위치한 지역 명
   union: string; // 조합: 조합 명
+  date?: string; // 날짜 (파일 내 스냅샷 날짜) - 일부 구버전 타입 누락되어 optional 처리
+  lastUpdated?: string; // 마지막 업데이트 타임스탬프 - optional
   auctionQuantity: {
     untilYesterday: string; // 공판량 전일까지: 올해 기준, 어제까지 수매한 송이버섯의 수량 (kg)
     today: string; // 공판량 금일: 당일 수매한 송이버섯의 수량 (kg)
@@ -36,3 +38,22 @@ export type MushroomAuctionDataRaw = {
     unitPrice: string; // 혼합품 단가: 혼합품의 단가
   };
 };
+
+/**
+ * {
+  "generatedAt": "2025-09-14T02:00:36.110Z",
+  "latestDate": "2024-10-31",
+  "latestDaily": {
+    "totalQuantityTodayKg": 622.74,
+    "averageUnitPriceWonPerKg": 214740.11,
+    "topRegion": {
+      "region": "경북",
+      "quantityKg": 501.62
+    },
+    "topUnion": {
+      "union": "영덕",
+      "quantityKg": 277.76
+    }
+  }
+}
+ */
