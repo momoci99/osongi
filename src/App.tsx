@@ -4,8 +4,6 @@ import { useState } from "react";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { createAppTheme } from "./theme";
-import { Typography, AppBar, Toolbar } from "@mui/material";
-import ThemeToggleButton from "./components/ThemeToggleButton";
 import Dashboard from "./pages/Dashboard";
 import { Routes, Route } from "react-router";
 import DataAnalysis from "./pages/DataAnalysis";

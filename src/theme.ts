@@ -1,6 +1,22 @@
 import { createTheme } from "@mui/material/styles";
 import type { PaletteMode } from "@mui/material/styles";
 
+// MUI Palette module augmentation: add custom chart colors
+declare module "@mui/material/styles" {
+  interface Palette {
+    chart: {
+      weight: { main: string; light: string; dark: string };
+      price: { main: string; light: string; dark: string };
+    };
+  }
+  interface PaletteOptions {
+    chart?: {
+      weight: { main: string; light: string; dark: string };
+      price: { main: string; light: string; dark: string };
+    };
+  }
+}
+
 // 공통 타이포그래피 설정
 const commonTypography = {
   fontFamily: [
@@ -90,6 +106,18 @@ export const createAppTheme = (mode: PaletteMode) => {
         main: isLight ? "#dc004e" : "#f48fb1",
         light: isLight ? "#e91e63" : "#f8bbd9",
         dark: isLight ? "#c51162" : "#ad1457",
+      },
+      // Custom chart color sets per series/type
+      chart: {
+        // Green tones for weight (kg)
+        weight: isLight
+          ? { main: "#43a047", light: "#a5d6a7", dark: "#2e7d32" }
+          : { main: "#81c784", light: "#a5d6a7", dark: "#388e3c" },
+
+        // Blue tones for unit price (won/kg)
+        price: isLight
+          ? { main: "#1e88e5", light: "#90caf9", dark: "#1565c0" }
+          : { main: "#90caf9", light: "#bbdefb", dark: "#42a5f5" },
       },
       background: {
         default: isLight ? "#ffffff" : "#121212",

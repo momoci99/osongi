@@ -2,13 +2,16 @@ import PaymentIcon from "@mui/icons-material/Payment";
 import WarehouseIcon from "@mui/icons-material/Warehouse";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 
-import { Card, Container, Grid, Typography } from "@mui/material";
+import { Card, Container, Grid, Typography, useTheme } from "@mui/material";
 import DashboardInfoCard from "../components/DashboardInfoCard";
 import { useEffect, useState } from "react";
 import { DailyDataScheme, type DailyDataType } from "../types/DailyData";
 import { GradeKeyToKorean } from "../const/Common";
+import DashboardChartGradePerKg from "../components/DashboardChartGradePerKg";
+import DashboardChartGradePerPrice from "../components/DashboardChartGradePerPrice";
 
 const Dashboard = () => {
+  const theme = useTheme();
   const [dailyData, setDailyData] = useState<DailyDataType | null>(null);
 
   useEffect(function initDailyData() {
@@ -81,6 +84,7 @@ const Dashboard = () => {
       </Grid>
 
       {/* 메인 차트 1, 2 섹션 */}
+      {/* @TODO : 차트 타이틀 달아주고 단위 추가해주기 */}
       <Grid container spacing={2} sx={{ mt: 2 }}>
         <Grid
           size={{
@@ -88,7 +92,21 @@ const Dashboard = () => {
             md: 6,
           }}
         >
-          <Card sx={{ width: "100%", p: 2 }}>차트 1</Card>
+          <Card
+            variant={theme.palette.mode === "dark" ? "outlined" : "elevation"}
+            elevation={theme.palette.mode === "dark" ? 0 : 1}
+            sx={{
+              borderRadius: 3,
+              p: 2,
+              width: "100%",
+              backgroundImage: "none",
+              backgroundColor: "transparent",
+            }}
+          >
+            <DashboardChartGradePerKg
+              data={dailyData.latestDaily.gradeBreakdown}
+            />
+          </Card>
         </Grid>
 
         <Grid
@@ -97,7 +115,21 @@ const Dashboard = () => {
             md: 6,
           }}
         >
-          <Card sx={{ width: "100%", p: 2 }}>차트 2</Card>
+          <Card
+            variant={theme.palette.mode === "dark" ? "outlined" : "elevation"}
+            elevation={theme.palette.mode === "dark" ? 0 : 1}
+            sx={{
+              borderRadius: 3,
+              p: 2,
+              width: "100%",
+              backgroundImage: "none",
+              backgroundColor: "transparent",
+            }}
+          >
+            <DashboardChartGradePerPrice
+              data={dailyData.latestDaily.gradeBreakdown}
+            />
+          </Card>
         </Grid>
       </Grid>
 
