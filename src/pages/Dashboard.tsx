@@ -137,7 +137,7 @@ const Dashboard = () => {
       <Grid container sx={{ mt: 2 }}>
         <Grid size={{ xs: 12 }}>
           <DashboardCard>
-            <Typography variant="subtitle1" sx={{ mb: 2 }}>
+            <Typography variant="subtitle1">
               7일간 등급별 가격·수량 변동
             </Typography>
             <DashboardChartWeeklyToggle data={weeklyData.weeklyData} />

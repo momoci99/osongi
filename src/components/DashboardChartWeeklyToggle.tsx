@@ -454,7 +454,6 @@ export default function DashboardChartWeeklyToggle({
       {/* Toggle Controls */}
       <Box
         sx={{
-          mb: 2,
           display: "flex",
           justifyContent: "flex-end",
         }}
@@ -464,7 +463,6 @@ export default function DashboardChartWeeklyToggle({
           exclusive
           onChange={handleModeChange}
           size="small"
-          sx={{ mb: 1 }}
         >
           <ToggleButton value="price">💰 가격 보기</ToggleButton>
           <ToggleButton value="quantity">📦 수량 보기</ToggleButton>
