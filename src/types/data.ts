@@ -1,3 +1,5 @@
+import * as z from "zod";
+
 export type MushroomAuctionDataRaw = {
   region: string; // 지역: 산림 조합이 위치한 지역 명
   union: string; // 조합: 조합 명
@@ -39,21 +41,31 @@ export type MushroomAuctionDataRaw = {
   };
 };
 
-/**
- * {
-  "generatedAt": "2025-09-14T02:00:36.110Z",
-  "latestDate": "2024-10-31",
-  "latestDaily": {
-    "totalQuantityTodayKg": 622.74,
-    "averageUnitPriceWonPerKg": 214740.11,
-    "topRegion": {
-      "region": "경북",
-      "quantityKg": 501.62
-    },
-    "topUnion": {
-      "union": "영덕",
-      "quantityKg": 277.76
-    }
-  }
-}
- */
+// Weekly chart data types
+export type WeeklyPriceDatum = {
+  date: string; // YYYY-MM-DD
+  gradeKey: string; // grade1, grade2, etc.
+  quantityKg: number;
+  unitPriceWon: number;
+};
+
+export type WeeklyManifest = {
+  generatedAt: string;
+  weeklyData: WeeklyPriceDatum[];
+};
+
+// Weekly data zod schemas
+export const WeeklyPriceDatumSchema = z.object({
+  date: z.string(),
+  gradeKey: z.string(),
+  quantityKg: z.number(),
+  unitPriceWon: z.number(),
+});
+
+export const WeeklyManifestSchema = z.object({
+  generatedAt: z.string(),
+  weeklyData: z.array(WeeklyPriceDatumSchema),
+});
+
+export type WeeklyPriceDatumType = z.infer<typeof WeeklyPriceDatumSchema>;
+export type WeeklyManifestType = z.infer<typeof WeeklyManifestSchema>;

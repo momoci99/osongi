@@ -2,18 +2,20 @@ import PaymentIcon from "@mui/icons-material/Payment";
 import WarehouseIcon from "@mui/icons-material/Warehouse";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 
-import { Card, Container, Grid, Typography, useTheme } from "@mui/material";
+import { Box, Container, Grid, Typography } from "@mui/material";
 import DashboardKpiCard from "../components/DashboardKpiCard";
 import { useEffect, useState } from "react";
 import { DailyDataScheme, type DailyDataType } from "../types/DailyData";
 import { GradeKeyToKorean } from "../const/Common";
 import DashboardChartGradePerKg from "../components/DashboardChartGradePerKg";
 import DashboardChartGradePerPrice from "../components/DashboardChartGradePerPrice";
+import DashboardChartWeeklyToggle from "../components/DashboardChartWeeklyToggle";
 import DashboardCard from "../components/DashboardCard";
+import type { WeeklyManifest } from "../types/data";
 
 const Dashboard = () => {
-  const theme = useTheme();
   const [dailyData, setDailyData] = useState<DailyDataType | null>(null);
+  const [weeklyData, setWeeklyData] = useState<WeeklyManifest | null>(null);
 
   useEffect(function initDailyData() {
     const result = fetch("/auction-stats/daily-manifest.json");
@@ -32,16 +34,30 @@ const Dashboard = () => {
       });
   }, []);
 
-  if (dailyData === null) {
+  useEffect(function initWeeklyData() {
+    const result = fetch("/auction-stats/weekly-manifest.json");
+    result
+      .then((res) => res.json())
+      .then((data) => {
+        setWeeklyData(data);
+      })
+      .catch((err) => {
+        console.error("Error fetching weekly data:", err);
+      });
+  }, []);
+
+  if (dailyData === null || weeklyData === null) {
     return <div>Loading...</div>;
   }
 
   return (
     <Container>
-      <Typography variant="h4">송이버섯 시세 대시보드</Typography>
-      <Typography variant="body1">
-        송이버섯 시세를 한눈에 확인할 수 있는 대시보드입니다.
-      </Typography>
+      <Box sx={{ pt: 2, pb: 2 }}>
+        <Typography variant="h4">송이버섯 시세 대시보드</Typography>
+        <Typography variant="body1">
+          송이버섯 시세를 한눈에 확인할 수 있는 대시보드입니다.
+        </Typography>
+      </Box>
 
       {/* 주요 정보 섹션 */}
       <Grid container spacing={2}>
@@ -84,7 +100,6 @@ const Dashboard = () => {
         </Grid>
       </Grid>
 
-      {/* 메인 차트 1, 2 섹션 */}
       <Grid container spacing={2} sx={{ mt: 2 }}>
         <Grid
           size={{
@@ -93,7 +108,9 @@ const Dashboard = () => {
           }}
         >
           <DashboardCard>
-            <Typography>등급별 수량(Kg) - {dailyData.latestDate}</Typography>
+            <Typography variant="subtitle1">
+              등급별 수량(Kg) - {dailyData.latestDate}
+            </Typography>
             <DashboardChartGradePerKg
               data={dailyData.latestDaily.gradeBreakdown}
             />
@@ -107,7 +124,9 @@ const Dashboard = () => {
           }}
         >
           <DashboardCard>
-            <Typography>등급별 가격(원) - {dailyData.latestDate}</Typography>
+            <Typography variant="subtitle1">
+              등급별 가격(원) - {dailyData.latestDate}
+            </Typography>
             <DashboardChartGradePerPrice
               data={dailyData.latestDaily.gradeBreakdown}
             />
@@ -115,9 +134,15 @@ const Dashboard = () => {
         </Grid>
       </Grid>
 
-      {/* 메인차트 3 */}
-      <Grid container>
-        <Card sx={{ width: "100%", p: 2, mt: 2 }}>차트 3</Card>
+      <Grid container sx={{ mt: 2 }}>
+        <Grid size={{ xs: 12 }}>
+          <DashboardCard>
+            <Typography variant="subtitle1" sx={{ mb: 2 }}>
+              7일간 등급별 가격·수량 변동
+            </Typography>
+            <DashboardChartWeeklyToggle data={weeklyData.weeklyData} />
+          </DashboardCard>
+        </Grid>
       </Grid>
     </Container>
   );

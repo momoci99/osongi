@@ -25,6 +25,7 @@ const DATA_ROOT = join(process.cwd(), "public", "auction-data");
 const OUTPUT_DIR = join(process.cwd(), "public", "auction-stats");
 const OUTPUT_FILE = join(OUTPUT_DIR, "daily-manifest.json");
 const YEARLY_FILE = join(OUTPUT_DIR, "yearly-manifest.json");
+const WEEKLY_FILE = join(OUTPUT_DIR, "weekly-manifest.json");
 
 function parseNumber(str: string | undefined): number {
   if (!str) return 0;
@@ -80,6 +81,18 @@ interface YearlyOutputShape {
       topUnion: { union: string; quantityKg: number } | null;
     }
   >;
+}
+
+interface WeeklyPriceDatum {
+  date: string; // YYYY-MM-DD
+  gradeKey: string; // grade1, grade2, etc.
+  quantityKg: number;
+  unitPriceWon: number;
+}
+
+interface WeeklyOutputShape {
+  generatedAt: string;
+  weeklyData: WeeklyPriceDatum[];
 }
 
 const yearlyAgg: Record<string, YearlyAggregation> = {};
@@ -282,6 +295,90 @@ if (latestDateStr) {
   }
 }
 
+// Weekly data generation (last 7 days from latest date)
+let weeklyData: WeeklyPriceDatum[] = [];
+if (latestDateParts) {
+  const [latestY, latestM, latestD] = latestDateParts as [
+    number,
+    number,
+    number
+  ];
+  const latestDate = new Date(latestY, latestM - 1, latestD); // JS Date uses 0-based months
+
+  // Generate last 7 days (including latest)
+  for (let i = 6; i >= 0; i--) {
+    const targetDate = new Date(latestDate);
+    targetDate.setDate(latestDate.getDate() - i);
+
+    const y = targetDate.getFullYear();
+    const m = targetDate.getMonth() + 1; // Convert back to 1-based
+    const d = targetDate.getDate();
+    const dateStr = `${y.toString().padStart(4, "0")}-${m
+      .toString()
+      .padStart(2, "0")}-${d.toString().padStart(2, "0")}`;
+
+    const dayFilePath = join(DATA_ROOT, String(y), String(m), `${d}.json`);
+
+    try {
+      const raw = JSON.parse(
+        readFileSync(dayFilePath, "utf-8")
+      ) as AuctionRecordRaw[];
+
+      const gradeKeys = [
+        "grade1",
+        "grade2",
+        "grade3Stopped",
+        "grade3Estimated",
+        "gradeBelow",
+        "mixedGrade",
+      ] as const;
+
+      // Aggregate by grade for this day
+      const dayGradeAgg: Record<
+        string,
+        { quantity: number; unitPriceSum: number; weightSum: number }
+      > = {};
+
+      for (const rec of raw) {
+        for (const gradeKey of gradeKeys) {
+          const qty = parseNumber(rec[gradeKey].quantity);
+          const unitPrice = parseNumber(rec[gradeKey].unitPrice);
+
+          if (qty > 0 && unitPrice > 0) {
+            const entry =
+              dayGradeAgg[gradeKey] ||
+              (dayGradeAgg[gradeKey] = {
+                quantity: 0,
+                unitPriceSum: 0,
+                weightSum: 0,
+              });
+            entry.quantity += qty;
+            entry.unitPriceSum += qty * unitPrice; // Weighted sum for average
+            entry.weightSum += qty; // Total weight for average calculation
+          }
+        }
+      }
+
+      // Convert to final format
+      for (const [gradeKey, agg] of Object.entries(dayGradeAgg)) {
+        if (agg.weightSum > 0) {
+          weeklyData.push({
+            date: dateStr,
+            gradeKey,
+            quantityKg: parseFloat(agg.quantity.toFixed(2)),
+            unitPriceWon: parseFloat(
+              (agg.unitPriceSum / agg.weightSum).toFixed(2)
+            ),
+          });
+        }
+      }
+    } catch (e) {
+      console.warn(`No data found for ${dateStr}, skipping...`);
+      // Skip missing days - chart can handle gaps
+    }
+  }
+}
+
 const yearlyOutput: YearlyOutputShape = {
   generatedAt: new Date().toISOString(),
   yearly: Object.fromEntries(
@@ -317,7 +414,20 @@ const summaryOutput: SummaryOutputShape = {
   latestDaily,
 };
 
+const weeklyOutput: WeeklyOutputShape = {
+  generatedAt: new Date().toISOString(),
+  weeklyData,
+};
+
 mkdirSync(OUTPUT_DIR, { recursive: true });
 writeFileSync(YEARLY_FILE, JSON.stringify(yearlyOutput, null, 2));
 writeFileSync(OUTPUT_FILE, JSON.stringify(summaryOutput, null, 2));
-console.log("Auction stats written to", OUTPUT_FILE, "and", YEARLY_FILE);
+writeFileSync(WEEKLY_FILE, JSON.stringify(weeklyOutput, null, 2));
+console.log(
+  "Auction stats written to",
+  OUTPUT_FILE,
+  ",",
+  YEARLY_FILE,
+  "and",
+  WEEKLY_FILE
+);
