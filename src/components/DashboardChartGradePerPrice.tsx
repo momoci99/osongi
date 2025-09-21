@@ -173,8 +173,8 @@ const DashboardChartGradePerPrice = ({
       .style("font-family", fontFamily)
       .style("fill", theme.palette.text.primary)
       .style("font-size", "12px")
-      .style("font-weight", 600)
-      .text("평균 단가 (원/kg)");
+      .style("font-weight", 600);
+    // .text("평균 단가 (원/kg)");
 
     const colorMain = theme.palette.chart.price.main;
     const colorLight = theme.palette.chart.price.light;

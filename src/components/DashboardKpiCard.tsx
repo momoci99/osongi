@@ -1,13 +1,13 @@
 import { Card, CardContent, Typography, useTheme } from "@mui/material";
 
-type DashboardInfoCardProps = {
+type DashboardKpiCardProps = {
   title: string;
   content: string;
   caption?: string;
   icon: React.ReactNode;
 };
 
-const DashboardInfoCard = (props: DashboardInfoCardProps) => {
+const DashboardKpiCard = (props: DashboardKpiCardProps) => {
   const { title, content, caption, icon } = props;
 
   const theme = useTheme();
@@ -46,4 +46,4 @@ const DashboardInfoCard = (props: DashboardInfoCardProps) => {
   );
 };
 
-export default DashboardInfoCard;
+export default DashboardKpiCard;

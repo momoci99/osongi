@@ -3,12 +3,13 @@ import WarehouseIcon from "@mui/icons-material/Warehouse";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 
 import { Card, Container, Grid, Typography, useTheme } from "@mui/material";
-import DashboardInfoCard from "../components/DashboardInfoCard";
+import DashboardKpiCard from "../components/DashboardKpiCard";
 import { useEffect, useState } from "react";
 import { DailyDataScheme, type DailyDataType } from "../types/DailyData";
 import { GradeKeyToKorean } from "../const/Common";
 import DashboardChartGradePerKg from "../components/DashboardChartGradePerKg";
 import DashboardChartGradePerPrice from "../components/DashboardChartGradePerPrice";
+import DashboardCard from "../components/DashboardCard";
 
 const Dashboard = () => {
   const theme = useTheme();
@@ -45,7 +46,7 @@ const Dashboard = () => {
       {/* 주요 정보 섹션 */}
       <Grid container spacing={2}>
         <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-          <DashboardInfoCard
+          <DashboardKpiCard
             title="총 판매량"
             content={`${dailyData.latestDaily.totalQuantityTodayKg.toLocaleString()} kg`}
             caption={dailyData.latestDate}
@@ -53,7 +54,7 @@ const Dashboard = () => {
           />
         </Grid>
         <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-          <DashboardInfoCard
+          <DashboardKpiCard
             title="거래량이 가장 많은 등급"
             content={`${
               GradeKeyToKorean[
@@ -66,7 +67,7 @@ const Dashboard = () => {
           />
         </Grid>
         <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-          <DashboardInfoCard
+          <DashboardKpiCard
             title="최대 거래 지역"
             content={dailyData.latestDaily.topRegion.region}
             caption={dailyData.latestDate}
@@ -74,7 +75,7 @@ const Dashboard = () => {
           />
         </Grid>
         <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-          <DashboardInfoCard
+          <DashboardKpiCard
             title="최대 거래 조합"
             content={dailyData.latestDaily.topUnion.union}
             caption={dailyData.latestDate}
@@ -84,7 +85,6 @@ const Dashboard = () => {
       </Grid>
 
       {/* 메인 차트 1, 2 섹션 */}
-      {/* @TODO : 차트 타이틀 달아주고 단위 추가해주기 */}
       <Grid container spacing={2} sx={{ mt: 2 }}>
         <Grid
           size={{
@@ -92,21 +92,12 @@ const Dashboard = () => {
             md: 6,
           }}
         >
-          <Card
-            variant={theme.palette.mode === "dark" ? "outlined" : "elevation"}
-            elevation={theme.palette.mode === "dark" ? 0 : 1}
-            sx={{
-              borderRadius: 3,
-              p: 2,
-              width: "100%",
-              backgroundImage: "none",
-              backgroundColor: "transparent",
-            }}
-          >
+          <DashboardCard>
+            <Typography>등급별 수량(Kg) - {dailyData.latestDate}</Typography>
             <DashboardChartGradePerKg
               data={dailyData.latestDaily.gradeBreakdown}
             />
-          </Card>
+          </DashboardCard>
         </Grid>
 
         <Grid
@@ -115,21 +106,12 @@ const Dashboard = () => {
             md: 6,
           }}
         >
-          <Card
-            variant={theme.palette.mode === "dark" ? "outlined" : "elevation"}
-            elevation={theme.palette.mode === "dark" ? 0 : 1}
-            sx={{
-              borderRadius: 3,
-              p: 2,
-              width: "100%",
-              backgroundImage: "none",
-              backgroundColor: "transparent",
-            }}
-          >
+          <DashboardCard>
+            <Typography>등급별 가격(원) - {dailyData.latestDate}</Typography>
             <DashboardChartGradePerPrice
               data={dailyData.latestDaily.gradeBreakdown}
             />
-          </Card>
+          </DashboardCard>
         </Grid>
       </Grid>
 
