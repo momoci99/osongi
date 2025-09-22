@@ -1,12 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import { useTheme } from "@mui/material/styles";
-import {
-  Box,
-  ToggleButton,
-  ToggleButtonGroup,
-  Typography,
-} from "@mui/material";
+import { Box, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import type { WeeklyPriceDatum } from "../types/data";
 import { GradeKeyToKorean } from "../const/Common";
 
@@ -148,38 +143,37 @@ export default function DashboardChartWeeklyToggle({
       .attr("opacity", 0.7);
 
     // Group data by grade
-    const gradeData = grades
-      .map((gradeKey) => {
-        const gradePoints = dates
-          .map((date) => {
-            const point = processedData.find(
-              (d) => d.date === date && d.gradeKey === gradeKey
-            );
-            return point
-              ? {
-                  date: point.parsedDate,
-                  price: point.unitPriceWon,
-                  quantity: point.quantityKg,
-                  originalDate: date,
-                  gradeKey,
-                }
-              : null;
-          })
-          .filter(Boolean) as Array<{
-          date: Date;
-          price: number;
-          quantity: number;
-          originalDate: string;
-          gradeKey: string;
-        }>;
+    const gradeData = [];
 
-        return {
+    for (const gradeKey of grades) {
+      // 각 등급별로 날짜에 해당하는 데이터 포인트들을 찾기
+      const gradePoints = [];
+
+      for (const date of dates) {
+        const point = processedData.find(
+          (d) => d.date === date && d.gradeKey === gradeKey
+        );
+
+        if (point) {
+          gradePoints.push({
+            date: point.parsedDate,
+            price: point.unitPriceWon,
+            quantity: point.quantityKg,
+            originalDate: date,
+            gradeKey,
+          });
+        }
+      }
+
+      // 해당 등급에 데이터가 있는 경우만 추가
+      if (gradePoints.length > 0) {
+        gradeData.push({
           gradeKey,
           points: gradePoints,
           color: colorScale(gradeKey),
-        };
-      })
-      .filter((d) => d.points.length > 0);
+        });
+      }
+    }
 
     // Create line generator
     const line = d3
