@@ -9,12 +9,16 @@ on:
 jobs:
   collect-data:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: read
 
     steps:
       - name: 저장소 체크아웃
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
 
       - name: Node.js 설정
         uses: actions/setup-node@v4
@@ -56,7 +60,12 @@ jobs:
 
       - name: 변경사항 확인 및 커밋
         run: |
-          git add public/auction-data/
+          echo "=== 변경된 파일 확인 ==="
+          git status --porcelain
+          echo "=== 모든 생성 파일 추가 ==="
+          git add public/auction-data/ public/auction-stats/ || true
+          echo "=== Git 상태 재확인 ==="
+          git status
           if [ -n "$(git status --porcelain)" ]; then
             echo "새로운 경매 데이터가 수집되었습니다."
             git commit -m "🍄 경매 데이터 자동 수집 $(date +'%Y-%m-%d %H:%M KST')"
@@ -69,4 +78,9 @@ jobs:
         if: failure()
         run: |
           echo "❌ 데이터 수집 실패: $(date +'%Y-%m-%d %H:%M KST')"
+          echo "=== Git 상태 디버그 ==="
+          git status
+          echo "=== 생성된 파일 확인 ==="
+          ls -la public/auction-data/ || echo "auction-data 폴더 없음"
+          ls -la public/auction-stats/ || echo "auction-stats 폴더 없음"
           echo "로그를 확인해주세요."
