@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2025-09-21T02:56:49.970Z",
+  "generatedAt": "2025-09-24T14:28:53.957Z",
   "yearly": {
     "2021": {
       "totalQuantityKg": 102193.11,
@@ -47,6 +47,18 @@
       "topUnion": {
         "union": "영덕",
         "quantityKg": 15301.67
+      }
+    },
+    "2025": {
+      "totalQuantityKg": 655.5,
+      "totalAmountWon": 272465983,
+      "topRegion": {
+        "region": "강원",
+        "quantityKg": 655.5
+      },
+      "topUnion": {
+        "union": "인제",
+        "quantityKg": 574.12
       }
     }
   }
