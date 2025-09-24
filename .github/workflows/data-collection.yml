@@ -2,8 +2,10 @@ name: 송이버섯 경매 데이터 수집
 
 on:
   schedule:
-    # 매시간 정각에 실행 (KST 기준으로 조정)
-    - cron: "0 * * * *"
+    # 송이 경매 시간: 오전 10시~오후 10시 (KST), 9-11월만
+    # GitHub Actions는 UTC 기준이므로 KST -9시간
+    # KST 10:00-22:00 = UTC 01:00-13:00
+    - cron: "0 1-13 * 9-11 *" # 9-11월, 매일 UTC 01:00-13:00 (KST 10:00-22:00)
   workflow_dispatch: # 수동 실행도 가능
 
 jobs:
