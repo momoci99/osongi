@@ -1,0 +1,69 @@
+name: 송이버섯 경매 데이터 수집
+
+on:
+  schedule:
+    # 매시간 정각에 실행 (KST 기준으로 조정)
+    - cron: "0 * * * *"
+  workflow_dispatch: # 수동 실행도 가능
+
+jobs:
+  collect-data:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 저장소 체크아웃
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Node.js 설정
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: 의존성 설치
+        run: npm ci
+
+      - name: Playwright 브라우저 캐시 확인
+        uses: actions/cache@v4
+        id: playwright-cache
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-playwright-
+
+      - name: Playwright 브라우저 설치 (캐시 미스 시에만)
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: npx playwright install chromium
+
+      - name: Playwright 시스템 의존성 설치
+        run: npx playwright install-deps chromium
+
+      - name: 경매 데이터 수집
+        env:
+          DAYS_TO_CHECK: 3 # 최근 3일만 확인
+        run: npx playwright test tests/generateRawData.spec.ts
+
+      - name: Git 설정
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+      - name: 변경사항 확인 및 커밋
+        run: |
+          git add public/auction-data/
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "새로운 경매 데이터가 수집되었습니다."
+            git commit -m "🍄 경매 데이터 자동 수집 $(date +'%Y-%m-%d %H:%M KST')"
+            git push
+          else
+            echo "수집할 새로운 데이터가 없습니다."
+          fi
+
+      - name: 실행 결과 알림
+        if: failure()
+        run: |
+          echo "❌ 데이터 수집 실패: $(date +'%Y-%m-%d %H:%M KST')"
+          echo "로그를 확인해주세요."
