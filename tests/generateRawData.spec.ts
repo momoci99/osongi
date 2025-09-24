@@ -9,10 +9,10 @@ test("송이 공판현황 데이터 파싱", async ({ page }) => {
   // const startDate = "2013-09-13";
   // const endDate = "2013-10-25";
 
-  // GitHub Actions에서는 최근 7일만 확인 (환경변수로 제어)
+  // GitHub Actions에서는 최근 5일만 확인 (환경변수로 제어)
   const daysToCheck = process.env.DAYS_TO_CHECK
     ? parseInt(process.env.DAYS_TO_CHECK)
-    : 7;
+    : 5;
   const endDate = new Date().toISOString().split("T")[0]; //오늘 날짜
   const startDateObj = new Date();
   startDateObj.setDate(startDateObj.getDate() - daysToCheck);
