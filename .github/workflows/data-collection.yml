@@ -46,6 +46,9 @@ jobs:
           DAYS_TO_CHECK: 3 # 최근 3일만 확인
         run: npx playwright test tests/generateRawData.spec.ts
 
+      - name: 통계 생성
+        run: npm run generate-stats
+
       - name: Git 설정
         run: |
           git config --local user.email "action@github.com"
