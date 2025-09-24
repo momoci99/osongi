@@ -11,7 +11,7 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "generate-stats": "tsx scripts/generate-stats.ts",
-    "get-raw-data": "playwright test tests/generateRawData.spec.ts --project=chromium",
+    "get-raw-data": "playwright test tests/generateRawData.spec.ts",
     "collect-data": "playwright test tests/generateRawData.spec.ts",
     "collect-data:recent": "DAYS_TO_CHECK=7 playwright test tests/generateRawData.spec.ts",
     "collect-data:month": "DAYS_TO_CHECK=30 playwright test tests/generateRawData.spec.ts"
