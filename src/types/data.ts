@@ -42,12 +42,14 @@ export type MushroomAuctionDataRaw = {
 };
 
 // Weekly chart data types
-export type WeeklyPriceDatum = {
-  date: string; // YYYY-MM-DD
-  gradeKey: string; // grade1, grade2, etc.
+export interface WeeklyPriceDatum {
+  date: string;
+  gradeKey: string;
   quantityKg: number;
   unitPriceWon: number;
-};
+  region?: string;
+  union?: string;
+}
 
 export type WeeklyManifest = {
   generatedAt: string;

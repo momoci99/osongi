@@ -302,13 +302,56 @@ export default function DashboardChartWeeklyToggle({
     });
 
     // Add axes
-    const xTickCount = isMobile ? 4 : 7;
     const yTickCount = isMobile ? 4 : 5;
 
-    const xAxis = d3
-      .axisBottom(xScale)
-      .tickFormat((d) => d3.timeFormat("%m/%d")(d as Date))
-      .ticks(xTickCount);
+    // Get unique dates from actual data
+    const uniqueDates = Array.from(
+      new Set(processedData.map((d) => d.parsedDate.getTime()))
+    )
+      .map((time) => new Date(time))
+      .sort((a, b) => a.getTime() - b.getTime());
+
+    // Smart tick selection based on date range
+    const dateRange = uniqueDates.length;
+    let xAxis;
+
+    if (dateRange <= 7) {
+      // 1주일 이하: 모든 날짜 표시
+      xAxis = d3
+        .axisBottom(xScale)
+        .tickFormat((d) => d3.timeFormat("%m/%d")(d as Date))
+        .tickValues(uniqueDates);
+    } else if (dateRange <= 31) {
+      // 1개월 이하: 3-4일 간격으로 표시
+      const tickInterval = Math.max(1, Math.ceil(dateRange / 8)); // 최대 8개 정도 틱
+      const selectedTicks = uniqueDates.filter(
+        (_, i) => i % tickInterval === 0
+      );
+      // 마지막 날짜가 포함되지 않았다면 추가
+      if (
+        selectedTicks[selectedTicks.length - 1] !==
+        uniqueDates[uniqueDates.length - 1]
+      ) {
+        selectedTicks.push(uniqueDates[uniqueDates.length - 1]);
+      }
+      xAxis = d3
+        .axisBottom(xScale)
+        .tickFormat((d) => d3.timeFormat("%m/%d")(d as Date))
+        .tickValues(selectedTicks);
+    } else if (dateRange <= 92) {
+      // 3개월 이하: 주 단위 표시
+      xAxis = d3
+        .axisBottom(xScale)
+        .tickFormat((d) => d3.timeFormat("%m/%d")(d as Date))
+        .ticks(d3.timeWeek.every(1));
+    } else {
+      // 3개월 초과: 월 단위 표시 (1년 단위에서는 2개월 간격)
+      const monthInterval = dateRange > 200 ? 2 : 1; // 200일 이상이면 2개월 간격
+      xAxis = d3
+        .axisBottom(xScale)
+        .tickFormat((d) => d3.timeFormat("%Y/%m")(d as Date))
+        .ticks(d3.timeMonth.every(monthInterval));
+    }
 
     let yAxis;
     if (chartMode === "price") {
