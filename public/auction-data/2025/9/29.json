@@ -198,5 +198,45 @@
       "quantity": "0kg",
       "unitPrice": "0원"
     }
+  },
+  {
+    "region": "경북",
+    "union": "상주",
+    "date": "2025-9-29",
+    "lastUpdated": "2025-09-29 17:04:07.0",
+    "auctionQuantity": {
+      "untilYesterday": "0kg",
+      "today": "7.7kg",
+      "total": "7.7kg"
+    },
+    "auctionAmount": {
+      "untilYesterday": "0원",
+      "today": "2,407,139원",
+      "total": "2,407,139원"
+    },
+    "grade1": {
+      "quantity": "0.4kg",
+      "unitPrice": "675,000원"
+    },
+    "grade2": {
+      "quantity": "1.17kg",
+      "unitPrice": "623,000원"
+    },
+    "grade3Stopped": {
+      "quantity": "2.84kg",
+      "unitPrice": "241,300원"
+    },
+    "grade3Estimated": {
+      "quantity": "1.03kg",
+      "unitPrice": "295,300원"
+    },
+    "gradeBelow": {
+      "quantity": "2.26kg",
+      "unitPrice": "185,300원"
+    },
+    "mixedGrade": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    }
   }
 ]
