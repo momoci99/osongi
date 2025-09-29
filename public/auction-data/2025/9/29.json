@@ -3,36 +3,36 @@
     "region": "강원",
     "union": "홍천",
     "date": "2025-9-29",
-    "lastUpdated": "2025-09-28 17:50:06.0",
+    "lastUpdated": "2025-09-29 18:39:23.0",
     "auctionQuantity": {
       "untilYesterday": "639.75kg",
-      "today": "0kg",
-      "total": "639.75kg"
+      "today": "398.14kg",
+      "total": "1,037.89kg"
     },
     "auctionAmount": {
       "untilYesterday": "213,100,955원",
-      "today": "0원",
-      "total": "213,100,955원"
+      "today": "99,823,200원",
+      "total": "312,924,155원"
     },
     "grade1": {
-      "quantity": "0kg",
-      "unitPrice": "0원"
+      "quantity": "7.84kg",
+      "unitPrice": "749,000원"
     },
     "grade2": {
-      "quantity": "0kg",
-      "unitPrice": "0원"
+      "quantity": "18.58kg",
+      "unitPrice": "469,000원"
     },
     "grade3Stopped": {
-      "quantity": "0kg",
-      "unitPrice": "0원"
+      "quantity": "119.28kg",
+      "unitPrice": "229,000원"
     },
     "grade3Estimated": {
-      "quantity": "0kg",
-      "unitPrice": "0원"
+      "quantity": "145.7kg",
+      "unitPrice": "273,000원"
     },
     "gradeBelow": {
-      "quantity": "0kg",
-      "unitPrice": "0원"
+      "quantity": "106.74kg",
+      "unitPrice": "170,000원"
     },
     "mixedGrade": {
       "quantity": "0kg",
@@ -323,7 +323,7 @@
     "region": "경남",
     "union": "거창",
     "date": "2025-9-29",
-    "lastUpdated": "2025-09-29 18:06:42.0",
+    "lastUpdated": "2025-09-29 18:52:02.0",
     "auctionQuantity": {
       "untilYesterday": "0kg",
       "today": "557.35kg",
@@ -331,8 +331,8 @@
     },
     "auctionAmount": {
       "untilYesterday": "0원",
-      "today": "136,419,670원",
-      "total": "136,419,670원"
+      "today": "136,408,920원",
+      "total": "136,408,920원"
     },
     "grade1": {
       "quantity": "19.95kg",
@@ -344,7 +344,7 @@
     },
     "grade3Stopped": {
       "quantity": "91.5kg",
-      "unitPrice": "257,300원"
+      "unitPrice": "257,182원"
     },
     "grade3Estimated": {
       "quantity": "155.6kg",
