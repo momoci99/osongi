@@ -1,0 +1,202 @@
+[
+  {
+    "region": "강원",
+    "union": "홍천",
+    "date": "2025-9-29",
+    "lastUpdated": "2025-09-28 17:50:06.0",
+    "auctionQuantity": {
+      "untilYesterday": "639.75kg",
+      "today": "0kg",
+      "total": "639.75kg"
+    },
+    "auctionAmount": {
+      "untilYesterday": "213,100,955원",
+      "today": "0원",
+      "total": "213,100,955원"
+    },
+    "grade1": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "grade2": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "grade3Stopped": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "grade3Estimated": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "gradeBelow": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "mixedGrade": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    }
+  },
+  {
+    "region": "강원",
+    "union": "양구",
+    "date": "2025-9-29",
+    "lastUpdated": "2025-09-28 17:19:23.0",
+    "auctionQuantity": {
+      "untilYesterday": "576.02kg",
+      "today": "0kg",
+      "total": "576.02kg"
+    },
+    "auctionAmount": {
+      "untilYesterday": "152,331,946.7원",
+      "today": "0원",
+      "total": "152,331,946.7원"
+    },
+    "grade1": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "grade2": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "grade3Stopped": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "grade3Estimated": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "gradeBelow": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "mixedGrade": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    }
+  },
+  {
+    "region": "강원",
+    "union": "인제",
+    "date": "2025-9-29",
+    "lastUpdated": "2025-09-28 17:17:19.0",
+    "auctionQuantity": {
+      "untilYesterday": "2,436.5kg",
+      "today": "0kg",
+      "total": "2,436.5kg"
+    },
+    "auctionAmount": {
+      "untilYesterday": "811,394,054.76원",
+      "today": "0원",
+      "total": "811,394,054.76원"
+    },
+    "grade1": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "grade2": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "grade3Stopped": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "grade3Estimated": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "gradeBelow": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "mixedGrade": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    }
+  },
+  {
+    "region": "강원",
+    "union": "고성",
+    "date": "2025-9-29",
+    "lastUpdated": "2025-09-28 17:08:14.0",
+    "auctionQuantity": {
+      "untilYesterday": "72.25kg",
+      "today": "0kg",
+      "total": "72.25kg"
+    },
+    "auctionAmount": {
+      "untilYesterday": "24,135,104원",
+      "today": "0원",
+      "total": "24,135,104원"
+    },
+    "grade1": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "grade2": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "grade3Stopped": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "grade3Estimated": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "gradeBelow": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "mixedGrade": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    }
+  },
+  {
+    "region": "강원",
+    "union": "양양",
+    "date": "2025-9-29",
+    "lastUpdated": "2025-09-28 17:00:03.0",
+    "auctionQuantity": {
+      "untilYesterday": "46.29kg",
+      "today": "0kg",
+      "total": "46.29kg"
+    },
+    "auctionAmount": {
+      "untilYesterday": "19,631,923원",
+      "today": "0원",
+      "total": "19,631,923원"
+    },
+    "grade1": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "grade2": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "grade3Stopped": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "grade3Estimated": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "gradeBelow": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "mixedGrade": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    }
+  }
+]
