@@ -12,6 +12,8 @@ import {
   Chip,
   Button,
   type SelectChangeEvent,
+  Card,
+  useTheme,
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -19,7 +21,11 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { ko } from "date-fns/locale";
 import type { MushroomAuctionDataRaw, WeeklyPriceDatum } from "../types/data";
 import DataAnalysisChart from "../components/DataAnalysisChart";
-
+import {
+  AVAILABLE_REGIONS,
+  GRADE_OPTIONS,
+  REGION_UNION_MAP,
+} from "../const/Common";
 // 필터 상태 타입 정의
 interface AnalysisFilters {
   region: string; // 단일 지역 선택
@@ -28,16 +34,6 @@ interface AnalysisFilters {
   startDate: Date;
   endDate: Date;
 }
-
-// 등급 옵션 정의
-const GRADE_OPTIONS = [
-  { value: "grade1", label: "1등품" },
-  { value: "grade2", label: "2등품" },
-  { value: "grade3Stopped", label: "3등품(생장정지)" },
-  { value: "grade3Estimated", label: "3등품(개산)" },
-  { value: "gradeBelow", label: "등외품" },
-  { value: "mixedGrade", label: "혼합품" },
-];
 
 // 유틸리티 함수: 송이버섯 시즌 기본 날짜 범위
 function getDefaultDateRange(): { startDate: Date; endDate: Date } {
@@ -121,7 +117,7 @@ async function loadDateRangeData(
   const results = await Promise.all(promises);
 
   const allData = results.flat();
-  console.log(`✅ 데이터 로드 완료: ${allData.length}개 레코드`);
+  console.log(`✅데이터 로드 완료: ${allData.length}개 레코드`);
 
   return allData;
 }
@@ -220,37 +216,17 @@ const DataAnalysis = () => {
   const [rawData, setRawData] = useState<MushroomAuctionDataRaw[]>([]);
   const [loading, setLoading] = useState(false);
   // 송이버섯 주요 생산 지역 (실제 JSON 데이터 기준)
-  const availableRegions = ["강원", "경북", "경남"];
-
-  // 지역별 조합 목록 (실제 JSON 데이터 기준)
-  const regionUnionMap = {
-    강원: ["홍천", "양구", "인제", "고성", "양양", "강릉", "삼척", "의성"],
-    경북: [
-      "의성",
-      "안동",
-      "청송",
-      "영덕",
-      "포항",
-      "청도",
-      "상주",
-      "문경",
-      "예청",
-      "영주",
-      "봉화",
-      "울진",
-    ],
-    경남: ["거창"],
-  };
 
   // 모든 조합 목록
-  const allUnions = Object.values(regionUnionMap).flat().sort();
+  const allUnions = Object.values(REGION_UNION_MAP).flat().sort();
 
   // 필터 상태
   const [filters, setFilters] = useState<AnalysisFilters>(() => {
     const { startDate, endDate } = getDefaultDateRange();
-    const defaultRegion = availableRegions[0];
+    const defaultRegion = AVAILABLE_REGIONS[0];
     const defaultUnion =
-      regionUnionMap[defaultRegion as keyof typeof regionUnionMap]?.[0] || "";
+      REGION_UNION_MAP[defaultRegion as keyof typeof REGION_UNION_MAP]?.[0] ||
+      "";
     return {
       region: defaultRegion, // 기본으로 첫 번째 지역 선택
       union: defaultUnion, // 기본으로 첫 번째 지역의 첫 번째 조합 선택
@@ -331,7 +307,7 @@ const DataAnalysis = () => {
   const handleRegionChange = (event: SelectChangeEvent) => {
     const newRegion = event.target.value;
     const firstUnion =
-      regionUnionMap[newRegion as keyof typeof regionUnionMap]?.[0] || "";
+      REGION_UNION_MAP[newRegion as keyof typeof REGION_UNION_MAP]?.[0] || "";
     setFilters((prev) => ({
       ...prev,
       region: newRegion,
@@ -371,9 +347,10 @@ const DataAnalysis = () => {
   // 필터 초기화 함수
   const handleResetFilters = () => {
     const { startDate, endDate } = getDefaultDateRange();
-    const defaultRegion = availableRegions[0];
+    const defaultRegion = AVAILABLE_REGIONS[0];
     const defaultUnion =
-      regionUnionMap[defaultRegion as keyof typeof regionUnionMap]?.[0] || "";
+      REGION_UNION_MAP[defaultRegion as keyof typeof REGION_UNION_MAP]?.[0] ||
+      "";
 
     setFilters({
       region: defaultRegion,
@@ -390,9 +367,11 @@ const DataAnalysis = () => {
 
     // 선택된 지역의 조합만 반환
     const unions =
-      regionUnionMap[filters.region as keyof typeof regionUnionMap] || [];
+      REGION_UNION_MAP[filters.region as keyof typeof REGION_UNION_MAP] || [];
     return unions.sort();
   }, [filters.region]);
+
+  const theme = useTheme();
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={ko}>
@@ -411,7 +390,18 @@ const DataAnalysis = () => {
           </Typography>
 
           {/* 필터 섹션 */}
-          <Paper sx={{ p: 3, mb: 3 }}>
+          <Paper
+            variant={theme.palette.mode === "dark" ? "outlined" : "elevation"}
+            elevation={theme.palette.mode === "dark" ? 0 : 1}
+            sx={{
+              p: 3,
+              mb: 3,
+              borderRadius: 3,
+              width: "100%",
+              backgroundImage: "none",
+              backgroundColor: "transparent",
+            }}
+          >
             <Box
               sx={{
                 display: "flex",
@@ -445,7 +435,7 @@ const DataAnalysis = () => {
                       return selected || "지역 선택";
                     }}
                   >
-                    {availableRegions.map((region) => (
+                    {AVAILABLE_REGIONS.map((region) => (
                       <MenuItem key={region} value={region}>
                         {region}
                       </MenuItem>
@@ -546,7 +536,18 @@ const DataAnalysis = () => {
           </Paper>
 
           {/* 차트 섹션 */}
-          <Paper sx={{ p: 3, mb: 3 }}>
+          <Card
+            variant={theme.palette.mode === "dark" ? "outlined" : "elevation"}
+            elevation={theme.palette.mode === "dark" ? 0 : 1}
+            sx={{
+              p: 3,
+              mb: 3,
+              borderRadius: 3,
+              width: "100%",
+              backgroundImage: "none",
+              backgroundColor: "transparent",
+            }}
+          >
             <Box
               sx={{
                 display: "flex",
@@ -600,10 +601,21 @@ const DataAnalysis = () => {
                 </Typography>
               </Box>
             )}
-          </Paper>
+          </Card>
 
           {/* 테이블 섹션 */}
-          <Paper sx={{ p: 3 }}>
+          <Paper
+            variant={theme.palette.mode === "dark" ? "outlined" : "elevation"}
+            elevation={theme.palette.mode === "dark" ? 0 : 1}
+            sx={{
+              p: 3,
+              mb: 3,
+              borderRadius: 3,
+              width: "100%",
+              backgroundImage: "none",
+              backgroundColor: "transparent",
+            }}
+          >
             <Box
               sx={{
                 display: "flex",
