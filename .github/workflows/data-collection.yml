@@ -55,6 +55,9 @@ jobs:
       - name: 통계 생성
         run: npm run generate-stats
 
+      - name: 통합 데이터셋 생성
+        run: npm run generate-complete-dataset
+
       - name: Git 설정
         run: |
           git config --local user.email "action@github.com"
