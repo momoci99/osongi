@@ -26,6 +26,54 @@ import {
   GRADE_OPTIONS,
   REGION_UNION_MAP,
 } from "../const/Common";
+import type { AuctionRecord } from "../utils/database";
+import { dataLoader } from "../utils/dataLoader";
+
+// AuctionRecord를 기존 MushroomAuctionDataRaw 형태로 변환하는 함수
+function convertAuctionRecordToRaw(
+  record: AuctionRecord
+): MushroomAuctionDataRaw {
+  return {
+    region: record.region,
+    union: record.union,
+    date: record.date,
+    lastUpdated: record.lastUpdated,
+    auctionQuantity: {
+      untilYesterday: record.auctionQuantityUntilYesterday.toString(),
+      today: record.auctionQuantityToday.toString(),
+      total: record.auctionQuantityTotal.toString(),
+    },
+    auctionAmount: {
+      untilYesterday: record.auctionAmountUntilYesterday.toString(),
+      today: record.auctionAmountToday.toString(),
+      total: record.auctionAmountTotal.toString(),
+    },
+    grade1: {
+      quantity: record.grade1Quantity.toString(),
+      unitPrice: record.grade1UnitPrice.toString(),
+    },
+    grade2: {
+      quantity: record.grade2Quantity.toString(),
+      unitPrice: record.grade2UnitPrice.toString(),
+    },
+    grade3Stopped: {
+      quantity: record.grade3StoppedQuantity.toString(),
+      unitPrice: record.grade3StoppedUnitPrice.toString(),
+    },
+    grade3Estimated: {
+      quantity: record.grade3EstimatedQuantity.toString(),
+      unitPrice: record.grade3EstimatedUnitPrice.toString(),
+    },
+    gradeBelow: {
+      quantity: record.gradeBelowQuantity.toString(),
+      unitPrice: record.gradeBelowUnitPrice.toString(),
+    },
+    mixedGrade: {
+      quantity: record.mixedGradeQuantity.toString(),
+      unitPrice: record.mixedGradeUnitPrice.toString(),
+    },
+  };
+}
 // 필터 상태 타입 정의
 interface AnalysisFilters {
   region: string; // 단일 지역 선택
@@ -101,14 +149,52 @@ async function loadDateData(date: Date): Promise<MushroomAuctionDataRaw[]> {
   }
 }
 
-// 날짜 범위의 모든 데이터 로드
+// 날짜 범위의 모든 데이터 로드 (IndexedDB 사용)
 async function loadDateRangeData(
+  startDate: Date,
+  endDate: Date
+): Promise<MushroomAuctionDataRaw[]> {
+  const startDateStr = startDate.toISOString().split("T")[0]; // YYYY-MM-DD
+  const endDateStr = endDate.toISOString().split("T")[0];
+
+  console.log(`📅 IndexedDB 데이터 로드 시작: ${startDateStr} ~ ${endDateStr}`);
+
+  try {
+    // IndexedDB에서 날짜 범위 쿼리 (송이버섯 시즌만)
+    const auctionRecords = await dataLoader.queryByDateRange({
+      startDate: startDateStr,
+      endDate: endDateStr,
+    });
+
+    // 송이버섯 시즌 필터링 (8-12월)
+    const seasonFilteredRecords = auctionRecords.filter(
+      (record: AuctionRecord) => {
+        const recordDate = new Date(record.date);
+        return isMushroomSeason(recordDate);
+      }
+    );
+
+    // AuctionRecord를 MushroomAuctionDataRaw 형태로 변환
+    const rawData = seasonFilteredRecords.map(convertAuctionRecordToRaw);
+
+    console.log(`✅ IndexedDB 데이터 로드 완료: ${rawData.length}개 레코드`);
+    return rawData;
+  } catch (error) {
+    console.error("IndexedDB 데이터 로드 실패:", error);
+    // 폴백: 기존 HTTP 방식으로 시도
+    console.log("📡 HTTP 폴백 모드로 전환...");
+    return loadDateRangeDataHTTP(startDate, endDate);
+  }
+}
+
+// 기존 HTTP 방식 (폴백용)
+async function loadDateRangeDataHTTP(
   startDate: Date,
   endDate: Date
 ): Promise<MushroomAuctionDataRaw[]> {
   const dates = generateDateRange(startDate, endDate);
   console.log(
-    `📅 데이터 로드 시작: ${
+    `📅 HTTP 데이터 로드 시작: ${
       dates.length
     }일간 (${startDate.toLocaleDateString()} ~ ${endDate.toLocaleDateString()})`
   );
@@ -117,7 +203,7 @@ async function loadDateRangeData(
   const results = await Promise.all(promises);
 
   const allData = results.flat();
-  console.log(`✅데이터 로드 완료: ${allData.length}개 레코드`);
+  console.log(`✅ HTTP 데이터 로드 완료: ${allData.length}개 레코드`);
 
   return allData;
 }

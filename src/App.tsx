@@ -11,6 +11,7 @@ import RawData from "./pages/RawData";
 import Help from "./pages/Help";
 import type { PaletteMode } from "@mui/material/styles";
 import GlobalNavbar from "./components/GlobalNavbar";
+import DataInitializer from "./components/DataInitializer";
 
 function App() {
   const [mode, setMode] = useState<PaletteMode>(() => {
@@ -29,15 +30,17 @@ function App() {
   return (
     <ThemeProvider theme={currentTheme}>
       <CssBaseline />
-      <GlobalNavbar mode={mode} toggleTheme={toggleTheme} />
+      <DataInitializer>
+        <GlobalNavbar mode={mode} toggleTheme={toggleTheme} />
 
-      <Routes>
-        <Route index element={<Dashboard />} />
-        <Route path="dashboard" element={<Dashboard />} />
-        <Route path="data-analysis" element={<DataAnalysis />} />
-        <Route path="raw-data" element={<RawData />} />
-        <Route path="help" element={<Help />} />
-      </Routes>
+        <Routes>
+          <Route index element={<Dashboard />} />
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="data-analysis" element={<DataAnalysis />} />
+          <Route path="raw-data" element={<RawData />} />
+          <Route path="help" element={<Help />} />
+        </Routes>
+      </DataInitializer>
     </ThemeProvider>
   );
 }
