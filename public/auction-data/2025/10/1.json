@@ -3,36 +3,36 @@
     "region": "강원",
     "union": "홍천",
     "date": "2025-10-1",
-    "lastUpdated": "2025-09-30 19:58:23.0",
+    "lastUpdated": "2025-10-01 19:43:09.0",
     "auctionQuantity": {
       "untilYesterday": "1,346.43kg",
-      "today": "0kg",
-      "total": "1,346.43kg"
+      "today": "385.76kg",
+      "total": "1,732.19kg"
     },
     "auctionAmount": {
       "untilYesterday": "394,572,067원",
-      "today": "0원",
-      "total": "394,572,067원"
+      "today": "107,357,776원",
+      "total": "501,929,843원"
     },
     "grade1": {
-      "quantity": "0kg",
-      "unitPrice": "0원"
+      "quantity": "3.58kg",
+      "unitPrice": "611,800원"
     },
     "grade2": {
-      "quantity": "0kg",
-      "unitPrice": "0원"
+      "quantity": "16.5kg",
+      "unitPrice": "460,000원"
     },
     "grade3Stopped": {
-      "quantity": "0kg",
-      "unitPrice": "0원"
+      "quantity": "87.64kg",
+      "unitPrice": "286,200원"
     },
     "grade3Estimated": {
-      "quantity": "0kg",
-      "unitPrice": "0원"
+      "quantity": "144.58kg",
+      "unitPrice": "304,800원"
     },
     "gradeBelow": {
-      "quantity": "0kg",
-      "unitPrice": "0원"
+      "quantity": "133.46kg",
+      "unitPrice": "213,000원"
     },
     "mixedGrade": {
       "quantity": "0kg",
@@ -323,7 +323,7 @@
     "region": "경북",
     "union": "청도",
     "date": "2025-10-1",
-    "lastUpdated": "2025-10-01 17:07:59.0",
+    "lastUpdated": "2025-10-01 18:26:32.0",
     "auctionQuantity": {
       "untilYesterday": "0kg",
       "today": "21.05kg",
