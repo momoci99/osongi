@@ -294,7 +294,12 @@ function transformToChartData(
     });
   });
 
-  return chartData.sort((a, b) => a.date.localeCompare(b.date));
+  // 날짜를 Date 객체로 변환하여 시간순 정렬 (차트의 x축과 일치)
+  return chartData.sort((a, b) => {
+    const dateA = new Date(a.date);
+    const dateB = new Date(b.date);
+    return dateA.getTime() - dateB.getTime();
+  });
 }
 
 const DataAnalysis = () => {
@@ -468,7 +473,7 @@ const DataAnalysis = () => {
             데이터 분석
           </Typography>
           <Typography variant="body1" color="text.secondary" sx={{ mb: 1 }}>
-            필터를 사용하여 송이버섯 경매 데이터를 자세히 분석해보세요.
+            필터를 사용하여 송이버섯 공판 데이터를 자세히 분석해보세요.
           </Typography>
           <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
             🍄 송이버섯은 8월~12월 시즌에만 출하되므로, 해당 기간의 데이터만

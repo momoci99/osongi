@@ -1,8 +1,8 @@
-name: 송이버섯 경매 데이터 수집
+name: 송이버섯 공판 데이터 수집
 
 on:
   schedule:
-    # 송이 경매 시간: 오전 10시~오후 10시 (KST), 9-11월만
+    # 송이 공판 시간: 오전 10시~오후 10시 (KST), 9-11월만
     # GitHub Actions는 UTC 기준이므로 KST -9시간
     # KST 10:00-22:00 = UTC 01:00-13:00
     - cron: "0 1-13 * 9-11 *" # 9-11월, 매일 UTC 01:00-13:00 (KST 10:00-22:00)
@@ -47,7 +47,7 @@ jobs:
       - name: Playwright 시스템 의존성 설치
         run: npx playwright install-deps chromium
 
-      - name: 경매 데이터 수집
+      - name: 공판 데이터 수집
         env:
           DAYS_TO_CHECK: 5 # 최근 5일만 확인
         run: npx playwright test tests/generateRawData.spec.ts
@@ -72,8 +72,8 @@ jobs:
           echo "=== Git 상태 재확인 ==="
           git status
           if [ -n "$(git status --porcelain)" ]; then
-            echo "새로운 경매 데이터가 수집되었습니다."
-            git commit -m "🍄 경매 데이터 자동 수집 $(date +'%Y-%m-%d %H:%M KST')"
+            echo "새로운 공판 데이터가 수집되었습니다."
+            git commit -m "🍄 공판 데이터 자동 수집 $(date +'%Y-%m-%d %H:%M KST')"
             git push
           else
             echo "수집할 새로운 데이터가 없습니다."

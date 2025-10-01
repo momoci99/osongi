@@ -57,12 +57,12 @@ function analyzeDataChanges(
     const oldItem = oldData[i];
     const newItem = newData[i];
 
-    // 경매 수량 변경 확인
+    // 공판 수량 변경 확인
     if (
       JSON.stringify(oldItem.auctionQuantity) !==
       JSON.stringify(newItem.auctionQuantity)
     ) {
-      return { hasChanges: true, summary: "경매 수량 업데이트" };
+      return { hasChanges: true, summary: "공판 수량 업데이트" };
     }
 
     // 가격 변경 확인

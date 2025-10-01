@@ -1,6 +1,6 @@
 import Dexie, { type EntityTable } from "dexie";
 
-// 정규화된 경매 레코드 타입 (complete-dataset.json과 동일)
+// 정규화된 공판 레코드 타입 (complete-dataset.json과 동일)
 export interface AuctionRecord {
   id?: number; // Auto-increment primary key
   date: string; // YYYY-MM-DD format
@@ -83,7 +83,7 @@ export class MushroomAuctionDB extends Dexie {
 
     // 스키마 정의 (v1)
     this.version(1).stores({
-      // 경매 데이터 테이블 - 복합 인덱스로 빠른 쿼리 지원
+      // 공판 데이터 테이블 - 복합 인덱스로 빠른 쿼리 지원
       auctionData:
         "++id, date, region, union, [date+region], [date+union], [region+union], [date+region+union]",
 

@@ -6,7 +6,7 @@ import type { WeeklyPriceDatum } from "../types/data";
 import { GradeKeyToKorean } from "../const/Common";
 
 /**
- * 송이버섯 경매 데이터 시각화 차트 컴포넌트
+ * 송이버섯 공판 데이터 시각화 차트 컴포넌트
  *
  * ⚠️ 중요: 이 차트는 반드시 연도별 서브플롯(Year-based Subplots) 구조를 유지해야 함
  *
@@ -207,10 +207,9 @@ export default function DataAnalysisChart({
       const yearDates = yearData
         .map((d) => new Date(d.date))
         .sort((a, b) => a.getTime() - b.getTime());
-      const xScale = d3
-        .scaleTime()
-        .domain(d3.extent(yearDates) as [Date, Date])
-        .range([0, subplotWidth]);
+
+      const dateExtent = d3.extent(yearDates) as [Date, Date];
+      const xScale = d3.scaleTime().domain(dateExtent).range([0, subplotWidth]);
 
       // 서브플롯 그룹
       const subplotGroup = svg
@@ -228,10 +227,30 @@ export default function DataAnalysisChart({
         .style("fill", theme.palette.text.primary)
         .text(`${year}년`);
 
-      // X축 (각 서브플롯)
+      // X축 (각 서브플롯) - 스마트한 틱 간격 조정
+      const uniqueDates = [...new Set(yearData.map((d) => d.date))]
+        .sort()
+        .map((dateStr) => new Date(dateStr));
+
+      // 데이터 범위에 따른 적응형 틱 간격
+      const dataSpanDays = uniqueDates.length;
+      let tickInterval = 1;
+
+      if (dataSpanDays > 15) {
+        tickInterval = Math.ceil(dataSpanDays / (isMobile ? 3 : 5));
+      } else if (dataSpanDays > 7) {
+        tickInterval = isMobile ? 3 : 2;
+      } else {
+        tickInterval = isMobile ? 2 : 1;
+      }
+
+      const selectedTicks = uniqueDates.filter(
+        (_, index) => index % tickInterval === 0
+      );
+
       const xAxis = d3
         .axisBottom(xScale)
-        .ticks(isMobile ? 3 : 5)
+        .tickValues(selectedTicks)
         .tickFormat((d) => d3.timeFormat("%m/%d")(d as Date));
 
       subplotGroup
@@ -312,9 +331,11 @@ export default function DataAnalysisChart({
 
         // 점 그리기 및 툴팁
         series.data.forEach((d) => {
+          const xPos = xScale(new Date(d.date));
+
           subplotGroup
             .append("circle")
-            .attr("cx", xScale(new Date(d.date)))
+            .attr("cx", xPos)
             .attr("cy", globalYScale(yValue(d)))
             .attr("r", isMobile ? 2 : 3)
             .attr("fill", series.color)
