@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2025-10-05T10:06:34.805Z",
+  "generatedAt": "2025-10-05T11:06:46.453Z",
   "latestDate": "2025-10-05",
   "latestDaily": {
     "totalQuantityTodayKg": 2599.45,
@@ -13,13 +13,13 @@
     },
     "topGradeByQuantity": {
       "gradeKey": "gradeBelow",
-      "quantityKg": 992.3
+      "quantityKg": 1117.44
     },
     "gradeBreakdown": [
       {
         "gradeKey": "grade1",
-        "quantityKg": 202.71,
-        "unitPriceWon": 705450.17
+        "quantityKg": 77.57,
+        "unitPriceWon": 465963.09
       },
       {
         "gradeKey": "grade2",
@@ -38,8 +38,8 @@
       },
       {
         "gradeKey": "gradeBelow",
-        "quantityKg": 992.3,
-        "unitPriceWon": 189803.1
+        "quantityKg": 1117.44,
+        "unitPriceWon": 196174.88
       },
       {
         "gradeKey": "mixedGrade",
