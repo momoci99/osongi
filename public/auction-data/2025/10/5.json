@@ -123,16 +123,16 @@
     "region": "강원",
     "union": "고성",
     "date": "2025-10-5",
-    "lastUpdated": "2025-10-05 17:51:44.0",
+    "lastUpdated": "2025-10-05 18:09:35.0",
     "auctionQuantity": {
       "untilYesterday": "909.8kg",
-      "today": "336.68kg",
-      "total": "1,246.48kg"
+      "today": "317.92kg",
+      "total": "1,227.72kg"
     },
     "auctionAmount": {
       "untilYesterday": "271,336,013.9원",
-      "today": "83,472,240원",
-      "total": "354,808,253.9원"
+      "today": "78,671,556원",
+      "total": "350,007,569.9원"
     },
     "grade1": {
       "quantity": "8.57kg",
@@ -147,7 +147,7 @@
       "unitPrice": "309,000원"
     },
     "grade3Estimated": {
-      "quantity": "111.25kg",
+      "quantity": "92.49kg",
       "unitPrice": "255,900원"
     },
     "gradeBelow": {
@@ -163,36 +163,36 @@
     "region": "강원",
     "union": "양양",
     "date": "2025-10-5",
-    "lastUpdated": "2025-10-04 18:29:10.0",
+    "lastUpdated": "2025-10-05 18:50:01.0",
     "auctionQuantity": {
       "untilYesterday": "652.07kg",
-      "today": "0kg",
-      "total": "652.07kg"
+      "today": "265.54kg",
+      "total": "917.61kg"
     },
     "auctionAmount": {
       "untilYesterday": "234,711,282.6원",
-      "today": "0원",
-      "total": "234,711,282.6원"
+      "today": "161,494,166원",
+      "total": "396,205,448.6원"
     },
     "grade1": {
-      "quantity": "0kg",
-      "unitPrice": "0원"
+      "quantity": "138.03kg",
+      "unitPrice": "853,900원"
     },
     "grade2": {
-      "quantity": "0kg",
-      "unitPrice": "0원"
+      "quantity": "16.38kg",
+      "unitPrice": "526,300원"
     },
     "grade3Stopped": {
-      "quantity": "0kg",
-      "unitPrice": "0원"
+      "quantity": "51.57kg",
+      "unitPrice": "337,300원"
     },
     "grade3Estimated": {
-      "quantity": "0kg",
-      "unitPrice": "0원"
+      "quantity": "46.67kg",
+      "unitPrice": "309,300원"
     },
     "gradeBelow": {
-      "quantity": "0kg",
-      "unitPrice": "0원"
+      "quantity": "12.89kg",
+      "unitPrice": "246,700원"
     },
     "mixedGrade": {
       "quantity": "0kg",
