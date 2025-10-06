@@ -283,40 +283,40 @@
     "region": "경북",
     "union": "안동",
     "date": "2025-10-6",
-    "lastUpdated": "2025-10-05 17:03:22.0",
+    "lastUpdated": "2025-10-06 17:05:30.0",
     "auctionQuantity": {
       "untilYesterday": "185.5kg",
-      "today": "0kg",
-      "total": "185.5kg"
+      "today": "129.74kg",
+      "total": "315.24kg"
     },
     "auctionAmount": {
       "untilYesterday": "48,294,078원",
-      "today": "0원",
-      "total": "48,294,078원"
+      "today": "31,791,138원",
+      "total": "80,085,216원"
     },
     "grade1": {
-      "quantity": "0kg",
-      "unitPrice": "0원"
+      "quantity": "1.06kg",
+      "unitPrice": "421,000원"
     },
     "grade2": {
-      "quantity": "0kg",
-      "unitPrice": "0원"
+      "quantity": "12.66kg",
+      "unitPrice": "333,300원"
     },
     "grade3Stopped": {
-      "quantity": "0kg",
-      "unitPrice": "0원"
+      "quantity": "16.27kg",
+      "unitPrice": "278,300원"
     },
     "grade3Estimated": {
-      "quantity": "0kg",
-      "unitPrice": "0원"
+      "quantity": "44.94kg",
+      "unitPrice": "248,300원"
     },
     "gradeBelow": {
-      "quantity": "0kg",
-      "unitPrice": "0원"
+      "quantity": "53.78kg",
+      "unitPrice": "211,100원"
     },
     "mixedGrade": {
-      "quantity": "0kg",
-      "unitPrice": "0원"
+      "quantity": "1.03kg",
+      "unitPrice": "83,300원"
     }
   },
   {
@@ -443,36 +443,36 @@
     "region": "경북",
     "union": "청도",
     "date": "2025-10-6",
-    "lastUpdated": "2025-10-05 17:17:27.0",
+    "lastUpdated": "2025-10-06 16:59:30.0",
     "auctionQuantity": {
       "untilYesterday": "268.42kg",
-      "today": "0kg",
-      "total": "268.42kg"
+      "today": "140.3kg",
+      "total": "408.72kg"
     },
     "auctionAmount": {
       "untilYesterday": "71,705,485원",
-      "today": "0원",
-      "total": "71,705,485원"
+      "today": "34,369,102.4원",
+      "total": "106,074,587.4원"
     },
     "grade1": {
-      "quantity": "0kg",
-      "unitPrice": "0원"
+      "quantity": "2.96kg",
+      "unitPrice": "368,999원"
     },
     "grade2": {
-      "quantity": "0kg",
-      "unitPrice": "0원"
+      "quantity": "4.96kg",
+      "unitPrice": "348,999원"
     },
     "grade3Stopped": {
-      "quantity": "0kg",
-      "unitPrice": "0원"
+      "quantity": "14.52kg",
+      "unitPrice": "288,999원"
     },
     "grade3Estimated": {
-      "quantity": "0kg",
-      "unitPrice": "0원"
+      "quantity": "45.16kg",
+      "unitPrice": "268,999원"
     },
     "gradeBelow": {
-      "quantity": "0kg",
-      "unitPrice": "0원"
+      "quantity": "72.7kg",
+      "unitPrice": "209,100원"
     },
     "mixedGrade": {
       "quantity": "0kg",
@@ -483,36 +483,36 @@
     "region": "경북",
     "union": "상주",
     "date": "2025-10-6",
-    "lastUpdated": "2025-10-05 17:09:35.0",
+    "lastUpdated": "2025-10-06 17:02:00.0",
     "auctionQuantity": {
       "untilYesterday": "416.37kg",
-      "today": "0kg",
-      "total": "416.37kg"
+      "today": "192.35kg",
+      "total": "608.72kg"
     },
     "auctionAmount": {
       "untilYesterday": "98,257,112원",
-      "today": "0원",
-      "total": "98,257,112원"
+      "today": "45,669,121.8원",
+      "total": "143,926,233.8원"
     },
     "grade1": {
-      "quantity": "0kg",
-      "unitPrice": "0원"
+      "quantity": "2.44kg",
+      "unitPrice": "450,130원"
     },
     "grade2": {
-      "quantity": "0kg",
-      "unitPrice": "0원"
+      "quantity": "8.62kg",
+      "unitPrice": "320,130원"
     },
     "grade3Stopped": {
-      "quantity": "0kg",
-      "unitPrice": "0원"
+      "quantity": "65.75kg",
+      "unitPrice": "236,800원"
     },
     "grade3Estimated": {
-      "quantity": "0kg",
-      "unitPrice": "0원"
+      "quantity": "24.1kg",
+      "unitPrice": "231,000원"
     },
     "gradeBelow": {
-      "quantity": "0kg",
-      "unitPrice": "0원"
+      "quantity": "91.44kg",
+      "unitPrice": "226,100원"
     },
     "mixedGrade": {
       "quantity": "0kg",
@@ -563,7 +563,7 @@
     "region": "경북",
     "union": "예천",
     "date": "2025-10-6",
-    "lastUpdated": "2025-10-05 17:05:03.0",
+    "lastUpdated": "2025-10-06 14:17:23.0",
     "auctionQuantity": {
       "untilYesterday": "295.53kg",
       "today": "0kg",
