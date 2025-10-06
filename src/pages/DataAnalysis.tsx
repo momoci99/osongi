@@ -146,7 +146,7 @@ const DataAnalysis = () => {
           {/* 테이블 섹션 */}
           <TableSection
             loading={loading}
-            filteredDataLength={filteredData.length}
+            filteredData={filteredData}
             filters={filters}
           />
         </Box>

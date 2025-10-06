@@ -1,19 +1,61 @@
-import { Box, Typography, Paper, useTheme } from "@mui/material";
+import { useState, useMemo } from "react";
+import {
+  Box,
+  Typography,
+  Paper,
+  useTheme,
+  Table,
+  TableContainer,
+} from "@mui/material";
+import type { MushroomAuctionDataRaw } from "../../types/data";
 import type { AnalysisFilters } from "../../utils/analysisUtils";
-import { UI_LAYOUT, THEME_VALUES } from "../../const/Numbers";
+import { transformToTableData } from "../../utils/tableUtils";
+import { UI_LAYOUT, THEME_VALUES, TABLE_CONSTANTS } from "../../const/Numbers";
+import DataTableHeader from "./Table/DataTableHeader";
+import DataTableBody from "./Table/DataTableBody";
+import DataTablePagination from "./Table/DataTablePagination";
+import EmptyState from "./Table/EmptyState";
 
 interface TableSectionProps {
   loading: boolean;
-  filteredDataLength: number;
+  filteredData: MushroomAuctionDataRaw[];
   filters: AnalysisFilters;
 }
 
 export default function TableSection({
   loading,
-  filteredDataLength,
+  filteredData,
   filters,
 }: TableSectionProps) {
   const theme = useTheme();
+  const [page, setPage] = useState<number>(0);
+  const [rowsPerPage, setRowsPerPage] = useState<number>(
+    TABLE_CONSTANTS.ROWS_PER_PAGE_DEFAULT
+  );
+
+  // 테이블용 데이터 변환
+  const tableData = useMemo(
+    () => transformToTableData(filteredData, filters.grades),
+    [filteredData, filters.grades]
+  );
+
+  // 페이지네이션 핸들러
+  const handleChangePage = (_: unknown, newPage: number) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  // 현재 페이지 데이터
+  const paginatedData = tableData.slice(
+    page * rowsPerPage,
+    page * rowsPerPage + rowsPerPage
+  );
 
   return (
     <Paper
@@ -41,42 +83,39 @@ export default function TableSection({
         }}
       >
         <Typography variant="h6">상세 데이터</Typography>
-        {!loading && filteredDataLength > 0 && (
+        {!loading && tableData.length > 0 && (
           <Typography variant="body2" color="text.secondary">
-            📋 총 {filteredDataLength}개 레코드
+            📋 총 {tableData.length}개 레코드
           </Typography>
         )}
       </Box>
 
-      <Box
-        sx={{
-          height: UI_LAYOUT.TABLE_HEIGHT,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          flexDirection: "column",
-          gap: UI_LAYOUT.FORM_GAP,
-        }}
-      >
-        {loading ? (
-          <Typography color="text.secondary">📋 데이터 로딩 중...</Typography>
-        ) : filteredDataLength > 0 ? (
-          <Box sx={{ textAlign: "center" }}>
-            <Typography variant="body1">📊 데이터 미리보기</Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-              지역: {filters.region} | 조합: {filters.union} | 등급:{" "}
-              {filters.grades.length}개 선택
-            </Typography>
-            <Typography variant="body2" sx={{ mt: 1 }}>
-              테이블 컴포넌트가 여기에 표시됩니다
-            </Typography>
-          </Box>
-        ) : (
-          <Typography color="text.secondary">
-            📋 표시할 데이터가 없습니다
-          </Typography>
-        )}
-      </Box>
+      {!loading && tableData.length > 0 ? (
+        <Box>
+          <TableContainer
+            sx={{
+              maxHeight: TABLE_CONSTANTS.MAX_HEIGHT,
+              border: `1px solid ${theme.palette.divider}`,
+              borderRadius: 1,
+            }}
+          >
+            <Table stickyHeader size="small">
+              <DataTableHeader />
+              <DataTableBody data={paginatedData} />
+            </Table>
+          </TableContainer>
+
+          <DataTablePagination
+            count={tableData.length}
+            page={page}
+            rowsPerPage={rowsPerPage}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        </Box>
+      ) : (
+        <EmptyState loading={loading} />
+      )}
     </Paper>
   );
 }

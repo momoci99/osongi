@@ -121,6 +121,21 @@ export const GRID_BREAKPOINTS = {
   HALF_MEDIUM_UP: 6, // 중간 화면 이상에서 절반 너비
 } as const;
 
+// ===== 테이블 레이아웃 상수 =====
+export const TABLE_CONSTANTS = {
+  MAX_HEIGHT: 400, // 테이블 최대 높이
+  ROWS_PER_PAGE_DEFAULT: 10, // 기본 페이지당 행 수
+  ROWS_PER_PAGE_OPTIONS: [5, 10, 25, 50], // 페이지당 행 수 옵션
+  HEADER_FONT_WEIGHT: 600, // 헤더 폰트 굵기
+  CELL_PADDING: "8px 16px", // 셀 패딩
+  DATE_COLUMN_WIDTH: 100, // 날짜 컬럼 너비
+  REGION_COLUMN_WIDTH: 80, // 지역 컬럼 너비
+  UNION_COLUMN_WIDTH: 120, // 조합 컬럼 너비
+  GRADE_COLUMN_WIDTH: 60, // 등급 컬럼 너비
+  QUANTITY_COLUMN_WIDTH: 80, // 수량 컬럼 너비
+  PRICE_COLUMN_WIDTH: 100, // 단가 컬럼 너비
+} as const;
+
 // ===== MUI 테마 관련 =====
 export const THEME_VALUES = {
   DARK_ELEVATION: 0, // 다크모드 elevation
