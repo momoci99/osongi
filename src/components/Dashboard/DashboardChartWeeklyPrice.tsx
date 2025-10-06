@@ -1,20 +1,20 @@
 import { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import { useTheme } from "@mui/material/styles";
-import type { WeeklyPriceDatum } from "../types/data";
-import { GradeKeyToKorean } from "../const/Common";
+import type { WeeklyPriceDatum } from "../../types/data";
+import { GradeKeyToKorean } from "../../const/Common";
 
-type DashboardChartWeeklyPriceQuantityProps = {
+type DashboardChartWeeklyPriceProps = {
   data: WeeklyPriceDatum[];
   height?: number;
-  showQuantity?: boolean; // 수량 표시 여부
+  yMaxOverride?: number;
 };
 
-export default function DashboardChartWeeklyPriceQuantity({
+export default function DashboardChartWeeklyPrice({
   data,
   height = 400,
-  showQuantity = true,
-}: DashboardChartWeeklyPriceQuantityProps) {
+  yMaxOverride,
+}: DashboardChartWeeklyPriceProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const theme = useTheme();
@@ -41,9 +41,9 @@ export default function DashboardChartWeeklyPriceQuantity({
 
     let margin;
     if (isMobile) {
-      margin = { top: 20, right: 60, bottom: 120, left: 60 }; // Mobile: 양쪽 Y축, 범례 공간 확보
+      margin = { top: 20, right: 20, bottom: 100, left: 60 }; // Mobile: 범례를 아래로
     } else {
-      margin = { top: 20, right: 80, bottom: 100, left: 80 }; // Desktop: 양쪽 Y축, 범례 공간 확보
+      margin = { top: 20, right: 120, bottom: 60, left: 80 }; // Desktop: 범례를 오른쪽
     }
 
     const innerWidth = currentWidth - margin.left - margin.right;
@@ -70,25 +70,17 @@ export default function DashboardChartWeeklyPriceQuantity({
       .domain(d3.extent(processedData, (d) => d.parsedDate) as [Date, Date])
       .range([0, innerWidth]);
 
-    // Y scale for price (left axis)
-    const priceMax = d3.max(processedData, (d) => d.unitPriceWon) || 0;
-    const priceScale = d3
+    const yMax =
+      yMaxOverride || d3.max(processedData, (d) => d.unitPriceWon) || 0;
+    const yScale = d3
       .scaleLinear()
-      .domain([0, priceMax])
+      .domain([0, yMax])
       .nice()
       .range([innerHeight, 0]);
 
-    // Y scale for quantity (right axis)
-    const quantityMax = d3.max(processedData, (d) => d.quantityKg) || 0;
-    const quantityScale = d3
-      .scaleLinear()
-      .domain([0, quantityMax])
-      .nice()
-      .range([innerHeight, 0]);
-
-    // Color scale for grades
+    // Color scale for grades - distinct multi-line palette
     const colorScale = d3.scaleOrdinal<string>().domain(grades).range([
-      "#e53e3e", // grade1 - 빨강
+      "#e53e3e", // grade1 - 빨강 (최고등급)
       "#3182ce", // grade2 - 파랑
       "#38a169", // grade3Stopped - 초록
       "#805ad5", // grade3Estimated - 보라
@@ -101,8 +93,10 @@ export default function DashboardChartWeeklyPriceQuantity({
       .append("g")
       .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
-    // Add defs for filters
+    // Add defs for later use
     const defs = svg.append("defs");
+
+    // Add drop shadow filter
     const filter = defs
       .append("filter")
       .attr("id", "drop-shadow")
@@ -112,6 +106,7 @@ export default function DashboardChartWeeklyPriceQuantity({
       .attr("height", "140%");
 
     const floodColor = theme.palette.mode === "dark" ? "#000" : "#666";
+
     filter
       .append("feDropShadow")
       .attr("dx", 1)
@@ -120,20 +115,27 @@ export default function DashboardChartWeeklyPriceQuantity({
       .attr("flood-color", floodColor)
       .attr("flood-opacity", 0.3);
 
-    // Add grid lines for price
+    // Add grid lines
     mainGroup
       .append("g")
-      .attr("class", "price-grid")
+      .attr("class", "grid")
       .selectAll("line")
-      .data(priceScale.ticks(5))
+      .data(yScale.ticks(5))
       .join("line")
       .attr("x1", 0)
       .attr("x2", innerWidth)
-      .attr("y1", (d) => priceScale(d))
-      .attr("y2", (d) => priceScale(d))
+      .attr("y1", (d) => yScale(d))
+      .attr("y2", (d) => yScale(d))
       .attr("stroke", theme.palette.divider)
       .attr("stroke-width", 0.5)
       .attr("opacity", 0.7);
+
+    // Create line generator
+    const line = d3
+      .line<{ date: Date; price: number }>()
+      .x((d) => xScale(d.date))
+      .y((d) => yScale(d.price))
+      .curve(d3.curveMonotoneX);
 
     // Group data by grade
     const gradeData = grades
@@ -169,20 +171,7 @@ export default function DashboardChartWeeklyPriceQuantity({
       })
       .filter((d) => d.points.length > 0);
 
-    // Create line generators
-    const priceLine = d3
-      .line<{ date: Date; price: number }>()
-      .x((d) => xScale(d.date))
-      .y((d) => priceScale(d.price))
-      .curve(d3.curveMonotoneX);
-
-    const quantityLine = d3
-      .line<{ date: Date; quantity: number }>()
-      .x((d) => xScale(d.date))
-      .y((d) => quantityScale(d.quantity))
-      .curve(d3.curveMonotoneX);
-
-    // Draw price lines (solid)
+    // Draw lines with enhanced styling
     gradeData.forEach((grade, index) => {
       const path = mainGroup
         .append("path")
@@ -195,7 +184,7 @@ export default function DashboardChartWeeklyPriceQuantity({
         .attr("filter", "url(#drop-shadow)")
         .attr(
           "d",
-          priceLine.x((d) => xScale(d.date)).y((d) => priceScale(d.price))
+          line.x((d) => xScale(d.date)).y((d) => yScale(d.price))
         );
 
       // Animate line drawing
@@ -209,93 +198,128 @@ export default function DashboardChartWeeklyPriceQuantity({
         .ease(d3.easeCircleOut)
         .attr("stroke-dashoffset", 0);
 
-      // Add price points
-      const pricePoints = mainGroup
-        .selectAll(`.price-point-${grade.gradeKey}`)
+      // Add points with enhanced styling
+      const points = mainGroup
+        .selectAll(`.point-${grade.gradeKey}`)
         .data(grade.points)
         .join("circle")
-        .attr("class", `price-point-${grade.gradeKey}`)
+        .attr("class", `point-${grade.gradeKey}`)
         .attr("cx", (d) => xScale(d.date))
-        .attr("cy", (d) => priceScale(d.price))
+        .attr("cy", (d) => yScale(d.price))
         .attr("r", 0)
         .attr("fill", grade.color)
         .attr("stroke", theme.palette.background.paper)
-        .attr("stroke-width", 2)
+        .attr("stroke-width", 3)
+        .attr("filter", "url(#drop-shadow)")
         .style("cursor", "pointer");
 
-      pricePoints
+      // Animate points appearance
+      points
         .transition()
         .duration(800)
         .delay((_, i) => index * 200 + i * 50)
-        .attr("r", 4);
+        .attr("r", 5);
+
+      // Add event listeners
+      points
+        .on("mouseenter", function (event, d: any) {
+          // Remove any existing tooltips first
+          d3.selectAll("#chart-tooltip").remove();
+
+          // Tooltip
+          const tooltip = d3
+            .select("body")
+            .append("div")
+            .attr("id", "chart-tooltip")
+            .style("position", "absolute")
+            .style("background", theme.palette.background.paper)
+            .style("border", `1px solid ${theme.palette.divider}`)
+            .style("border-radius", "8px")
+            .style("padding", "12px")
+            .style("font-size", "13px")
+            .style("box-shadow", theme.shadows[4])
+            .style("pointer-events", "none")
+            .style("z-index", "1000")
+            .style("opacity", 0);
+
+          tooltip.html(`
+            <div style="font-weight: bold; color: ${
+              grade.color
+            }; margin-bottom: 4px;">
+              ${
+                GradeKeyToKorean[d.gradeKey as keyof typeof GradeKeyToKorean] ||
+                d.gradeKey
+              }
+            </div>
+            <div>📅 날짜: ${d.originalDate}</div>
+            <div>💰 가격: ${d.price.toLocaleString()}원/kg</div>
+            <div>📦 수량: ${d.quantity.toLocaleString()}kg</div>
+          `);
+
+          const [mouseX, mouseY] = d3.pointer(event, document.body);
+          tooltip
+            .style("left", mouseX + 15 + "px")
+            .style("top", mouseY - 10 + "px")
+            .transition()
+            .duration(200)
+            .style("opacity", 1);
+
+          // Highlight point with pulse effect
+          d3.select(this as SVGCircleElement)
+            .transition()
+            .duration(200)
+            .attr("r", 8)
+            .attr("stroke-width", 4);
+
+          // Remove any existing pulse rings first
+          mainGroup.selectAll(".pulse-ring").remove();
+
+          // Add pulse ring
+          mainGroup
+            .append("circle")
+            .attr("class", "pulse-ring")
+            .attr("cx", d3.select(this as SVGCircleElement).attr("cx"))
+            .attr("cy", d3.select(this as SVGCircleElement).attr("cy"))
+            .attr("r", 5)
+            .attr("fill", "none")
+            .attr("stroke", grade.color)
+            .attr("stroke-width", 2)
+            .attr("opacity", 0.7)
+            .transition()
+            .duration(1000)
+            .attr("r", 15)
+            .attr("opacity", 0)
+            .remove();
+        })
+        .on("mouseleave", function () {
+          // Clean up tooltips and pulse rings
+          d3.selectAll("#chart-tooltip").remove();
+          mainGroup.selectAll(".pulse-ring").remove();
+
+          d3.select(this as SVGCircleElement)
+            .transition()
+            .duration(200)
+            .attr("r", 5)
+            .attr("stroke-width", 3);
+        });
     });
 
-    // Draw quantity lines (dashed) if enabled
-    if (showQuantity) {
-      gradeData.forEach((grade, index) => {
-        mainGroup
-          .append("path")
-          .datum(grade.points)
-          .attr("fill", "none")
-          .attr("stroke", grade.color)
-          .attr("stroke-width", 2)
-          .attr("stroke-dasharray", "5,5")
-          .attr("stroke-linejoin", "round")
-          .attr("stroke-linecap", "round")
-          .attr("opacity", 0.7)
-          .attr(
-            "d",
-            quantityLine
-              .x((d) => xScale(d.date))
-              .y((d) => quantityScale(d.quantity))
-          );
-
-        // Add quantity points (square)
-        const quantityPoints = mainGroup
-          .selectAll(`.quantity-point-${grade.gradeKey}`)
-          .data(grade.points)
-          .join("rect")
-          .attr("class", `quantity-point-${grade.gradeKey}`)
-          .attr("x", (d) => xScale(d.date) - 2)
-          .attr("y", (d) => quantityScale(d.quantity) - 2)
-          .attr("width", 0)
-          .attr("height", 0)
-          .attr("fill", grade.color)
-          .attr("stroke", theme.palette.background.paper)
-          .attr("stroke-width", 1)
-          .style("cursor", "pointer");
-
-        quantityPoints
-          .transition()
-          .duration(800)
-          .delay((_, i) => index * 200 + i * 50)
-          .attr("width", 4)
-          .attr("height", 4);
-      });
-    }
-
-    // Add axes
-    const xTickCount = isMobile ? 4 : 7;
-    const yTickCount = isMobile ? 4 : 5;
+    // Add axes with responsive ticks
+    const xTickCount = isMobile ? 4 : 7; // 모바일에서 틱 수 줄임
+    const yTickCount = isMobile ? 4 : 5; // 모바일에서 틱 수 줄임
 
     const xAxis = d3
       .axisBottom(xScale)
       .tickFormat((d) => d3.timeFormat("%m/%d")(d as Date))
       .ticks(xTickCount);
 
-    const priceAxis = d3
-      .axisLeft(priceScale)
+    const yAxis = d3
+      .axisLeft(yScale)
       .tickFormat((d) => `${Math.round(d as number).toLocaleString()}원`)
       .ticks(yTickCount);
 
-    const quantityAxis = d3
-      .axisRight(quantityScale)
-      .tickFormat((d) => `${Math.round(d as number).toLocaleString()}kg`)
-      .ticks(yTickCount);
+    const axisFontSize = isMobile ? "10px" : "12px"; // 모바일에서 폰트 크기 줄임
 
-    const axisFontSize = isMobile ? "10px" : "12px";
-
-    // X axis
     mainGroup
       .append("g")
       .attr("transform", `translate(0, ${innerHeight})`)
@@ -304,24 +328,12 @@ export default function DashboardChartWeeklyPriceQuantity({
       .style("fill", theme.palette.text.primary)
       .style("font-size", axisFontSize);
 
-    // Price axis (left)
     mainGroup
       .append("g")
-      .call(priceAxis as any)
+      .call(yAxis as any)
       .selectAll("text")
       .style("fill", theme.palette.text.primary)
       .style("font-size", axisFontSize);
-
-    // Quantity axis (right)
-    if (showQuantity) {
-      mainGroup
-        .append("g")
-        .attr("transform", `translate(${innerWidth}, 0)`)
-        .call(quantityAxis as any)
-        .selectAll("text")
-        .style("fill", theme.palette.text.primary)
-        .style("font-size", axisFontSize);
-    }
 
     // Style axis lines
     mainGroup
@@ -331,11 +343,10 @@ export default function DashboardChartWeeklyPriceQuantity({
       .selectAll(".tick line")
       .style("stroke", theme.palette.text.secondary);
 
-    // Add Y axis labels
-    const yLabelPosition = isMobile ? -45 : -60;
-    const yLabelFontSize = isMobile ? "12px" : "14px";
+    // Add Y axis label with responsive positioning
+    const yLabelPosition = isMobile ? -45 : -60; // 모바일에서 Y축 라벨 위치 조정
+    const yLabelFontSize = isMobile ? "12px" : "14px"; // 모바일에서 폰트 크기 줄임
 
-    // Price label (left)
     mainGroup
       .append("text")
       .attr("transform", "rotate(-90)")
@@ -347,26 +358,12 @@ export default function DashboardChartWeeklyPriceQuantity({
       .style("font-weight", "500")
       .text("단가 (원/kg)");
 
-    // Quantity label (right)
-    if (showQuantity) {
-      mainGroup
-        .append("text")
-        .attr("transform", "rotate(90)")
-        .attr("y", -innerWidth - (isMobile ? 45 : 60))
-        .attr("x", innerHeight / 2)
-        .attr("text-anchor", "middle")
-        .style("fill", theme.palette.text.primary)
-        .style("font-size", yLabelFontSize)
-        .style("font-weight", "500")
-        .text("수량 (kg)");
-    }
-
-    // Add legend
+    // Add legend with responsive positioning
     let legendTransform;
     if (isMobile) {
-      legendTransform = `translate(0, ${innerHeight + 40})`;
+      legendTransform = `translate(0, ${innerHeight + 40})`; // Mobile: 차트 아래
     } else {
-      legendTransform = `translate(0, ${innerHeight + 50})`;
+      legendTransform = `translate(${innerWidth + 20}, 20)`; // Desktop: 차트 오른쪽
     }
 
     const legend = mainGroup.append("g").attr("transform", legendTransform);
@@ -376,44 +373,35 @@ export default function DashboardChartWeeklyPriceQuantity({
       if (isMobile) {
         legendItemTransform = `translate(${(i % 3) * (innerWidth / 3)}, ${
           Math.floor(i / 3) * 25
-        })`;
+        })`; // Mobile: 3열 그리드
       } else {
-        legendItemTransform = `translate(${(i % 6) * (innerWidth / 6)}, ${
-          Math.floor(i / 6) * 25
-        })`;
+        legendItemTransform = `translate(0, ${i * 25})`; // Desktop: 세로 나열
       }
 
       const legendItem = legend
         .append("g")
         .attr("transform", legendItemTransform);
 
-      const lineX2 = isMobile ? 15 : 20;
-      const textX = isMobile ? 20 : 25;
-      const legendFontSize = isMobile ? "10px" : "12px";
+      const lineX2 = isMobile ? 15 : 20; // 모바일에서 범례 선 짧게
+      const circleCx = isMobile ? 7.5 : 10; // 모바일에서 중심점 조정
+      const textX = isMobile ? 20 : 25; // 모바일에서 텍스트 위치 조정
+      const legendFontSize = isMobile ? "10px" : "12px"; // 모바일에서 폰트 크기 줄임
 
-      // Price line (solid)
       legendItem
         .append("line")
         .attr("x1", 0)
         .attr("x2", lineX2)
-        .attr("y1", -5)
-        .attr("y2", -5)
+        .attr("y1", 0)
+        .attr("y2", 0)
         .attr("stroke", grade.color)
-        .attr("stroke-width", 2);
+        .attr("stroke-width", 2.5);
 
-      // Quantity line (dashed)
-      if (showQuantity) {
-        legendItem
-          .append("line")
-          .attr("x1", 0)
-          .attr("x2", lineX2)
-          .attr("y1", 5)
-          .attr("y2", 5)
-          .attr("stroke", grade.color)
-          .attr("stroke-width", 2)
-          .attr("stroke-dasharray", "3,3")
-          .attr("opacity", 0.7);
-      }
+      legendItem
+        .append("circle")
+        .attr("cx", circleCx)
+        .attr("cy", 0)
+        .attr("r", 3)
+        .attr("fill", grade.color);
 
       legendItem
         .append("text")
@@ -427,57 +415,7 @@ export default function DashboardChartWeeklyPriceQuantity({
             grade.gradeKey
         );
     });
-
-    // Add legend labels for line types
-    if (showQuantity) {
-      const legendLabels = legend
-        .append("g")
-        .attr(
-          "transform",
-          isMobile
-            ? `translate(0, ${Math.ceil(gradeData.length / 3) * 25 + 10})`
-            : `translate(0, ${Math.ceil(gradeData.length / 6) * 25 + 10})`
-        );
-
-      legendLabels
-        .append("line")
-        .attr("x1", 0)
-        .attr("x2", 15)
-        .attr("y1", 0)
-        .attr("y2", 0)
-        .attr("stroke", theme.palette.text.secondary)
-        .attr("stroke-width", 2);
-
-      legendLabels
-        .append("text")
-        .attr("x", 20)
-        .attr("y", 0)
-        .attr("dy", "0.35em")
-        .style("fill", theme.palette.text.secondary)
-        .style("font-size", isMobile ? "9px" : "10px")
-        .text("가격");
-
-      legendLabels
-        .append("line")
-        .attr("x1", 0)
-        .attr("x2", 15)
-        .attr("y1", 15)
-        .attr("y2", 15)
-        .attr("stroke", theme.palette.text.secondary)
-        .attr("stroke-width", 2)
-        .attr("stroke-dasharray", "3,3")
-        .attr("opacity", 0.7);
-
-      legendLabels
-        .append("text")
-        .attr("x", 20)
-        .attr("y", 15)
-        .attr("dy", "0.35em")
-        .style("fill", theme.palette.text.secondary)
-        .style("font-size", isMobile ? "9px" : "10px")
-        .text("수량");
-    }
-  }, [data, height, showQuantity, theme, containerWidth]);
+  }, [data, height, yMaxOverride, theme, containerWidth]);
 
   // Handle resize
   useEffect(() => {
@@ -490,7 +428,9 @@ export default function DashboardChartWeeklyPriceQuantity({
       }
     };
 
+    // Set initial size
     updateSize();
+
     const resizeObserver = new ResizeObserver(updateSize);
     resizeObserver.observe(containerRef.current);
 

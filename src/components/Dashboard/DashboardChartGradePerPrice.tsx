@@ -1,37 +1,31 @@
-// 최신 날짜 등급별 무게 막대 차트
-// d3 활용 (x: gradeKey, y: quantityKg[kg])
+// 최신 날짜 등급별 평균 단가 막대 차트
+// d3 활용 (x: gradeKey, y: unitPriceWon[₩])
 import { useEffect, useRef } from "react";
 import * as d3 from "d3";
 import { useTheme } from "@mui/material/styles";
-import { GradeKeyToKorean } from "../const/Common";
+import { GradeKeyToKorean } from "../../const/Common";
 
-type DashboardChartGradePerKgProps = {
-  data: ChartDatum[];
-  /** 차트 높이 (px) 기본 260 */
+export type PriceDatum = { gradeKey: string; unitPriceWon: number };
+
+type DashboardChartGradePerPriceProps = {
+  data: PriceDatum[];
   height?: number;
-  /** y축 최대값 고정 (없으면 데이터 max) */
   yMaxOverride?: number;
-  /** x축 라벨 아래로 이동 (px) 기본 4 */
   labelYOffset?: number;
 };
 
-// 내부에서 반복 사용되는 데이터 타입 alias
-export type ChartDatum = { gradeKey: string; quantityKg: number };
+const BASE_MARGIN = { top: 16, right: 16, left: 48 } as const;
 
-const BASE_MARGIN = { top: 16, right: 16, left: 32 } as const;
-// bottom margin 은 라벨 회전/줄바꿈 고려해서 runtime 계산
-
-const DashboardChartGradePerKg = ({
+const DashboardChartGradePerPrice = ({
   data,
   height = 350,
   yMaxOverride,
   labelYOffset = 4,
-}: DashboardChartGradePerKgProps) => {
+}: DashboardChartGradePerPriceProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef<SVGSVGElement | null>(null);
   const theme = useTheme();
 
-  // ResizeObserver 로 responsive width 처리
   useEffect(() => {
     if (!containerRef.current) return;
     const ro = new ResizeObserver(() => draw());
@@ -46,7 +40,6 @@ const DashboardChartGradePerKg = ({
     if (!container || !svgEl) return;
 
     const width = container.clientWidth;
-    // 라벨 길이 측정 후 bottom margin 결정 (최대 70)
     const labels = data.map(
       (d) =>
         (GradeKeyToKorean as Record<string, string>)[d.gradeKey] ?? d.gradeKey
@@ -55,7 +48,7 @@ const DashboardChartGradePerKg = ({
     const estimatedHeight = Math.min(
       70,
       28 + Math.floor(longest.length / 4) * 10
-    ); // 대략적 추정
+    );
     const MARGIN = { ...BASE_MARGIN, bottom: estimatedHeight } as const;
 
     const innerWidth = Math.max(0, width - MARGIN.left - MARGIN.right);
@@ -63,7 +56,6 @@ const DashboardChartGradePerKg = ({
 
     const svg = d3.select(svgEl).attr("width", width).attr("height", height);
 
-    // 루트 그룹을 유지하고 업데이트 패턴으로 갱신
     const g = svg
       .selectAll<SVGGElement, unknown>("g.chart-root")
       .data([null])
@@ -71,15 +63,14 @@ const DashboardChartGradePerKg = ({
       .attr("class", "chart-root")
       .attr("transform", `translate(${MARGIN.left},${MARGIN.top})`);
 
-    // Scale 설정
     const x = d3
       .scaleBand<string>()
       .domain(data.map((d) => d.gradeKey))
       .range([0, innerWidth])
-      .padding(0.25); // 원하는 막대 사이 간격
+      .padding(0.25);
 
     const maxY =
-      yMaxOverride ?? d3.max(data, (d: ChartDatum) => d.quantityKg) ?? 0;
+      yMaxOverride ?? d3.max(data, (d: PriceDatum) => d.unitPriceWon) ?? 0;
     const y = d3
       .scaleLinear()
       .domain([0, maxY * 1.05])
@@ -89,7 +80,7 @@ const DashboardChartGradePerKg = ({
     const axisColor = theme.palette.text.secondary;
     const fontFamily = theme.typography.fontFamily as string;
 
-    // 수평 그리드 (y축 기준)
+    // grid
     g.selectAll<SVGGElement, unknown>("g.grid")
       .data([null])
       .join("g")
@@ -109,7 +100,7 @@ const DashboardChartGradePerKg = ({
         sel.selectAll("path").remove();
       });
 
-    // X축
+    // x-axis
     g.selectAll<SVGGElement, unknown>("g.x-axis")
       .data([null])
       .join("g")
@@ -150,7 +141,7 @@ const DashboardChartGradePerKg = ({
         gAxis.selectAll("path, line").attr("stroke", axisColor);
       });
 
-    // Y축 (왼쪽)
+    // y-axis
     g.selectAll<SVGGElement, unknown>("g.y-axis")
       .data([null])
       .join("g")
@@ -159,7 +150,7 @@ const DashboardChartGradePerKg = ({
         d3
           .axisLeft(y)
           .ticks(5)
-          .tickFormat((v: d3.NumberValue) => `${Number(v)}`)
+          .tickFormat((v: d3.NumberValue) => `${Number(v).toLocaleString()}`)
       )
       .call((gAxis) => {
         gAxis
@@ -170,7 +161,7 @@ const DashboardChartGradePerKg = ({
         gAxis.selectAll("path, line").attr("stroke", axisColor);
       });
 
-    // Y축 라벨
+    // y label
     g.selectAll<SVGTextElement, unknown>("text.y-label")
       .data([null])
       .join("text")
@@ -182,20 +173,20 @@ const DashboardChartGradePerKg = ({
       .style("font-family", fontFamily)
       .style("fill", theme.palette.text.primary)
       .style("font-size", "12px")
-      .style("font-weight", 600)
-      .text("무게 (kg)");
+      .style("font-weight", 600);
+    // .text("평균 단가 (원/kg)");
 
-    const colorMain = theme.palette.chart.weight.main;
-    const colorLight = theme.palette.chart.weight.light;
-    const colorDark = theme.palette.chart.weight.dark;
+    const colorMain = theme.palette.chart.price.main;
+    const colorLight = theme.palette.chart.price.light;
+    const colorDark = theme.palette.chart.price.dark;
     const barColor = theme.palette.mode === "dark" ? colorLight : colorMain;
     const barHover = theme.palette.mode === "dark" ? colorMain : colorDark;
 
-    // Gradient 정의 (업데이트 시 기존 것 교체)
+    // gradient
     const defsSel = svg.select("defs").empty()
       ? svg.append("defs")
       : svg.select("defs");
-    const gradientId = `bar-gradient-weight-${theme.palette.mode}`;
+    const gradientId = `bar-gradient-price-${theme.palette.mode}`;
     defsSel.select(`#${gradientId}`).remove();
     const gradient = defsSel
       .append("linearGradient")
@@ -215,7 +206,7 @@ const DashboardChartGradePerKg = ({
       .attr("stop-color", colorLight)
       .attr("stop-opacity", 0.7);
 
-    // Bars 레이어
+    // plot layer
     const plot = g
       .selectAll<SVGGElement, unknown>("g.plot")
       .data([null])
@@ -223,15 +214,15 @@ const DashboardChartGradePerKg = ({
       .attr("class", "plot");
 
     const bars = plot
-      .selectAll<SVGRectElement, ChartDatum>("rect")
-      .data(data, (d: ChartDatum) => d.gradeKey);
+      .selectAll<SVGRectElement, PriceDatum>("rect")
+      .data(data, (d: PriceDatum) => d.gradeKey);
 
     const mergedBars = bars
       .join(
         (enter) =>
           enter
             .append("rect")
-            .attr("x", (d: ChartDatum) => x(d.gradeKey) ?? 0)
+            .attr("x", (d: PriceDatum) => x(d.gradeKey) ?? 0)
             .attr("y", innerHeight)
             .attr("width", x.bandwidth())
             .attr("rx", Math.min(6, x.bandwidth() / 4))
@@ -264,27 +255,25 @@ const DashboardChartGradePerKg = ({
           .attr("opacity", 1);
       });
 
-    // 타이틀은 항상 최신화
     mergedBars.select("title").remove();
-    mergedBars.append("title").text((d: ChartDatum) => {
+    mergedBars.append("title").text((d: PriceDatum) => {
       const label =
         (GradeKeyToKorean as Record<string, string>)[d.gradeKey] ?? d.gradeKey;
       return `${label}`;
     });
 
-    // 애니메이션 (bars) - 업데이트/엔터 공통
     mergedBars
       .transition()
       .duration(650)
       .ease(d3.easeCubicOut)
-      .attr("x", (d: ChartDatum) => x(d.gradeKey) ?? 0)
-      .attr("y", (d) => y(d.quantityKg))
+      .attr("x", (d: PriceDatum) => x(d.gradeKey) ?? 0)
+      .attr("y", (d) => y(d.unitPriceWon))
       .attr("width", x.bandwidth())
-      .attr("height", (d) => innerHeight - y(d.quantityKg));
+      .attr("height", (d) => innerHeight - y(d.unitPriceWon));
 
-    // 값 라벨
+    // value labels
     plot
-      .selectAll<SVGTextElement, ChartDatum>("text.bar-value")
+      .selectAll<SVGTextElement, PriceDatum>("text.bar-value")
       .data(data, (d: any) => d.gradeKey)
       .join(
         (enter) =>
@@ -292,21 +281,21 @@ const DashboardChartGradePerKg = ({
             .append("text")
             .attr("class", "bar-value")
             .attr("x", (d) => (x(d.gradeKey) ?? 0) + x.bandwidth() / 2)
-            .attr("y", (d) => y(d.quantityKg) - 6)
+            .attr("y", (d) => y(d.unitPriceWon) - 6)
             .attr("text-anchor", "middle")
             .style("font-family", fontFamily)
             .style("font-size", "10px")
             .style("fill", theme.palette.text.secondary)
             .style("opacity", 0)
-            .text((d) => d.quantityKg.toLocaleString())
+            .text((d) => Math.round(d.unitPriceWon).toLocaleString())
             .call((sel) =>
               sel.transition().delay(400).duration(400).style("opacity", 1)
             ),
         (update) =>
           update
             .attr("x", (d) => (x(d.gradeKey) ?? 0) + x.bandwidth() / 2)
-            .attr("y", (d) => y(d.quantityKg) - 6)
-            .text((d) => d.quantityKg.toLocaleString()),
+            .attr("y", (d) => y(d.unitPriceWon) - 6)
+            .text((d) => Math.round(d.unitPriceWon).toLocaleString()),
         (exit) => exit.remove()
       );
   };
@@ -317,9 +306,9 @@ const DashboardChartGradePerKg = ({
 
   return (
     <div ref={containerRef} style={{ width: "100%", position: "relative" }}>
-      <svg ref={svgRef} role="img" aria-label="등급별 무게 막대 차트" />
+      <svg ref={svgRef} role="img" aria-label="등급별 평균 단가 막대 차트" />
     </div>
   );
 };
 
-export default DashboardChartGradePerKg;
+export default DashboardChartGradePerPrice;

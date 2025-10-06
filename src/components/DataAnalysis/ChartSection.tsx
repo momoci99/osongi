@@ -1,6 +1,6 @@
 import { Box, Typography, Card, useTheme } from "@mui/material";
 import type { WeeklyPriceDatum } from "../../types/data";
-import DataAnalysisChart from "../DataAnalysisChart";
+import DataAnalysisChart from "./DataAnalysisChart";
 import { CHART_LAYOUT, UI_LAYOUT, THEME_VALUES } from "../../const/Numbers";
 
 interface ChartSectionProps {

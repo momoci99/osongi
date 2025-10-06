@@ -3,14 +3,14 @@ import WarehouseIcon from "@mui/icons-material/Warehouse";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 
 import { Box, Container, Grid, Typography } from "@mui/material";
-import DashboardKpiCard from "../components/DashboardKpiCard";
+import DashboardKpiCard from "../components/Dashboard/DashboardKpiCard";
 import { useEffect, useState } from "react";
 import { DailyDataScheme, type DailyDataType } from "../types/DailyData";
 import { GradeKeyToKorean } from "../const/Common";
-import DashboardChartGradePerKg from "../components/DashboardChartGradePerKg";
-import DashboardChartGradePerPrice from "../components/DashboardChartGradePerPrice";
-import DashboardChartWeeklyToggle from "../components/DashboardChartWeeklyToggle";
-import DashboardCard from "../components/DashboardCard";
+import DashboardChartGradePerKg from "../components/Dashboard/DashboardChartGradePerKg";
+import DashboardChartGradePerPrice from "../components/Dashboard/DashboardChartGradePerPrice";
+import DashboardChartWeeklyToggle from "../components/Dashboard/DashboardChartWeeklyToggle";
+import DashboardCard from "../components/Dashboard/DashboardCard";
 import type { WeeklyManifest } from "../types/data";
 
 const Dashboard = () => {

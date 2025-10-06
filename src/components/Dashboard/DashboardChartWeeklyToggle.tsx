@@ -1,24 +1,35 @@
 import { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import { useTheme } from "@mui/material/styles";
-import type { WeeklyPriceDatum } from "../types/data";
-import { GradeKeyToKorean } from "../const/Common";
+import { Box, ToggleButton, ToggleButtonGroup } from "@mui/material";
+import type { WeeklyPriceDatum } from "../../types/data";
+import { GradeKeyToKorean } from "../../const/Common";
 
-type DashboardChartWeeklyPriceProps = {
+type ChartMode = "price" | "quantity";
+
+type DashboardChartWeeklyToggleProps = {
   data: WeeklyPriceDatum[];
   height?: number;
-  yMaxOverride?: number;
 };
 
-export default function DashboardChartWeeklyPrice({
+export default function DashboardChartWeeklyToggle({
   data,
   height = 400,
-  yMaxOverride,
-}: DashboardChartWeeklyPriceProps) {
+}: DashboardChartWeeklyToggleProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const theme = useTheme();
   const [containerWidth, setContainerWidth] = useState(0);
+  const [chartMode, setChartMode] = useState<ChartMode>("price");
+
+  const handleModeChange = (
+    _event: React.MouseEvent<HTMLElement>,
+    newMode: ChartMode | null
+  ) => {
+    if (newMode !== null) {
+      setChartMode(newMode);
+    }
+  };
 
   useEffect(() => {
     if (!svgRef.current || !containerRef.current || data.length === 0) return;
@@ -36,14 +47,14 @@ export default function DashboardChartWeeklyPrice({
     // Clear previous content
     svg.selectAll("*").remove();
 
-    // Responsive margins based on container width
+    // Responsive margins
     const isMobile = currentWidth < 600;
 
     let margin;
     if (isMobile) {
-      margin = { top: 20, right: 20, bottom: 100, left: 60 }; // Mobile: 범례를 아래로
+      margin = { top: 20, right: 20, bottom: 100, left: 60 };
     } else {
-      margin = { top: 20, right: 120, bottom: 60, left: 80 }; // Desktop: 범례를 오른쪽
+      margin = { top: 20, right: 120, bottom: 60, left: 80 };
     }
 
     const innerWidth = currentWidth - margin.left - margin.right;
@@ -51,7 +62,7 @@ export default function DashboardChartWeeklyPrice({
 
     if (innerWidth <= 0 || innerHeight <= 0) return;
 
-    // Process data: group by date and grade
+    // Process data
     const dateFormat = d3.timeParse("%Y-%m-%d");
     const processedData = data.map((d) => ({
       ...d,
@@ -70,17 +81,21 @@ export default function DashboardChartWeeklyPrice({
       .domain(d3.extent(processedData, (d) => d.parsedDate) as [Date, Date])
       .range([0, innerWidth]);
 
-    const yMax =
-      yMaxOverride || d3.max(processedData, (d) => d.unitPriceWon) || 0;
-    const yScale = d3
-      .scaleLinear()
-      .domain([0, yMax])
-      .nice()
-      .range([innerHeight, 0]);
+    // Y scale based on current mode
+    let yMax: number;
+    let yScale: d3.ScaleLinear<number, number>;
 
-    // Color scale for grades - distinct multi-line palette
+    if (chartMode === "price") {
+      yMax = d3.max(processedData, (d) => d.unitPriceWon) || 0;
+    } else {
+      yMax = d3.max(processedData, (d) => d.quantityKg) || 0;
+    }
+
+    yScale = d3.scaleLinear().domain([0, yMax]).nice().range([innerHeight, 0]);
+
+    // Color scale for grades
     const colorScale = d3.scaleOrdinal<string>().domain(grades).range([
-      "#e53e3e", // grade1 - 빨강 (최고등급)
+      "#e53e3e", // grade1 - 빨강
       "#3182ce", // grade2 - 파랑
       "#38a169", // grade3Stopped - 초록
       "#805ad5", // grade3Estimated - 보라
@@ -93,10 +108,8 @@ export default function DashboardChartWeeklyPrice({
       .append("g")
       .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
-    // Add defs for later use
+    // Add defs for filters
     const defs = svg.append("defs");
-
-    // Add drop shadow filter
     const filter = defs
       .append("filter")
       .attr("id", "drop-shadow")
@@ -106,7 +119,6 @@ export default function DashboardChartWeeklyPrice({
       .attr("height", "140%");
 
     const floodColor = theme.palette.mode === "dark" ? "#000" : "#666";
-
     filter
       .append("feDropShadow")
       .attr("dx", 1)
@@ -130,62 +142,63 @@ export default function DashboardChartWeeklyPrice({
       .attr("stroke-width", 0.5)
       .attr("opacity", 0.7);
 
-    // Create line generator
-    const line = d3
-      .line<{ date: Date; price: number }>()
-      .x((d) => xScale(d.date))
-      .y((d) => yScale(d.price))
-      .curve(d3.curveMonotoneX);
-
     // Group data by grade
-    const gradeData = grades
-      .map((gradeKey) => {
-        const gradePoints = dates
-          .map((date) => {
-            const point = processedData.find(
-              (d) => d.date === date && d.gradeKey === gradeKey
-            );
-            return point
-              ? {
-                  date: point.parsedDate,
-                  price: point.unitPriceWon,
-                  quantity: point.quantityKg,
-                  originalDate: date,
-                  gradeKey,
-                }
-              : null;
-          })
-          .filter(Boolean) as Array<{
-          date: Date;
-          price: number;
-          quantity: number;
-          originalDate: string;
-          gradeKey: string;
-        }>;
+    const gradeData = [];
 
-        return {
+    for (const gradeKey of grades) {
+      // 각 등급별로 날짜에 해당하는 데이터 포인트들을 찾기
+      const gradePoints = [];
+
+      for (const date of dates) {
+        const point = processedData.find(
+          (d) => d.date === date && d.gradeKey === gradeKey
+        );
+
+        if (point) {
+          gradePoints.push({
+            date: point.parsedDate,
+            price: point.unitPriceWon,
+            quantity: point.quantityKg,
+            originalDate: date,
+            gradeKey,
+          });
+        }
+      }
+
+      // 해당 등급에 데이터가 있는 경우만 추가
+      if (gradePoints.length > 0) {
+        gradeData.push({
           gradeKey,
           points: gradePoints,
           color: colorScale(gradeKey),
-        };
-      })
-      .filter((d) => d.points.length > 0);
+        });
+      }
+    }
 
-    // Draw lines with enhanced styling
+    // Create line generator
+    const line = d3
+      .line<{ date: Date; value: number }>()
+      .x((d) => xScale(d.date))
+      .y((d) => yScale(d.value))
+      .curve(d3.curveMonotoneX);
+
+    // Draw lines
     gradeData.forEach((grade, index) => {
+      const lineData = grade.points.map((p) => ({
+        date: p.date,
+        value: chartMode === "price" ? p.price : p.quantity,
+      }));
+
       const path = mainGroup
         .append("path")
-        .datum(grade.points)
+        .datum(lineData)
         .attr("fill", "none")
         .attr("stroke", grade.color)
         .attr("stroke-width", 3)
         .attr("stroke-linejoin", "round")
         .attr("stroke-linecap", "round")
         .attr("filter", "url(#drop-shadow)")
-        .attr(
-          "d",
-          line.x((d) => xScale(d.date)).y((d) => yScale(d.price))
-        );
+        .attr("d", line);
 
       // Animate line drawing
       const totalLength = path.node()?.getTotalLength() || 0;
@@ -193,19 +206,19 @@ export default function DashboardChartWeeklyPrice({
         .attr("stroke-dasharray", totalLength + " " + totalLength)
         .attr("stroke-dashoffset", totalLength)
         .transition()
-        .duration(1500)
-        .delay(index * 200)
+        .duration(1000)
+        .delay(index * 100)
         .ease(d3.easeCircleOut)
         .attr("stroke-dashoffset", 0);
 
-      // Add points with enhanced styling
+      // Add points
       const points = mainGroup
         .selectAll(`.point-${grade.gradeKey}`)
-        .data(grade.points)
+        .data(lineData)
         .join("circle")
         .attr("class", `point-${grade.gradeKey}`)
         .attr("cx", (d) => xScale(d.date))
-        .attr("cy", (d) => yScale(d.price))
+        .attr("cy", (d) => yScale(d.value))
         .attr("r", 0)
         .attr("fill", grade.color)
         .attr("stroke", theme.palette.background.paper)
@@ -213,20 +226,24 @@ export default function DashboardChartWeeklyPrice({
         .attr("filter", "url(#drop-shadow)")
         .style("cursor", "pointer");
 
-      // Animate points appearance
       points
         .transition()
-        .duration(800)
-        .delay((_, i) => index * 200 + i * 50)
+        .duration(600)
+        .delay((_, i) => index * 100 + i * 30)
         .attr("r", 5);
 
-      // Add event listeners
+      // Add hover effects
       points
         .on("mouseenter", function (event, d: any) {
-          // Remove any existing tooltips first
+          // Remove existing tooltips
           d3.selectAll("#chart-tooltip").remove();
 
-          // Tooltip
+          const originalPoint = grade.points.find(
+            (p) => p.date.getTime() === d.date.getTime()
+          );
+          if (!originalPoint) return;
+
+          // Create tooltip
           const tooltip = d3
             .select("body")
             .append("div")
@@ -242,18 +259,21 @@ export default function DashboardChartWeeklyPrice({
             .style("z-index", "1000")
             .style("opacity", 0);
 
+          const gradeText =
+            GradeKeyToKorean[
+              originalPoint.gradeKey as keyof typeof GradeKeyToKorean
+            ] || originalPoint.gradeKey;
+          const valueText =
+            chartMode === "price"
+              ? `💰 단가: ${originalPoint.price.toLocaleString()}원/kg`
+              : `📦 수량: ${originalPoint.quantity.toLocaleString()}kg`;
+
           tooltip.html(`
-            <div style="font-weight: bold; color: ${
-              grade.color
-            }; margin-bottom: 4px;">
-              ${
-                GradeKeyToKorean[d.gradeKey as keyof typeof GradeKeyToKorean] ||
-                d.gradeKey
-              }
+            <div style="font-weight: bold; color: ${grade.color}; margin-bottom: 4px;">
+              ${gradeText}
             </div>
-            <div>📅 날짜: ${d.originalDate}</div>
-            <div>💰 가격: ${d.price.toLocaleString()}원/kg</div>
-            <div>📦 수량: ${d.quantity.toLocaleString()}kg</div>
+            <div>📅 날짜: ${originalPoint.originalDate}</div>
+            <div>${valueText}</div>
           `);
 
           const [mouseX, mouseY] = d3.pointer(event, document.body);
@@ -264,38 +284,15 @@ export default function DashboardChartWeeklyPrice({
             .duration(200)
             .style("opacity", 1);
 
-          // Highlight point with pulse effect
+          // Highlight point
           d3.select(this as SVGCircleElement)
             .transition()
             .duration(200)
             .attr("r", 8)
             .attr("stroke-width", 4);
-
-          // Remove any existing pulse rings first
-          mainGroup.selectAll(".pulse-ring").remove();
-
-          // Add pulse ring
-          mainGroup
-            .append("circle")
-            .attr("class", "pulse-ring")
-            .attr("cx", d3.select(this as SVGCircleElement).attr("cx"))
-            .attr("cy", d3.select(this as SVGCircleElement).attr("cy"))
-            .attr("r", 5)
-            .attr("fill", "none")
-            .attr("stroke", grade.color)
-            .attr("stroke-width", 2)
-            .attr("opacity", 0.7)
-            .transition()
-            .duration(1000)
-            .attr("r", 15)
-            .attr("opacity", 0)
-            .remove();
         })
         .on("mouseleave", function () {
-          // Clean up tooltips and pulse rings
           d3.selectAll("#chart-tooltip").remove();
-          mainGroup.selectAll(".pulse-ring").remove();
-
           d3.select(this as SVGCircleElement)
             .transition()
             .duration(200)
@@ -304,22 +301,74 @@ export default function DashboardChartWeeklyPrice({
         });
     });
 
-    // Add axes with responsive ticks
-    const xTickCount = isMobile ? 4 : 7; // 모바일에서 틱 수 줄임
-    const yTickCount = isMobile ? 4 : 5; // 모바일에서 틱 수 줄임
+    // Add axes
+    const yTickCount = isMobile ? 4 : 5;
 
-    const xAxis = d3
-      .axisBottom(xScale)
-      .tickFormat((d) => d3.timeFormat("%m/%d")(d as Date))
-      .ticks(xTickCount);
+    // Get unique dates from actual data
+    const uniqueDates = Array.from(
+      new Set(processedData.map((d) => d.parsedDate.getTime()))
+    )
+      .map((time) => new Date(time))
+      .sort((a, b) => a.getTime() - b.getTime());
 
-    const yAxis = d3
-      .axisLeft(yScale)
-      .tickFormat((d) => `${Math.round(d as number).toLocaleString()}원`)
-      .ticks(yTickCount);
+    // Smart tick selection based on date range
+    const dateRange = uniqueDates.length;
+    let xAxis;
 
-    const axisFontSize = isMobile ? "10px" : "12px"; // 모바일에서 폰트 크기 줄임
+    if (dateRange <= 7) {
+      // 1주일 이하: 모든 날짜 표시
+      xAxis = d3
+        .axisBottom(xScale)
+        .tickFormat((d) => d3.timeFormat("%m/%d")(d as Date))
+        .tickValues(uniqueDates);
+    } else if (dateRange <= 31) {
+      // 1개월 이하: 3-4일 간격으로 표시
+      const tickInterval = Math.max(1, Math.ceil(dateRange / 8)); // 최대 8개 정도 틱
+      const selectedTicks = uniqueDates.filter(
+        (_, i) => i % tickInterval === 0
+      );
+      // 마지막 날짜가 포함되지 않았다면 추가
+      if (
+        selectedTicks[selectedTicks.length - 1] !==
+        uniqueDates[uniqueDates.length - 1]
+      ) {
+        selectedTicks.push(uniqueDates[uniqueDates.length - 1]);
+      }
+      xAxis = d3
+        .axisBottom(xScale)
+        .tickFormat((d) => d3.timeFormat("%m/%d")(d as Date))
+        .tickValues(selectedTicks);
+    } else if (dateRange <= 92) {
+      // 3개월 이하: 주 단위 표시
+      xAxis = d3
+        .axisBottom(xScale)
+        .tickFormat((d) => d3.timeFormat("%m/%d")(d as Date))
+        .ticks(d3.timeWeek.every(1));
+    } else {
+      // 3개월 초과: 월 단위 표시 (1년 단위에서는 2개월 간격)
+      const monthInterval = dateRange > 200 ? 2 : 1; // 200일 이상이면 2개월 간격
+      xAxis = d3
+        .axisBottom(xScale)
+        .tickFormat((d) => d3.timeFormat("%Y/%m")(d as Date))
+        .ticks(d3.timeMonth.every(monthInterval));
+    }
 
+    let yAxis;
+    if (chartMode === "price") {
+      yAxis = d3
+        .axisLeft(yScale)
+        .tickFormat((d) => `${Math.round(d as number).toLocaleString()}원`)
+        .ticks(yTickCount);
+    } else {
+      yAxis = d3
+        .axisLeft(yScale)
+        .tickFormat((d) => `${Math.round(d as number).toLocaleString()}kg`)
+        .ticks(yTickCount);
+    }
+
+    const axisFontSize = isMobile ? "10px" : "12px";
+
+    // X axis
     mainGroup
       .append("g")
       .attr("transform", `translate(0, ${innerHeight})`)
@@ -328,6 +377,7 @@ export default function DashboardChartWeeklyPrice({
       .style("fill", theme.palette.text.primary)
       .style("font-size", axisFontSize);
 
+    // Y axis
     mainGroup
       .append("g")
       .call(yAxis as any)
@@ -343,9 +393,10 @@ export default function DashboardChartWeeklyPrice({
       .selectAll(".tick line")
       .style("stroke", theme.palette.text.secondary);
 
-    // Add Y axis label with responsive positioning
-    const yLabelPosition = isMobile ? -45 : -60; // 모바일에서 Y축 라벨 위치 조정
-    const yLabelFontSize = isMobile ? "12px" : "14px"; // 모바일에서 폰트 크기 줄임
+    // Add Y axis label
+    const yLabelPosition = isMobile ? -45 : -60;
+    const yLabelFontSize = isMobile ? "12px" : "14px";
+    const yLabelText = chartMode === "price" ? "단가 (원/kg)" : "수량 (kg)";
 
     mainGroup
       .append("text")
@@ -356,14 +407,14 @@ export default function DashboardChartWeeklyPrice({
       .style("fill", theme.palette.text.primary)
       .style("font-size", yLabelFontSize)
       .style("font-weight", "500")
-      .text("단가 (원/kg)");
+      .text(yLabelText);
 
-    // Add legend with responsive positioning
+    // Add legend
     let legendTransform;
     if (isMobile) {
-      legendTransform = `translate(0, ${innerHeight + 40})`; // Mobile: 차트 아래
+      legendTransform = `translate(0, ${innerHeight + 40})`;
     } else {
-      legendTransform = `translate(${innerWidth + 20}, 20)`; // Desktop: 차트 오른쪽
+      legendTransform = `translate(${innerWidth + 20}, 20)`;
     }
 
     const legend = mainGroup.append("g").attr("transform", legendTransform);
@@ -373,19 +424,19 @@ export default function DashboardChartWeeklyPrice({
       if (isMobile) {
         legendItemTransform = `translate(${(i % 3) * (innerWidth / 3)}, ${
           Math.floor(i / 3) * 25
-        })`; // Mobile: 3열 그리드
+        })`;
       } else {
-        legendItemTransform = `translate(0, ${i * 25})`; // Desktop: 세로 나열
+        legendItemTransform = `translate(0, ${i * 25})`;
       }
 
       const legendItem = legend
         .append("g")
         .attr("transform", legendItemTransform);
 
-      const lineX2 = isMobile ? 15 : 20; // 모바일에서 범례 선 짧게
-      const circleCx = isMobile ? 7.5 : 10; // 모바일에서 중심점 조정
-      const textX = isMobile ? 20 : 25; // 모바일에서 텍스트 위치 조정
-      const legendFontSize = isMobile ? "10px" : "12px"; // 모바일에서 폰트 크기 줄임
+      const lineX2 = isMobile ? 15 : 20;
+      const circleCx = isMobile ? 7.5 : 10;
+      const textX = isMobile ? 20 : 25;
+      const legendFontSize = isMobile ? "10px" : "12px";
 
       legendItem
         .append("line")
@@ -415,10 +466,10 @@ export default function DashboardChartWeeklyPrice({
             grade.gradeKey
         );
     });
-  }, [data, height, yMaxOverride, theme, containerWidth]);
+  }, [data, height, theme, containerWidth, chartMode]);
 
   // Handle resize
-  useEffect(() => {
+  useEffect(function resize() {
     if (!containerRef.current) return;
 
     const updateSize = () => {
@@ -428,9 +479,7 @@ export default function DashboardChartWeeklyPrice({
       }
     };
 
-    // Set initial size
     updateSize();
-
     const resizeObserver = new ResizeObserver(updateSize);
     resizeObserver.observe(containerRef.current);
 
@@ -438,13 +487,34 @@ export default function DashboardChartWeeklyPrice({
   }, []);
 
   return (
-    <div ref={containerRef} style={{ width: "100%" }}>
-      <svg
-        ref={svgRef}
-        width="100%"
-        height={height}
-        style={{ display: "block" }}
-      />
-    </div>
+    <Box>
+      {/* Toggle Controls */}
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "flex-end",
+        }}
+      >
+        <ToggleButtonGroup
+          value={chartMode}
+          exclusive
+          onChange={handleModeChange}
+          size="small"
+        >
+          <ToggleButton value="price">💰 가격 보기</ToggleButton>
+          <ToggleButton value="quantity">📦 수량 보기</ToggleButton>
+        </ToggleButtonGroup>
+      </Box>
+
+      {/* Chart Container */}
+      <div ref={containerRef} style={{ width: "100%" }}>
+        <svg
+          ref={svgRef}
+          width="100%"
+          height={height}
+          style={{ display: "block" }}
+        />
+      </div>
+    </Box>
   );
 }
