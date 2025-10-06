@@ -93,6 +93,10 @@ export const DATE_CONSTANTS = {
   MONTH_OFFSET: 1, // JS Date month는 0-based이므로 +1
   DATE_INCREMENT: 1, // 하루씩 증가
   ISO_DATE_PART_INDEX: 0, // "T"로 split했을 때 날짜 부분
+  HOURS_RESET: 0, // 시간을 0으로 리셋
+  MINUTES_RESET: 0, // 분을 0으로 리셋
+  SECONDS_RESET: 0, // 초를 0으로 리셋
+  MILLISECONDS_RESET: 0, // 밀리초를 0으로 리셋
 } as const;
 
 // ===== 숫자 파싱 관련 =====

@@ -115,6 +115,32 @@ export function isMushroomSeason(date: Date): boolean {
   );
 }
 
+// 날짜만 비교하는 유틸리티 함수 (시간 제외)
+export function getDateOnly(date: Date): Date {
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+}
+
+// 두 날짜가 같은 날인지 확인하는 함수
+export function isSameDate(date1: Date, date2: Date): boolean {
+  return (
+    date1.getFullYear() === date2.getFullYear() &&
+    date1.getMonth() === date2.getMonth() &&
+    date1.getDate() === date2.getDate()
+  );
+}
+
+// 날짜가 범위 내에 있는지 확인하는 함수 (시간 제외)
+export function isDateInRange(
+  date: Date,
+  startDate: Date,
+  endDate: Date
+): boolean {
+  const dateOnly = getDateOnly(date);
+  const startDateOnly = getDateOnly(startDate);
+  const endDateOnly = getDateOnly(endDate);
+  return dateOnly >= startDateOnly && dateOnly <= endDateOnly;
+}
+
 // 단일 날짜 데이터 로드 함수 (HTTP)
 export async function loadDateData(
   date: Date
@@ -160,10 +186,10 @@ export function applyFilters(
       return false;
     }
 
-    // 날짜 필터 (기본적으로 로드 시 적용되지만 추가 안전장치)
+    // 날짜 필터 (시간 제외하고 날짜만 비교)
     if (record.date) {
       const recordDate = new Date(record.date);
-      if (recordDate < filters.startDate || recordDate > filters.endDate) {
+      if (!isDateInRange(recordDate, filters.startDate, filters.endDate)) {
         return false;
       }
     }
