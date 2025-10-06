@@ -4,6 +4,14 @@ import { useTheme } from "@mui/material/styles";
 import { Box, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import type { WeeklyPriceDatum } from "../types/data";
 import { GradeKeyToKorean } from "../const/Common";
+import { getGradeDashPattern } from "../utils/chartUtils";
+import {
+  CHART_LAYOUT,
+  CHART_MARGINS,
+  FONT_SIZES,
+  MUSHROOM_SEASON,
+  DATE_CONSTANTS,
+} from "../const/Numbers";
 
 /**
  * 송이버섯 공판 데이터 시각화 차트 컴포넌트
@@ -33,7 +41,7 @@ type DataAnalysisChartProps = {
 
 export default function DataAnalysisChart({
   data,
-  height = 400,
+  height = CHART_LAYOUT.DEFAULT_HEIGHT,
   mode,
   onModeChange,
 }: DataAnalysisChartProps) {
@@ -69,18 +77,6 @@ export default function DataAnalysisChart({
     }
   };
 
-  const getGradeDashPattern = (gradeKey: string): string => {
-    const patterns: Record<string, string> = {
-      grade1: "0",
-      grade2: "5,5",
-      grade3Stopped: "10,5",
-      grade3Estimated: "15,10,5,10",
-      gradeBelow: "5,10,5",
-      mixedGrade: "20,5",
-    };
-    return patterns[gradeKey] || "0";
-  };
-
   useEffect(() => {
     if (
       !svgRef.current ||
@@ -91,7 +87,10 @@ export default function DataAnalysisChart({
       return;
 
     const containerWidth = containerSize.width;
-    const chartHeight = Math.max(containerSize.height || height, 300);
+    const chartHeight = Math.max(
+      containerSize.height || height,
+      CHART_LAYOUT.MIN_HEIGHT
+    );
 
     // SVG 크기 설정
     d3.select(svgRef.current).selectAll("*").remove();
@@ -101,26 +100,33 @@ export default function DataAnalysisChart({
       .attr("height", chartHeight);
 
     // 화면 크기에 따른 반응형 설정
-    const isMobile = containerWidth < 768;
+    const isMobile = containerWidth < CHART_LAYOUT.MOBILE_BREAKPOINT;
     const margin = {
-      top: 40,
-      right: isMobile ? 80 : 120,
-      bottom: 60,
-      left: isMobile ? 60 : 80,
+      top: CHART_MARGINS.TOP,
+      right: isMobile
+        ? CHART_MARGINS.MOBILE.RIGHT
+        : CHART_MARGINS.DESKTOP.RIGHT,
+      bottom: CHART_MARGINS.BOTTOM,
+      left: isMobile ? CHART_MARGINS.MOBILE.LEFT : CHART_MARGINS.DESKTOP.LEFT,
     };
 
     const fontSize = {
-      title: isMobile ? "12px" : "14px",
-      axis: isMobile ? "8px" : "10px",
-      legend: isMobile ? "10px" : "12px",
-      message: isMobile ? "14px" : "16px",
+      title: isMobile ? FONT_SIZES.MOBILE.TITLE : FONT_SIZES.DESKTOP.TITLE,
+      axis: isMobile ? FONT_SIZES.MOBILE.AXIS : FONT_SIZES.DESKTOP.AXIS,
+      legend: isMobile ? FONT_SIZES.MOBILE.LEGEND : FONT_SIZES.DESKTOP.LEGEND,
+      message: isMobile
+        ? FONT_SIZES.MOBILE.MESSAGE
+        : FONT_SIZES.DESKTOP.MESSAGE,
     };
 
-    // 송이버섯 시즌(8-12월) 데이터만 필터링
+    // 송이버섯 시즌 데이터만 필터링
     const mushroomSeasonData = data.filter((d) => {
       const date = new Date(d.date);
-      const month = date.getMonth() + 1;
-      return month >= 8 && month <= 12;
+      const month = date.getMonth() + DATE_CONSTANTS.MONTH_OFFSET;
+      return (
+        month >= MUSHROOM_SEASON.START_MONTH &&
+        month <= MUSHROOM_SEASON.END_MONTH
+      );
     });
 
     if (mushroomSeasonData.length === 0) {
