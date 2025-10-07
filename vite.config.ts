@@ -16,9 +16,13 @@ const dirname =
 export default defineConfig({
   plugins: [
     react(),
-    // 압축 설정 - Gzip과 Brotli 모두 생성
+    // 압축 설정 - 필요한 파일들만 선택적으로 압축
     compression({
-      include: /\.(js|css|html|json|svg|txt|xml)$/,
+      include: [
+        /\.(js|css|html|svg|txt|xml)$/, // 기본 웹 에셋들
+        /complete-dataset\.json$/, // complete-dataset.json만 압축
+        /manifest\.json$/, // manifest 파일들 압축
+      ],
       threshold: 1024,
       deleteOriginalAssets: false,
     }),
