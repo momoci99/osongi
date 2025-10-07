@@ -120,7 +120,7 @@ export const createAppTheme = (mode: PaletteMode) => {
           : { main: "#90caf9", light: "#bbdefb", dark: "#42a5f5" },
       },
       background: {
-        default: isLight ? "#ffffff" : "#121212",
+        default: isLight ? "#fdfbf6" : "#121212",
         paper: isLight ? "#ffffff" : "#1e1e1e",
       },
       text: {
