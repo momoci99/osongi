@@ -16,7 +16,7 @@ import DataInitializer from "./components/DataInitializer";
 function App() {
   const [mode, setMode] = useState<PaletteMode>(() => {
     const savedMode = localStorage.getItem("theme-mode");
-    return (savedMode as PaletteMode) || "light";
+    return (savedMode as PaletteMode) || "dark";
   });
 
   const toggleTheme = () => {
