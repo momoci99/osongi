@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2025-10-07T08:07:31.770Z",
+  "generatedAt": "2025-10-07T09:05:09.576Z",
   "weeklyData": [
     {
       "date": "2025-10-01",
@@ -220,32 +220,38 @@
     {
       "date": "2025-10-07",
       "gradeKey": "grade1",
-      "quantityKg": 22.94,
-      "unitPriceWon": 365746.12
+      "quantityKg": 170.09,
+      "unitPriceWon": 352135.98
     },
     {
       "date": "2025-10-07",
       "gradeKey": "grade2",
-      "quantityKg": 41.84,
-      "unitPriceWon": 296819.79
+      "quantityKg": 363.24,
+      "unitPriceWon": 264716.13
     },
     {
       "date": "2025-10-07",
       "gradeKey": "grade3Stopped",
-      "quantityKg": 40.57,
-      "unitPriceWon": 243108.7
+      "quantityKg": 723.81,
+      "unitPriceWon": 205201.72
     },
     {
       "date": "2025-10-07",
       "gradeKey": "grade3Estimated",
-      "quantityKg": 156.89,
-      "unitPriceWon": 212006.96
+      "quantityKg": 1661.44,
+      "unitPriceWon": 184349.98
     },
     {
       "date": "2025-10-07",
       "gradeKey": "gradeBelow",
-      "quantityKg": 231.03,
-      "unitPriceWon": 178933.95
+      "quantityKg": 2453.49,
+      "unitPriceWon": 126027.5
+    },
+    {
+      "date": "2025-10-07",
+      "gradeKey": "mixedGrade",
+      "quantityKg": 36.7,
+      "unitPriceWon": 108943
     }
   ]
 }
