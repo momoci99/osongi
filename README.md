@@ -50,7 +50,7 @@ DAYS_TO_CHECK=30 npx playwright test tests/generateRawData.spec.ts
 #### 🚀 성능 최적화 전략
 
 **기존 문제**: 30일 조회 시 30개의 개별 HTTP 요청 (3-5초 소요)
-**해결 방법**: IndexedDB 기반 로컬 데이터 웨어하우징
+**해결 방법**: IndexedDB 기반 로컬 데이터 캐싱 적용
 
 #### 📥 데이터 로딩 플로우
 
@@ -58,7 +58,7 @@ DAYS_TO_CHECK=30 npx playwright test tests/generateRawData.spec.ts
 
 1. 앱 시작 → IndexedDB 메타데이터 확인
 2. 로컬 데이터 없음 감지
-3. 통합 데이터셋 다운로드 (3.71MB)
+3. 통합 데이터셋 다운로드 (3.71MB) -> 압축하여 140KB~234KB 전송
 4. IndexedDB에 저장
 5. 메타데이터 생성
 6. 앱 사용 준비 완료
@@ -75,7 +75,7 @@ DAYS_TO_CHECK=30 npx playwright test tests/generateRawData.spec.ts
 
 ```typescript
 // 1. auctionData 테이블 (메인 데이터)
-- 5,006개 레코드 (2021-2025 송이 시즌 데이터)
+- 2021-2025 송이 시즌 데이터
 - 복합 인덱스: [date+region], [date+union] 등
 - 빠른 날짜/지역/조합별 쿼리 지원
 
@@ -105,12 +105,6 @@ DAYS_TO_CHECK=30 npx playwright test tests/generateRawData.spec.ts
 3. 전체 다운로드 → 최후의 수단
 ```
 
-#### 🛡️ 오프라인 지원
-
-- 네트워크 오류 시 로컬 데이터 계속 사용
-- 서비스 워커 없이도 완전한 오프라인 경험
-- 데이터 무결성 보장 (카운트/날짜 범위 검증)
-
 ### 4. 실시간 데이터 업데이트
 
 #### 🤖 자동화된 데이터 파이프라인
@@ -127,4 +121,4 @@ Vercel 자동 배포 → 새 complete-dataset.json 생성
 
 ## 데이터 소스
 
-- 산림조합중앙회 송이 공판 현황 : https://m.nfcf.or.kr/forest/user.tdf?a=user.index.IndexApp&c=1005&mc=MOB
+- 산림조합중앙회 송이 공판 현황 : https://iforest.nfcf.or.kr/forest/user.tdf?a=user.songi.SongiApp&c=1001&mc=CYB_FIF_DGS_SNI&pmsh_item_c=01&sply_date=20251007&x=18&y=6
