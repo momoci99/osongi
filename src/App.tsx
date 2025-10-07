@@ -37,8 +37,8 @@ function App() {
           <Route index element={<Dashboard />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="data-analysis" element={<DataAnalysis />} />
-          <Route path="raw-data" element={<RawData />} />
-          <Route path="help" element={<Help />} />
+          {/* <Route path="raw-data" element={<RawData />} />
+          <Route path="help" element={<Help />} /> */}
         </Routes>
       </DataInitializer>
     </ThemeProvider>

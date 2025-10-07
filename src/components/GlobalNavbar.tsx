@@ -39,7 +39,7 @@ const GlobalNavbar = ({ mode, toggleTheme }: GlobalNavbarProps) => {
         >
           데이터 분석
         </Button>
-        <Button
+        {/* <Button
           sx={{
             color: theme.palette.text.primary,
           }}
@@ -54,7 +54,7 @@ const GlobalNavbar = ({ mode, toggleTheme }: GlobalNavbarProps) => {
           onClick={() => handleNavigation("/help")}
         >
           도움말
-        </Button>
+        </Button> */}
         <ThemeToggleButton mode={mode} toggleTheme={toggleTheme} />
       </Toolbar>
     </AppBar>
