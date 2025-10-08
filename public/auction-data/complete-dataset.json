@@ -1,6 +1,6 @@
 {
-  "version": "2025-10-08T09:07:31.336Z",
-  "totalRecords": 5140,
+  "version": "2025-10-08T10:05:52.143Z",
+  "totalRecords": 5141,
   "dateRange": {
     "earliest": "2021-09-06",
     "latest": "2025-10-08"
@@ -123128,6 +123128,30 @@
       "gradeBelowUnitPrice": 123910,
       "mixedGradeQuantity": 210.1,
       "mixedGradeUnitPrice": 73600
+    },
+    {
+      "date": "2025-10-08",
+      "region": "경북",
+      "union": "의성",
+      "lastUpdated": "2025-10-08 18:12:17.0",
+      "auctionQuantityUntilYesterday": 0,
+      "auctionQuantityToday": 89.37,
+      "auctionQuantityTotal": 89.37,
+      "auctionAmountUntilYesterday": 0,
+      "auctionAmountToday": 13487833,
+      "auctionAmountTotal": 13487833,
+      "grade1Quantity": 0.71,
+      "grade1UnitPrice": 266100,
+      "grade2Quantity": 6.24,
+      "grade2UnitPrice": 206100,
+      "grade3StoppedQuantity": 23.82,
+      "grade3StoppedUnitPrice": 176100,
+      "grade3EstimatedQuantity": 30.02,
+      "grade3EstimatedUnitPrice": 149900,
+      "gradeBelowQuantity": 28.58,
+      "gradeBelowUnitPrice": 116100,
+      "mixedGradeQuantity": 0,
+      "mixedGradeUnitPrice": 0
     },
     {
       "date": "2025-10-08",

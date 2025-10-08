@@ -281,6 +281,46 @@
   },
   {
     "region": "경북",
+    "union": "의성",
+    "date": "2025-10-8",
+    "lastUpdated": "2025-10-08 18:12:17.0",
+    "auctionQuantity": {
+      "untilYesterday": "0kg",
+      "today": "89.37kg",
+      "total": "89.37kg"
+    },
+    "auctionAmount": {
+      "untilYesterday": "0원",
+      "today": "13,487,833원",
+      "total": "13,487,833원"
+    },
+    "grade1": {
+      "quantity": "0.71kg",
+      "unitPrice": "266,100원"
+    },
+    "grade2": {
+      "quantity": "6.24kg",
+      "unitPrice": "206,100원"
+    },
+    "grade3Stopped": {
+      "quantity": "23.82kg",
+      "unitPrice": "176,100원"
+    },
+    "grade3Estimated": {
+      "quantity": "30.02kg",
+      "unitPrice": "149,900원"
+    },
+    "gradeBelow": {
+      "quantity": "28.58kg",
+      "unitPrice": "116,100원"
+    },
+    "mixedGrade": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    }
+  },
+  {
+    "region": "경북",
     "union": "안동",
     "date": "2025-10-8",
     "lastUpdated": "2025-10-08 17:17:09.0",
