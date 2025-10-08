@@ -323,7 +323,7 @@
     "region": "경북",
     "union": "청송",
     "date": "2025-10-7",
-    "lastUpdated": "2025-10-07 19:01:26.0",
+    "lastUpdated": "2025-10-08 10:57:55.0",
     "auctionQuantity": {
       "untilYesterday": "412.73kg",
       "today": "416.32kg",
@@ -523,16 +523,16 @@
     "region": "경북",
     "union": "문경",
     "date": "2025-10-7",
-    "lastUpdated": "2025-10-07 21:23:25.0",
+    "lastUpdated": "2025-10-08 11:14:33.0",
     "auctionQuantity": {
       "untilYesterday": "1,340.2kg",
-      "today": "991.3kg",
-      "total": "2,331.5kg"
+      "today": "971.3kg",
+      "total": "2,311.5kg"
     },
     "auctionAmount": {
       "untilYesterday": "320,995,128.1원",
-      "today": "153,696,100원",
-      "total": "474,691,228.1원"
+      "today": "151,312,100원",
+      "total": "472,307,228.1원"
     },
     "grade1": {
       "quantity": "16.4kg",
@@ -551,7 +551,7 @@
       "unitPrice": "149,200원"
     },
     "gradeBelow": {
-      "quantity": "355kg",
+      "quantity": "335kg",
       "unitPrice": "119,200원"
     },
     "mixedGrade": {
