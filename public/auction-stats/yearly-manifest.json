@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2025-10-09T07:06:29.876Z",
+  "generatedAt": "2025-10-09T08:05:42.154Z",
   "yearly": {
     "2021": {
       "totalQuantityKg": 102193.11,
@@ -50,15 +50,15 @@
       }
     },
     "2025": {
-      "totalQuantityKg": 37247.82,
-      "totalAmountWon": 8228665107.79,
+      "totalQuantityKg": 37760.54,
+      "totalAmountWon": 8313229062.63,
       "topRegion": {
         "region": "강원",
-        "quantityKg": 19332.93
+        "quantityKg": 19558.57
       },
       "topUnion": {
         "union": "인제",
-        "quantityKg": 7796.65
+        "quantityKg": 7955.49
       }
     }
   }
