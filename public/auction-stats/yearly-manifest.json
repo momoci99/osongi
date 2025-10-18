@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2025-10-18T08:05:19.624Z",
+  "generatedAt": "2025-10-18T09:06:37.127Z",
   "yearly": {
     "2021": {
       "totalQuantityKg": 102193.11,
@@ -50,15 +50,15 @@
       }
     },
     "2025": {
-      "totalQuantityKg": 92554.94,
-      "totalAmountWon": 18169486768.56,
+      "totalQuantityKg": 95690.11,
+      "totalAmountWon": 18793336021.24,
       "topRegion": {
         "region": "경북",
-        "quantityKg": 55321.11
+        "quantityKg": 57887.94
       },
       "topUnion": {
         "union": "문경",
-        "quantityKg": 11924.7
+        "quantityKg": 12530
       }
     }
   }
