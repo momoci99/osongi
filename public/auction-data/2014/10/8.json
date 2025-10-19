@@ -1,0 +1,762 @@
+[
+  {
+    "region": "강원",
+    "union": "홍천",
+    "date": "2014-10-8",
+    "lastUpdated": "2014-09-20 17:27:31.0",
+    "auctionQuantity": {
+      "untilYesterday": "123.77kg",
+      "today": "0kg",
+      "total": "123.77kg"
+    },
+    "auctionAmount": {
+      "untilYesterday": "15,647,300원",
+      "today": "0원",
+      "total": "15,647,300원"
+    },
+    "grade1": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "grade2": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "grade3Stopped": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "grade3Estimated": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "gradeBelow": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "mixedGrade": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    }
+  },
+  {
+    "region": "강원",
+    "union": "양구",
+    "date": "2014-10-8",
+    "lastUpdated": "2014-09-30 17:20:59.0",
+    "auctionQuantity": {
+      "untilYesterday": "97.75kg",
+      "today": "0kg",
+      "total": "97.75kg"
+    },
+    "auctionAmount": {
+      "untilYesterday": "15,500,102원",
+      "today": "0원",
+      "total": "15,500,102원"
+    },
+    "grade1": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "grade2": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "grade3Stopped": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "grade3Estimated": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "gradeBelow": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "mixedGrade": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    }
+  },
+  {
+    "region": "강원",
+    "union": "인제",
+    "date": "2014-10-8",
+    "lastUpdated": "2014-09-23 17:40:43.0",
+    "auctionQuantity": {
+      "untilYesterday": "358kg",
+      "today": "0kg",
+      "total": "358kg"
+    },
+    "auctionAmount": {
+      "untilYesterday": "52,311,624원",
+      "today": "0원",
+      "total": "52,311,624원"
+    },
+    "grade1": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "grade2": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "grade3Stopped": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "grade3Estimated": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "gradeBelow": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "mixedGrade": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    }
+  },
+  {
+    "region": "강원",
+    "union": "고성",
+    "date": "2014-10-8",
+    "lastUpdated": "2014-10-08 17:37:03.0",
+    "auctionQuantity": {
+      "untilYesterday": "840.46kg",
+      "today": "11.43kg",
+      "total": "851.89kg"
+    },
+    "auctionAmount": {
+      "untilYesterday": "167,413,901원",
+      "today": "3,259,817원",
+      "total": "170,673,718원"
+    },
+    "grade1": {
+      "quantity": "0.5kg",
+      "unitPrice": "512,900원"
+    },
+    "grade2": {
+      "quantity": "0.32kg",
+      "unitPrice": "435,900원"
+    },
+    "grade3Stopped": {
+      "quantity": "1.27kg",
+      "unitPrice": "361,900원"
+    },
+    "grade3Estimated": {
+      "quantity": "3.01kg",
+      "unitPrice": "327,900원"
+    },
+    "gradeBelow": {
+      "quantity": "6.33kg",
+      "unitPrice": "223,900원"
+    },
+    "mixedGrade": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    }
+  },
+  {
+    "region": "강원",
+    "union": "양양",
+    "date": "2014-10-8",
+    "lastUpdated": "2014-10-08 17:15:52.0",
+    "auctionQuantity": {
+      "untilYesterday": "1,152.97kg",
+      "today": "18.23kg",
+      "total": "1,171.2kg"
+    },
+    "auctionAmount": {
+      "untilYesterday": "232,394,956원",
+      "today": "6,391,652원",
+      "total": "238,786,608원"
+    },
+    "grade1": {
+      "quantity": "1.09kg",
+      "unitPrice": "623,000원"
+    },
+    "grade2": {
+      "quantity": "1.4kg",
+      "unitPrice": "491,000원"
+    },
+    "grade3Stopped": {
+      "quantity": "3.79kg",
+      "unitPrice": "369,100원"
+    },
+    "grade3Estimated": {
+      "quantity": "7.36kg",
+      "unitPrice": "339,100원"
+    },
+    "gradeBelow": {
+      "quantity": "4.59kg",
+      "unitPrice": "246,300원"
+    },
+    "mixedGrade": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    }
+  },
+  {
+    "region": "강원",
+    "union": "강릉",
+    "date": "2014-10-8",
+    "lastUpdated": "2014-10-08 17:33:36.0",
+    "auctionQuantity": {
+      "untilYesterday": "1,761.95kg",
+      "today": "11.18kg",
+      "total": "1,773.13kg"
+    },
+    "auctionAmount": {
+      "untilYesterday": "343,317,062원",
+      "today": "3,305,637원",
+      "total": "346,622,699원"
+    },
+    "grade1": {
+      "quantity": "1.89kg",
+      "unitPrice": "441,800원"
+    },
+    "grade2": {
+      "quantity": "1kg",
+      "unitPrice": "377,300원"
+    },
+    "grade3Stopped": {
+      "quantity": "2.5kg",
+      "unitPrice": "320,000원"
+    },
+    "grade3Estimated": {
+      "quantity": "2.5kg",
+      "unitPrice": "271,900원"
+    },
+    "gradeBelow": {
+      "quantity": "3.29kg",
+      "unitPrice": "186,500원"
+    },
+    "mixedGrade": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    }
+  },
+  {
+    "region": "강원",
+    "union": "삼척",
+    "date": "2014-10-8",
+    "lastUpdated": "2014-10-08 18:26:42.0",
+    "auctionQuantity": {
+      "untilYesterday": "7,016.22kg",
+      "today": "99.06kg",
+      "total": "7,115.28kg"
+    },
+    "auctionAmount": {
+      "untilYesterday": "1,072,672,872원",
+      "today": "27,672,050원",
+      "total": "1,100,344,922원"
+    },
+    "grade1": {
+      "quantity": "4.28kg",
+      "unitPrice": "514,200원"
+    },
+    "grade2": {
+      "quantity": "7.88kg",
+      "unitPrice": "434,200원"
+    },
+    "grade3Stopped": {
+      "quantity": "23.78kg",
+      "unitPrice": "335,700원"
+    },
+    "grade3Estimated": {
+      "quantity": "23.04kg",
+      "unitPrice": "291,500원"
+    },
+    "gradeBelow": {
+      "quantity": "40.08kg",
+      "unitPrice": "183,400원"
+    },
+    "mixedGrade": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    }
+  },
+  {
+    "region": "경북",
+    "union": "의성",
+    "date": "2014-10-8",
+    "lastUpdated": "2014-10-02 18:00:48.0",
+    "auctionQuantity": {
+      "untilYesterday": "289.45kg",
+      "today": "0kg",
+      "total": "289.45kg"
+    },
+    "auctionAmount": {
+      "untilYesterday": "40,008,217원",
+      "today": "0원",
+      "total": "40,008,217원"
+    },
+    "grade1": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "grade2": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "grade3Stopped": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "grade3Estimated": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "gradeBelow": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "mixedGrade": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    }
+  },
+  {
+    "region": "경북",
+    "union": "안동",
+    "date": "2014-10-8",
+    "lastUpdated": "2014-10-08 18:00:24.0",
+    "auctionQuantity": {
+      "untilYesterday": "3,012.75kg",
+      "today": "15.16kg",
+      "total": "3,027.91kg"
+    },
+    "auctionAmount": {
+      "untilYesterday": "464,135,609원",
+      "today": "3,393,594원",
+      "total": "467,529,203원"
+    },
+    "grade1": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "grade2": {
+      "quantity": "0.94kg",
+      "unitPrice": "412,900원"
+    },
+    "grade3Stopped": {
+      "quantity": "1.96kg",
+      "unitPrice": "312,900원"
+    },
+    "grade3Estimated": {
+      "quantity": "4.2kg",
+      "unitPrice": "258,910원"
+    },
+    "gradeBelow": {
+      "quantity": "7kg",
+      "unitPrice": "176,900원"
+    },
+    "mixedGrade": {
+      "quantity": "1.06kg",
+      "unitPrice": "62,700원"
+    }
+  },
+  {
+    "region": "경북",
+    "union": "청송",
+    "date": "2014-10-8",
+    "lastUpdated": "2014-10-08 17:23:48.0",
+    "auctionQuantity": {
+      "untilYesterday": "8,461.46kg",
+      "today": "29.06kg",
+      "total": "8,490.52kg"
+    },
+    "auctionAmount": {
+      "untilYesterday": "1,205,105,821원",
+      "today": "7,617,540원",
+      "total": "1,212,723,361원"
+    },
+    "grade1": {
+      "quantity": "0.34kg",
+      "unitPrice": "471,000원"
+    },
+    "grade2": {
+      "quantity": "1.24kg",
+      "unitPrice": "411,000원"
+    },
+    "grade3Stopped": {
+      "quantity": "3kg",
+      "unitPrice": "331,000원"
+    },
+    "grade3Estimated": {
+      "quantity": "13.68kg",
+      "unitPrice": "295,000원"
+    },
+    "gradeBelow": {
+      "quantity": "10.8kg",
+      "unitPrice": "177,700원"
+    },
+    "mixedGrade": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    }
+  },
+  {
+    "region": "경북",
+    "union": "영덕",
+    "date": "2014-10-8",
+    "lastUpdated": "2014-10-08 18:43:20.0",
+    "auctionQuantity": {
+      "untilYesterday": "29,895.88kg",
+      "today": "189.4kg",
+      "total": "30,085.28kg"
+    },
+    "auctionAmount": {
+      "untilYesterday": "4,052,841,604원",
+      "today": "48,698,250원",
+      "total": "4,101,539,854원"
+    },
+    "grade1": {
+      "quantity": "9.4kg",
+      "unitPrice": "500,000원"
+    },
+    "grade2": {
+      "quantity": "20.85kg",
+      "unitPrice": "401,000원"
+    },
+    "grade3Stopped": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "grade3Estimated": {
+      "quantity": "85.9kg",
+      "unitPrice": "268,991원"
+    },
+    "gradeBelow": {
+      "quantity": "58.4kg",
+      "unitPrice": "186,170원"
+    },
+    "mixedGrade": {
+      "quantity": "14.85kg",
+      "unitPrice": "111,700원"
+    }
+  },
+  {
+    "region": "경북",
+    "union": "포항",
+    "date": "2014-10-8",
+    "lastUpdated": "2014-10-08 17:35:55.0",
+    "auctionQuantity": {
+      "untilYesterday": "5,314.17kg",
+      "today": "142.2kg",
+      "total": "5,456.37kg"
+    },
+    "auctionAmount": {
+      "untilYesterday": "855,828,225원",
+      "today": "42,712,867원",
+      "total": "898,541,092원"
+    },
+    "grade1": {
+      "quantity": "13.85kg",
+      "unitPrice": "487,200원"
+    },
+    "grade2": {
+      "quantity": "13.05kg",
+      "unitPrice": "419,700원"
+    },
+    "grade3Stopped": {
+      "quantity": "29.5kg",
+      "unitPrice": "357,500원"
+    },
+    "grade3Estimated": {
+      "quantity": "33.11kg",
+      "unitPrice": "287,200원"
+    },
+    "gradeBelow": {
+      "quantity": "52.69kg",
+      "unitPrice": "198,000원"
+    },
+    "mixedGrade": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    }
+  },
+  {
+    "region": "경북",
+    "union": "영천",
+    "date": "2014-10-8",
+    "lastUpdated": "2014-12-08 23:25:05.0",
+    "auctionQuantity": {
+      "untilYesterday": "303.45kg",
+      "today": "0kg",
+      "total": "303.45kg"
+    },
+    "auctionAmount": {
+      "untilYesterday": "33,876,660원",
+      "today": "0원",
+      "total": "33,876,660원"
+    },
+    "grade1": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "grade2": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "grade3Stopped": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "grade3Estimated": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "gradeBelow": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "mixedGrade": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    }
+  },
+  {
+    "region": "경북",
+    "union": "청도",
+    "date": "2014-10-8",
+    "lastUpdated": "2014-10-08 17:28:06.0",
+    "auctionQuantity": {
+      "untilYesterday": "3,018.41kg",
+      "today": "77.16kg",
+      "total": "3,095.57kg"
+    },
+    "auctionAmount": {
+      "untilYesterday": "549,154,848원",
+      "today": "22,904,502원",
+      "total": "572,059,350원"
+    },
+    "grade1": {
+      "quantity": "0.86kg",
+      "unitPrice": "516,900원"
+    },
+    "grade2": {
+      "quantity": "1.56kg",
+      "unitPrice": "486,900원"
+    },
+    "grade3Stopped": {
+      "quantity": "8.78kg",
+      "unitPrice": "413,600원"
+    },
+    "grade3Estimated": {
+      "quantity": "13.1kg",
+      "unitPrice": "318,100원"
+    },
+    "gradeBelow": {
+      "quantity": "52.86kg",
+      "unitPrice": "262,994원"
+    },
+    "mixedGrade": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    }
+  },
+  {
+    "region": "경북",
+    "union": "문경",
+    "date": "2014-10-8",
+    "lastUpdated": "2014-09-26 17:41:21.0",
+    "auctionQuantity": {
+      "untilYesterday": "1,200.5kg",
+      "today": "0kg",
+      "total": "1,200.5kg"
+    },
+    "auctionAmount": {
+      "untilYesterday": "159,035,100원",
+      "today": "0원",
+      "total": "159,035,100원"
+    },
+    "grade1": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "grade2": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "grade3Stopped": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "grade3Estimated": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "gradeBelow": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "mixedGrade": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    }
+  },
+  {
+    "region": "경북",
+    "union": "예천",
+    "date": "2014-10-8",
+    "lastUpdated": "2014-10-02 17:08:45.0",
+    "auctionQuantity": {
+      "untilYesterday": "372.58kg",
+      "today": "0kg",
+      "total": "372.58kg"
+    },
+    "auctionAmount": {
+      "untilYesterday": "54,926,341원",
+      "today": "0원",
+      "total": "54,926,341원"
+    },
+    "grade1": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "grade2": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "grade3Stopped": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "grade3Estimated": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "gradeBelow": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "mixedGrade": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    }
+  },
+  {
+    "region": "경북",
+    "union": "봉화",
+    "date": "2014-10-8",
+    "lastUpdated": "2014-10-01 17:27:47.0",
+    "auctionQuantity": {
+      "untilYesterday": "1,429.1kg",
+      "today": "0kg",
+      "total": "1,429.1kg"
+    },
+    "auctionAmount": {
+      "untilYesterday": "192,312,030원",
+      "today": "0원",
+      "total": "192,312,030원"
+    },
+    "grade1": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "grade2": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "grade3Stopped": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "grade3Estimated": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "gradeBelow": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "mixedGrade": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    }
+  },
+  {
+    "region": "경북",
+    "union": "울진",
+    "date": "2014-10-8",
+    "lastUpdated": "2014-10-08 17:46:11.0",
+    "auctionQuantity": {
+      "untilYesterday": "14,398.2kg",
+      "today": "131.05kg",
+      "total": "14,529.25kg"
+    },
+    "auctionAmount": {
+      "untilYesterday": "2,367,278,259원",
+      "today": "37,398,115원",
+      "total": "2,404,676,374원"
+    },
+    "grade1": {
+      "quantity": "9.95kg",
+      "unitPrice": "535,900원"
+    },
+    "grade2": {
+      "quantity": "6.4kg",
+      "unitPrice": "446,900원"
+    },
+    "grade3Stopped": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "grade3Estimated": {
+      "quantity": "61.5kg",
+      "unitPrice": "310,100원"
+    },
+    "gradeBelow": {
+      "quantity": "53.2kg",
+      "unitPrice": "190,500원"
+    },
+    "mixedGrade": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    }
+  },
+  {
+    "region": "경남",
+    "union": "거창",
+    "date": "2014-10-8",
+    "lastUpdated": "2014-10-02 17:56:39.0",
+    "auctionQuantity": {
+      "untilYesterday": "1,148.9kg",
+      "today": "0kg",
+      "total": "1,148.9kg"
+    },
+    "auctionAmount": {
+      "untilYesterday": "181,583,117원",
+      "today": "0원",
+      "total": "181,583,117원"
+    },
+    "grade1": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "grade2": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "grade3Stopped": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "grade3Estimated": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "gradeBelow": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    },
+    "mixedGrade": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    }
+  }
+]

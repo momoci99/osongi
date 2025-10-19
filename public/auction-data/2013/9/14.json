@@ -1,0 +1,42 @@
+[
+  {
+    "region": "강원",
+    "union": "양구",
+    "date": "2013-9-14",
+    "lastUpdated": "2013-09-14 17:48:26.0",
+    "auctionQuantity": {
+      "untilYesterday": "1.08kg",
+      "today": "7.26kg",
+      "total": "8.34kg"
+    },
+    "auctionAmount": {
+      "untilYesterday": "267,460원",
+      "today": "1,684,829원",
+      "total": "1,952,289원"
+    },
+    "grade1": {
+      "quantity": "0.59kg",
+      "unitPrice": "621,100원"
+    },
+    "grade2": {
+      "quantity": "0.71kg",
+      "unitPrice": "411,000원"
+    },
+    "grade3Stopped": {
+      "quantity": "2.71kg",
+      "unitPrice": "231,000원"
+    },
+    "grade3Estimated": {
+      "quantity": "0.17kg",
+      "unitPrice": "164,000원"
+    },
+    "gradeBelow": {
+      "quantity": "3.08kg",
+      "unitPrice": "121,000원"
+    },
+    "mixedGrade": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    }
+  }
+]
