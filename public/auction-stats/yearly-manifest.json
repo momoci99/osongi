@@ -1,6 +1,102 @@
 {
-  "generatedAt": "2025-10-19T05:05:45.568Z",
+  "generatedAt": "2025-10-19T06:07:15.982Z",
   "yearly": {
+    "2013": {
+      "totalQuantityKg": 60764.76,
+      "totalAmountWon": 11780441446,
+      "topRegion": {
+        "region": "경북",
+        "quantityKg": 50176.79
+      },
+      "topUnion": {
+        "union": "영덕",
+        "quantityKg": 17251.33
+      }
+    },
+    "2014": {
+      "totalQuantityKg": 92559.63,
+      "totalAmountWon": 15026609763,
+      "topRegion": {
+        "region": "경북",
+        "quantityKg": 78378.86
+      },
+      "topUnion": {
+        "union": "영덕",
+        "quantityKg": 33404.22
+      }
+    },
+    "2015": {
+      "totalQuantityKg": 85213.48,
+      "totalAmountWon": 15222298357.56,
+      "topRegion": {
+        "region": "경북",
+        "quantityKg": 65917.75
+      },
+      "topUnion": {
+        "union": "영덕",
+        "quantityKg": 24481.34
+      }
+    },
+    "2016": {
+      "totalQuantityKg": 265727.94,
+      "totalAmountWon": 27854522007.22,
+      "topRegion": {
+        "region": "경북",
+        "quantityKg": 223706.64
+      },
+      "topUnion": {
+        "union": "영덕",
+        "quantityKg": 96705.65
+      }
+    },
+    "2017": {
+      "totalQuantityKg": 80047.59,
+      "totalAmountWon": 17551191340.66,
+      "topRegion": {
+        "region": "경북",
+        "quantityKg": 63333.18
+      },
+      "topUnion": {
+        "union": "영덕",
+        "quantityKg": 20368.86
+      }
+    },
+    "2018": {
+      "totalQuantityKg": 172923.41,
+      "totalAmountWon": 25256783275.47,
+      "topRegion": {
+        "region": "경북",
+        "quantityKg": 135896.84
+      },
+      "topUnion": {
+        "union": "영덕",
+        "quantityKg": 52803.81
+      }
+    },
+    "2019": {
+      "totalQuantityKg": 111000.31,
+      "totalAmountWon": 19244459442.38,
+      "topRegion": {
+        "region": "경북",
+        "quantityKg": 77194.97
+      },
+      "topUnion": {
+        "union": "영덕",
+        "quantityKg": 16646.76
+      }
+    },
+    "2020": {
+      "totalQuantityKg": 117995.89,
+      "totalAmountWon": 17740947505.02,
+      "topRegion": {
+        "region": "경북",
+        "quantityKg": 81444.65
+      },
+      "topUnion": {
+        "union": "영덕",
+        "quantityKg": 18310.06
+      }
+    },
     "2021": {
       "totalQuantityKg": 102193.11,
       "totalAmountWon": 22576206750.32,
