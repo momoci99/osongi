@@ -4,7 +4,11 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { ko } from "date-fns/locale";
 import type { MushroomAuctionDataRaw } from "../types/data";
-import { AVAILABLE_REGIONS, REGION_UNION_MAP } from "../const/Common";
+import {
+  AVAILABLE_REGIONS,
+  GRADE_OPTIONS,
+  REGION_UNION_MAP,
+} from "../const/Common";
 import {
   type AnalysisFilters,
   getDefaultDateRange,
@@ -31,7 +35,7 @@ const DataAnalysis = () => {
     return {
       region: defaultRegion, // 기본으로 첫 번째 지역 선택
       union: defaultUnion, // 기본으로 첫 번째 지역의 첫 번째 조합 선택
-      grades: ["grade1", "grade2"], // 기본으로 1, 2등품 선택
+      grades: GRADE_OPTIONS.map((option) => option.value),
       startDate,
       endDate,
     };
