@@ -163,36 +163,36 @@
     "region": "강원",
     "union": "양양",
     "date": "2025-10-20",
-    "lastUpdated": "2025-10-19 17:05:43.0",
+    "lastUpdated": "2025-10-20 18:17:19.0",
     "auctionQuantity": {
       "untilYesterday": "5,230.53kg",
-      "today": "0kg",
-      "total": "5,230.53kg"
+      "today": "123.47kg",
+      "total": "5,354kg"
     },
     "auctionAmount": {
       "untilYesterday": "1,417,908,310.7원",
-      "today": "0원",
-      "total": "1,417,908,310.7원"
+      "today": "38,670,492.6원",
+      "total": "1,456,578,803.3원"
     },
     "grade1": {
-      "quantity": "0kg",
-      "unitPrice": "0원"
+      "quantity": "8.44kg",
+      "unitPrice": "705,800원"
     },
     "grade2": {
-      "quantity": "0kg",
-      "unitPrice": "0원"
+      "quantity": "7.26kg",
+      "unitPrice": "500,910원"
     },
     "grade3Stopped": {
-      "quantity": "0kg",
-      "unitPrice": "0원"
+      "quantity": "10.3kg",
+      "unitPrice": "447,800원"
     },
     "grade3Estimated": {
-      "quantity": "0kg",
-      "unitPrice": "0원"
+      "quantity": "32.09kg",
+      "unitPrice": "338,800원"
     },
     "gradeBelow": {
-      "quantity": "0kg",
-      "unitPrice": "0원"
+      "quantity": "65.38kg",
+      "unitPrice": "207,900원"
     },
     "mixedGrade": {
       "quantity": "0kg",
@@ -323,7 +323,7 @@
     "region": "경북",
     "union": "안동",
     "date": "2025-10-20",
-    "lastUpdated": "2025-10-20 17:12:15.0",
+    "lastUpdated": "2025-10-20 19:07:11.0",
     "auctionQuantity": {
       "untilYesterday": "6,537.09kg",
       "today": "248.48kg",
