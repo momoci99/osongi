@@ -243,7 +243,7 @@
     "region": "강원",
     "union": "삼척",
     "date": "2025-10-20",
-    "lastUpdated": "2025-10-20 17:15:37.0",
+    "lastUpdated": "2025-10-22 11:23:51.0",
     "auctionQuantity": {
       "untilYesterday": "2,929.5kg",
       "today": "87.57kg",
@@ -723,16 +723,16 @@
     "region": "경북",
     "union": "울진",
     "date": "2025-10-20",
-    "lastUpdated": "2025-10-20 17:59:39.0",
+    "lastUpdated": "2025-10-23 10:21:27.0",
     "auctionQuantity": {
       "untilYesterday": "2,160.47kg",
-      "today": "104.61kg",
-      "total": "2,265.08kg"
+      "today": "101.61kg",
+      "total": "2,262.08kg"
     },
     "auctionAmount": {
       "untilYesterday": "415,939,338.7원",
-      "today": "22,899,604원",
-      "total": "438,838,942.7원"
+      "today": "22,363,204원",
+      "total": "438,302,542.7원"
     },
     "grade1": {
       "quantity": "2.04kg",
@@ -751,7 +751,7 @@
       "unitPrice": "276,900원"
     },
     "gradeBelow": {
-      "quantity": "33.6kg",
+      "quantity": "30.6kg",
       "unitPrice": "178,800원"
     },
     "mixedGrade": {
