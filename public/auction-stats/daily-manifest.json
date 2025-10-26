@@ -1,50 +1,50 @@
 {
-  "generatedAt": "2025-10-25T13:10:19.549Z",
-  "latestDate": "2025-10-25",
+  "generatedAt": "2025-10-26T01:32:27.466Z",
+  "latestDate": "2025-10-26",
   "latestDaily": {
-    "totalQuantityTodayKg": 2877.45,
+    "totalQuantityTodayKg": 0,
     "topRegion": {
-      "region": "경북",
-      "quantityKg": 2516.94
+      "region": "강원",
+      "quantityKg": 0
     },
     "topUnion": {
-      "union": "영덕",
-      "quantityKg": 895.2
+      "union": "홍천",
+      "quantityKg": 0
     },
     "topGradeByQuantity": {
-      "gradeKey": "gradeBelow",
-      "quantityKg": 1378.44
+      "gradeKey": "grade1",
+      "quantityKg": 0
     },
     "gradeBreakdown": [
       {
         "gradeKey": "grade1",
-        "quantityKg": 32.34,
-        "unitPriceWon": 537842.41
+        "quantityKg": 0,
+        "unitPriceWon": 0
       },
       {
         "gradeKey": "grade2",
-        "quantityKg": 80.68,
-        "unitPriceWon": 420604.54
+        "quantityKg": 0,
+        "unitPriceWon": 0
       },
       {
         "gradeKey": "grade3Estimated",
-        "quantityKg": 821.19,
-        "unitPriceWon": 268378.42
+        "quantityKg": 0,
+        "unitPriceWon": 0
       },
       {
         "gradeKey": "grade3Stopped",
-        "quantityKg": 127.35,
-        "unitPriceWon": 355732.04
+        "quantityKg": 0,
+        "unitPriceWon": 0
       },
       {
         "gradeKey": "gradeBelow",
-        "quantityKg": 1378.44,
-        "unitPriceWon": 169743.37
+        "quantityKg": 0,
+        "unitPriceWon": 0
       },
       {
         "gradeKey": "mixedGrade",
-        "quantityKg": 437.45,
-        "unitPriceWon": 100973.99
+        "quantityKg": 0,
+        "unitPriceWon": 0
       }
     ]
   }
