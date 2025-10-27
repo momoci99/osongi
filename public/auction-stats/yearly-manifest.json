@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2025-10-27T08:08:50.093Z",
+  "generatedAt": "2025-10-27T09:06:56.494Z",
   "yearly": {
     "2013": {
       "totalQuantityKg": 60764.76,
@@ -146,15 +146,15 @@
       }
     },
     "2025": {
-      "totalQuantityKg": 117686.43,
-      "totalAmountWon": 23497586734.08,
+      "totalQuantityKg": 118283.45,
+      "totalAmountWon": 23626912606.28,
       "topRegion": {
         "region": "경북",
-        "quantityKg": 76691.74
+        "quantityKg": 77288.76
       },
       "topUnion": {
         "union": "영덕",
-        "quantityKg": 16594.45
+        "quantityKg": 16906.55
       }
     }
   }
