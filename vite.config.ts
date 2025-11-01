@@ -15,7 +15,12 @@ const dirname =
 // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
 export default defineConfig({
   plugins: [
-    react(),
+    react({
+      babel: {
+        plugins: ["babel-plugin-react-compiler"],
+      },
+    }),
+
     // 압축 설정 - 필요한 파일들만 선택적으로 압축
     compression({
       include: [
