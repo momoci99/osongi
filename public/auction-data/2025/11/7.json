@@ -403,40 +403,40 @@
     "region": "경북",
     "union": "영덕",
     "date": "2025-11-7",
-    "lastUpdated": "2025-11-06 17:03:38.0",
+    "lastUpdated": "2025-11-07 17:12:10.0",
     "auctionQuantity": {
       "untilYesterday": "17,953.83kg",
-      "today": "0kg",
-      "total": "17,953.83kg"
+      "today": "34.9kg",
+      "total": "17,988.73kg"
     },
     "auctionAmount": {
       "untilYesterday": "3,408,958,817.2원",
-      "today": "0원",
-      "total": "3,408,958,817.2원"
+      "today": "7,136,145.8원",
+      "total": "3,416,094,963원"
     },
     "grade1": {
-      "quantity": "0kg",
-      "unitPrice": "0원"
+      "quantity": "0.15kg",
+      "unitPrice": "400,000원"
     },
     "grade2": {
-      "quantity": "0kg",
-      "unitPrice": "0원"
+      "quantity": "0.07kg",
+      "unitPrice": "370,000원"
     },
     "grade3Stopped": {
-      "quantity": "0kg",
-      "unitPrice": "0원"
+      "quantity": "0.58kg",
+      "unitPrice": "350,010원"
     },
     "grade3Estimated": {
-      "quantity": "0kg",
-      "unitPrice": "0원"
+      "quantity": "5.9kg",
+      "unitPrice": "287,900원"
     },
     "gradeBelow": {
-      "quantity": "0kg",
-      "unitPrice": "0원"
+      "quantity": "15.3kg",
+      "unitPrice": "219,400원"
     },
     "mixedGrade": {
-      "quantity": "0kg",
-      "unitPrice": "0원"
+      "quantity": "12.9kg",
+      "unitPrice": "138,900원"
     }
   },
   {
