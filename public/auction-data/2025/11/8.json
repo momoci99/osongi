@@ -483,16 +483,16 @@
     "region": "경북",
     "union": "청도",
     "date": "2025-11-8",
-    "lastUpdated": "2025-11-07 16:46:48.0",
+    "lastUpdated": "2025-11-08 16:50:27.0",
     "auctionQuantity": {
       "untilYesterday": "4,496.27kg",
-      "today": "0kg",
-      "total": "4,496.27kg"
+      "today": "28.43kg",
+      "total": "4,524.7kg"
     },
     "auctionAmount": {
       "untilYesterday": "1,011,130,467.67원",
-      "today": "0원",
-      "total": "1,011,130,467.67원"
+      "today": "5,029,104원",
+      "total": "1,016,159,571.67원"
     },
     "grade1": {
       "quantity": "0kg",
@@ -503,16 +503,16 @@
       "unitPrice": "0원"
     },
     "grade3Stopped": {
-      "quantity": "0kg",
-      "unitPrice": "0원"
+      "quantity": "0.15kg",
+      "unitPrice": "282,000원"
     },
     "grade3Estimated": {
-      "quantity": "0kg",
-      "unitPrice": "0원"
+      "quantity": "3.6kg",
+      "unitPrice": "252,000원"
     },
     "gradeBelow": {
-      "quantity": "0kg",
-      "unitPrice": "0원"
+      "quantity": "24.68kg",
+      "unitPrice": "165,300원"
     },
     "mixedGrade": {
       "quantity": "0kg",
