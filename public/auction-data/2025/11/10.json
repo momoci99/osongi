@@ -443,16 +443,16 @@
     "region": "경북",
     "union": "포항",
     "date": "2025-11-10",
-    "lastUpdated": "2025-11-07 17:01:34.0",
+    "lastUpdated": "2025-11-10 16:34:00.0",
     "auctionQuantity": {
       "untilYesterday": "8,216.43kg",
-      "today": "0kg",
-      "total": "8,216.43kg"
+      "today": "11.83kg",
+      "total": "8,228.26kg"
     },
     "auctionAmount": {
       "untilYesterday": "1,787,025,551.15원",
-      "today": "0원",
-      "total": "1,787,025,551.15원"
+      "today": "2,082,900원",
+      "total": "1,789,108,451.15원"
     },
     "grade1": {
       "quantity": "0kg",
@@ -463,20 +463,20 @@
       "unitPrice": "0원"
     },
     "grade3Stopped": {
-      "quantity": "0kg",
-      "unitPrice": "0원"
+      "quantity": "0.07kg",
+      "unitPrice": "350,000원"
     },
     "grade3Estimated": {
-      "quantity": "0kg",
-      "unitPrice": "0원"
+      "quantity": "2.24kg",
+      "unitPrice": "260,000원"
     },
     "gradeBelow": {
-      "quantity": "0kg",
-      "unitPrice": "0원"
+      "quantity": "4.17kg",
+      "unitPrice": "200,000원"
     },
     "mixedGrade": {
-      "quantity": "0kg",
-      "unitPrice": "0원"
+      "quantity": "5.35kg",
+      "unitPrice": "120,000원"
     }
   },
   {
