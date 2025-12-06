@@ -44,9 +44,9 @@ const DataAnalysis = () => {
   // 차트 모드 상태
   const [chartMode, setChartMode] = useState<"price" | "quantity">("price");
 
-  // 초기 데이터 로드 (기본 7일)
+  // 날짜 범위 변경 시 데이터 로드 (초기 로드 포함)
   useEffect(() => {
-    const loadInitialData = async () => {
+    const loadData = async () => {
       setLoading(true);
       try {
         const data = await loadDateRangeData(
@@ -61,31 +61,8 @@ const DataAnalysis = () => {
       }
     };
 
-    loadInitialData();
-  }, []); // 컴포넌트 마운트 시에만 실행
-
-  // 날짜 범위 변경 시 데이터 재로드
-  useEffect(() => {
-    const reloadData = async () => {
-      setLoading(true);
-      try {
-        const data = await loadDateRangeData(
-          filters.startDate,
-          filters.endDate
-        );
-        setRawData(data);
-      } catch (error) {
-        console.error("데이터 재로드 실패:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    // 초기 로드가 아닌 경우에만 재로드
-    if (rawData.length > 0) {
-      reloadData();
-    }
-  }, [filters.startDate, filters.endDate]); // 날짜 변경 시에만 실행
+    loadData();
+  }, [filters.startDate, filters.endDate]); // 날짜 변경 시마다 실행
 
   // 필터 적용된 데이터
   const filteredData = useMemo(() => {
