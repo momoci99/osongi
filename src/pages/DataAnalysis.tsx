@@ -1,50 +1,56 @@
 import { useState, useEffect, useMemo } from "react";
-import { Container, Box, Typography } from "@mui/material";
+import { Container, Box, Grid, Typography } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { ko } from "date-fns/locale";
 import type { MushroomAuctionDataRaw } from "../types/data";
-import {
-  AVAILABLE_REGIONS,
-  GRADE_OPTIONS,
-  REGION_UNION_MAP,
-} from "../const/Common";
+import { GRADE_OPTIONS } from "../const/Common";
 import {
   type AnalysisFilters,
   getDefaultDateRange,
   applyFilters,
   transformToChartData,
+  calculateKPI,
+  calculateKPIComparison,
+  calculateGradeBreakdown,
+  transformToScatterData,
+  calculateRegionComparison,
+  getComparisonDateRange,
 } from "../utils/analysisUtils";
 import { loadDateRangeData } from "../utils/dataAnalysisLoader";
 import AnalysisFiltersComponent from "../components/DataAnalysis/AnalysisFilters";
+import AnalysisKPISection from "../components/DataAnalysis/AnalysisKPI";
 import ChartSection from "../components/DataAnalysis/ChartSection";
+import GradeBreakdownChart from "../components/DataAnalysis/GradeBreakdownChart";
+import ScatterPlotChart from "../components/DataAnalysis/ScatterPlotChart";
+import RegionComparisonSection from "../components/DataAnalysis/RegionComparisonSection";
 import TableSection from "../components/DataAnalysis/TableSection";
 
 const DataAnalysis = () => {
-  // 상태 관리
   const [rawData, setRawData] = useState<MushroomAuctionDataRaw[]>([]);
+  const [comparisonRawData, setComparisonRawData] = useState<
+    MushroomAuctionDataRaw[]
+  >([]);
   const [loading, setLoading] = useState(false);
 
-  // 필터 상태
+  // 필터 상태 (새 구조)
   const [filters, setFilters] = useState<AnalysisFilters>(() => {
     const { startDate, endDate } = getDefaultDateRange();
-    const defaultRegion = AVAILABLE_REGIONS[0];
-    const defaultUnion =
-      REGION_UNION_MAP[defaultRegion as keyof typeof REGION_UNION_MAP]?.[0] ||
-      "";
     return {
-      region: defaultRegion, // 기본으로 첫 번째 지역 선택
-      union: defaultUnion, // 기본으로 첫 번째 지역의 첫 번째 조합 선택
-      grades: GRADE_OPTIONS.map((option) => option.value),
+      regions: [],
+      unions: [],
+      grades: GRADE_OPTIONS.map((o) => o.value),
       startDate,
       endDate,
+      comparisonEnabled: false,
+      comparisonStartDate: null,
+      comparisonEndDate: null,
     };
   });
 
-  // 차트 모드 상태
   const [chartMode, setChartMode] = useState<"price" | "quantity">("price");
 
-  // 날짜 범위 변경 시 데이터 로드 (초기 로드 포함)
+  // 메인 데이터 로드
   useEffect(() => {
     const loadData = async () => {
       setLoading(true);
@@ -60,35 +66,102 @@ const DataAnalysis = () => {
         setLoading(false);
       }
     };
-
     loadData();
-  }, [filters.startDate, filters.endDate]); // 날짜 변경 시마다 실행
+  }, [filters.startDate, filters.endDate]);
+
+  // 비교 데이터 로드
+  useEffect(() => {
+    if (
+      !filters.comparisonEnabled ||
+      !filters.comparisonStartDate ||
+      !filters.comparisonEndDate
+    ) {
+      setComparisonRawData([]);
+      return;
+    }
+
+    const loadComparisonData = async () => {
+      try {
+        const data = await loadDateRangeData(
+          filters.comparisonStartDate!,
+          filters.comparisonEndDate!
+        );
+        setComparisonRawData(data);
+      } catch (error) {
+        console.error("비교 데이터 로드 실패:", error);
+      }
+    };
+    loadComparisonData();
+  }, [
+    filters.comparisonEnabled,
+    filters.comparisonStartDate,
+    filters.comparisonEndDate,
+  ]);
 
   // 필터 적용된 데이터
-  const filteredData = useMemo(() => {
-    return applyFilters(rawData, filters);
-  }, [rawData, filters]);
+  const filteredData = useMemo(
+    () => applyFilters(rawData, filters),
+    [rawData, filters]
+  );
 
-  // 차트 데이터 생성
+  const filteredComparisonData = useMemo(() => {
+    if (!filters.comparisonEnabled || comparisonRawData.length === 0) return [];
+    return applyFilters(comparisonRawData, {
+      ...filters,
+      startDate: filters.comparisonStartDate!,
+      endDate: filters.comparisonEndDate!,
+    });
+  }, [comparisonRawData, filters]);
+
+  // 차트 데이터
   const chartData = useMemo(() => {
     if (filteredData.length === 0) return [];
     return transformToChartData(filteredData, filters.grades);
   }, [filteredData, filters.grades]);
 
-  // 필터 초기화 함수
+  // KPI
+  const kpi = useMemo(
+    () => calculateKPI(filteredData, filters.grades),
+    [filteredData, filters.grades]
+  );
+
+  const kpiComparison = useMemo(() => {
+    if (!filters.comparisonEnabled || filteredComparisonData.length === 0)
+      return null;
+    const prevKPI = calculateKPI(filteredComparisonData, filters.grades);
+    return calculateKPIComparison(kpi, prevKPI);
+  }, [kpi, filteredComparisonData, filters]);
+
+  // 등급별 비중
+  const gradeBreakdown = useMemo(
+    () => calculateGradeBreakdown(filteredData, filters.grades),
+    [filteredData, filters.grades]
+  );
+
+  // 산점도
+  const scatterData = useMemo(
+    () => transformToScatterData(filteredData, filters.grades),
+    [filteredData, filters.grades]
+  );
+
+  // 지역 비교
+  const regionComparison = useMemo(
+    () => calculateRegionComparison(filteredData, filters.grades),
+    [filteredData, filters.grades]
+  );
+
+  // 필터 초기화
   const handleResetFilters = () => {
     const { startDate, endDate } = getDefaultDateRange();
-    const defaultRegion = AVAILABLE_REGIONS[0];
-    const defaultUnion =
-      REGION_UNION_MAP[defaultRegion as keyof typeof REGION_UNION_MAP]?.[0] ||
-      "";
-
     setFilters({
-      region: defaultRegion,
-      union: defaultUnion,
-      grades: ["grade1", "grade2"],
+      regions: [],
+      unions: [],
+      grades: GRADE_OPTIONS.map((o) => o.value),
       startDate,
       endDate,
+      comparisonEnabled: false,
+      comparisonStartDate: null,
+      comparisonEndDate: null,
     });
   };
 
@@ -96,35 +169,55 @@ const DataAnalysis = () => {
     <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={ko}>
       <Container maxWidth="xl">
         <Box sx={{ py: 3 }}>
-          {/* 페이지 헤더 */}
-          <Typography variant="h4" component="h1" gutterBottom>
+          {/* 헤더 */}
+          <Typography variant="h4" component="h1" sx={{ fontWeight: 700, mb: 0.5 }}>
             데이터 분석
           </Typography>
-          <Typography variant="body1" color="text.secondary" sx={{ mb: 1 }}>
-            필터를 사용하여 송이버섯 공판 데이터를 자세히 분석해보세요.
-          </Typography>
           <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-            🍄 송이버섯은 8월~12월 시즌에만 출하되므로, 해당 기간의 데이터만
-            분석 가능합니다.
+            필터를 조합하여 송이버섯 공판 데이터를 다각도로 분석하세요.
           </Typography>
 
-          {/* 필터 섹션 */}
+          {/* 필터 */}
           <AnalysisFiltersComponent
             filters={filters}
             onFiltersChange={setFilters}
             onResetFilters={handleResetFilters}
           />
 
-          {/* 차트 섹션 */}
-          <ChartSection
-            chartData={chartData}
+          {/* 요약 KPI */}
+          <AnalysisKPISection
+            kpi={kpi}
+            comparison={kpiComparison}
             loading={loading}
-            filteredDataLength={filteredData.length}
-            chartMode={chartMode}
-            onChartModeChange={setChartMode}
           />
 
-          {/* 테이블 섹션 */}
+          {/* 가격 추이 + 등급별 비중 (2열) */}
+          <Grid container spacing={2} sx={{ mb: 2 }}>
+            <Grid size={{ xs: 12, md: 7 }}>
+              <ChartSection
+                chartData={chartData}
+                loading={loading}
+                filteredDataLength={filteredData.length}
+                chartMode={chartMode}
+                onChartModeChange={setChartMode}
+              />
+            </Grid>
+            <Grid size={{ xs: 12, md: 5 }}>
+              <GradeBreakdownChart data={gradeBreakdown} />
+            </Grid>
+          </Grid>
+
+          {/* 산점도 + 지역 비교 (2열) */}
+          <Grid container spacing={2} sx={{ mb: 2 }}>
+            <Grid size={{ xs: 12, md: 7 }}>
+              <ScatterPlotChart data={scatterData} />
+            </Grid>
+            <Grid size={{ xs: 12, md: 5 }}>
+              <RegionComparisonSection data={regionComparison} />
+            </Grid>
+          </Grid>
+
+          {/* 상세 테이블 */}
           <TableSection
             loading={loading}
             filteredData={filteredData}

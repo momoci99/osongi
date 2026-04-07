@@ -1,7 +1,7 @@
 import { Box, Typography, Card, useTheme } from "@mui/material";
 import type { WeeklyPriceDatum } from "../../types/data";
 import DataAnalysisChart from "./DataAnalysisChart";
-import { CHART_LAYOUT, UI_LAYOUT, THEME_VALUES } from "../../const/Numbers";
+import { CHART_LAYOUT, UI_LAYOUT } from "../../const/Numbers";
 
 interface ChartSectionProps {
   chartData: WeeklyPriceDatum[];
@@ -22,19 +22,13 @@ export default function ChartSection({
 
   return (
     <Card
-      variant={theme.palette.mode === "dark" ? "outlined" : "elevation"}
-      elevation={
-        theme.palette.mode === "dark"
-          ? THEME_VALUES.DARK_ELEVATION
-          : THEME_VALUES.LIGHT_ELEVATION
-      }
+      variant="outlined"
       sx={{
-        p: UI_LAYOUT.CARD_PADDING,
-        mb: UI_LAYOUT.CARD_MARGIN_BOTTOM,
-        borderRadius: UI_LAYOUT.CARD_BORDER_RADIUS,
+        p: 2,
+        borderRadius: "0.75rem",
         width: "100%",
         backgroundImage: "none",
-        backgroundColor: "transparent",
+        backgroundColor: theme.palette.background.paper,
       }}
     >
       <Box
@@ -60,7 +54,7 @@ export default function ChartSection({
             justifyContent: "center",
           }}
         >
-          <Typography color="text.secondary">📊 데이터 로딩 중...</Typography>
+          <Typography color="text.secondary">데이터 로딩 중...</Typography>
         </Box>
       ) : chartData.length > 0 ? (
         <DataAnalysisChart
@@ -81,7 +75,7 @@ export default function ChartSection({
           }}
         >
           <Typography color="text.secondary">
-            😕 선택한 조건에 맞는 데이터가 없습니다
+            선택한 조건에 맞는 데이터가 없습니다
           </Typography>
           <Typography variant="body2">필터 조건을 조정해보세요</Typography>
         </Box>

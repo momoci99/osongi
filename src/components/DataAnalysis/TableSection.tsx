@@ -10,7 +10,7 @@ import {
 import type { MushroomAuctionDataRaw } from "../../types/data";
 import type { AnalysisFilters } from "../../utils/analysisUtils";
 import { transformToTableData } from "../../utils/tableUtils";
-import { UI_LAYOUT, THEME_VALUES, TABLE_CONSTANTS } from "../../const/Numbers";
+import { UI_LAYOUT, TABLE_CONSTANTS } from "../../const/Numbers";
 import DataTableHeader from "./Table/DataTableHeader";
 import DataTableBody from "./Table/DataTableBody";
 import DataTablePagination from "./Table/DataTablePagination";
@@ -59,19 +59,12 @@ export default function TableSection({
 
   return (
     <Paper
-      variant={theme.palette.mode === "dark" ? "outlined" : "elevation"}
-      elevation={
-        theme.palette.mode === "dark"
-          ? THEME_VALUES.DARK_ELEVATION
-          : THEME_VALUES.LIGHT_ELEVATION
-      }
+      variant="outlined"
       sx={{
-        p: UI_LAYOUT.CARD_PADDING,
-        mb: UI_LAYOUT.CARD_MARGIN_BOTTOM,
-        borderRadius: UI_LAYOUT.CARD_BORDER_RADIUS,
+        p: 2,
+        borderRadius: "0.75rem",
         width: "100%",
-        backgroundImage: "none",
-        backgroundColor: "transparent",
+        backgroundColor: theme.palette.background.paper,
       }}
     >
       <Box

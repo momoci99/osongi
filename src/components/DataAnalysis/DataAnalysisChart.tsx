@@ -198,9 +198,18 @@ export default function DataAnalysisChart({
       return (indexA === -1 ? 999 : indexA) - (indexB === -1 ? 999 : indexB);
     });
 
+    const chart = theme.palette.chart;
     const colorScale = d3
-      .scaleOrdinal(d3.schemeCategory10)
-      .domain(sortedGrades);
+      .scaleOrdinal<string>()
+      .domain(sortedGrades)
+      .range([
+        chart.grade1,
+        chart.grade2,
+        chart.grade3Stopped,
+        chart.grade3Estimated,
+        chart.gradeBelow,
+        chart.mixedGrade,
+      ]);
 
     // ⭐⭐⭐ 가장 중요한 부분: 각 연도별 서브플롯 생성 루프 ⭐⭐⭐
     // 이 루프가 연도별 독립 차트를 만드는 핵심 로직
@@ -486,8 +495,8 @@ export default function DataAnalysisChart({
             },
           }}
         >
-          <ToggleButton value="price">💰 가격 보기</ToggleButton>
-          <ToggleButton value="quantity">📊 수량 보기</ToggleButton>
+          <ToggleButton value="price">가격</ToggleButton>
+          <ToggleButton value="quantity">수량</ToggleButton>
         </ToggleButtonGroup>
       </Box>
       <Box
