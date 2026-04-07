@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2025-11-12T12:07:01.914Z",
+  "generatedAt": "2026-04-07T14:19:17.035Z",
   "yearly": {
     "2013": {
       "totalQuantityKg": 60764.76,
@@ -155,6 +155,170 @@
       "topUnion": {
         "union": "영덕",
         "quantityKg": 17988.73
+      }
+    }
+  },
+  "regionYearly": {
+    "강원": {
+      "2013": {
+        "totalQuantityKg": 9007.72,
+        "totalAmountWon": 1978930347
+      },
+      "2014": {
+        "totalQuantityKg": 13031.87,
+        "totalAmountWon": 2288783619
+      },
+      "2015": {
+        "totalQuantityKg": 16576.22,
+        "totalAmountWon": 3306698556.42
+      },
+      "2016": {
+        "totalQuantityKg": 33964.25,
+        "totalAmountWon": 4619720338.25
+      },
+      "2017": {
+        "totalQuantityKg": 13787.61,
+        "totalAmountWon": 2770687819.9
+      },
+      "2018": {
+        "totalQuantityKg": 30530.87,
+        "totalAmountWon": 5238092446
+      },
+      "2019": {
+        "totalQuantityKg": 27983.91,
+        "totalAmountWon": 5354173586.3
+      },
+      "2020": {
+        "totalQuantityKg": 31301.08,
+        "totalAmountWon": 5409324566.22
+      },
+      "2021": {
+        "totalQuantityKg": 12145.16,
+        "totalAmountWon": 3345792826.5
+      },
+      "2022": {
+        "totalQuantityKg": 20760.42,
+        "totalAmountWon": 4856065029.4
+      },
+      "2023": {
+        "totalQuantityKg": 23432.66,
+        "totalAmountWon": 5746832890.4
+      },
+      "2024": {
+        "totalQuantityKg": 29298.95,
+        "totalAmountWon": 7605140367.3
+      },
+      "2025": {
+        "totalQuantityKg": 31659.53,
+        "totalAmountWon": 7452348106.29
+      }
+    },
+    "경북": {
+      "2013": {
+        "totalQuantityKg": 50176.79,
+        "totalAmountWon": 9455823625
+      },
+      "2014": {
+        "totalQuantityKg": 78378.86,
+        "totalAmountWon": 12556243027
+      },
+      "2015": {
+        "totalQuantityKg": 65917.75,
+        "totalAmountWon": 11418386616.34
+      },
+      "2016": {
+        "totalQuantityKg": 223706.64,
+        "totalAmountWon": 22319407079.47
+      },
+      "2017": {
+        "totalQuantityKg": 63333.18,
+        "totalAmountWon": 14096985349.76
+      },
+      "2018": {
+        "totalQuantityKg": 135896.84,
+        "totalAmountWon": 19062736720.97
+      },
+      "2019": {
+        "totalQuantityKg": 77194.97,
+        "totalAmountWon": 12865591620.58
+      },
+      "2020": {
+        "totalQuantityKg": 81444.65,
+        "totalAmountWon": 11480115615.2
+      },
+      "2021": {
+        "totalQuantityKg": 86252.8,
+        "totalAmountWon": 18208401924.32
+      },
+      "2022": {
+        "totalQuantityKg": 39645.31,
+        "totalAmountWon": 9759558582.72
+      },
+      "2023": {
+        "totalQuantityKg": 120215.25,
+        "totalAmountWon": 20948307692.59
+      },
+      "2024": {
+        "totalQuantityKg": 35692.47,
+        "totalAmountWon": 7747500960.89
+      },
+      "2025": {
+        "totalQuantityKg": 80372.63,
+        "totalAmountWon": 15132251587.82
+      }
+    },
+    "경남": {
+      "2013": {
+        "totalQuantityKg": 1580.25,
+        "totalAmountWon": 345687474
+      },
+      "2014": {
+        "totalQuantityKg": 1148.9,
+        "totalAmountWon": 181583117
+      },
+      "2015": {
+        "totalQuantityKg": 2719.51,
+        "totalAmountWon": 497213184.8
+      },
+      "2016": {
+        "totalQuantityKg": 8057.05,
+        "totalAmountWon": 915394589.5
+      },
+      "2017": {
+        "totalQuantityKg": 2926.8,
+        "totalAmountWon": 683518171
+      },
+      "2018": {
+        "totalQuantityKg": 6495.7,
+        "totalAmountWon": 955954108.5
+      },
+      "2019": {
+        "totalQuantityKg": 5821.43,
+        "totalAmountWon": 1024694235.5
+      },
+      "2020": {
+        "totalQuantityKg": 5250.16,
+        "totalAmountWon": 851507323.6
+      },
+      "2021": {
+        "totalQuantityKg": 3795.15,
+        "totalAmountWon": 1022011999.5
+      },
+      "2022": {
+        "totalQuantityKg": 2620.25,
+        "totalAmountWon": 609322611
+      },
+      "2023": {
+        "totalQuantityKg": 9771.46,
+        "totalAmountWon": 2367977024.2
+      },
+      "2024": {
+        "totalQuantityKg": 4182.65,
+        "totalAmountWon": 910688476.5
+      },
+      "2025": {
+        "totalQuantityKg": 9521.54,
+        "totalAmountWon": 1845892426.16
       }
     }
   }

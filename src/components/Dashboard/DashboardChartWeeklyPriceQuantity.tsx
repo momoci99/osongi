@@ -86,14 +86,15 @@ export default function DashboardChartWeeklyPriceQuantity({
       .nice()
       .range([innerHeight, 0]);
 
-    // Color scale for grades
+    // Color scale for grades - theme-based
+    const chart = theme.palette.chart;
     const colorScale = d3.scaleOrdinal<string>().domain(grades).range([
-      "#e53e3e", // grade1 - 빨강
-      "#3182ce", // grade2 - 파랑
-      "#38a169", // grade3Stopped - 초록
-      "#805ad5", // grade3Estimated - 보라
-      "#d69e2e", // gradeBelow - 주황
-      "#718096", // mixedGrade - 회색
+      chart.grade1,
+      chart.grade2,
+      chart.grade3Stopped,
+      chart.grade3Estimated,
+      chart.gradeBelow,
+      chart.mixedGrade,
     ]);
 
     // Create main group

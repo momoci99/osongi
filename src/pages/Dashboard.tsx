@@ -1,25 +1,55 @@
-import PaymentIcon from "@mui/icons-material/Payment";
-import WarehouseIcon from "@mui/icons-material/Warehouse";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
-
-import { Box, Container, Grid, Typography } from "@mui/material";
+import {
+  Box,
+  Container,
+  Grid,
+  Typography,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  useTheme,
+  Skeleton,
+  Select,
+  MenuItem,
+} from "@mui/material";
 import DashboardKpiCard from "../components/Dashboard/DashboardKpiCard";
 import { useEffect, useState } from "react";
 import { DailyDataScheme, type DailyDataType } from "../types/DailyData";
-import { GradeKeyToKorean } from "../const/Common";
+import { GradeKeyToKorean, AVAILABLE_REGIONS } from "../const/Common";
 import DashboardChartGradePerKg from "../components/Dashboard/DashboardChartGradePerKg";
 import DashboardChartGradePerPrice from "../components/Dashboard/DashboardChartGradePerPrice";
 import DashboardChartWeeklyToggle from "../components/Dashboard/DashboardChartWeeklyToggle";
 import DashboardCard from "../components/Dashboard/DashboardCard";
 import type { WeeklyManifest } from "../types/data";
+import { useSettingsStore } from "../stores/useSettingsStore";
+import SeasonOffDashboard from "../components/Dashboard/SeasonOffDashboard";
+
+/** 최신 데이터가 7일 이내이면 시즌 중. ?season=on|off 로 강제 가능 */
+function isInSeason(latestDate: string): boolean {
+  const params = new URLSearchParams(window.location.search);
+  const override = params.get("season");
+  if (override === "on") return true;
+  if (override === "off") return false;
+
+  const latest = new Date(latestDate);
+  const now = new Date();
+  const diffMs = now.getTime() - latest.getTime();
+  const diffDays = diffMs / (1000 * 60 * 60 * 24);
+  return diffDays <= 7;
+}
 
 const Dashboard = () => {
+  const theme = useTheme();
+  const myRegion = useSettingsStore((s) => s.myRegion);
+  const setMyRegion = useSettingsStore((s) => s.setMyRegion);
+
   const [dailyData, setDailyData] = useState<DailyDataType | null>(null);
   const [weeklyData, setWeeklyData] = useState<WeeklyManifest | null>(null);
 
   useEffect(function initDailyData() {
-    const result = fetch("/auction-stats/daily-manifest.json");
-    result
+    fetch("/auction-stats/daily-manifest.json")
       .then((res) => res.json())
       .then((data) => {
         const parsed = DailyDataScheme.safeParse(data);
@@ -29,111 +59,314 @@ const Dashboard = () => {
           console.error("Failed to parse daily data:", parsed.error);
         }
       })
-      .catch((err) => {
-        console.error("Error fetching daily data:", err);
-      });
+      .catch((err) => console.error("Error fetching daily data:", err));
   }, []);
 
   useEffect(function initWeeklyData() {
-    const result = fetch("/auction-stats/weekly-manifest.json");
-    result
+    fetch("/auction-stats/weekly-manifest.json")
       .then((res) => res.json())
-      .then((data) => {
-        setWeeklyData(data);
-      })
-      .catch((err) => {
-        console.error("Error fetching weekly data:", err);
-      });
+      .then((data) => setWeeklyData(data))
+      .catch((err) => console.error("Error fetching weekly data:", err));
   }, []);
 
-  if (dailyData === null || weeklyData === null) {
-    return <div>Loading...</div>;
+  if (!dailyData || !weeklyData) {
+    return (
+      <Container maxWidth="lg" sx={{ pt: 3 }}>
+        <Skeleton variant="text" width={200} height={40} />
+        <Grid container spacing={2} sx={{ mt: 1 }}>
+          {[1, 2, 3].map((i) => (
+            <Grid key={i} size={{ xs: 12, sm: 4 }}>
+              <Skeleton variant="rounded" height={120} />
+            </Grid>
+          ))}
+        </Grid>
+      </Container>
+    );
   }
 
+  const { latestDaily, latestDate } = dailyData;
+  const inSeason = isInSeason(latestDate);
+
+  // 지역 셀렉트 (시즌 중/외 공통)
+  const regionSelector = (
+    <Box
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        gap: 1.5,
+        mb: 2,
+      }}
+    >
+      <Typography
+        variant="body2"
+        sx={{ color: theme.palette.text.secondary, flexShrink: 0 }}
+      >
+        내 지역
+      </Typography>
+      <Select
+        value={myRegion ?? ""}
+        onChange={(e) =>
+          setMyRegion(e.target.value as (typeof AVAILABLE_REGIONS)[number])
+        }
+        size="small"
+        variant="outlined"
+        sx={{
+          minWidth: 100,
+          fontSize: "0.875rem",
+          fontWeight: 600,
+          "& .MuiOutlinedInput-notchedOutline": {
+            borderColor: theme.palette.divider,
+          },
+        }}
+      >
+        {AVAILABLE_REGIONS.map((region) => (
+          <MenuItem key={region} value={region}>
+            {region}
+          </MenuItem>
+        ))}
+      </Select>
+    </Box>
+  );
+
+  // 시즌 외: 분석/회고 모드
+  if (!inSeason) {
+    return (
+      <Container maxWidth="lg" sx={{ pt: 2, pb: 4 }}>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "flex-start",
+            justifyContent: "space-between",
+            flexWrap: "wrap",
+            gap: 1,
+            mb: 2,
+          }}
+        >
+          <Box>
+            <Typography variant="h5" sx={{ fontWeight: 700 }}>
+              송이버섯 시세 대시보드
+            </Typography>
+            <Typography
+              variant="body2"
+              sx={{ color: theme.palette.text.secondary, mt: 0.5 }}
+            >
+              현재 시즌 외 기간입니다. 지난 시즌의 데이터를 분석합니다.
+            </Typography>
+          </Box>
+          {regionSelector}
+        </Box>
+        <SeasonOffDashboard myRegion={myRegion} />
+      </Container>
+    );
+  }
+
+  // 시즌 중: 실시간 시세 모드
+  const regionData = myRegion
+    ? latestDaily.regionGradeBreakdown?.[myRegion]
+    : null;
+  const dayComparison = latestDaily.previousDayComparison;
+
+  const upColor = theme.palette.chart.up;
+  const downColor = theme.palette.chart.down;
+
   return (
-    <Container>
-      <Box sx={{ pt: 2, pb: 2 }}>
-        <Typography variant="h4">송이버섯 시세 대시보드</Typography>
-        <Typography variant="body1">
-          송이버섯 시세를 한눈에 확인할 수 있는 대시보드입니다.
-        </Typography>
+    <Container maxWidth="lg" sx={{ pt: 2, pb: 4 }}>
+      {/* 지역 셀렉트 + 내 지역 시세 — 최상단 */}
+      <Box sx={{ mb: 3 }}>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: 1,
+            mb: 1.5,
+          }}
+        >
+          <Box
+            sx={{
+              width: 6,
+              height: 6,
+              borderRadius: "50%",
+              bgcolor: theme.palette.primary.main,
+              flexShrink: 0,
+            }}
+          />
+          {regionSelector}
+          <Typography
+            variant="caption"
+            sx={{ color: theme.palette.text.secondary, ml: "auto" }}
+          >
+            {latestDate} 기준
+          </Typography>
+        </Box>
+
+      {myRegion && regionData && regionData.length > 0 && (
+
+          <DashboardCard>
+            <TableContainer>
+              <Table size="small">
+                <TableHead>
+                  <TableRow>
+                    <TableCell sx={{ fontWeight: 600, opacity: 0.6 }}>
+                      등급
+                    </TableCell>
+                    <TableCell
+                      align="right"
+                      sx={{ fontWeight: 600, opacity: 0.6 }}
+                    >
+                      수량 (kg)
+                    </TableCell>
+                    <TableCell
+                      align="right"
+                      sx={{ fontWeight: 600, opacity: 0.6 }}
+                    >
+                      단가 (원/kg)
+                    </TableCell>
+                    {dayComparison && (
+                      <TableCell
+                        align="right"
+                        sx={{ fontWeight: 600, opacity: 0.6 }}
+                      >
+                        전일 대비
+                      </TableCell>
+                    )}
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {regionData.map((item) => {
+                    const gradeLabel =
+                      GradeKeyToKorean[
+                        item.gradeKey as keyof typeof GradeKeyToKorean
+                      ] || item.gradeKey;
+                    const gradeColor =
+                      theme.palette.chart[
+                        item.gradeKey as keyof typeof theme.palette.chart
+                      ];
+                    const change = dayComparison?.gradeChanges.find(
+                      (c) => c.gradeKey === item.gradeKey
+                    );
+
+                    return (
+                      <TableRow key={item.gradeKey}>
+                        <TableCell>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 0.75,
+                            }}
+                          >
+                            <Box
+                              sx={{
+                                width: 10,
+                                height: 10,
+                                borderRadius: "2px",
+                                bgcolor:
+                                  typeof gradeColor === "string"
+                                    ? gradeColor
+                                    : theme.palette.text.secondary,
+                                flexShrink: 0,
+                              }}
+                            />
+                            {gradeLabel}
+                          </Box>
+                        </TableCell>
+                        <TableCell align="right">
+                          {item.quantityKg.toLocaleString()}
+                        </TableCell>
+                        <TableCell
+                          align="right"
+                          sx={{ fontWeight: 600 }}
+                        >
+                          {item.unitPriceWon.toLocaleString()}
+                        </TableCell>
+                        {dayComparison && change && (
+                          <TableCell
+                            align="right"
+                            sx={{
+                              fontWeight: 500,
+                              color:
+                                change.changePercent > 0
+                                  ? upColor
+                                  : change.changePercent < 0
+                                    ? downColor
+                                    : theme.palette.text.secondary,
+                            }}
+                          >
+                            {change.changePercent > 0
+                              ? `▲ ${change.changePercent.toFixed(1)}%`
+                              : change.changePercent < 0
+                                ? `▼ ${Math.abs(change.changePercent).toFixed(1)}%`
+                                : "— 0.0%"}
+                          </TableCell>
+                        )}
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </DashboardCard>
+      )}
       </Box>
 
-      {/* 주요 정보 섹션 */}
+      {/* KPI 카드 */}
       <Grid container spacing={2}>
-        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+        <Grid size={{ xs: 6, sm: 3 }}>
           <DashboardKpiCard
             title="총 판매량"
-            content={`${dailyData.latestDaily.totalQuantityTodayKg.toLocaleString()} kg`}
-            caption={dailyData.latestDate}
-            icon={<WarehouseIcon fontSize="small" />}
+            content={`${latestDaily.totalQuantityTodayKg.toLocaleString()} kg`}
+            caption={latestDate}
           />
         </Grid>
-        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+        <Grid size={{ xs: 6, sm: 3 }}>
           <DashboardKpiCard
-            title="거래량이 가장 많은 등급"
-            content={`${
+            title="최다 거래 등급"
+            content={
               GradeKeyToKorean[
-                dailyData.latestDaily.topGradeByQuantity
+                latestDaily.topGradeByQuantity
                   .gradeKey as keyof typeof GradeKeyToKorean
-              ]
-            } `}
-            caption={dailyData.latestDate}
-            icon={<PaymentIcon fontSize="small" />}
+              ] || latestDaily.topGradeByQuantity.gradeKey
+            }
+            caption={latestDate}
           />
         </Grid>
-        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+        <Grid size={{ xs: 6, sm: 3 }}>
           <DashboardKpiCard
             title="최대 거래 지역"
-            content={dailyData.latestDaily.topRegion.region}
-            caption={dailyData.latestDate}
-            icon={<LocationOnIcon fontSize="small" />}
+            content={latestDaily.topRegion.region}
+            caption={latestDate}
           />
         </Grid>
-        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+        <Grid size={{ xs: 6, sm: 3 }}>
           <DashboardKpiCard
             title="최대 거래 조합"
-            content={dailyData.latestDaily.topUnion.union}
-            caption={dailyData.latestDate}
-            icon={<LocationOnIcon fontSize="small" />}
+            content={latestDaily.topUnion.union}
+            caption={latestDate}
           />
         </Grid>
       </Grid>
 
+      {/* 등급별 차트 */}
       <Grid container spacing={2} sx={{ mt: 2 }}>
-        <Grid
-          size={{
-            xs: 12,
-            md: 6,
-          }}
-        >
+        <Grid size={{ xs: 12, md: 6 }}>
           <DashboardCard>
             <Typography variant="subtitle1">
-              등급별 수량(Kg) - {dailyData.latestDate}
+              등급별 수량(Kg) — {latestDate}
             </Typography>
-            <DashboardChartGradePerKg
-              data={dailyData.latestDaily.gradeBreakdown}
-            />
+            <DashboardChartGradePerKg data={latestDaily.gradeBreakdown} />
           </DashboardCard>
         </Grid>
-
-        <Grid
-          size={{
-            xs: 12,
-            md: 6,
-          }}
-        >
+        <Grid size={{ xs: 12, md: 6 }}>
           <DashboardCard>
             <Typography variant="subtitle1">
-              등급별 가격(원) - {dailyData.latestDate}
+              등급별 가격(원) — {latestDate}
             </Typography>
-            <DashboardChartGradePerPrice
-              data={dailyData.latestDaily.gradeBreakdown}
-            />
+            <DashboardChartGradePerPrice data={latestDaily.gradeBreakdown} />
           </DashboardCard>
         </Grid>
       </Grid>
 
+      {/* 주간 차트 */}
       <Grid container sx={{ mt: 2 }}>
         <Grid size={{ xs: 12 }}>
           <DashboardCard>
@@ -147,4 +380,5 @@ const Dashboard = () => {
     </Container>
   );
 };
+
 export default Dashboard;

@@ -78,14 +78,15 @@ export default function DashboardChartWeeklyPrice({
       .nice()
       .range([innerHeight, 0]);
 
-    // Color scale for grades - distinct multi-line palette
+    // Color scale for grades - theme-based
+    const chart = theme.palette.chart;
     const colorScale = d3.scaleOrdinal<string>().domain(grades).range([
-      "#e53e3e", // grade1 - 빨강 (최고등급)
-      "#3182ce", // grade2 - 파랑
-      "#38a169", // grade3Stopped - 초록
-      "#805ad5", // grade3Estimated - 보라
-      "#d69e2e", // gradeBelow - 주황
-      "#718096", // mixedGrade - 회색
+      chart.grade1,
+      chart.grade2,
+      chart.grade3Stopped,
+      chart.grade3Estimated,
+      chart.gradeBelow,
+      chart.mixedGrade,
     ]);
 
     // Create main group
@@ -252,8 +253,8 @@ export default function DashboardChartWeeklyPrice({
               }
             </div>
             <div>📅 날짜: ${d.originalDate}</div>
-            <div>💰 가격: ${d.price.toLocaleString()}원/kg</div>
-            <div>📦 수량: ${d.quantity.toLocaleString()}kg</div>
+            <div>가격: ${d.price.toLocaleString()}원/kg</div>
+            <div>수량: ${d.quantity.toLocaleString()}kg</div>
           `);
 
           const [mouseX, mouseY] = d3.pointer(event, document.body);

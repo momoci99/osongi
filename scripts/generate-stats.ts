@@ -51,6 +51,7 @@ interface YearlyAggregation {
   totalQuantityKg: number;
   totalAmountWon: number;
   regionTotals: Record<string, number>;
+  regionAmountTotals: Record<string, number>;
   unionTotals: Record<string, number>;
 }
 
@@ -177,6 +178,7 @@ for (const year of Object.keys(yearUnionMax)) {
     totalQuantityKg: 0,
     totalAmountWon: 0,
     regionTotals: {},
+    regionAmountTotals: {},
     unionTotals: {},
   };
   unions.forEach((u) => {
@@ -186,6 +188,8 @@ for (const year of Object.keys(yearUnionMax)) {
       (agg.unionTotals[u.union] || 0) + u.quantityTotal;
     agg.regionTotals[u.region] =
       (agg.regionTotals[u.region] || 0) + u.quantityTotal;
+    agg.regionAmountTotals[u.region] =
+      (agg.regionAmountTotals[u.region] || 0) + u.amountTotal;
   });
   yearlyAgg[year] = agg;
 }
@@ -379,7 +383,362 @@ if (latestDateParts) {
   }
 }
 
-const yearlyOutput: YearlyOutputShape = {
+// ===== V2: Extended daily stats (region breakdown + day-over-day) =====
+interface RegionGradeEntry {
+  gradeKey: string;
+  quantityKg: number;
+  unitPriceWon: number;
+}
+
+interface DayOverDayChange {
+  gradeKey: string;
+  currentPrice: number;
+  previousPrice: number;
+  changePercent: number;
+}
+
+interface ExtendedDailyOutput {
+  generatedAt: string;
+  latestDate: string | null;
+  latestDaily: SummaryOutputShape["latestDaily"] & {
+    regionGradeBreakdown: Record<string, RegionGradeEntry[]>;
+    previousDayComparison: {
+      previousDate: string;
+      gradeChanges: DayOverDayChange[];
+    } | null;
+  } | null;
+}
+
+// Find second-latest date for comparison
+let secondLatestDateStr: string | null = null;
+{
+  const allDates: string[] = [];
+  for (const year of listYears()) {
+    const yearPath = join(DATA_ROOT, year);
+    for (const month of listMonths(yearPath)) {
+      const monthPath = join(yearPath, month);
+      for (const dayFile of listDays(monthPath)) {
+        const d = parseInt(dayFile.replace(".json", ""), 10);
+        const m = parseInt(month, 10);
+        const y = parseInt(year, 10);
+        allDates.push(
+          `${y.toString().padStart(4, "0")}-${m.toString().padStart(2, "0")}-${d.toString().padStart(2, "0")}`
+        );
+      }
+    }
+  }
+  allDates.sort();
+  if (allDates.length >= 2 && latestDateStr) {
+    const latestIdx = allDates.lastIndexOf(latestDateStr);
+    if (latestIdx > 0) {
+      secondLatestDateStr = allDates[latestIdx - 1];
+    }
+  }
+}
+
+// Build region-grade breakdown for latest date
+let regionGradeBreakdown: Record<string, RegionGradeEntry[]> = {};
+let previousDayComparison: ExtendedDailyOutput["latestDaily"] extends infer T
+  ? T extends { previousDayComparison: infer P }
+    ? P
+    : never
+  : never = null;
+
+if (latestDateStr) {
+  const [Y, M, D] = latestDateStr.split("-");
+  const dayFilePath = join(DATA_ROOT, Y, String(parseInt(M, 10)), `${parseInt(D, 10)}.json`);
+  try {
+    const raw = JSON.parse(readFileSync(dayFilePath, "utf-8")) as AuctionRecordRaw[];
+    const gradeKeys = ["grade1", "grade2", "grade3Stopped", "grade3Estimated", "gradeBelow", "mixedGrade"] as const;
+
+    // Per-region aggregation
+    const regionAgg: Record<string, Record<string, { qty: number; priceWeightedSum: number }>> = {};
+    for (const rec of raw) {
+      const region = rec.region;
+      if (!regionAgg[region]) regionAgg[region] = {};
+      for (const g of gradeKeys) {
+        const qty = parseNumber(rec[g].quantity);
+        const price = parseNumber(rec[g].unitPrice);
+        if (qty > 0 && price > 0) {
+          const entry = regionAgg[region][g] || (regionAgg[region][g] = { qty: 0, priceWeightedSum: 0 });
+          entry.qty += qty;
+          entry.priceWeightedSum += qty * price;
+        }
+      }
+    }
+
+    for (const [region, grades] of Object.entries(regionAgg)) {
+      regionGradeBreakdown[region] = Object.entries(grades).map(([gradeKey, v]) => ({
+        gradeKey,
+        quantityKg: parseFloat(v.qty.toFixed(2)),
+        unitPriceWon: v.qty > 0 ? parseFloat((v.priceWeightedSum / v.qty).toFixed(2)) : 0,
+      }));
+    }
+  } catch {
+    // ignore
+  }
+
+  // Day-over-day comparison
+  if (secondLatestDateStr) {
+    const [pY, pM, pD] = secondLatestDateStr.split("-");
+    const prevFilePath = join(DATA_ROOT, pY, String(parseInt(pM, 10)), `${parseInt(pD, 10)}.json`);
+    try {
+      const prevRaw = JSON.parse(readFileSync(prevFilePath, "utf-8")) as AuctionRecordRaw[];
+      const gradeKeys = ["grade1", "grade2", "grade3Stopped", "grade3Estimated", "gradeBelow", "mixedGrade"] as const;
+
+      const prevGradeAgg: Record<string, { qty: number; priceWeightedSum: number }> = {};
+      for (const rec of prevRaw) {
+        for (const g of gradeKeys) {
+          const qty = parseNumber(rec[g].quantity);
+          const price = parseNumber(rec[g].unitPrice);
+          if (qty > 0 && price > 0) {
+            const entry = prevGradeAgg[g] || (prevGradeAgg[g] = { qty: 0, priceWeightedSum: 0 });
+            entry.qty += qty;
+            entry.priceWeightedSum += qty * price;
+          }
+        }
+      }
+
+      const gradeChanges: DayOverDayChange[] = [];
+      const currentBreakdown = latestDaily?.gradeBreakdown || [];
+      for (const cur of currentBreakdown) {
+        const prev = prevGradeAgg[cur.gradeKey];
+        const prevPrice = prev && prev.qty > 0 ? prev.priceWeightedSum / prev.qty : 0;
+        const changePercent = prevPrice > 0 ? ((cur.unitPriceWon - prevPrice) / prevPrice) * 100 : 0;
+        gradeChanges.push({
+          gradeKey: cur.gradeKey,
+          currentPrice: cur.unitPriceWon,
+          previousPrice: parseFloat(prevPrice.toFixed(2)),
+          changePercent: parseFloat(changePercent.toFixed(2)),
+        });
+      }
+
+      previousDayComparison = {
+        previousDate: secondLatestDateStr,
+        gradeChanges,
+      };
+    } catch {
+      // ignore
+    }
+  }
+}
+
+// ===== V2: Season manifest =====
+const SEASON_FILE = join(OUTPUT_DIR, "season-manifest.json");
+
+interface SeasonSummary {
+  year: number;
+  startDate: string;
+  endDate: string;
+  totalQuantityKg: number;
+  totalAmountWon: number;
+  avgPricePerKg: number;
+  highestPrice: { date: string; gradeKey: string; price: number } | null;
+  lowestPrice: { date: string; gradeKey: string; price: number } | null;
+}
+
+interface MonthlyPattern {
+  month: number;
+  avgQuantityKg: number;
+  avgPriceWon: number;
+  yearCount: number;
+}
+
+interface RegionRanking {
+  region: string;
+  avgPriceWon: number;
+  totalQuantityKg: number;
+}
+
+interface SeasonManifest {
+  generatedAt: string;
+  latestSeasonSummary: SeasonSummary | null;
+  monthlyPatterns: MonthlyPattern[];
+  regionRanking: RegionRanking[];
+}
+
+// Collect season data (months 8-12 for each year)
+const seasonData: Record<string, {
+  dates: string[];
+  totalQty: number;
+  totalAmt: number;
+  gradeEntries: { date: string; gradeKey: string; price: number }[];
+  regionAgg: Record<string, { qty: number; priceWeightedSum: number }>;
+  monthAgg: Record<number, { qty: number; priceWeightedSum: number; days: number }>;
+}> = {};
+
+for (const year of listYears()) {
+  const yearPath = join(DATA_ROOT, year);
+  for (const month of listMonths(yearPath)) {
+    const monthNum = parseInt(month, 10);
+    if (monthNum < 8 || monthNum > 12) continue; // Season months only
+    const monthPath = join(yearPath, month);
+    for (const dayFile of listDays(monthPath)) {
+      const d = parseInt(dayFile.replace(".json", ""), 10);
+      const dateStr = `${year}-${month.padStart(2, "0")}-${d.toString().padStart(2, "0")}`;
+      const dayPath = join(monthPath, dayFile);
+      let raw: AuctionRecordRaw[] = [];
+      try {
+        raw = JSON.parse(readFileSync(dayPath, "utf-8")) as AuctionRecordRaw[];
+      } catch {
+        continue;
+      }
+      if (raw.length === 0) continue;
+
+      if (!seasonData[year]) {
+        seasonData[year] = { dates: [], totalQty: 0, totalAmt: 0, gradeEntries: [], regionAgg: {}, monthAgg: {} };
+      }
+      const sd = seasonData[year];
+      sd.dates.push(dateStr);
+
+      const gradeKeys = ["grade1", "grade2", "grade3Stopped", "grade3Estimated", "gradeBelow", "mixedGrade"] as const;
+      let dayQty = 0;
+      let dayAmt = 0;
+
+      for (const rec of raw) {
+        const todayQty = parseNumber(rec.auctionQuantity.today);
+        const todayAmt = parseNumber(rec.auctionAmount.today);
+        dayQty += todayQty;
+        dayAmt += todayAmt;
+
+        // Region aggregation
+        const rEntry = sd.regionAgg[rec.region] || (sd.regionAgg[rec.region] = { qty: 0, priceWeightedSum: 0 });
+        for (const g of gradeKeys) {
+          const qty = parseNumber(rec[g].quantity);
+          const price = parseNumber(rec[g].unitPrice);
+          if (qty > 0 && price > 0) {
+            rEntry.qty += qty;
+            rEntry.priceWeightedSum += qty * price;
+            sd.gradeEntries.push({ date: dateStr, gradeKey: g, price });
+          }
+        }
+      }
+
+      sd.totalQty += dayQty;
+      sd.totalAmt += dayAmt;
+
+      // Monthly aggregation
+      const mEntry = sd.monthAgg[monthNum] || (sd.monthAgg[monthNum] = { qty: 0, priceWeightedSum: 0, days: 0 });
+      mEntry.qty += dayQty;
+      mEntry.days += 1;
+      // For monthly avg price, use grade-level weighted data
+      for (const rec of raw) {
+        for (const g of gradeKeys) {
+          const qty = parseNumber(rec[g].quantity);
+          const price = parseNumber(rec[g].unitPrice);
+          if (qty > 0 && price > 0) {
+            mEntry.priceWeightedSum += qty * price;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Build latest season summary
+let latestSeasonSummary: SeasonSummary | null = null;
+const seasonYears = Object.keys(seasonData).map(Number).sort((a, b) => b - a);
+if (seasonYears.length > 0) {
+  const latestSeasonYear = seasonYears[0];
+  const sd = seasonData[String(latestSeasonYear)];
+  sd.dates.sort();
+  const avgPrice = sd.totalQty > 0 ? sd.totalAmt / sd.totalQty : 0;
+
+  let highest: SeasonSummary["highestPrice"] = null;
+  let lowest: SeasonSummary["lowestPrice"] = null;
+  for (const entry of sd.gradeEntries) {
+    if (!highest || entry.price > highest.price) {
+      highest = { date: entry.date, gradeKey: entry.gradeKey, price: entry.price };
+    }
+    if (!lowest || (entry.price < lowest.price && entry.price > 0)) {
+      lowest = { date: entry.date, gradeKey: entry.gradeKey, price: entry.price };
+    }
+  }
+
+  latestSeasonSummary = {
+    year: latestSeasonYear,
+    startDate: sd.dates[0],
+    endDate: sd.dates[sd.dates.length - 1],
+    totalQuantityKg: parseFloat(sd.totalQty.toFixed(2)),
+    totalAmountWon: parseFloat(sd.totalAmt.toFixed(2)),
+    avgPricePerKg: parseFloat(avgPrice.toFixed(2)),
+    highestPrice: highest,
+    lowestPrice: lowest,
+  };
+}
+
+// Build monthly patterns (cross-year average)
+const monthlyAccumulator: Record<number, { totalQty: number; totalPriceWeighted: number; totalDays: number; yearCount: number }> = {};
+for (const [, sd] of Object.entries(seasonData)) {
+  for (const [monthStr, mAgg] of Object.entries(sd.monthAgg)) {
+    const month = parseInt(monthStr, 10);
+    const entry = monthlyAccumulator[month] || (monthlyAccumulator[month] = { totalQty: 0, totalPriceWeighted: 0, totalDays: 0, yearCount: 0 });
+    entry.totalQty += mAgg.qty;
+    entry.totalPriceWeighted += mAgg.priceWeightedSum;
+    entry.totalDays += mAgg.days;
+    entry.yearCount += 1;
+  }
+}
+
+const monthlyPatterns: MonthlyPattern[] = Object.entries(monthlyAccumulator)
+  .map(([monthStr, acc]) => ({
+    month: parseInt(monthStr, 10),
+    avgQuantityKg: acc.yearCount > 0 ? parseFloat((acc.totalQty / acc.yearCount).toFixed(2)) : 0,
+    avgPriceWon: acc.totalQty > 0 ? parseFloat((acc.totalPriceWeighted / acc.totalQty).toFixed(2)) : 0,
+    yearCount: acc.yearCount,
+  }))
+  .sort((a, b) => a.month - b.month);
+
+// Region ranking (latest season)
+const regionRanking: RegionRanking[] = [];
+if (seasonYears.length > 0) {
+  const sd = seasonData[String(seasonYears[0])];
+  for (const [region, agg] of Object.entries(sd.regionAgg)) {
+    regionRanking.push({
+      region,
+      avgPriceWon: agg.qty > 0 ? parseFloat((agg.priceWeightedSum / agg.qty).toFixed(2)) : 0,
+      totalQuantityKg: parseFloat(agg.qty.toFixed(2)),
+    });
+  }
+  regionRanking.sort((a, b) => b.avgPriceWon - a.avgPriceWon);
+}
+
+// Region-specific season summaries (latest season)
+const regionSeasonSummaries: Record<string, { totalQuantityKg: number; totalAmountWon: number; avgPricePerKg: number }> = {};
+if (seasonYears.length > 0) {
+  const sd = seasonData[String(seasonYears[0])];
+  for (const [region, agg] of Object.entries(sd.regionAgg)) {
+    regionSeasonSummaries[region] = {
+      totalQuantityKg: parseFloat(agg.qty.toFixed(2)),
+      totalAmountWon: parseFloat(agg.priceWeightedSum.toFixed(2)),
+      avgPricePerKg: agg.qty > 0 ? parseFloat((agg.priceWeightedSum / agg.qty).toFixed(2)) : 0,
+    };
+  }
+}
+
+const seasonManifest = {
+  generatedAt: new Date().toISOString(),
+  latestSeasonSummary,
+  regionSeasonSummaries,
+  monthlyPatterns,
+  regionRanking,
+};
+
+// ===== End V2 extensions =====
+
+// Build region-yearly data: { "강원": { "2013": { qty, amt }, ... }, ... }
+const regionYearly: Record<string, Record<string, { totalQuantityKg: number; totalAmountWon: number }>> = {};
+for (const [year, agg] of Object.entries(yearlyAgg)) {
+  for (const [region, qty] of Object.entries(agg.regionTotals)) {
+    if (!regionYearly[region]) regionYearly[region] = {};
+    regionYearly[region][year] = {
+      totalQuantityKg: parseFloat(qty.toFixed(2)),
+      totalAmountWon: parseFloat((agg.regionAmountTotals[region] || 0).toFixed(2)),
+    };
+  }
+}
+
+const yearlyOutput = {
   generatedAt: new Date().toISOString(),
   yearly: Object.fromEntries(
     Object.entries(yearlyAgg).map(([year, agg]) => {
@@ -406,12 +765,19 @@ const yearlyOutput: YearlyOutputShape = {
       ];
     })
   ),
+  regionYearly,
 };
 
-const summaryOutput: SummaryOutputShape = {
+const summaryOutput = {
   generatedAt: new Date().toISOString(),
   latestDate: latestDateStr,
-  latestDaily,
+  latestDaily: latestDaily
+    ? {
+        ...latestDaily,
+        regionGradeBreakdown,
+        previousDayComparison,
+      }
+    : null,
 };
 
 const weeklyOutput: WeeklyOutputShape = {
@@ -423,11 +789,14 @@ mkdirSync(OUTPUT_DIR, { recursive: true });
 writeFileSync(YEARLY_FILE, JSON.stringify(yearlyOutput, null, 2));
 writeFileSync(OUTPUT_FILE, JSON.stringify(summaryOutput, null, 2));
 writeFileSync(WEEKLY_FILE, JSON.stringify(weeklyOutput, null, 2));
+writeFileSync(SEASON_FILE, JSON.stringify(seasonManifest, null, 2));
 console.log(
   "Auction stats written to",
   OUTPUT_FILE,
   ",",
   YEARLY_FILE,
+  ",",
+  WEEKLY_FILE,
   "and",
-  WEEKLY_FILE
+  SEASON_FILE
 );
