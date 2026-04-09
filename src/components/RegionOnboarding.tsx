@@ -85,7 +85,17 @@ const RegionOnboarding = () => {
           ))}
         </List>
       </DialogContent>
-      <DialogActions sx={{ px: 3, pb: 2 }}>
+      <DialogActions sx={{ px: 3, pb: 2, justifyContent: "space-between" }}>
+        <Button
+          onClick={completeOnboarding}
+          sx={{
+            textTransform: "none",
+            color: theme.palette.text.secondary,
+            fontWeight: 400,
+          }}
+        >
+          나중에 설정
+        </Button>
         <Button
           variant="contained"
           disabled={!myRegion}

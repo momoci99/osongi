@@ -13,7 +13,10 @@ import {
   Skeleton,
   Select,
   MenuItem,
+  IconButton,
+  Tooltip,
 } from "@mui/material";
+import RefreshIcon from "@mui/icons-material/Refresh";
 import DashboardKpiCard from "../components/Dashboard/DashboardKpiCard";
 import { useEffect, useState } from "react";
 import { DailyDataScheme, type DailyDataType } from "../types/DailyData";
@@ -47,6 +50,8 @@ const Dashboard = () => {
 
   const [dailyData, setDailyData] = useState<DailyDataType | null>(null);
   const [weeklyData, setWeeklyData] = useState<WeeklyManifest | null>(null);
+  const [refreshKey, setRefreshKey] = useState(0);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   useEffect(function initDailyData() {
     fetch("/auction-stats/daily-manifest.json")
@@ -60,14 +65,20 @@ const Dashboard = () => {
         }
       })
       .catch((err) => console.error("Error fetching daily data:", err));
-  }, []);
+  }, [refreshKey]);
 
   useEffect(function initWeeklyData() {
     fetch("/auction-stats/weekly-manifest.json")
       .then((res) => res.json())
       .then((data) => setWeeklyData(data))
-      .catch((err) => console.error("Error fetching weekly data:", err));
-  }, []);
+      .catch((err) => console.error("Error fetching weekly data:", err))
+      .finally(() => setIsRefreshing(false));
+  }, [refreshKey]);
+
+  const handleRefresh = () => {
+    setIsRefreshing(true);
+    setRefreshKey((k) => k + 1);
+  };
 
   if (!dailyData || !weeklyData) {
     return (
@@ -143,14 +154,38 @@ const Dashboard = () => {
           }}
         >
           <Box>
-            <Typography variant="h5" sx={{ fontWeight: 700 }}>
-              송이버섯 시세 대시보드
-            </Typography>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              <Typography variant="h5" sx={{ fontWeight: 700 }}>
+                송이버섯 시세 대시보드
+              </Typography>
+              <Tooltip title="데이터 새로고침">
+                <IconButton
+                  size="small"
+                  onClick={handleRefresh}
+                  disabled={isRefreshing}
+                  sx={{
+                    animation: isRefreshing ? "spin 1s linear infinite" : "none",
+                    "@keyframes spin": {
+                      "0%": { transform: "rotate(0deg)" },
+                      "100%": { transform: "rotate(360deg)" },
+                    },
+                  }}
+                >
+                  <RefreshIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
+            </Box>
             <Typography
               variant="body2"
               sx={{ color: theme.palette.text.secondary, mt: 0.5 }}
             >
               현재 시즌 외 기간입니다. 지난 시즌의 데이터를 분석합니다.
+            </Typography>
+            <Typography
+              variant="caption"
+              sx={{ color: theme.palette.text.secondary }}
+            >
+              마지막 데이터: {latestDate}
             </Typography>
           </Box>
           {regionSelector}
@@ -191,16 +226,49 @@ const Dashboard = () => {
             }}
           />
           {regionSelector}
-          <Typography
-            variant="caption"
-            sx={{ color: theme.palette.text.secondary, ml: "auto" }}
-          >
-            {latestDate} 기준
-          </Typography>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 0.5, ml: "auto" }}>
+            <Typography
+              variant="caption"
+              sx={{ color: theme.palette.text.secondary }}
+            >
+              {latestDate} 기준
+            </Typography>
+            <Tooltip title="데이터 새로고침">
+              <IconButton
+                size="small"
+                onClick={handleRefresh}
+                disabled={isRefreshing}
+                sx={{
+                  animation: isRefreshing ? "spin 1s linear infinite" : "none",
+                  "@keyframes spin": {
+                    "0%": { transform: "rotate(0deg)" },
+                    "100%": { transform: "rotate(360deg)" },
+                  },
+                }}
+              >
+                <RefreshIcon sx={{ fontSize: "1rem" }} />
+              </IconButton>
+            </Tooltip>
+          </Box>
         </Box>
 
-      {myRegion && regionData && regionData.length > 0 && (
+      {myRegion && (!regionData || regionData.length === 0) && (
+          <DashboardCard>
+            <Typography
+              variant="body2"
+              sx={{
+                color: theme.palette.text.secondary,
+                textAlign: "center",
+                py: 3,
+              }}
+            >
+              {myRegion} 지역의 거래 데이터가 없습니다. 시즌 중 공판이 진행되면
+              데이터가 표시됩니다.
+            </Typography>
+          </DashboardCard>
+      )}
 
+      {myRegion && regionData && regionData.length > 0 && (
           <DashboardCard>
             <TableContainer>
               <Table size="small">
