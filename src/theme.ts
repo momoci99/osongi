@@ -7,85 +7,121 @@ declare module "@mui/material/styles" {
     chart: {
       weight: { main: string; light: string; dark: string };
       price: { main: string; light: string; dark: string };
+      up: string;
+      down: string;
+      grade1: string;
+      grade2: string;
+      grade3Stopped: string;
+      grade3Estimated: string;
+      gradeBelow: string;
+      mixedGrade: string;
     };
   }
   interface PaletteOptions {
     chart?: {
       weight: { main: string; light: string; dark: string };
       price: { main: string; light: string; dark: string };
+      up: string;
+      down: string;
+      grade1: string;
+      grade2: string;
+      grade3Stopped: string;
+      grade3Estimated: string;
+      gradeBelow: string;
+      mixedGrade: string;
     };
   }
 }
 
+// Modern Forest 색상 토큰
+const MODERN_FOREST = {
+  light: {
+    background: "#FAFAF9",
+    paper: "#FFFFFF",
+    border: "#E7E5E4",
+    foreground: "#1C1917",
+    muted: "#78716C",
+    primary: "#166534",
+    accent: "#B45309",
+    up: "#B45309",
+    down: "#0891B2",
+    grade1: "#166534",
+    grade2: "#2563EB",
+    grade3Stopped: "#D97706",
+    grade3Estimated: "#7C3AED",
+    gradeBelow: "#DC2626",
+    mixedGrade: "#A8A29E",
+  },
+  dark: {
+    background: "#171412",
+    paper: "#211E1A",
+    border: "#2C2520",
+    foreground: "#FAF9F7",
+    muted: "#8C7E73",
+    primary: "#22C55E",
+    accent: "#FBBF24",
+    up: "#FBBF24",
+    down: "#22D3EE",
+    grade1: "#4ADE80",
+    grade2: "#60A5FA",
+    grade3Stopped: "#FBBF24",
+    grade3Estimated: "#A78BFA",
+    gradeBelow: "#F87171",
+    mixedGrade: "#6B5E54",
+  },
+} as const;
+
 // 공통 타이포그래피 설정
 const commonTypography = {
   fontFamily: [
+    '"Pretendard"',
     '"Noto Sans KR"',
+    "-apple-system",
+    "BlinkMacSystemFont",
+    "system-ui",
     "Roboto",
     '"Helvetica Neue"',
     "Arial",
     "sans-serif",
   ].join(","),
-  // 각 타이포그래피 variant별로 폰트 설정 가능
   h1: {
-    fontFamily: '"Noto Sans KR", Roboto, Arial, sans-serif',
     fontWeight: 700,
   },
   h2: {
-    fontFamily: '"Noto Sans KR", Roboto, Arial, sans-serif',
     fontWeight: 600,
   },
   h3: {
-    fontFamily: '"Noto Sans KR", Roboto, Arial, sans-serif',
     fontWeight: 600,
   },
   h4: {
-    fontFamily: '"Noto Sans KR", Roboto, Arial, sans-serif',
     fontWeight: 500,
   },
   h5: {
-    fontFamily: '"Noto Sans KR", Roboto, Arial, sans-serif',
     fontWeight: 500,
   },
   h6: {
-    fontFamily: '"Noto Sans KR", Roboto, Arial, sans-serif',
     fontWeight: 500,
   },
-  titleBold: {
-    fontFamily: '"Noto Sans KR", Roboto, Arial, sans-serif',
-    fontWeight: 700,
-  },
   subtitle1: {
-    fontFamily: '"Noto Sans KR", Roboto, Arial, sans-serif',
     fontWeight: 400,
   },
   subtitle2: {
-    fontFamily: '"Noto Sans KR", Roboto, Arial, sans-serif',
     fontWeight: 500,
   },
-  subtitle3: {
-    fontFamily: '"Noto Sans KR", Roboto, Arial, sans-serif',
-    fontWeight: 600,
-  },
   body1: {
-    fontFamily: '"Noto Sans KR", Roboto, Arial, sans-serif',
     fontWeight: 400,
   },
   body2: {
-    fontFamily: '"Noto Sans KR", Roboto, Arial, sans-serif',
     fontWeight: 400,
   },
   button: {
-    fontFamily: '"Noto Sans KR", Roboto, Arial, sans-serif',
     fontWeight: 500,
-    textTransform: "none" as const, // 버튼 텍스트 대문자 변환 비활성화
+    textTransform: "none" as const,
   },
   caption: {
-    fontFamily: '"Noto Sans KR", Roboto, Arial, sans-serif',
     fontWeight: 400,
   },
   overline: {
-    fontFamily: '"Noto Sans KR", Roboto, Arial, sans-serif',
     fontWeight: 400,
   },
 };
@@ -93,62 +129,77 @@ const commonTypography = {
 // 테마 생성 함수
 export const createAppTheme = (mode: PaletteMode) => {
   const isLight = mode === "light";
+  const tokens = isLight ? MODERN_FOREST.light : MODERN_FOREST.dark;
 
   return createTheme({
     palette: {
       mode,
       primary: {
-        main: isLight ? "#1976d2" : "#90caf9",
-        light: isLight ? "#42a5f5" : "#bbdefb",
-        dark: isLight ? "#1565c0" : "#5e92f3",
+        main: tokens.primary,
       },
       secondary: {
-        main: isLight ? "#dc004e" : "#f48fb1",
-        light: isLight ? "#e91e63" : "#f8bbd9",
-        dark: isLight ? "#c51162" : "#ad1457",
+        main: tokens.accent,
       },
-      // Custom chart color sets per series/type
       chart: {
-        // Green tones for weight (kg)
         weight: isLight
-          ? { main: "#43a047", light: "#a5d6a7", dark: "#2e7d32" }
-          : { main: "#81c784", light: "#a5d6a7", dark: "#388e3c" },
-
-        // Blue tones for unit price (won/kg)
+          ? { main: "#166534", light: "#86EFAC", dark: "#14532D" }
+          : { main: "#4ADE80", light: "#86EFAC", dark: "#22C55E" },
         price: isLight
-          ? { main: "#1e88e5", light: "#90caf9", dark: "#1565c0" }
-          : { main: "#90caf9", light: "#bbdefb", dark: "#42a5f5" },
+          ? { main: "#2563EB", light: "#93C5FD", dark: "#1D4ED8" }
+          : { main: "#60A5FA", light: "#93C5FD", dark: "#3B82F6" },
+        up: tokens.up,
+        down: tokens.down,
+        grade1: tokens.grade1,
+        grade2: tokens.grade2,
+        grade3Stopped: tokens.grade3Stopped,
+        grade3Estimated: tokens.grade3Estimated,
+        gradeBelow: tokens.gradeBelow,
+        mixedGrade: tokens.mixedGrade,
       },
       background: {
-        default: isLight ? "#fdfbf6" : "#121212",
-        paper: isLight ? "#ffffff" : "#1e1e1e",
+        default: tokens.background,
+        paper: tokens.paper,
       },
       text: {
-        primary: isLight ? "rgba(0, 0, 0, 0.87)" : "rgba(255, 255, 255, 0.87)",
-        secondary: isLight ? "rgba(0, 0, 0, 0.6)" : "rgba(255, 255, 255, 0.6)",
+        primary: tokens.foreground,
+        secondary: tokens.muted,
+      },
+      divider: tokens.border,
+      error: {
+        main: isLight ? "#DC2626" : "#F87171",
       },
     },
     typography: commonTypography,
     components: {
-      // // 컴포넌트별 커스텀 스타일
-      // MuiButton: {
-      //   styleOverrides: {
-      //     root: {
-      //       borderRadius: 8,
-      //       textTransform: "none",
-      //       fontWeight: 500,
-      //     },
-      //   },
-      // },
-      // MuiPaper: {
-      //   styleOverrides: {
-      //     root: {
-      //       backgroundImage: "none", // Material-UI 기본 그라디언트 제거
-      //     },
-      //   },
-      // },
+      MuiCssBaseline: {
+        styleOverrides: {
+          body: {
+            fontVariantNumeric: "tabular-nums",
+          },
+        },
+      },
+      MuiPaper: {
+        styleOverrides: {
+          root: {
+            backgroundImage: "none",
+          },
+        },
+      },
     },
   });
+};
+
+// 등급 컬러 배열 헬퍼 (D3 차트에서 사용)
+export const getGradeColors = (mode: PaletteMode): string[] => {
+  const tokens = mode === "light" ? MODERN_FOREST.light : MODERN_FOREST.dark;
+  return [
+    tokens.grade1,
+    tokens.grade2,
+    tokens.grade3Stopped,
+    tokens.grade3Estimated,
+    tokens.gradeBelow,
+    tokens.mixedGrade,
+  ];
 };
 
 // 기본 light 테마 (하위 호환성을 위해)

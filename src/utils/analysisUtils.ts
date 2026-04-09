@@ -9,11 +9,55 @@ import {
 
 // 필터 상태 타입 정의
 export interface AnalysisFilters {
-  region: string; // 단일 지역 선택
-  union: string;
+  regions: string[]; // 복수 지역 선택
+  unions: string[]; // 복수 조합 선택
   grades: string[];
   startDate: Date;
   endDate: Date;
+  comparisonEnabled: boolean;
+  comparisonStartDate: Date | null;
+  comparisonEndDate: Date | null;
+}
+
+// KPI 계산 결과 타입
+export interface AnalysisKPI {
+  avgPrice: number; // 가중 평균 단가
+  totalQuantity: number; // 총 거래량 (kg)
+  maxPrice: { value: number; date: string; grade: string };
+  minPrice: { value: number; date: string; grade: string };
+  tradingDays: number; // 거래일수
+}
+
+// KPI 변동률 타입
+export interface KPIComparison {
+  current: AnalysisKPI;
+  previous: AnalysisKPI;
+  changes: {
+    avgPrice: number; // 변동률 (%)
+    totalQuantity: number;
+    maxPrice: number;
+    minPrice: number;
+    tradingDays: number;
+  };
+}
+
+// 등급별 비중 타입
+export interface GradeBreakdown {
+  gradeKey: string;
+  quantity: number;
+  amount: number;
+  quantityRatio: number; // 0~1
+  amountRatio: number; // 0~1
+}
+
+// 산점도 데이터 타입
+export interface ScatterDatum {
+  date: string;
+  region: string;
+  union: string;
+  gradeKey: string;
+  quantityKg: number;
+  unitPriceWon: number;
 }
 
 // AuctionRecord를 기존 MushroomAuctionDataRaw 형태로 변환하는 함수
@@ -170,23 +214,23 @@ export async function loadDateData(
   }
 }
 
-// 필터 적용 함수
+// 필터 적용 함수 (복수 지역/조합 지원)
 export function applyFilters(
   data: MushroomAuctionDataRaw[],
   filters: AnalysisFilters
 ): MushroomAuctionDataRaw[] {
   return data.filter((record) => {
-    // 지역 필터 (단일 선택)
-    if (filters.region && record.region !== filters.region) {
+    // 지역 필터 (복수 선택)
+    if (filters.regions.length > 0 && !filters.regions.includes(record.region)) {
       return false;
     }
 
-    // 조합 필터
-    if (filters.union && record.union !== filters.union) {
+    // 조합 필터 (복수 선택)
+    if (filters.unions.length > 0 && !filters.unions.includes(record.union)) {
       return false;
     }
 
-    // 날짜 필터 (시간 제외하고 날짜만 비교)
+    // 날짜 필터
     if (record.date) {
       const recordDate = new Date(record.date);
       if (!isDateInRange(recordDate, filters.startDate, filters.endDate)) {
@@ -196,6 +240,189 @@ export function applyFilters(
 
     return true;
   });
+}
+
+// 등급 데이터 파싱 헬퍼
+function parseGradeData(
+  record: MushroomAuctionDataRaw,
+  gradeKey: string
+): { quantity: number; unitPrice: number } {
+  const gradeData = record[gradeKey as keyof MushroomAuctionDataRaw] as {
+    quantity: string;
+    unitPrice: string;
+  };
+  if (!gradeData?.quantity || !gradeData?.unitPrice) {
+    return { quantity: 0, unitPrice: 0 };
+  }
+  return {
+    quantity: parseFloat(gradeData.quantity.replace(/,/g, "")) || 0,
+    unitPrice: parseFloat(gradeData.unitPrice.replace(/,/g, "")) || 0,
+  };
+}
+
+// KPI 계산 함수
+export function calculateKPI(
+  data: MushroomAuctionDataRaw[],
+  selectedGrades: string[]
+): AnalysisKPI {
+  let totalWeightedPrice = 0;
+  let totalQuantity = 0;
+  let maxPrice = { value: 0, date: "", grade: "" };
+  let minPrice = { value: Infinity, date: "", grade: "" };
+  const tradingDates = new Set<string>();
+
+  data.forEach((record) => {
+    selectedGrades.forEach((gradeKey) => {
+      const { quantity, unitPrice } = parseGradeData(record, gradeKey);
+      if (quantity > 0 && unitPrice > 0) {
+        totalWeightedPrice += unitPrice * quantity;
+        totalQuantity += quantity;
+        if (record.date) tradingDates.add(record.date);
+
+        if (unitPrice > maxPrice.value) {
+          maxPrice = { value: unitPrice, date: record.date || "", grade: gradeKey };
+        }
+        if (unitPrice < minPrice.value) {
+          minPrice = { value: unitPrice, date: record.date || "", grade: gradeKey };
+        }
+      }
+    });
+  });
+
+  if (minPrice.value === Infinity) {
+    minPrice = { value: 0, date: "", grade: "" };
+  }
+
+  return {
+    avgPrice: totalQuantity > 0 ? Math.round(totalWeightedPrice / totalQuantity) : 0,
+    totalQuantity,
+    maxPrice,
+    minPrice,
+    tradingDays: tradingDates.size,
+  };
+}
+
+// KPI 변동률 계산
+export function calculateKPIComparison(
+  current: AnalysisKPI,
+  previous: AnalysisKPI
+): KPIComparison {
+  const pctChange = (cur: number, prev: number) =>
+    prev === 0 ? 0 : ((cur - prev) / prev) * 100;
+
+  return {
+    current,
+    previous,
+    changes: {
+      avgPrice: pctChange(current.avgPrice, previous.avgPrice),
+      totalQuantity: pctChange(current.totalQuantity, previous.totalQuantity),
+      maxPrice: pctChange(current.maxPrice.value, previous.maxPrice.value),
+      minPrice: pctChange(current.minPrice.value, previous.minPrice.value),
+      tradingDays: pctChange(current.tradingDays, previous.tradingDays),
+    },
+  };
+}
+
+// 등급별 비중 계산
+export function calculateGradeBreakdown(
+  data: MushroomAuctionDataRaw[],
+  selectedGrades: string[]
+): GradeBreakdown[] {
+  const gradeMap = new Map<string, { quantity: number; amount: number }>();
+
+  data.forEach((record) => {
+    selectedGrades.forEach((gradeKey) => {
+      const { quantity, unitPrice } = parseGradeData(record, gradeKey);
+      if (quantity > 0) {
+        const existing = gradeMap.get(gradeKey) || { quantity: 0, amount: 0 };
+        existing.quantity += quantity;
+        existing.amount += quantity * unitPrice;
+        gradeMap.set(gradeKey, existing);
+      }
+    });
+  });
+
+  const totalQuantity = Array.from(gradeMap.values()).reduce((s, v) => s + v.quantity, 0);
+  const totalAmount = Array.from(gradeMap.values()).reduce((s, v) => s + v.amount, 0);
+
+  return selectedGrades
+    .filter((key) => gradeMap.has(key))
+    .map((gradeKey) => {
+      const { quantity, amount } = gradeMap.get(gradeKey)!;
+      return {
+        gradeKey,
+        quantity,
+        amount,
+        quantityRatio: totalQuantity > 0 ? quantity / totalQuantity : 0,
+        amountRatio: totalAmount > 0 ? amount / totalAmount : 0,
+      };
+    });
+}
+
+// 산점도 데이터 변환
+export function transformToScatterData(
+  data: MushroomAuctionDataRaw[],
+  selectedGrades: string[]
+): ScatterDatum[] {
+  const result: ScatterDatum[] = [];
+
+  data.forEach((record) => {
+    selectedGrades.forEach((gradeKey) => {
+      const { quantity, unitPrice } = parseGradeData(record, gradeKey);
+      if (quantity > 0 && unitPrice > 0 && record.date) {
+        result.push({
+          date: record.date,
+          region: record.region,
+          union: record.union,
+          gradeKey,
+          quantityKg: quantity,
+          unitPriceWon: unitPrice,
+        });
+      }
+    });
+  });
+
+  return result;
+}
+
+// 지역별 평균 가격 계산 (필터 데이터 기반)
+export function calculateRegionComparison(
+  data: MushroomAuctionDataRaw[],
+  selectedGrades: string[]
+): Array<{ region: string; avgPrice: number; totalQuantity: number }> {
+  const regionMap = new Map<string, { weightedPrice: number; quantity: number }>();
+
+  data.forEach((record) => {
+    selectedGrades.forEach((gradeKey) => {
+      const { quantity, unitPrice } = parseGradeData(record, gradeKey);
+      if (quantity > 0 && unitPrice > 0) {
+        const existing = regionMap.get(record.region) || { weightedPrice: 0, quantity: 0 };
+        existing.weightedPrice += unitPrice * quantity;
+        existing.quantity += quantity;
+        regionMap.set(record.region, existing);
+      }
+    });
+  });
+
+  return Array.from(regionMap.entries())
+    .map(([region, { weightedPrice, quantity }]) => ({
+      region,
+      avgPrice: quantity > 0 ? Math.round(weightedPrice / quantity) : 0,
+      totalQuantity: quantity,
+    }))
+    .sort((a, b) => b.avgPrice - a.avgPrice);
+}
+
+// 비교 기간 자동 계산 (작년 동기간)
+export function getComparisonDateRange(
+  startDate: Date,
+  endDate: Date
+): { startDate: Date; endDate: Date } {
+  const compStart = new Date(startDate);
+  compStart.setFullYear(compStart.getFullYear() - 1);
+  const compEnd = new Date(endDate);
+  compEnd.setFullYear(compEnd.getFullYear() - 1);
+  return { startDate: compStart, endDate: compEnd };
 }
 
 // 차트 데이터 변환 함수

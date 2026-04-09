@@ -31,7 +31,7 @@ const DataInitializer: React.FC<DataInitializerProps> = ({ children }) => {
       >
         <Card sx={{ p: 4, maxWidth: 500, width: "100%", textAlign: "center" }}>
           <Typography variant="h5" gutterBottom>
-            🍄 송이버섯 데이터 준비 중
+            송이버섯 데이터 준비 중
           </Typography>
 
           <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
@@ -68,7 +68,7 @@ const DataInitializer: React.FC<DataInitializerProps> = ({ children }) => {
       >
         <Card sx={{ p: 4, maxWidth: 500, width: "100%", textAlign: "center" }}>
           <Typography variant="h5" gutterBottom color="error">
-            ❌ 데이터 로딩 실패
+            데이터 로딩 실패
           </Typography>
 
           <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
@@ -76,7 +76,7 @@ const DataInitializer: React.FC<DataInitializerProps> = ({ children }) => {
           </Typography>
 
           <Button variant="contained" onClick={forceUpdate} sx={{ mt: 2 }}>
-            🔄 다시 시도
+            다시 시도
           </Button>
         </Card>
       </Box>

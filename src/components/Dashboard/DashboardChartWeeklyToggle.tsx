@@ -94,13 +94,14 @@ export default function DashboardChartWeeklyToggle({
     yScale = d3.scaleLinear().domain([0, yMax]).nice().range([innerHeight, 0]);
 
     // Color scale for grades
+    const chart = theme.palette.chart;
     const colorScale = d3.scaleOrdinal<string>().domain(grades).range([
-      "#e53e3e", // grade1 - 빨강
-      "#3182ce", // grade2 - 파랑
-      "#38a169", // grade3Stopped - 초록
-      "#805ad5", // grade3Estimated - 보라
-      "#d69e2e", // gradeBelow - 주황
-      "#718096", // mixedGrade - 회색
+      chart.grade1,
+      chart.grade2,
+      chart.grade3Stopped,
+      chart.grade3Estimated,
+      chart.gradeBelow,
+      chart.mixedGrade,
     ]);
 
     // Create main group
@@ -265,8 +266,8 @@ export default function DashboardChartWeeklyToggle({
             ] || originalPoint.gradeKey;
           const valueText =
             chartMode === "price"
-              ? `💰 단가: ${originalPoint.price.toLocaleString()}원/kg`
-              : `📦 수량: ${originalPoint.quantity.toLocaleString()}kg`;
+              ? `단가: ${originalPoint.price.toLocaleString()}원/kg`
+              : `수량: ${originalPoint.quantity.toLocaleString()}kg`;
 
           tooltip.html(`
             <div style="font-weight: bold; color: ${grade.color}; margin-bottom: 4px;">
@@ -501,8 +502,8 @@ export default function DashboardChartWeeklyToggle({
           onChange={handleModeChange}
           size="small"
         >
-          <ToggleButton value="price">💰 가격 보기</ToggleButton>
-          <ToggleButton value="quantity">📦 수량 보기</ToggleButton>
+          <ToggleButton value="price">가격</ToggleButton>
+          <ToggleButton value="quantity">수량</ToggleButton>
         </ToggleButtonGroup>
       </Box>
 

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2025-11-12T12:07:01.915Z",
+  "generatedAt": "2026-04-07T14:19:17.035Z",
   "latestDate": "2025-11-12",
   "latestDaily": {
     "totalQuantityTodayKg": 0,
@@ -46,6 +46,52 @@
         "quantityKg": 0,
         "unitPriceWon": 0
       }
-    ]
+    ],
+    "regionGradeBreakdown": {
+      "강원": [],
+      "경북": [],
+      "경남": []
+    },
+    "previousDayComparison": {
+      "previousDate": "2025-11-11",
+      "gradeChanges": [
+        {
+          "gradeKey": "grade1",
+          "currentPrice": 0,
+          "previousPrice": 0,
+          "changePercent": 0
+        },
+        {
+          "gradeKey": "grade2",
+          "currentPrice": 0,
+          "previousPrice": 0,
+          "changePercent": 0
+        },
+        {
+          "gradeKey": "grade3Estimated",
+          "currentPrice": 0,
+          "previousPrice": 0,
+          "changePercent": 0
+        },
+        {
+          "gradeKey": "grade3Stopped",
+          "currentPrice": 0,
+          "previousPrice": 0,
+          "changePercent": 0
+        },
+        {
+          "gradeKey": "gradeBelow",
+          "currentPrice": 0,
+          "previousPrice": 0,
+          "changePercent": 0
+        },
+        {
+          "gradeKey": "mixedGrade",
+          "currentPrice": 0,
+          "previousPrice": 0,
+          "changePercent": 0
+        }
+      ]
+    }
   }
 }

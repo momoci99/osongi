@@ -15,11 +15,13 @@ export default function EmptyState({ loading }: EmptyStateProps) {
           alignItems: "center",
           justifyContent: "center",
           flexDirection: "column",
-          gap: UI_LAYOUT.FORM_GAP,
+          gap: 1.5,
         }}
       >
-        <CircularProgress size={40} />
-        <Typography color="text.secondary">📋 데이터 로딩 중...</Typography>
+        <CircularProgress size={32} />
+        <Typography variant="body2" color="text.secondary">
+          데이터 로딩 중...
+        </Typography>
       </Box>
     );
   }
@@ -31,10 +33,15 @@ export default function EmptyState({ loading }: EmptyStateProps) {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
+        flexDirection: "column",
+        gap: 1,
       }}
     >
-      <Typography color="text.secondary">
-        📋 표시할 데이터가 없습니다
+      <Typography variant="body2" color="text.secondary">
+        표시할 데이터가 없습니다
+      </Typography>
+      <Typography variant="caption" color="text.secondary">
+        필터 조건을 조정해보세요
       </Typography>
     </Box>
   );

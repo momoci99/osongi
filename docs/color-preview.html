@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>오송이 V2 Color Exploration</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Pretendard', system-ui, sans-serif; padding: 2rem 2rem 4rem; background: #F5F5F5; color: #1a1a1a; }
+
+  h1 { font-size: 1.375rem; margin-bottom: 0.125rem; }
+  .subtitle { font-size: 0.8125rem; opacity: 0.5; margin-bottom: 1.5rem; }
+
+  .tabs { display: flex; gap: 0; margin-bottom: 2rem; border-bottom: 2px solid #ddd; overflow-x: auto; }
+  .tab { padding: 0.625rem 1.25rem; cursor: pointer; font-weight: 500; font-size: 0.8125rem; border: none; background: none; color: #888; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.15s; white-space: nowrap; }
+  .tab:hover { color: #444; }
+  .tab.active { color: #111; border-bottom-color: #111; }
+
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  .concept { font-size: 0.8125rem; padding: 1rem 1.25rem; border-radius: 0.5rem; margin-bottom: 1.5rem; line-height: 1.65; }
+  .concept strong { display: block; margin-bottom: 0.25rem; }
+
+  .mode-label { font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; opacity: 0.4; margin-bottom: 0.5rem; margin-top: 1.5rem; }
+  .mode-label:first-child { margin-top: 0; }
+
+  /* Mini palette */
+  .mini-palette { display: flex; gap: 0.375rem; margin-bottom: 1rem; flex-wrap: wrap; }
+  .mini-swatch { width: 40px; height: 40px; border-radius: 0.375rem; border: 1px solid rgba(0,0,0,0.08); position: relative; }
+  .mini-swatch[title]:hover::after { content: attr(title); position: absolute; bottom: -1.5rem; left: 50%; transform: translateX(-50%); font-size: 0.5625rem; white-space: nowrap; background: #333; color: #fff; padding: 0.125rem 0.375rem; border-radius: 0.25rem; z-index: 1; }
+
+  /* Dashboard */
+  .db { border-radius: 0.75rem; padding: 1.25rem; margin-bottom: 1rem; }
+  .db-header { font-size: 0.875rem; font-weight: 600; margin-bottom: 0.875rem; display: flex; align-items: center; gap: 0.5rem; }
+  .db-header .dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+  .db-header .time { font-size: 0.6875rem; opacity: 0.4; font-weight: 400; margin-left: auto; }
+
+  .kpi-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 0.875rem; }
+  .kpi { border-radius: 0.625rem; padding: 1rem; }
+  .kpi-lbl { font-size: 0.6875rem; opacity: 0.5; margin-bottom: 0.125rem; }
+  .kpi-val { font-size: 1.625rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .kpi-val small { font-size: 0.6875rem; opacity: 0.4; font-weight: 400; }
+  .kpi-chg { font-size: 0.75rem; margin-top: 0.125rem; font-weight: 500; }
+
+  .tbl { border-radius: 0.625rem; overflow: hidden; margin-bottom: 0.875rem; }
+  .tbl table { width: 100%; border-collapse: collapse; font-size: 0.8125rem; }
+  .tbl th { padding: 0.5rem 0.75rem; text-align: left; font-weight: 600; font-size: 0.625rem; text-transform: uppercase; letter-spacing: 0.06em; opacity: 0.45; }
+  .tbl td { padding: 0.5rem 0.75rem; font-variant-numeric: tabular-nums; }
+  .chip { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 0.375rem; vertical-align: middle; }
+  .tbl .pr { font-weight: 600; }
+
+  .bars-card { border-radius: 0.625rem; padding: 1rem; }
+  .bars-title { font-size: 0.6875rem; opacity: 0.45; margin-bottom: 0.75rem; }
+  .bars { display: flex; align-items: flex-end; gap: 0.5rem; height: 110px; }
+  .bg { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 0.3rem; }
+  .b { border-radius: 0.25rem 0.25rem 0 0; width: 100%; transition: opacity 0.15s; }
+  .b:hover { opacity: 0.7; }
+  .bv { font-size: 0.5625rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .bl { font-size: 0.5625rem; opacity: 0.4; }
+</style>
+</head>
+<body>
+
+<h1>오송이 V2 — Color Exploration</h1>
+<p class="subtitle">C / D / E 세 가지 방향. 각각 Light + Dark 프리뷰 포함.</p>
+
+<div class="tabs">
+  <button class="tab active" onclick="sw('c')">C. Warm Stone</button>
+  <button class="tab" onclick="sw('d')">D. Navy Finance</button>
+  <button class="tab" onclick="sw('e')">E. Modern Forest</button>
+</div>
+
+<!-- ============== C. WARM STONE ============== -->
+<div class="panel active" id="p-c">
+  <div class="concept" style="background:#FAFAF9; border:1px solid #D6D3D1; color:#44403C;">
+    <strong>C. Warm Stone — 프리미엄 따뜻함</strong>
+    따뜻한 off-white 배경 + 스톤 보더. 텍스트는 차콜. 골드 액센트로 수확/자연 느낌을 은은하게. 녹색은 상승 지표에만. 고급스러우면서 친근한 톤.
+  </div>
+
+  <div class="mini-palette">
+    <div class="mini-swatch" style="background:#FAFAF9" title="BG #FAFAF9"></div>
+    <div class="mini-swatch" style="background:#FFFFFF" title="Card #FFFFFF"></div>
+    <div class="mini-swatch" style="background:#D6D3D1" title="Border #D6D3D1"></div>
+    <div class="mini-swatch" style="background:#1C1917" title="FG #1C1917"></div>
+    <div class="mini-swatch" style="background:#78716C" title="Muted #78716C"></div>
+    <div class="mini-swatch" style="background:#A16207" title="Accent #A16207"></div>
+    <div class="mini-swatch" style="background:#16A34A" title="Up #16A34A"></div>
+    <div class="mini-swatch" style="background:#DC2626" title="Down #DC2626"></div>
+  </div>
+
+  <div class="mode-label">Light</div>
+  <div class="db" style="background:#FAFAF9; border:1px solid #E7E5E4; color:#1C1917;">
+    <div class="db-header"><span class="dot" style="background:#A16207"></span>강원 홍천 오늘 시세<span class="time">10:30 업데이트됨</span></div>
+    <div class="kpi-row">
+      <div class="kpi" style="background:#FFF;border:1px solid #E7E5E4;"><div class="kpi-lbl" style="color:#78716C">1등품 단가</div><div class="kpi-val">285,000<small> 원/kg</small></div><div class="kpi-chg" style="color:#16A34A">&#9650; 12.3%</div></div>
+      <div class="kpi" style="background:#FFF;border:1px solid #E7E5E4;"><div class="kpi-lbl" style="color:#78716C">2등품 단가</div><div class="kpi-val">198,000<small> 원/kg</small></div><div class="kpi-chg" style="color:#DC2626">&#9660; 3.2%</div></div>
+      <div class="kpi" style="background:#FFF;border:1px solid #E7E5E4;"><div class="kpi-lbl" style="color:#78716C">오늘 총 거래량</div><div class="kpi-val">4,521<small> kg</small></div><div class="kpi-chg" style="color:#A8A29E">&#8212; 변동 없음</div></div>
+    </div>
+    <div class="tbl" style="background:#FFF;border:1px solid #E7E5E4;">
+      <table>
+        <thead><tr style="border-bottom:1px solid #E7E5E4"><th style="color:#78716C">등급</th><th style="color:#78716C">수량</th><th style="color:#78716C">단가</th><th style="color:#78716C">변동</th></tr></thead>
+        <tbody>
+          <tr style="border-bottom:1px solid #F5F5F4"><td><span class="chip" style="background:#16A34A"></span>1등품</td><td>1,250</td><td class="pr">285,000</td><td style="color:#16A34A;font-weight:500">&#9650; 12.3%</td></tr>
+          <tr style="border-bottom:1px solid #F5F5F4"><td><span class="chip" style="background:#2563EB"></span>2등품</td><td>980</td><td class="pr">198,000</td><td style="color:#DC2626;font-weight:500">&#9660; 3.2%</td></tr>
+          <tr style="border-bottom:1px solid #F5F5F4"><td><span class="chip" style="background:#D97706"></span>3등품 (생장정지)</td><td>650</td><td class="pr">142,000</td><td style="color:#16A34A;font-weight:500">&#9650; 5.1%</td></tr>
+          <tr style="border-bottom:1px solid #F5F5F4"><td><span class="chip" style="background:#8B5CF6"></span>3등품 (개산)</td><td>520</td><td class="pr">95,000</td><td style="color:#DC2626;font-weight:500">&#9660; 1.8%</td></tr>
+          <tr style="border-bottom:1px solid #F5F5F4"><td><span class="chip" style="background:#EF4444"></span>등외품</td><td>780</td><td class="pr">45,000</td><td style="color:#16A34A;font-weight:500">&#9650; 2.4%</td></tr>
+          <tr><td><span class="chip" style="background:#A8A29E"></span>혼합품</td><td>341</td><td class="pr">68,000</td><td style="color:#A8A29E;font-weight:500">&#8212; 0.0%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="bars-card" style="background:#FFF;border:1px solid #E7E5E4;">
+      <div class="bars-title" style="color:#78716C">등급별 물량 (kg)</div>
+      <div class="bars">
+        <div class="bg"><div class="bv">1,250</div><div class="b" style="height:100%;background:#16A34A"></div><div class="bl">1등품</div></div>
+        <div class="bg"><div class="bv">980</div><div class="b" style="height:78%;background:#2563EB"></div><div class="bl">2등품</div></div>
+        <div class="bg"><div class="bv">650</div><div class="b" style="height:52%;background:#D97706"></div><div class="bl">3등정지</div></div>
+        <div class="bg"><div class="bv">520</div><div class="b" style="height:42%;background:#8B5CF6"></div><div class="bl">3등개산</div></div>
+        <div class="bg"><div class="bv">780</div><div class="b" style="height:62%;background:#EF4444"></div><div class="bl">등외품</div></div>
+        <div class="bg"><div class="bv">341</div><div class="b" style="height:27%;background:#A8A29E"></div><div class="bl">혼합품</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mode-label">Dark</div>
+  <div class="db" style="background:#0C0A09; border:1px solid #292524; color:#FAFAF9;">
+    <div class="db-header"><span class="dot" style="background:#D97706"></span>강원 홍천 오늘 시세<span class="time" style="color:#78716C">10:30 업데이트됨</span></div>
+    <div class="kpi-row">
+      <div class="kpi" style="background:#1C1917;border:1px solid #292524;"><div class="kpi-lbl" style="color:#A8A29E">1등품 단가</div><div class="kpi-val" style="color:#FAFAF9">285,000<small style="color:#78716C"> 원/kg</small></div><div class="kpi-chg" style="color:#4ADE80">&#9650; 12.3%</div></div>
+      <div class="kpi" style="background:#1C1917;border:1px solid #292524;"><div class="kpi-lbl" style="color:#A8A29E">2등품 단가</div><div class="kpi-val" style="color:#FAFAF9">198,000<small style="color:#78716C"> 원/kg</small></div><div class="kpi-chg" style="color:#F87171">&#9660; 3.2%</div></div>
+      <div class="kpi" style="background:#1C1917;border:1px solid #292524;"><div class="kpi-lbl" style="color:#A8A29E">오늘 총 거래량</div><div class="kpi-val" style="color:#FAFAF9">4,521<small style="color:#78716C"> kg</small></div><div class="kpi-chg" style="color:#57534E">&#8212; 변동 없음</div></div>
+    </div>
+    <div class="tbl" style="background:#1C1917;border:1px solid #292524;">
+      <table>
+        <thead><tr style="border-bottom:1px solid #292524"><th style="color:#78716C">등급</th><th style="color:#78716C">수량</th><th style="color:#78716C">단가</th><th style="color:#78716C">변동</th></tr></thead>
+        <tbody>
+          <tr style="border-bottom:1px solid #292524"><td style="color:#E7E5E4"><span class="chip" style="background:#4ADE80"></span>1등품</td><td style="color:#D6D3D1">1,250</td><td class="pr" style="color:#FAFAF9">285,000</td><td style="color:#4ADE80;font-weight:500">&#9650; 12.3%</td></tr>
+          <tr style="border-bottom:1px solid #292524"><td style="color:#E7E5E4"><span class="chip" style="background:#60A5FA"></span>2등품</td><td style="color:#D6D3D1">980</td><td class="pr" style="color:#FAFAF9">198,000</td><td style="color:#F87171;font-weight:500">&#9660; 3.2%</td></tr>
+          <tr style="border-bottom:1px solid #292524"><td style="color:#E7E5E4"><span class="chip" style="background:#FBBF24"></span>3등품 (생장정지)</td><td style="color:#D6D3D1">650</td><td class="pr" style="color:#FAFAF9">142,000</td><td style="color:#4ADE80;font-weight:500">&#9650; 5.1%</td></tr>
+          <tr style="border-bottom:1px solid #292524"><td style="color:#E7E5E4"><span class="chip" style="background:#A78BFA"></span>3등품 (개산)</td><td style="color:#D6D3D1">520</td><td class="pr" style="color:#FAFAF9">95,000</td><td style="color:#F87171;font-weight:500">&#9660; 1.8%</td></tr>
+          <tr style="border-bottom:1px solid #292524"><td style="color:#E7E5E4"><span class="chip" style="background:#F87171"></span>등외품</td><td style="color:#D6D3D1">780</td><td class="pr" style="color:#FAFAF9">45,000</td><td style="color:#4ADE80;font-weight:500">&#9650; 2.4%</td></tr>
+          <tr><td style="color:#E7E5E4"><span class="chip" style="background:#78716C"></span>혼합품</td><td style="color:#D6D3D1">341</td><td class="pr" style="color:#FAFAF9">68,000</td><td style="color:#57534E;font-weight:500">&#8212; 0.0%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="bars-card" style="background:#1C1917;border:1px solid #292524;">
+      <div class="bars-title" style="color:#78716C">등급별 물량 (kg)</div>
+      <div class="bars">
+        <div class="bg"><div class="bv" style="color:#D6D3D1">1,250</div><div class="b" style="height:100%;background:#4ADE80"></div><div class="bl" style="color:#78716C">1등품</div></div>
+        <div class="bg"><div class="bv" style="color:#D6D3D1">980</div><div class="b" style="height:78%;background:#60A5FA"></div><div class="bl" style="color:#78716C">2등품</div></div>
+        <div class="bg"><div class="bv" style="color:#D6D3D1">650</div><div class="b" style="height:52%;background:#FBBF24"></div><div class="bl" style="color:#78716C">3등정지</div></div>
+        <div class="bg"><div class="bv" style="color:#D6D3D1">520</div><div class="b" style="height:42%;background:#A78BFA"></div><div class="bl" style="color:#78716C">3등개산</div></div>
+        <div class="bg"><div class="bv" style="color:#D6D3D1">780</div><div class="b" style="height:62%;background:#F87171"></div><div class="bl" style="color:#78716C">등외품</div></div>
+        <div class="bg"><div class="bv" style="color:#D6D3D1">341</div><div class="b" style="height:27%;background:#78716C"></div><div class="bl" style="color:#78716C">혼합품</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============== D. NAVY FINANCE ============== -->
+<div class="panel" id="p-d">
+  <div class="concept" style="background:#F0F4FF; border:1px solid #DBEAFE; color:#1E3A8A;">
+    <strong>D. Navy Finance — 전문 데이터 도구</strong>
+    딥 네이비 + 블루 계열. 금융/원자재 시세 대시보드 분위기. 신뢰감·전문성 강조. 다크 모드가 특히 강력 — 데이터가 빛나는 느낌.
+  </div>
+
+  <div class="mini-palette">
+    <div class="mini-swatch" style="background:#F8FAFC" title="BG Light #F8FAFC"></div>
+    <div class="mini-swatch" style="background:#FFFFFF" title="Card #FFFFFF"></div>
+    <div class="mini-swatch" style="background:#E2E8F0" title="Border #E2E8F0"></div>
+    <div class="mini-swatch" style="background:#0F172A" title="FG #0F172A"></div>
+    <div class="mini-swatch" style="background:#1E40AF" title="Primary #1E40AF"></div>
+    <div class="mini-swatch" style="background:#3B82F6" title="Secondary #3B82F6"></div>
+    <div class="mini-swatch" style="background:#D97706" title="Accent #D97706"></div>
+    <div class="mini-swatch" style="background:#020617" title="BG Dark #020617"></div>
+  </div>
+
+  <div class="mode-label">Light</div>
+  <div class="db" style="background:#F8FAFC; border:1px solid #E2E8F0; color:#0F172A;">
+    <div class="db-header"><span class="dot" style="background:#1E40AF"></span>강원 홍천 오늘 시세<span class="time">10:30 업데이트됨</span></div>
+    <div class="kpi-row">
+      <div class="kpi" style="background:#FFF;border:1px solid #E2E8F0;"><div class="kpi-lbl" style="color:#64748B">1등품 단가</div><div class="kpi-val" style="color:#0F172A">285,000<small> 원/kg</small></div><div class="kpi-chg" style="color:#16A34A">&#9650; 12.3%</div></div>
+      <div class="kpi" style="background:#FFF;border:1px solid #E2E8F0;"><div class="kpi-lbl" style="color:#64748B">2등품 단가</div><div class="kpi-val" style="color:#0F172A">198,000<small> 원/kg</small></div><div class="kpi-chg" style="color:#DC2626">&#9660; 3.2%</div></div>
+      <div class="kpi" style="background:#FFF;border:1px solid #E2E8F0;"><div class="kpi-lbl" style="color:#64748B">오늘 총 거래량</div><div class="kpi-val" style="color:#0F172A">4,521<small> kg</small></div><div class="kpi-chg" style="color:#94A3B8">&#8212; 변동 없음</div></div>
+    </div>
+    <div class="tbl" style="background:#FFF;border:1px solid #E2E8F0;">
+      <table>
+        <thead><tr style="border-bottom:1px solid #E2E8F0"><th style="color:#64748B">등급</th><th style="color:#64748B">수량</th><th style="color:#64748B">단가</th><th style="color:#64748B">변동</th></tr></thead>
+        <tbody>
+          <tr style="border-bottom:1px solid #F1F5F9"><td><span class="chip" style="background:#1E40AF"></span>1등품</td><td>1,250</td><td class="pr">285,000</td><td style="color:#16A34A;font-weight:500">&#9650; 12.3%</td></tr>
+          <tr style="border-bottom:1px solid #F1F5F9"><td><span class="chip" style="background:#3B82F6"></span>2등품</td><td>980</td><td class="pr">198,000</td><td style="color:#DC2626;font-weight:500">&#9660; 3.2%</td></tr>
+          <tr style="border-bottom:1px solid #F1F5F9"><td><span class="chip" style="background:#D97706"></span>3등품 (생장정지)</td><td>650</td><td class="pr">142,000</td><td style="color:#16A34A;font-weight:500">&#9650; 5.1%</td></tr>
+          <tr style="border-bottom:1px solid #F1F5F9"><td><span class="chip" style="background:#8B5CF6"></span>3등품 (개산)</td><td>520</td><td class="pr">95,000</td><td style="color:#DC2626;font-weight:500">&#9660; 1.8%</td></tr>
+          <tr style="border-bottom:1px solid #F1F5F9"><td><span class="chip" style="background:#EF4444"></span>등외품</td><td>780</td><td class="pr">45,000</td><td style="color:#16A34A;font-weight:500">&#9650; 2.4%</td></tr>
+          <tr><td><span class="chip" style="background:#94A3B8"></span>혼합품</td><td>341</td><td class="pr">68,000</td><td style="color:#94A3B8;font-weight:500">&#8212; 0.0%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="bars-card" style="background:#FFF;border:1px solid #E2E8F0;">
+      <div class="bars-title" style="color:#64748B">등급별 물량 (kg)</div>
+      <div class="bars">
+        <div class="bg"><div class="bv">1,250</div><div class="b" style="height:100%;background:#1E40AF"></div><div class="bl">1등품</div></div>
+        <div class="bg"><div class="bv">980</div><div class="b" style="height:78%;background:#3B82F6"></div><div class="bl">2등품</div></div>
+        <div class="bg"><div class="bv">650</div><div class="b" style="height:52%;background:#D97706"></div><div class="bl">3등정지</div></div>
+        <div class="bg"><div class="bv">520</div><div class="b" style="height:42%;background:#8B5CF6"></div><div class="bl">3등개산</div></div>
+        <div class="bg"><div class="bv">780</div><div class="b" style="height:62%;background:#EF4444"></div><div class="bl">등외품</div></div>
+        <div class="bg"><div class="bv">341</div><div class="b" style="height:27%;background:#94A3B8"></div><div class="bl">혼합품</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mode-label">Dark</div>
+  <div class="db" style="background:#020617; border:1px solid #1E293B; color:#F8FAFC;">
+    <div class="db-header"><span class="dot" style="background:#3B82F6"></span>강원 홍천 오늘 시세<span class="time" style="color:#475569">10:30 업데이트됨</span></div>
+    <div class="kpi-row">
+      <div class="kpi" style="background:#0E1223;border:1px solid #1E293B;"><div class="kpi-lbl" style="color:#64748B">1등품 단가</div><div class="kpi-val" style="color:#F8FAFC">285,000<small style="color:#475569"> 원/kg</small></div><div class="kpi-chg" style="color:#4ADE80">&#9650; 12.3%</div></div>
+      <div class="kpi" style="background:#0E1223;border:1px solid #1E293B;"><div class="kpi-lbl" style="color:#64748B">2등품 단가</div><div class="kpi-val" style="color:#F8FAFC">198,000<small style="color:#475569"> 원/kg</small></div><div class="kpi-chg" style="color:#F87171">&#9660; 3.2%</div></div>
+      <div class="kpi" style="background:#0E1223;border:1px solid #1E293B;"><div class="kpi-lbl" style="color:#64748B">오늘 총 거래량</div><div class="kpi-val" style="color:#F8FAFC">4,521<small style="color:#475569"> kg</small></div><div class="kpi-chg" style="color:#334155">&#8212; 변동 없음</div></div>
+    </div>
+    <div class="tbl" style="background:#0E1223;border:1px solid #1E293B;">
+      <table>
+        <thead><tr style="border-bottom:1px solid #1E293B"><th style="color:#475569">등급</th><th style="color:#475569">수량</th><th style="color:#475569">단가</th><th style="color:#475569">변동</th></tr></thead>
+        <tbody>
+          <tr style="border-bottom:1px solid #1E293B"><td style="color:#CBD5E1"><span class="chip" style="background:#60A5FA"></span>1등품</td><td style="color:#94A3B8">1,250</td><td class="pr" style="color:#F8FAFC">285,000</td><td style="color:#4ADE80;font-weight:500">&#9650; 12.3%</td></tr>
+          <tr style="border-bottom:1px solid #1E293B"><td style="color:#CBD5E1"><span class="chip" style="background:#93C5FD"></span>2등품</td><td style="color:#94A3B8">980</td><td class="pr" style="color:#F8FAFC">198,000</td><td style="color:#F87171;font-weight:500">&#9660; 3.2%</td></tr>
+          <tr style="border-bottom:1px solid #1E293B"><td style="color:#CBD5E1"><span class="chip" style="background:#FBBF24"></span>3등품 (생장정지)</td><td style="color:#94A3B8">650</td><td class="pr" style="color:#F8FAFC">142,000</td><td style="color:#4ADE80;font-weight:500">&#9650; 5.1%</td></tr>
+          <tr style="border-bottom:1px solid #1E293B"><td style="color:#CBD5E1"><span class="chip" style="background:#A78BFA"></span>3등품 (개산)</td><td style="color:#94A3B8">520</td><td class="pr" style="color:#F8FAFC">95,000</td><td style="color:#F87171;font-weight:500">&#9660; 1.8%</td></tr>
+          <tr style="border-bottom:1px solid #1E293B"><td style="color:#CBD5E1"><span class="chip" style="background:#F87171"></span>등외품</td><td style="color:#94A3B8">780</td><td class="pr" style="color:#F8FAFC">45,000</td><td style="color:#4ADE80;font-weight:500">&#9650; 2.4%</td></tr>
+          <tr><td style="color:#CBD5E1"><span class="chip" style="background:#475569"></span>혼합품</td><td style="color:#94A3B8">341</td><td class="pr" style="color:#F8FAFC">68,000</td><td style="color:#334155;font-weight:500">&#8212; 0.0%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="bars-card" style="background:#0E1223;border:1px solid #1E293B;">
+      <div class="bars-title" style="color:#475569">등급별 물량 (kg)</div>
+      <div class="bars">
+        <div class="bg"><div class="bv" style="color:#94A3B8">1,250</div><div class="b" style="height:100%;background:#60A5FA"></div><div class="bl" style="color:#475569">1등품</div></div>
+        <div class="bg"><div class="bv" style="color:#94A3B8">980</div><div class="b" style="height:78%;background:#93C5FD"></div><div class="bl" style="color:#475569">2등품</div></div>
+        <div class="bg"><div class="bv" style="color:#94A3B8">650</div><div class="b" style="height:52%;background:#FBBF24"></div><div class="bl" style="color:#475569">3등정지</div></div>
+        <div class="bg"><div class="bv" style="color:#94A3B8">520</div><div class="b" style="height:42%;background:#A78BFA"></div><div class="bl" style="color:#475569">3등개산</div></div>
+        <div class="bg"><div class="bv" style="color:#94A3B8">780</div><div class="b" style="height:62%;background:#F87171"></div><div class="bl" style="color:#475569">등외품</div></div>
+        <div class="bg"><div class="bv" style="color:#94A3B8">341</div><div class="b" style="height:27%;background:#475569"></div><div class="bl" style="color:#475569">혼합품</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============== E. MODERN FOREST ============== -->
+<div class="panel" id="p-e">
+  <div class="concept" style="background:#F5F5F4; border:1px solid #D6D3D1; color:#292524;">
+    <strong>E. Modern Forest — 절제된 자연</strong>
+    따뜻한 중립 캔버스 위에 짙은 포레스트 그린(#166534)을 포인트로만. 녹색이 등장하면 "자연/송이" 느낌이지만 과하지 않음. 다크 모드는 따뜻한 차콜 기반으로 분위기 유지.
+  </div>
+
+  <div class="mini-palette">
+    <div class="mini-swatch" style="background:#FAFAF9" title="BG #FAFAF9"></div>
+    <div class="mini-swatch" style="background:#FFFFFF" title="Card #FFFFFF"></div>
+    <div class="mini-swatch" style="background:#E7E5E4" title="Border #E7E5E4"></div>
+    <div class="mini-swatch" style="background:#1C1917" title="FG #1C1917"></div>
+    <div class="mini-swatch" style="background:#166534" title="Primary #166534"></div>
+    <div class="mini-swatch" style="background:#B45309" title="Accent #B45309"></div>
+    <div class="mini-swatch" style="background:#15803D" title="Up #15803D"></div>
+    <div class="mini-swatch" style="background:#171412" title="BG Dark #171412"></div>
+  </div>
+
+  <div class="mode-label">Light</div>
+  <div class="db" style="background:#FAFAF9; border:1px solid #E7E5E4; color:#1C1917;">
+    <div class="db-header"><span class="dot" style="background:#166534"></span>강원 홍천 오늘 시세<span class="time">10:30 업데이트됨</span></div>
+    <div class="kpi-row">
+      <div class="kpi" style="background:#FFF;border:1px solid #E7E5E4;"><div class="kpi-lbl" style="color:#78716C">1등품 단가</div><div class="kpi-val" style="color:#1C1917">285,000<small> 원/kg</small></div><div class="kpi-chg" style="color:#15803D">&#9650; 12.3%</div></div>
+      <div class="kpi" style="background:#FFF;border:1px solid #E7E5E4;"><div class="kpi-lbl" style="color:#78716C">2등품 단가</div><div class="kpi-val" style="color:#1C1917">198,000<small> 원/kg</small></div><div class="kpi-chg" style="color:#DC2626">&#9660; 3.2%</div></div>
+      <div class="kpi" style="background:#FFF;border:1px solid #E7E5E4;"><div class="kpi-lbl" style="color:#78716C">오늘 총 거래량</div><div class="kpi-val" style="color:#1C1917">4,521<small> kg</small></div><div class="kpi-chg" style="color:#A8A29E">&#8212; 변동 없음</div></div>
+    </div>
+    <div class="tbl" style="background:#FFF;border:1px solid #E7E5E4;">
+      <table>
+        <thead><tr style="border-bottom:1px solid #E7E5E4"><th style="color:#78716C">등급</th><th style="color:#78716C">수량</th><th style="color:#78716C">단가</th><th style="color:#78716C">변동</th></tr></thead>
+        <tbody>
+          <tr style="border-bottom:1px solid #F5F5F4"><td><span class="chip" style="background:#166534"></span>1등품</td><td>1,250</td><td class="pr">285,000</td><td style="color:#15803D;font-weight:500">&#9650; 12.3%</td></tr>
+          <tr style="border-bottom:1px solid #F5F5F4"><td><span class="chip" style="background:#2563EB"></span>2등품</td><td>980</td><td class="pr">198,000</td><td style="color:#DC2626;font-weight:500">&#9660; 3.2%</td></tr>
+          <tr style="border-bottom:1px solid #F5F5F4"><td><span class="chip" style="background:#B45309"></span>3등품 (생장정지)</td><td>650</td><td class="pr">142,000</td><td style="color:#15803D;font-weight:500">&#9650; 5.1%</td></tr>
+          <tr style="border-bottom:1px solid #F5F5F4"><td><span class="chip" style="background:#7C3AED"></span>3등품 (개산)</td><td>520</td><td class="pr">95,000</td><td style="color:#DC2626;font-weight:500">&#9660; 1.8%</td></tr>
+          <tr style="border-bottom:1px solid #F5F5F4"><td><span class="chip" style="background:#DC2626"></span>등외품</td><td>780</td><td class="pr">45,000</td><td style="color:#15803D;font-weight:500">&#9650; 2.4%</td></tr>
+          <tr><td><span class="chip" style="background:#A8A29E"></span>혼합품</td><td>341</td><td class="pr">68,000</td><td style="color:#A8A29E;font-weight:500">&#8212; 0.0%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="bars-card" style="background:#FFF;border:1px solid #E7E5E4;">
+      <div class="bars-title" style="color:#78716C">등급별 물량 (kg)</div>
+      <div class="bars">
+        <div class="bg"><div class="bv">1,250</div><div class="b" style="height:100%;background:#166534"></div><div class="bl">1등품</div></div>
+        <div class="bg"><div class="bv">980</div><div class="b" style="height:78%;background:#2563EB"></div><div class="bl">2등품</div></div>
+        <div class="bg"><div class="bv">650</div><div class="b" style="height:52%;background:#B45309"></div><div class="bl">3등정지</div></div>
+        <div class="bg"><div class="bv">520</div><div class="b" style="height:42%;background:#7C3AED"></div><div class="bl">3등개산</div></div>
+        <div class="bg"><div class="bv">780</div><div class="b" style="height:62%;background:#DC2626"></div><div class="bl">등외품</div></div>
+        <div class="bg"><div class="bv">341</div><div class="b" style="height:27%;background:#A8A29E"></div><div class="bl">혼합품</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mode-label">Dark</div>
+  <div class="db" style="background:#171412; border:1px solid #2C2520; color:#FAF9F7;">
+    <div class="db-header"><span class="dot" style="background:#22C55E"></span>강원 홍천 오늘 시세<span class="time" style="color:#6B5E54">10:30 업데이트됨</span></div>
+    <div class="kpi-row">
+      <div class="kpi" style="background:#211E1A;border:1px solid #2C2520;"><div class="kpi-lbl" style="color:#8C7E73">1등품 단가</div><div class="kpi-val" style="color:#FAF9F7">285,000<small style="color:#6B5E54"> 원/kg</small></div><div class="kpi-chg" style="color:#4ADE80">&#9650; 12.3%</div></div>
+      <div class="kpi" style="background:#211E1A;border:1px solid #2C2520;"><div class="kpi-lbl" style="color:#8C7E73">2등품 단가</div><div class="kpi-val" style="color:#FAF9F7">198,000<small style="color:#6B5E54"> 원/kg</small></div><div class="kpi-chg" style="color:#F87171">&#9660; 3.2%</div></div>
+      <div class="kpi" style="background:#211E1A;border:1px solid #2C2520;"><div class="kpi-lbl" style="color:#8C7E73">오늘 총 거래량</div><div class="kpi-val" style="color:#FAF9F7">4,521<small style="color:#6B5E54"> kg</small></div><div class="kpi-chg" style="color:#4A3F36">&#8212; 변동 없음</div></div>
+    </div>
+    <div class="tbl" style="background:#211E1A;border:1px solid #2C2520;">
+      <table>
+        <thead><tr style="border-bottom:1px solid #2C2520"><th style="color:#6B5E54">등급</th><th style="color:#6B5E54">수량</th><th style="color:#6B5E54">단가</th><th style="color:#6B5E54">변동</th></tr></thead>
+        <tbody>
+          <tr style="border-bottom:1px solid #2C2520"><td style="color:#D6CFC8"><span class="chip" style="background:#4ADE80"></span>1등품</td><td style="color:#A89E94">1,250</td><td class="pr" style="color:#FAF9F7">285,000</td><td style="color:#4ADE80;font-weight:500">&#9650; 12.3%</td></tr>
+          <tr style="border-bottom:1px solid #2C2520"><td style="color:#D6CFC8"><span class="chip" style="background:#60A5FA"></span>2등품</td><td style="color:#A89E94">980</td><td class="pr" style="color:#FAF9F7">198,000</td><td style="color:#F87171;font-weight:500">&#9660; 3.2%</td></tr>
+          <tr style="border-bottom:1px solid #2C2520"><td style="color:#D6CFC8"><span class="chip" style="background:#FBBF24"></span>3등품 (생장정지)</td><td style="color:#A89E94">650</td><td class="pr" style="color:#FAF9F7">142,000</td><td style="color:#4ADE80;font-weight:500">&#9650; 5.1%</td></tr>
+          <tr style="border-bottom:1px solid #2C2520"><td style="color:#D6CFC8"><span class="chip" style="background:#A78BFA"></span>3등품 (개산)</td><td style="color:#A89E94">520</td><td class="pr" style="color:#FAF9F7">95,000</td><td style="color:#F87171;font-weight:500">&#9660; 1.8%</td></tr>
+          <tr style="border-bottom:1px solid #2C2520"><td style="color:#D6CFC8"><span class="chip" style="background:#F87171"></span>등외품</td><td style="color:#A89E94">780</td><td class="pr" style="color:#FAF9F7">45,000</td><td style="color:#4ADE80;font-weight:500">&#9650; 2.4%</td></tr>
+          <tr><td style="color:#D6CFC8"><span class="chip" style="background:#6B5E54"></span>혼합품</td><td style="color:#A89E94">341</td><td class="pr" style="color:#FAF9F7">68,000</td><td style="color:#4A3F36;font-weight:500">&#8212; 0.0%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="bars-card" style="background:#211E1A;border:1px solid #2C2520;">
+      <div class="bars-title" style="color:#6B5E54">등급별 물량 (kg)</div>
+      <div class="bars">
+        <div class="bg"><div class="bv" style="color:#A89E94">1,250</div><div class="b" style="height:100%;background:#4ADE80"></div><div class="bl" style="color:#6B5E54">1등품</div></div>
+        <div class="bg"><div class="bv" style="color:#A89E94">980</div><div class="b" style="height:78%;background:#60A5FA"></div><div class="bl" style="color:#6B5E54">2등품</div></div>
+        <div class="bg"><div class="bv" style="color:#A89E94">650</div><div class="b" style="height:52%;background:#FBBF24"></div><div class="bl" style="color:#6B5E54">3등정지</div></div>
+        <div class="bg"><div class="bv" style="color:#A89E94">520</div><div class="b" style="height:42%;background:#A78BFA"></div><div class="bl" style="color:#6B5E54">3등개산</div></div>
+        <div class="bg"><div class="bv" style="color:#A89E94">780</div><div class="b" style="height:62%;background:#F87171"></div><div class="bl" style="color:#6B5E54">등외품</div></div>
+        <div class="bg"><div class="bv" style="color:#A89E94">341</div><div class="b" style="height:27%;background:#6B5E54"></div><div class="bl" style="color:#6B5E54">혼합품</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function sw(id) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  const tabs = document.querySelectorAll('.tab');
+  const idx = {c:0, d:1, e:2}[id];
+  tabs[idx].classList.add('active');
+  document.getElementById('p-' + id).classList.add('active');
+}
+</script>
+
+</body>
+</html>
