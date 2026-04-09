@@ -161,7 +161,7 @@ export default function ScatterPlotChart({
           .style("background", theme.palette.background.paper)
           .style("border", `1px solid ${theme.palette.divider}`)
           .style("border-radius", "8px")
-          .style("padding", "10px 12px")
+          .style("padding", "10px 14px")
           .style("font-size", "12px")
           .style("box-shadow", theme.shadows[4])
           .style("pointer-events", "none")
@@ -256,7 +256,7 @@ export default function ScatterPlotChart({
           mb: 1,
         }}
       >
-        <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
+        <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
           가격-물량 상관
         </Typography>
         <FormControlLabel
@@ -289,10 +289,15 @@ export default function ScatterPlotChart({
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
+              flexDirection: "column",
+              gap: 1,
             }}
           >
             <Typography variant="body2" color="text.secondary">
-              데이터 없음
+              표시할 데이터가 없습니다
+            </Typography>
+            <Typography variant="caption" color="text.secondary">
+              필터 조건을 조정해보세요
             </Typography>
           </Box>
         )}

@@ -26,11 +26,11 @@ export const CHART_MARGINS = {
   BOTTOM: 60,
   MOBILE: {
     LEFT: 60,
-    RIGHT: 80,
+    RIGHT: 20,
   },
   DESKTOP: {
     LEFT: 80,
-    RIGHT: 120,
+    RIGHT: 24,
   },
 } as const;
 

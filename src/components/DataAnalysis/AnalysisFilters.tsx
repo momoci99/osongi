@@ -142,7 +142,7 @@ export default function AnalysisFiltersComponent({
       variant="outlined"
       sx={{
         p: 2.5,
-        mb: 3,
+        mb: 2.5,
         borderRadius: "0.75rem",
         backgroundColor: theme.palette.background.paper,
       }}
@@ -155,7 +155,7 @@ export default function AnalysisFiltersComponent({
           mb: 2,
         }}
       >
-        <Typography variant="h6" sx={{ fontWeight: 600 }}>
+        <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
           필터
         </Typography>
         <Button variant="outlined" size="small" onClick={onResetFilters}>

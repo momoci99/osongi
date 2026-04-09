@@ -75,10 +75,10 @@ export default function TableSection({
           mb: UI_LAYOUT.SECTION_MARGIN_BOTTOM,
         }}
       >
-        <Typography variant="h6">상세 데이터</Typography>
+        <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>상세 데이터</Typography>
         {!loading && tableData.length > 0 && (
           <Typography variant="body2" color="text.secondary">
-            📋 총 {tableData.length}개 레코드
+            총 {tableData.length}개 레코드
           </Typography>
         )}
       </Box>

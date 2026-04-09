@@ -66,12 +66,22 @@ function KPICard({
         borderRadius: "0.75rem",
         backgroundColor: theme.palette.background.paper,
         height: "100%",
+        transition: "border-color 0.2s ease, box-shadow 0.2s ease",
+        "&:hover": {
+          borderColor: theme.palette.primary.main,
+          boxShadow: `0 0 0 1px ${theme.palette.primary.main}20`,
+        },
       }}
     >
       <Typography
         variant="caption"
         color="text.secondary"
-        sx={{ fontWeight: 500, display: "block", mb: 0.5 }}
+        sx={{
+          fontWeight: 500,
+          display: "block",
+          mb: 0.75,
+          letterSpacing: "0.02em",
+        }}
       >
         {title}
       </Typography>
@@ -88,7 +98,12 @@ function KPICard({
         <Typography
           variant="caption"
           color="text.secondary"
-          sx={{ display: "block", mt: 0.25, fontSize: "0.7rem" }}
+          sx={{
+            display: "block",
+            mt: 0.5,
+            fontSize: "0.75rem",
+            lineHeight: 1.4,
+          }}
         >
           {sub}
         </Typography>
@@ -104,7 +119,7 @@ export default function AnalysisKPISection({
 }: AnalysisKPIProps) {
   if (loading) {
     return (
-      <Grid container spacing={1.5} sx={{ mb: 3 }}>
+      <Grid container spacing={1.5} sx={{ mb: 2.5 }}>
         {[...Array(5)].map((_, i) => (
           <Grid key={i} size={{ xs: 6, sm: 4, md: 2.4 }}>
             <Paper
@@ -130,7 +145,7 @@ export default function AnalysisKPISection({
     GradeKeyToKorean[key as keyof typeof GradeKeyToKorean] || key;
 
   return (
-    <Grid container spacing={1.5} sx={{ mb: 3 }}>
+    <Grid container spacing={1.5} sx={{ mb: 2.5 }}>
       <Grid size={{ xs: 6, sm: 4, md: 2.4 }}>
         <KPICard
           title="평균 단가"

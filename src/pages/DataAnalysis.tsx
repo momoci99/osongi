@@ -192,7 +192,7 @@ const DataAnalysis = () => {
           />
 
           {/* 가격 추이 + 등급별 비중 (2열) */}
-          <Grid container spacing={2} sx={{ mb: 2 }}>
+          <Grid container spacing={2} sx={{ mb: 2.5 }}>
             <Grid size={{ xs: 12, md: 7 }}>
               <ChartSection
                 chartData={chartData}
@@ -208,7 +208,7 @@ const DataAnalysis = () => {
           </Grid>
 
           {/* 산점도 + 지역 비교 (2열) */}
-          <Grid container spacing={2} sx={{ mb: 2 }}>
+          <Grid container spacing={2} sx={{ mb: 2.5 }}>
             <Grid size={{ xs: 12, md: 7 }}>
               <ScatterPlotChart data={scatterData} />
             </Grid>

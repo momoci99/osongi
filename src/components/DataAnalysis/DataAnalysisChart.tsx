@@ -366,9 +366,9 @@ export default function DataAnalysisChart({
                 .style("background", theme.palette.background.paper)
                 .style("border", `1px solid ${theme.palette.divider}`)
                 .style("border-radius", "8px")
-                .style("padding", "12px")
-                .style("font-size", isMobile ? "12px" : "14px")
-                .style("box-shadow", "0 4px 6px rgba(0, 0, 0, 0.1)")
+                .style("padding", "10px 14px")
+                .style("font-size", "12px")
+                .style("box-shadow", theme.shadows[4])
                 .style("z-index", "1000")
                 .style("pointer-events", "none")
                 .style("color", theme.palette.text.primary);
@@ -404,14 +404,7 @@ export default function DataAnalysisChart({
       });
     });
 
-    // 범례 (우측)
-    const legend = svg
-      .append("g")
-      .attr(
-        "transform",
-        `translate(${containerWidth - (isMobile ? 70 : 110)}, ${margin.top})`
-      );
-
+    // 범례 (차트 하단, 가로 배치)
     const allSeries = new Map<string, any>();
     years.forEach((year) => {
       const yearData = yearGroups.get(year)!;
@@ -431,26 +424,46 @@ export default function DataAnalysisChart({
 
     // 범례 항목을 지역별, 등급별로 정렬
     const sortedSeries = Array.from(allSeries.values()).sort((a, b) => {
-      // 먼저 지역별로 정렬
       if (a.region !== b.region) {
         return a.region.localeCompare(b.region);
       }
-      // 같은 지역 내에서는 등급 우선순위로 정렬
       const indexA = gradeOrder.indexOf(a.gradeKey);
       const indexB = gradeOrder.indexOf(b.gradeKey);
       return (indexA === -1 ? 999 : indexA) - (indexB === -1 ? 999 : indexB);
     });
 
-    let legendY = 0;
+    const legendTop = margin.top + subplotHeight + margin.bottom + 4;
+    const legend = svg
+      .append("g")
+      .attr("transform", `translate(${margin.left}, ${legendTop})`);
+
+    const itemSpacing = isMobile ? 10 : 14;
+    const lineWidth = isMobile ? 15 : 20;
+    const textOffset = lineWidth + 5;
+    const availableWidth = containerWidth - margin.left - margin.right;
+    let cursorX = 0;
+    let cursorY = 0;
+    const rowHeight = isMobile ? 18 : 22;
+
     sortedSeries.forEach((series) => {
+      const label = `${series.region} ${
+        (GradeKeyToKorean as any)[series.gradeKey] || series.gradeKey
+      }`;
+      const estimatedWidth = textOffset + label.length * (isMobile ? 8 : 9) + itemSpacing;
+
+      if (cursorX + estimatedWidth > availableWidth && cursorX > 0) {
+        cursorX = 0;
+        cursorY += rowHeight;
+      }
+
       const legendItem = legend
         .append("g")
-        .attr("transform", `translate(0, ${legendY})`);
+        .attr("transform", `translate(${cursorX}, ${cursorY})`);
 
       legendItem
         .append("line")
         .attr("x1", 0)
-        .attr("x2", isMobile ? 15 : 20)
+        .attr("x2", lineWidth)
         .attr("y1", 0)
         .attr("y2", 0)
         .attr("stroke", series.color)
@@ -459,19 +472,20 @@ export default function DataAnalysisChart({
 
       legendItem
         .append("text")
-        .attr("x", isMobile ? 20 : 25)
+        .attr("x", textOffset)
         .attr("y", 0)
         .attr("dy", "0.35em")
         .style("font-size", fontSize.legend)
-        .style("fill", theme.palette.text.primary)
-        .text(
-          `${series.region} ${
-            (GradeKeyToKorean as any)[series.gradeKey] || series.gradeKey
-          }`
-        );
+        .style("fill", theme.palette.text.secondary)
+        .text(label);
 
-      legendY += isMobile ? 16 : 20;
+      cursorX += estimatedWidth;
     });
+
+    // SVG 높이를 범례 포함하여 조정
+    const legendRows = Math.floor(cursorY / rowHeight) + 1;
+    const totalHeight = legendTop + legendRows * rowHeight + 8;
+    svg.attr("height", totalHeight);
   }, [data, height, mode, theme, containerSize]);
 
   return (

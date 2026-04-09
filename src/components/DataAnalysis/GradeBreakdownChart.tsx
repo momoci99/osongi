@@ -49,9 +49,9 @@ export default function GradeBreakdownChart({
       mixedGrade: chart.mixedGrade,
     };
 
-    const size = Math.min(containerWidth, 280);
+    const size = Math.min(containerWidth * 0.85, 360);
     const outerRadius = size / 2 - 8;
-    const innerRadius = outerRadius * 0.55;
+    const innerRadius = outerRadius * 0.52;
     const height = size + 20;
 
     svg.attr("width", containerWidth).attr("height", height);
@@ -135,7 +135,7 @@ export default function GradeBreakdownChart({
           .style("background", theme.palette.background.paper)
           .style("border", `1px solid ${theme.palette.divider}`)
           .style("border-radius", "8px")
-          .style("padding", "8px 12px")
+          .style("padding", "10px 14px")
           .style("font-size", "12px")
           .style("box-shadow", theme.shadows[4])
           .style("pointer-events", "none")
@@ -167,34 +167,35 @@ export default function GradeBreakdownChart({
 
     g.append("text")
       .attr("text-anchor", "middle")
-      .attr("dy", "-0.2em")
+      .attr("dy", "-0.3em")
       .style("fill", theme.palette.text.secondary)
-      .style("font-size", "0.7rem")
+      .style("font-size", "0.8rem")
       .text("합계");
 
     g.append("text")
       .attr("text-anchor", "middle")
-      .attr("dy", "1em")
+      .attr("dy", "1.1em")
       .style("fill", theme.palette.text.primary)
-      .style("font-size", "0.8rem")
-      .style("font-weight", "600")
+      .style("font-size", "1rem")
+      .style("font-weight", "700")
       .style("font-variant-numeric", "tabular-nums")
       .text(totalValue);
 
-    // Legend (below donut)
-    const legendY = size / 2 + 16;
+    // Legend (below donut, 2-column)
+    const legendY = size / 2 + 24;
     const legendG = g
       .append("g")
-      .attr("transform", `translate(${-containerWidth / 2 + 12},${legendY})`);
+      .attr("transform", `translate(${-containerWidth / 2 + 16},${legendY})`);
 
-    const cols = containerWidth < 300 ? 2 : 3;
-    const colWidth = (containerWidth - 24) / cols;
+    const cols = 2;
+    const colWidth = (containerWidth - 32) / cols;
+    const rowHeight = 28;
 
     pieData.forEach((d, i) => {
       const col = i % cols;
       const row = Math.floor(i / cols);
       const lx = col * colWidth;
-      const ly = row * 20;
+      const ly = row * rowHeight;
 
       const item = legendG
         .append("g")
@@ -202,26 +203,40 @@ export default function GradeBreakdownChart({
 
       item
         .append("rect")
-        .attr("width", 10)
-        .attr("height", 10)
-        .attr("rx", 2)
+        .attr("width", 12)
+        .attr("height", 12)
+        .attr("rx", 3)
         .attr("fill", gradeColors[d.gradeKey] || theme.palette.grey[500])
         .attr("opacity", 0.9);
 
+      const gradeName =
+        GradeKeyToKorean[d.gradeKey as keyof typeof GradeKeyToKorean] || d.gradeKey;
+      const pct = `${(d.value * 100).toFixed(1)}%`;
+
       item
         .append("text")
-        .attr("x", 14)
-        .attr("y", 9)
+        .attr("x", 18)
+        .attr("y", 11)
+        .style("fill", theme.palette.text.primary)
+        .style("font-size", "0.8rem")
+        .style("font-weight", "500")
+        .text(gradeName);
+
+      item
+        .append("text")
+        .attr("x", colWidth - 8)
+        .attr("y", 11)
+        .attr("text-anchor", "end")
         .style("fill", theme.palette.text.secondary)
-        .style("font-size", "0.65rem")
-        .text(
-          `${GradeKeyToKorean[d.gradeKey as keyof typeof GradeKeyToKorean] || d.gradeKey} ${(d.value * 100).toFixed(0)}%`
-        );
+        .style("font-size", "0.8rem")
+        .style("font-weight", "600")
+        .style("font-variant-numeric", "tabular-nums")
+        .text(pct);
     });
 
     // Adjust SVG height to include legend
     const legendRows = Math.ceil(pieData.length / cols);
-    const totalHeight = size + 20 + legendRows * 20 + 8;
+    const totalHeight = size + 20 + legendRows * rowHeight + 16;
     svg.attr("height", totalHeight);
   }, [data, basis, theme, containerWidth]);
 
@@ -243,7 +258,7 @@ export default function GradeBreakdownChart({
           mb: 1.5,
         }}
       >
-        <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
+        <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
           등급별 비중
         </Typography>
         <ToggleButtonGroup
@@ -270,10 +285,15 @@ export default function GradeBreakdownChart({
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
+              flexDirection: "column",
+              gap: 1,
             }}
           >
             <Typography variant="body2" color="text.secondary">
-              데이터 없음
+              표시할 데이터가 없습니다
+            </Typography>
+            <Typography variant="caption" color="text.secondary">
+              필터 조건을 조정해보세요
             </Typography>
           </Box>
         )}
