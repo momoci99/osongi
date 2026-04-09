@@ -1,6 +1,9 @@
-import { useEffect, useRef, useState } from "react";
-import { Box, Paper, Typography, useTheme } from "@mui/material";
+import { useEffect, useRef } from "react";
+import { Typography, useTheme } from "@mui/material";
 import * as d3 from "d3";
+import { useContainerSize } from "../../hooks/useContainerSize";
+import EmptyState from "../common/EmptyState";
+import SectionCard from "../common/SectionCard";
 
 interface RegionData {
   region: string;
@@ -16,20 +19,8 @@ export default function RegionComparisonSection({
   data,
 }: RegionComparisonSectionProps) {
   const svgRef = useRef<SVGSVGElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const [containerRef, { width: containerWidth, height: containerHeight }] = useContainerSize();
   const theme = useTheme();
-  const [containerWidth, setContainerWidth] = useState(0);
-  const [containerHeight, setContainerHeight] = useState(0);
-
-  useEffect(() => {
-    if (!containerRef.current) return;
-    const observer = new ResizeObserver((entries) => {
-      setContainerWidth(entries[0].contentRect.width);
-      setContainerHeight(entries[0].contentRect.height);
-    });
-    observer.observe(containerRef.current);
-    return () => observer.disconnect();
-  }, []);
 
   useEffect(() => {
     if (!svgRef.current || data.length === 0 || containerWidth === 0 || containerHeight === 0) return;
@@ -159,17 +150,7 @@ export default function RegionComparisonSection({
   }, [data, theme, containerWidth, containerHeight]);
 
   return (
-    <Paper
-      variant="outlined"
-      sx={{
-        p: 2,
-        borderRadius: "0.75rem",
-        backgroundColor: theme.palette.background.paper,
-        height: "100%",
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
+    <SectionCard sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
       <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 1.5 }}>
         지역별 평균 가격
       </Typography>
@@ -177,25 +158,9 @@ export default function RegionComparisonSection({
         {data.length > 0 ? (
           <svg ref={svgRef} style={{ display: "block" }} />
         ) : (
-          <Box
-            sx={{
-              height: 120,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              flexDirection: "column",
-              gap: 1,
-            }}
-          >
-            <Typography variant="body2" color="text.secondary">
-              표시할 데이터가 없습니다
-            </Typography>
-            <Typography variant="caption" color="text.secondary">
-              필터 조건을 조정해보세요
-            </Typography>
-          </Box>
+          <EmptyState height={120} />
         )}
       </div>
-    </Paper>
+    </SectionCard>
   );
 }

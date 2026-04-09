@@ -236,10 +236,9 @@ export default function SeasonOffDashboard({ myRegion }: SeasonOffDashboardProps
         </Typography>
         <DashboardCard>
           <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-            {yearlyEntries.map((entry) => {
-              const maxQty = Math.max(
-                ...yearlyEntries.map((e) => e.totalQuantityKg)
-              );
+            {(() => {
+              const maxQty = Math.max(...yearlyEntries.map((e) => e.totalQuantityKg));
+              return yearlyEntries.map((entry) => {
               const widthPercent =
                 maxQty > 0
                   ? (entry.totalQuantityKg / maxQty) * 100
@@ -282,7 +281,8 @@ export default function SeasonOffDashboard({ myRegion }: SeasonOffDashboardProps
                   </Typography>
                 </Box>
               );
-            })}
+            });
+            })()}
           </Box>
         </DashboardCard>
       </Box>
@@ -299,7 +299,9 @@ export default function SeasonOffDashboard({ myRegion }: SeasonOffDashboardProps
             </Typography>
             <DashboardCard>
               <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5 }}>
-                {patterns.map((p) => (
+                {(() => {
+                  const maxQty = Math.max(...patterns.map((pp) => pp.avgQuantityKg));
+                  return patterns.map((p) => (
                   <Box key={p.month}>
                     <Box
                       sx={{
@@ -330,7 +332,7 @@ export default function SeasonOffDashboard({ myRegion }: SeasonOffDashboardProps
                       <Box
                         sx={{
                           height: "100%",
-                          width: `${(p.avgQuantityKg / Math.max(...patterns.map((pp) => pp.avgQuantityKg))) * 100}%`,
+                          width: `${(p.avgQuantityKg / maxQty) * 100}%`,
                           bgcolor: theme.palette.primary.main,
                           borderRadius: 3,
                           transition: "width 0.6s ease",
@@ -338,7 +340,8 @@ export default function SeasonOffDashboard({ myRegion }: SeasonOffDashboardProps
                       />
                     </Box>
                   </Box>
-                ))}
+                ));
+                })()}
               </Box>
             </DashboardCard>
           </Grid>
@@ -354,7 +357,9 @@ export default function SeasonOffDashboard({ myRegion }: SeasonOffDashboardProps
             </Typography>
             <DashboardCard>
               <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5 }}>
-                {rankings.map((r, i) => {
+                {(() => {
+                  const maxPrice = Math.max(...rankings.map((rr) => rr.avgPriceWon));
+                  return rankings.map((r, i) => {
                   const isMyRegion = myRegion === r.region;
                   return (
                   <Box
@@ -405,7 +410,7 @@ export default function SeasonOffDashboard({ myRegion }: SeasonOffDashboardProps
                         <Box
                           sx={{
                             height: "100%",
-                            width: `${(r.avgPriceWon / Math.max(...rankings.map((rr) => rr.avgPriceWon))) * 100}%`,
+                            width: `${(r.avgPriceWon / maxPrice) * 100}%`,
                             bgcolor:
                               i === 0
                                 ? theme.palette.primary.main
@@ -423,7 +428,8 @@ export default function SeasonOffDashboard({ myRegion }: SeasonOffDashboardProps
                     </Typography>
                   </Box>
                   );
-                })}
+                });
+                })()}
               </Box>
             </DashboardCard>
           </Grid>

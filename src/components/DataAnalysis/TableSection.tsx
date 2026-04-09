@@ -2,10 +2,9 @@ import { useState, useMemo } from "react";
 import {
   Box,
   Typography,
-  Paper,
-  useTheme,
   Table,
   TableContainer,
+  useTheme,
 } from "@mui/material";
 import type { MushroomAuctionDataRaw } from "../../types/data";
 import type { AnalysisFilters } from "../../utils/analysisUtils";
@@ -14,7 +13,8 @@ import { UI_LAYOUT, TABLE_CONSTANTS } from "../../const/Numbers";
 import DataTableHeader from "./Table/DataTableHeader";
 import DataTableBody from "./Table/DataTableBody";
 import DataTablePagination from "./Table/DataTablePagination";
-import EmptyState from "./Table/EmptyState";
+import EmptyState from "../common/EmptyState";
+import SectionCard from "../common/SectionCard";
 
 interface TableSectionProps {
   loading: boolean;
@@ -58,15 +58,7 @@ export default function TableSection({
   );
 
   return (
-    <Paper
-      variant="outlined"
-      sx={{
-        p: 2,
-        borderRadius: "0.75rem",
-        width: "100%",
-        backgroundColor: theme.palette.background.paper,
-      }}
-    >
+    <SectionCard sx={{ width: "100%" }}>
       <Box
         sx={{
           display: "flex",
@@ -107,8 +99,8 @@ export default function TableSection({
           />
         </Box>
       ) : (
-        <EmptyState loading={loading} />
+        <EmptyState loading={loading} height={TABLE_CONSTANTS.MAX_HEIGHT} />
       )}
-    </Paper>
+    </SectionCard>
   );
 }

@@ -189,18 +189,6 @@ export const createAppTheme = (mode: PaletteMode) => {
   });
 };
 
-// 등급 컬러 배열 헬퍼 (D3 차트에서 사용)
-export const getGradeColors = (mode: PaletteMode): string[] => {
-  const tokens = mode === "light" ? MODERN_FOREST.light : MODERN_FOREST.dark;
-  return [
-    tokens.grade1,
-    tokens.grade2,
-    tokens.grade3Stopped,
-    tokens.grade3Estimated,
-    tokens.gradeBelow,
-    tokens.mixedGrade,
-  ];
-};
 
 // 기본 light 테마 (하위 호환성을 위해)
 export const theme = createAppTheme("light");

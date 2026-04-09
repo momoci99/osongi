@@ -1,7 +1,9 @@
-import { Box, Typography, Paper, CircularProgress, useTheme } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import type { WeeklyPriceDatum } from "../../types/data";
 import DataAnalysisChart from "./DataAnalysisChart";
 import { CHART_LAYOUT, UI_LAYOUT } from "../../const/Numbers";
+import EmptyState from "../common/EmptyState";
+import SectionCard from "../common/SectionCard";
 
 interface ChartSectionProps {
   chartData: WeeklyPriceDatum[];
@@ -18,18 +20,8 @@ export default function ChartSection({
   chartMode,
   onChartModeChange,
 }: ChartSectionProps) {
-  const theme = useTheme();
-
   return (
-    <Paper
-      variant="outlined"
-      sx={{
-        p: 2,
-        borderRadius: "0.75rem",
-        width: "100%",
-        backgroundColor: theme.palette.background.paper,
-      }}
-    >
+    <SectionCard sx={{ width: "100%" }}>
       <Box
         sx={{
           display: "flex",
@@ -45,21 +37,7 @@ export default function ChartSection({
       </Box>
 
       {loading ? (
-        <Box
-          sx={{
-            height: CHART_LAYOUT.DEFAULT_HEIGHT,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 1.5,
-            flexDirection: "column",
-          }}
-        >
-          <CircularProgress size={32} />
-          <Typography variant="body2" color="text.secondary">
-            데이터 로딩 중...
-          </Typography>
-        </Box>
+        <EmptyState loading height={CHART_LAYOUT.DEFAULT_HEIGHT} />
       ) : chartData.length > 0 ? (
         <DataAnalysisChart
           data={chartData}
@@ -68,24 +46,8 @@ export default function ChartSection({
           onModeChange={onChartModeChange}
         />
       ) : (
-        <Box
-          sx={{
-            height: CHART_LAYOUT.DEFAULT_HEIGHT,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            flexDirection: "column",
-            gap: 1,
-          }}
-        >
-          <Typography variant="body2" color="text.secondary">
-            표시할 데이터가 없습니다
-          </Typography>
-          <Typography variant="caption" color="text.secondary">
-            필터 조건을 조정해보세요
-          </Typography>
-        </Box>
+        <EmptyState height={CHART_LAYOUT.DEFAULT_HEIGHT} />
       )}
-    </Paper>
+    </SectionCard>
   );
 }

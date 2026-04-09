@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import {
   Box,
-  Paper,
   Typography,
   ToggleButton,
   ToggleButtonGroup,
@@ -10,6 +9,11 @@ import {
 } from "@mui/material";
 import type { GradeBreakdown } from "../../utils/analysisUtils";
 import { GradeKeyToKorean } from "../../const/Common";
+import { useContainerSize } from "../../hooks/useContainerSize";
+import { createD3Tooltip, removeD3Tooltip } from "../../utils/d3Tooltip";
+import { getGradeColorMap } from "../../utils/chartUtils";
+import EmptyState from "../common/EmptyState";
+import SectionCard from "../common/SectionCard";
 
 interface GradeBreakdownChartProps {
   data: GradeBreakdown[];
@@ -19,19 +23,9 @@ export default function GradeBreakdownChart({
   data,
 }: GradeBreakdownChartProps) {
   const svgRef = useRef<SVGSVGElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const [containerRef, { width: containerWidth }] = useContainerSize();
   const theme = useTheme();
   const [basis, setBasis] = useState<"quantity" | "amount">("quantity");
-  const [containerWidth, setContainerWidth] = useState(0);
-
-  useEffect(() => {
-    if (!containerRef.current) return;
-    const observer = new ResizeObserver((entries) => {
-      setContainerWidth(entries[0].contentRect.width);
-    });
-    observer.observe(containerRef.current);
-    return () => observer.disconnect();
-  }, []);
 
   useEffect(() => {
     if (!svgRef.current || data.length === 0 || containerWidth === 0) return;
@@ -39,15 +33,7 @@ export default function GradeBreakdownChart({
     const svg = d3.select(svgRef.current);
     svg.selectAll("*").remove();
 
-    const chart = theme.palette.chart;
-    const gradeColors: Record<string, string> = {
-      grade1: chart.grade1,
-      grade2: chart.grade2,
-      grade3Stopped: chart.grade3Stopped,
-      grade3Estimated: chart.grade3Estimated,
-      gradeBelow: chart.gradeBelow,
-      mixedGrade: chart.mixedGrade,
-    };
+    const gradeColors = getGradeColorMap(theme);
 
     const size = Math.min(containerWidth * 0.85, 360);
     const outerRadius = size / 2 - 8;
@@ -83,8 +69,7 @@ export default function GradeBreakdownChart({
       .outerRadius(outerRadius + 6)
       .cornerRadius(3);
 
-    // Slices
-    const slices = g
+    g
       .selectAll("path")
       .data(pie(pieData))
       .enter()
@@ -116,7 +101,6 @@ export default function GradeBreakdownChart({
           .attr("d", arcHover(d) || "")
           .attr("opacity", 1);
 
-        d3.selectAll("#grade-tooltip").remove();
         const gradeName =
           GradeKeyToKorean[d.data.gradeKey as keyof typeof GradeKeyToKorean] ||
           d.data.gradeKey;
@@ -127,20 +111,7 @@ export default function GradeBreakdownChart({
             ? `${d.data.quantity.toLocaleString()}kg`
             : `${Math.round(d.data.amount).toLocaleString()}원`;
 
-        const tooltip = d3
-          .select("body")
-          .append("div")
-          .attr("id", "grade-tooltip")
-          .style("position", "absolute")
-          .style("background", theme.palette.background.paper)
-          .style("border", `1px solid ${theme.palette.divider}`)
-          .style("border-radius", "8px")
-          .style("padding", "10px 14px")
-          .style("font-size", "12px")
-          .style("box-shadow", theme.shadows[4])
-          .style("pointer-events", "none")
-          .style("z-index", "1000")
-          .style("color", theme.palette.text.primary);
+        const tooltip = createD3Tooltip(theme);
 
         tooltip.html(
           `<div style="font-weight:600;color:${color};margin-bottom:2px;">${gradeName}</div>` +
@@ -156,7 +127,7 @@ export default function GradeBreakdownChart({
           .duration(150)
           .attr("d", arc(d) || "")
           .attr("opacity", 0.9);
-        d3.selectAll("#grade-tooltip").remove();
+        removeD3Tooltip();
       });
 
     // Center total label
@@ -238,18 +209,12 @@ export default function GradeBreakdownChart({
     const legendRows = Math.ceil(pieData.length / cols);
     const totalHeight = size + 20 + legendRows * rowHeight + 16;
     svg.attr("height", totalHeight);
+
+    return () => removeD3Tooltip();
   }, [data, basis, theme, containerWidth]);
 
   return (
-    <Paper
-      variant="outlined"
-      sx={{
-        p: 2,
-        borderRadius: "0.75rem",
-        backgroundColor: theme.palette.background.paper,
-        height: "100%",
-      }}
-    >
+    <SectionCard sx={{ height: "100%" }}>
       <Box
         sx={{
           display: "flex",
@@ -279,25 +244,9 @@ export default function GradeBreakdownChart({
         {data.length > 0 ? (
           <svg ref={svgRef} style={{ display: "block" }} />
         ) : (
-          <Box
-            sx={{
-              height: 160,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              flexDirection: "column",
-              gap: 1,
-            }}
-          >
-            <Typography variant="body2" color="text.secondary">
-              표시할 데이터가 없습니다
-            </Typography>
-            <Typography variant="caption" color="text.secondary">
-              필터 조건을 조정해보세요
-            </Typography>
-          </Box>
+          <EmptyState />
         )}
       </div>
-    </Paper>
+    </SectionCard>
   );
 }

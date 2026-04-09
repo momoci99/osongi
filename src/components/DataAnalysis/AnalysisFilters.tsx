@@ -1,7 +1,6 @@
 import {
   Box,
   Typography,
-  Paper,
   Grid,
   FormControl,
   InputLabel,
@@ -12,7 +11,6 @@ import {
   Switch,
   FormControlLabel,
   type SelectChangeEvent,
-  useTheme,
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import {
@@ -21,6 +19,8 @@ import {
   REGION_UNION_MAP,
 } from "../../const/Common";
 import type { AnalysisFilters } from "../../utils/analysisUtils";
+import { getComparisonDateRange } from "../../utils/analysisUtils";
+import SectionCard from "../common/SectionCard";
 
 interface AnalysisFiltersProps {
   filters: AnalysisFilters;
@@ -33,8 +33,6 @@ export default function AnalysisFiltersComponent({
   onFiltersChange,
   onResetFilters,
 }: AnalysisFiltersProps) {
-  const theme = useTheme();
-
   // 선택된 지역들의 조합 합집합
   const availableUnions = (() => {
     if (filters.regions.length === 0) {
@@ -109,11 +107,8 @@ export default function AnalysisFiltersComponent({
   const handleComparisonToggle = () => {
     const enabled = !filters.comparisonEnabled;
     if (enabled && !filters.comparisonStartDate) {
-      // 비교 모드 켤 때 작년 동기간 자동 설정
-      const compStart = new Date(filters.startDate);
-      compStart.setFullYear(compStart.getFullYear() - 1);
-      const compEnd = new Date(filters.endDate);
-      compEnd.setFullYear(compEnd.getFullYear() - 1);
+      const { startDate: compStart, endDate: compEnd } =
+        getComparisonDateRange(filters.startDate, filters.endDate);
       onFiltersChange({
         ...filters,
         comparisonEnabled: enabled,
@@ -138,15 +133,7 @@ export default function AnalysisFiltersComponent({
   };
 
   return (
-    <Paper
-      variant="outlined"
-      sx={{
-        p: 2.5,
-        mb: 2.5,
-        borderRadius: "0.75rem",
-        backgroundColor: theme.palette.background.paper,
-      }}
-    >
+    <SectionCard sx={{ p: 2.5, mb: 2.5 }}>
       <Box
         sx={{
           display: "flex",
@@ -325,6 +312,6 @@ export default function AnalysisFiltersComponent({
           </Box>
         </Grid>
       </Grid>
-    </Paper>
+    </SectionCard>
   );
 }

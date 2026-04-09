@@ -4,6 +4,8 @@ import { useTheme } from "@mui/material/styles";
 import { Box, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import type { WeeklyPriceDatum } from "../../types/data";
 import { GradeKeyToKorean } from "../../const/Common";
+import { createD3Tooltip, removeD3Tooltip } from "../../utils/d3Tooltip";
+import { getGradeColorArray } from "../../utils/chartUtils";
 
 type ChartMode = "price" | "quantity";
 
@@ -81,28 +83,13 @@ export default function DashboardChartWeeklyToggle({
       .domain(d3.extent(processedData, (d) => d.parsedDate) as [Date, Date])
       .range([0, innerWidth]);
 
-    // Y scale based on current mode
-    let yMax: number;
-    let yScale: d3.ScaleLinear<number, number>;
-
-    if (chartMode === "price") {
-      yMax = d3.max(processedData, (d) => d.unitPriceWon) || 0;
-    } else {
-      yMax = d3.max(processedData, (d) => d.quantityKg) || 0;
-    }
-
-    yScale = d3.scaleLinear().domain([0, yMax]).nice().range([innerHeight, 0]);
+    const yMax = chartMode === "price"
+      ? d3.max(processedData, (d) => d.unitPriceWon) || 0
+      : d3.max(processedData, (d) => d.quantityKg) || 0;
+    const yScale = d3.scaleLinear().domain([0, yMax]).nice().range([innerHeight, 0]);
 
     // Color scale for grades
-    const chart = theme.palette.chart;
-    const colorScale = d3.scaleOrdinal<string>().domain(grades).range([
-      chart.grade1,
-      chart.grade2,
-      chart.grade3Stopped,
-      chart.grade3Estimated,
-      chart.gradeBelow,
-      chart.mixedGrade,
-    ]);
+    const colorScale = d3.scaleOrdinal<string>().domain(grades).range(getGradeColorArray(theme));
 
     // Create main group
     const mainGroup = svg
@@ -237,28 +224,13 @@ export default function DashboardChartWeeklyToggle({
       points
         .on("mouseenter", function (event, d: any) {
           // Remove existing tooltips
-          d3.selectAll("#chart-tooltip").remove();
-
           const originalPoint = grade.points.find(
             (p) => p.date.getTime() === d.date.getTime()
           );
           if (!originalPoint) return;
 
-          // Create tooltip
-          const tooltip = d3
-            .select("body")
-            .append("div")
-            .attr("id", "chart-tooltip")
-            .style("position", "absolute")
-            .style("background", theme.palette.background.paper)
-            .style("border", `1px solid ${theme.palette.divider}`)
-            .style("border-radius", "8px")
-            .style("padding", "12px")
-            .style("font-size", "13px")
-            .style("box-shadow", theme.shadows[4])
-            .style("pointer-events", "none")
-            .style("z-index", "1000")
-            .style("opacity", 0);
+          const tooltip = createD3Tooltip(theme)
+            .style("opacity", "0");
 
           const gradeText =
             GradeKeyToKorean[
@@ -293,7 +265,7 @@ export default function DashboardChartWeeklyToggle({
             .attr("stroke-width", 4);
         })
         .on("mouseleave", function () {
-          d3.selectAll("#chart-tooltip").remove();
+          removeD3Tooltip();
           d3.select(this as SVGCircleElement)
             .transition()
             .duration(200)
@@ -467,6 +439,8 @@ export default function DashboardChartWeeklyToggle({
             grade.gradeKey
         );
     });
+
+    return () => removeD3Tooltip();
   }, [data, height, theme, containerWidth, chartMode]);
 
   // Handle resize

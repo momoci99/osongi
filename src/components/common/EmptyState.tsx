@@ -1,16 +1,16 @@
 import { Box, Typography, CircularProgress } from "@mui/material";
-import { TABLE_CONSTANTS, UI_LAYOUT } from "../../../const/Numbers";
 
 interface EmptyStateProps {
-  loading: boolean;
+  loading?: boolean;
+  height?: number;
 }
 
-export default function EmptyState({ loading }: EmptyStateProps) {
+export default function EmptyState({ loading = false, height = 160 }: EmptyStateProps) {
   if (loading) {
     return (
       <Box
         sx={{
-          height: TABLE_CONSTANTS.MAX_HEIGHT,
+          height,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -29,7 +29,7 @@ export default function EmptyState({ loading }: EmptyStateProps) {
   return (
     <Box
       sx={{
-        height: TABLE_CONSTANTS.MAX_HEIGHT,
+        height,
         display: "flex",
         alignItems: "center",
         justifyContent: "center",

@@ -1,3 +1,4 @@
+import type { Theme } from "@mui/material/styles";
 import type { WeeklyPriceDatum } from "../types/data";
 import { 
   GRADE_DASH_PATTERNS,
@@ -19,6 +20,32 @@ export const getGradeDashPattern = (gradeKey: string): string => {
 export const getGradeColor = (gradeKey: string, colorPalette: readonly string[]): string => {
   const colorIndex = GRADE_COLOR_INDICES[gradeKey as keyof typeof GRADE_COLOR_INDICES] || GRADE_COLOR_INDICES.grade1;
   return colorPalette[colorIndex % colorPalette.length];
+};
+
+// 테마에서 등급 색상 Record 추출 (D3 차트 공통)
+export const getGradeColorMap = (theme: Theme): Record<string, string> => {
+  const chart = theme.palette.chart;
+  return {
+    grade1: chart.grade1,
+    grade2: chart.grade2,
+    grade3Stopped: chart.grade3Stopped,
+    grade3Estimated: chart.grade3Estimated,
+    gradeBelow: chart.gradeBelow,
+    mixedGrade: chart.mixedGrade,
+  };
+};
+
+// 테마에서 등급 색상 배열 추출 (D3 scaleOrdinal.range용)
+export const getGradeColorArray = (theme: Theme): string[] => {
+  const chart = theme.palette.chart;
+  return [
+    chart.grade1,
+    chart.grade2,
+    chart.grade3Stopped,
+    chart.grade3Estimated,
+    chart.gradeBelow,
+    chart.mixedGrade,
+  ];
 };
 
 // 송이버섯 시즌 데이터 필터링

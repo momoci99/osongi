@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import {
   Box,
-  Paper,
   Typography,
   FormControlLabel,
   Switch,
@@ -10,6 +9,11 @@ import {
 } from "@mui/material";
 import type { ScatterDatum } from "../../utils/analysisUtils";
 import { GradeKeyToKorean } from "../../const/Common";
+import { useContainerSize } from "../../hooks/useContainerSize";
+import { createD3Tooltip, removeD3Tooltip } from "../../utils/d3Tooltip";
+import { getGradeColorMap } from "../../utils/chartUtils";
+import EmptyState from "../common/EmptyState";
+import SectionCard from "../common/SectionCard";
 
 interface ScatterPlotChartProps {
   data: ScatterDatum[];
@@ -21,19 +25,9 @@ export default function ScatterPlotChart({
   height = 320,
 }: ScatterPlotChartProps) {
   const svgRef = useRef<SVGSVGElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const [containerRef, { width: containerWidth }] = useContainerSize();
   const theme = useTheme();
-  const [containerWidth, setContainerWidth] = useState(0);
   const [showTrend, setShowTrend] = useState(false);
-
-  useEffect(() => {
-    if (!containerRef.current) return;
-    const observer = new ResizeObserver((entries) => {
-      setContainerWidth(entries[0].contentRect.width);
-    });
-    observer.observe(containerRef.current);
-    return () => observer.disconnect();
-  }, []);
 
   useEffect(() => {
     if (!svgRef.current || data.length === 0 || containerWidth === 0) return;
@@ -41,15 +35,7 @@ export default function ScatterPlotChart({
     const svg = d3.select(svgRef.current);
     svg.selectAll("*").remove();
 
-    const chart = theme.palette.chart;
-    const gradeColors: Record<string, string> = {
-      grade1: chart.grade1,
-      grade2: chart.grade2,
-      grade3Stopped: chart.grade3Stopped,
-      grade3Estimated: chart.grade3Estimated,
-      gradeBelow: chart.gradeBelow,
-      mixedGrade: chart.mixedGrade,
-    };
+    const gradeColors = getGradeColorMap(theme);
 
     const isMobile = containerWidth < 500;
     const margin = isMobile
@@ -141,7 +127,6 @@ export default function ScatterPlotChart({
     // Tooltip
     dots
       .on("mouseenter", function (event, d: any) {
-        d3.selectAll("#scatter-tooltip").remove();
         d3.select(this as SVGCircleElement)
           .transition()
           .duration(150)
@@ -153,20 +138,7 @@ export default function ScatterPlotChart({
           d.gradeKey;
         const color = gradeColors[d.gradeKey] || "#888";
 
-        const tooltip = d3
-          .select("body")
-          .append("div")
-          .attr("id", "scatter-tooltip")
-          .style("position", "absolute")
-          .style("background", theme.palette.background.paper)
-          .style("border", `1px solid ${theme.palette.divider}`)
-          .style("border-radius", "8px")
-          .style("padding", "10px 14px")
-          .style("font-size", "12px")
-          .style("box-shadow", theme.shadows[4])
-          .style("pointer-events", "none")
-          .style("z-index", "1000")
-          .style("color", theme.palette.text.primary);
+        const tooltip = createD3Tooltip(theme);
 
         tooltip.html(`
           <div style="font-weight:600;color:${color};margin-bottom:3px;">${gradeName}</div>
@@ -179,7 +151,7 @@ export default function ScatterPlotChart({
         tooltip.style("left", mx + 12 + "px").style("top", my - 10 + "px");
       })
       .on("mouseleave", function () {
-        d3.selectAll("#scatter-tooltip").remove();
+        removeD3Tooltip();
         d3.select(this as SVGCircleElement)
           .transition()
           .duration(150)
@@ -236,18 +208,12 @@ export default function ScatterPlotChart({
     // Style axis lines
     g.selectAll(".domain").style("stroke", theme.palette.divider);
     g.selectAll(".tick line").style("stroke", theme.palette.divider);
+
+    return () => removeD3Tooltip();
   }, [data, height, theme, containerWidth, showTrend]);
 
   return (
-    <Paper
-      variant="outlined"
-      sx={{
-        p: 2,
-        borderRadius: "0.75rem",
-        backgroundColor: theme.palette.background.paper,
-        height: "100%",
-      }}
-    >
+    <SectionCard sx={{ height: "100%" }}>
       <Box
         sx={{
           display: "flex",
@@ -283,25 +249,9 @@ export default function ScatterPlotChart({
             style={{ display: "block" }}
           />
         ) : (
-          <Box
-            sx={{
-              height,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              flexDirection: "column",
-              gap: 1,
-            }}
-          >
-            <Typography variant="body2" color="text.secondary">
-              표시할 데이터가 없습니다
-            </Typography>
-            <Typography variant="caption" color="text.secondary">
-              필터 조건을 조정해보세요
-            </Typography>
-          </Box>
+          <EmptyState height={height} />
         )}
       </div>
-    </Paper>
+    </SectionCard>
   );
 }

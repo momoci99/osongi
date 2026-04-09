@@ -3,6 +3,7 @@ import * as d3 from "d3";
 import { useTheme } from "@mui/material/styles";
 import type { WeeklyPriceDatum } from "../../types/data";
 import { GradeKeyToKorean } from "../../const/Common";
+import { getGradeColorArray } from "../../utils/chartUtils";
 
 type DashboardChartWeeklyPriceQuantityProps = {
   data: WeeklyPriceDatum[];
@@ -87,15 +88,7 @@ export default function DashboardChartWeeklyPriceQuantity({
       .range([innerHeight, 0]);
 
     // Color scale for grades - theme-based
-    const chart = theme.palette.chart;
-    const colorScale = d3.scaleOrdinal<string>().domain(grades).range([
-      chart.grade1,
-      chart.grade2,
-      chart.grade3Stopped,
-      chart.grade3Estimated,
-      chart.gradeBelow,
-      chart.mixedGrade,
-    ]);
+    const colorScale = d3.scaleOrdinal<string>().domain(grades).range(getGradeColorArray(theme));
 
     // Create main group
     const mainGroup = svg

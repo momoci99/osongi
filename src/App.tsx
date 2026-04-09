@@ -1,5 +1,5 @@
 import "./App.css";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { createAppTheme } from "./theme";
@@ -14,7 +14,7 @@ import { useSettingsStore } from "./stores/useSettingsStore";
 function App() {
   const themeMode = useSettingsStore((s) => s.themeMode);
   const displayMode = useSettingsStore((s) => s.displayMode);
-  const currentTheme = createAppTheme(themeMode);
+  const currentTheme = useMemo(() => createAppTheme(themeMode), [themeMode]);
 
   // 디스플레이 모드를 html 속성에 반영
   useEffect(() => {

@@ -4,7 +4,8 @@ import { useTheme } from "@mui/material/styles";
 import { Box, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import type { WeeklyPriceDatum } from "../../types/data";
 import { GradeKeyToKorean } from "../../const/Common";
-import { getGradeDashPattern } from "../../utils/chartUtils";
+import { getGradeDashPattern, getGradeColorArray } from "../../utils/chartUtils";
+import { createD3Tooltip, removeD3Tooltip } from "../../utils/d3Tooltip";
 import {
   CHART_LAYOUT,
   CHART_MARGINS,
@@ -198,22 +199,12 @@ export default function DataAnalysisChart({
       return (indexA === -1 ? 999 : indexA) - (indexB === -1 ? 999 : indexB);
     });
 
-    const chart = theme.palette.chart;
     const colorScale = d3
       .scaleOrdinal<string>()
       .domain(sortedGrades)
-      .range([
-        chart.grade1,
-        chart.grade2,
-        chart.grade3Stopped,
-        chart.grade3Estimated,
-        chart.gradeBelow,
-        chart.mixedGrade,
-      ]);
+      .range(getGradeColorArray(theme));
 
-    // ⭐⭐⭐ 가장 중요한 부분: 각 연도별 서브플롯 생성 루프 ⭐⭐⭐
-    // 이 루프가 연도별 독립 차트를 만드는 핵심 로직
-    // 절대로 단일 차트로 변경하지 말 것!
+    // 연도별 서브플롯 — 단일 차트로 합치면 비교 가독성이 떨어지므로 분리 유지
     years.forEach((year, yearIndex) => {
       const yearData = yearGroups.get(year)!;
       const xOffset = margin.left + yearIndex * (subplotWidth + subplotGap);
@@ -358,20 +349,7 @@ export default function DataAnalysisChart({
             .attr("stroke-width", 1)
             .style("cursor", "pointer")
             .on("mouseenter", function (event) {
-              const tooltip = d3
-                .select("body")
-                .append("div")
-                .attr("class", "chart-tooltip")
-                .style("position", "absolute")
-                .style("background", theme.palette.background.paper)
-                .style("border", `1px solid ${theme.palette.divider}`)
-                .style("border-radius", "8px")
-                .style("padding", "10px 14px")
-                .style("font-size", "12px")
-                .style("box-shadow", theme.shadows[4])
-                .style("z-index", "1000")
-                .style("pointer-events", "none")
-                .style("color", theme.palette.text.primary);
+              const tooltip = createD3Tooltip(theme);
 
               const date = new Date(d.date);
               const dateStr = `${date.getFullYear()}년 ${(date.getMonth() + 1)
@@ -398,7 +376,7 @@ export default function DataAnalysisChart({
                 .style("top", mouseY - 10 + "px");
             })
             .on("mouseleave", function () {
-              d3.selectAll(".chart-tooltip").remove();
+              removeD3Tooltip();
             });
         });
       });
@@ -486,6 +464,8 @@ export default function DataAnalysisChart({
     const legendRows = Math.floor(cursorY / rowHeight) + 1;
     const totalHeight = legendTop + legendRows * rowHeight + 8;
     svg.attr("height", totalHeight);
+
+    return () => removeD3Tooltip();
   }, [data, height, mode, theme, containerSize]);
 
   return (

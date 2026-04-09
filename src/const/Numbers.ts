@@ -107,22 +107,7 @@ export const PARSING = {
 
 // ===== UI 레이아웃 상수 =====
 export const UI_LAYOUT = {
-  CARD_PADDING: 3, // 카드 패딩
-  CARD_MARGIN_BOTTOM: 3, // 카드 하단 마진
-  CARD_BORDER_RADIUS: 3, // 카드 모서리 둥글기
-  SECTION_MARGIN_BOTTOM: 2, // 섹션 하단 마진
-  BUTTON_PADDING_X: 2, // 버튼 좌우 패딩
-  GRID_SPACING: 3, // 그리드 간격
-  CHIP_GAP: 0.5, // 칩 간격
-  FORM_GAP: 2, // 폼 요소 간격
-  TABLE_HEIGHT: 300, // 테이블 기본 높이
-} as const;
-
-// ===== MUI Grid 브레이크포인트 =====
-export const GRID_BREAKPOINTS = {
-  FULL_WIDTH: 12, // 전체 너비
-  HALF_MOBILE_UP: 6, // 모바일 이상에서 절반 너비
-  HALF_MEDIUM_UP: 6, // 중간 화면 이상에서 절반 너비
+  SECTION_MARGIN_BOTTOM: 2,
 } as const;
 
 // ===== 테이블 레이아웃 상수 =====
@@ -140,8 +125,3 @@ export const TABLE_CONSTANTS = {
   PRICE_COLUMN_WIDTH: 100, // 단가 컬럼 너비
 } as const;
 
-// ===== MUI 테마 관련 =====
-export const THEME_VALUES = {
-  DARK_ELEVATION: 0, // 다크모드 elevation
-  LIGHT_ELEVATION: 1, // 라이트모드 elevation
-} as const;
