@@ -1,22 +1,51 @@
-import { Box, CircularProgress, Typography, Card, Button } from "@mui/material";
+import {
+  Box,
+  LinearProgress,
+  Typography,
+  Card,
+  Button,
+  useTheme,
+} from "@mui/material";
 import { useDataLoader } from "../hooks/useAuctionData";
 
-interface DataInitializerProps {
+type DataInitializerProps = {
   children: React.ReactNode;
-}
+};
 
-const DataInitializer: React.FC<DataInitializerProps> = ({ children }) => {
+/**
+ * 로딩 진행률 0~100을 받아 현재 단계 라벨을 반환한다.
+ * dataLoader 내부 규약: 0~50% 다운로드, 50~100% IndexedDB 저장.
+ */
+const getLoadingPhaseLabel = (progress: number | undefined): string => {
+  if (progress === undefined || progress === 0) {
+    return "데이터 준비 중...";
+  }
+  if (progress < 50) {
+    return "데이터 다운로드 중...";
+  }
+  if (progress < 100) {
+    return "로컬 저장소에 반영 중...";
+  }
+  return "마무리 중...";
+};
+
+const DataInitializer = ({ children }: DataInitializerProps) => {
+  const theme = useTheme();
   const {
     isLoading,
     isInitialized,
     hasError,
     error,
     totalRecords,
+    progress,
     forceUpdate,
   } = useDataLoader();
 
-  // 로딩 중
   if (isLoading) {
+    const normalizedProgress = Math.max(0, Math.min(100, progress ?? 0));
+    const phaseLabel = getLoadingPhaseLabel(progress);
+    const showDeterminate = normalizedProgress > 0;
+
     return (
       <Box
         sx={{
@@ -29,30 +58,68 @@ const DataInitializer: React.FC<DataInitializerProps> = ({ children }) => {
           px: 3,
         }}
       >
-        <Card sx={{ p: 4, maxWidth: 500, width: "100%", textAlign: "center" }}>
-          <Typography variant="h5" gutterBottom>
+        <Card
+          sx={{
+            p: 4,
+            maxWidth: 500,
+            width: "100%",
+            borderRadius: "0.75rem",
+            border: `1px solid ${theme.palette.divider}`,
+          }}
+        >
+          <Typography variant="h5" sx={{ fontWeight: 700, mb: 1 }}>
             송이버섯 데이터 준비 중
           </Typography>
 
           <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
             처음 방문하시는 경우 데이터 다운로드에 몇 초가 소요될 수 있습니다.
             <br />
-            이후 방문시에는 즉시 로딩됩니다!
+            이후 방문 시에는 즉시 로딩됩니다.
           </Typography>
 
-          <Box sx={{ display: "flex", justifyContent: "center", mb: 2 }}>
-            <CircularProgress size={40} />
+          <Box sx={{ mb: 1.5 }}>
+            <LinearProgress
+              variant={showDeterminate ? "determinate" : "indeterminate"}
+              value={normalizedProgress}
+              sx={{
+                height: 8,
+                borderRadius: 4,
+                bgcolor: `${theme.palette.primary.main}1A`,
+                "& .MuiLinearProgress-bar": {
+                  borderRadius: 4,
+                },
+              }}
+            />
           </Box>
 
-          <Typography variant="body2" color="text.secondary">
-            데이터 로딩 중...
-          </Typography>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "baseline",
+            }}
+          >
+            <Typography variant="body2" color="text.secondary">
+              {phaseLabel}
+            </Typography>
+            {showDeterminate && (
+              <Typography
+                variant="body2"
+                sx={{
+                  fontWeight: 600,
+                  color: theme.palette.primary.main,
+                  fontVariantNumeric: "tabular-nums",
+                }}
+              >
+                {normalizedProgress}%
+              </Typography>
+            )}
+          </Box>
         </Card>
       </Box>
     );
   }
 
-  // 에러 발생
   if (hasError) {
     return (
       <Box
@@ -66,8 +133,21 @@ const DataInitializer: React.FC<DataInitializerProps> = ({ children }) => {
           px: 3,
         }}
       >
-        <Card sx={{ p: 4, maxWidth: 500, width: "100%", textAlign: "center" }}>
-          <Typography variant="h5" gutterBottom color="error">
+        <Card
+          sx={{
+            p: 4,
+            maxWidth: 500,
+            width: "100%",
+            textAlign: "center",
+            borderRadius: "0.75rem",
+            border: `1px solid ${theme.palette.divider}`,
+          }}
+        >
+          <Typography
+            variant="h5"
+            sx={{ fontWeight: 700, mb: 1 }}
+            color="error"
+          >
             데이터 로딩 실패
           </Typography>
 
@@ -75,7 +155,14 @@ const DataInitializer: React.FC<DataInitializerProps> = ({ children }) => {
             {error || "알 수 없는 오류가 발생했습니다."}
           </Typography>
 
-          <Button variant="contained" onClick={forceUpdate} sx={{ mt: 2 }}>
+          <Button
+            variant="contained"
+            onClick={forceUpdate}
+            sx={{
+              borderRadius: "0.5rem",
+              fontWeight: 600,
+            }}
+          >
             다시 시도
           </Button>
         </Card>

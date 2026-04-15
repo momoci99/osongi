@@ -9,14 +9,15 @@ import DataAnalysis from "./pages/DataAnalysis";
 import GlobalNavbar from "./components/GlobalNavbar";
 import DataInitializer from "./components/DataInitializer";
 import RegionOnboarding from "./components/RegionOnboarding";
+import ErrorBoundary from "./components/ErrorBoundary";
 import { useSettingsStore } from "./stores/useSettingsStore";
 
-function App() {
+const App = () => {
   const themeMode = useSettingsStore((s) => s.themeMode);
   const displayMode = useSettingsStore((s) => s.displayMode);
   const currentTheme = useMemo(() => createAppTheme(themeMode), [themeMode]);
 
-  // 디스플레이 모드를 html 속성에 반영
+  /** 디스플레이 모드를 html data 속성에 반영 */
   useEffect(() => {
     document.documentElement.setAttribute("data-display", displayMode);
   }, [displayMode]);
@@ -24,17 +25,19 @@ function App() {
   return (
     <ThemeProvider theme={currentTheme}>
       <CssBaseline />
-      <DataInitializer>
-        <GlobalNavbar />
-        <RegionOnboarding />
-        <Routes>
-          <Route index element={<Dashboard />} />
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="data-analysis" element={<DataAnalysis />} />
-        </Routes>
-      </DataInitializer>
+      <ErrorBoundary>
+        <DataInitializer>
+          <GlobalNavbar />
+          <RegionOnboarding />
+          <Routes>
+            <Route index element={<Dashboard />} />
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="data-analysis" element={<DataAnalysis />} />
+          </Routes>
+        </DataInitializer>
+      </ErrorBoundary>
     </ThemeProvider>
   );
-}
+};
 
 export default App;

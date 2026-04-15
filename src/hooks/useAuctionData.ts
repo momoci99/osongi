@@ -29,9 +29,12 @@ export function useDataLoader() {
     await dataLoader.forceUpdate();
   }, []);
 
+  const softRefresh = useCallback(() => dataLoader.softRefresh(), []);
+
   return {
     ...state,
     forceUpdate,
+    softRefresh,
   };
 }
 

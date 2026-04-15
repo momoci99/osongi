@@ -13,15 +13,30 @@ import {
   ListItemButton,
   ListItemText,
   useMediaQuery,
+  CircularProgress,
 } from "@mui/material";
-import { Brightness4, Brightness7, Menu as MenuIcon } from "@mui/icons-material";
+import {
+  Brightness4,
+  Brightness7,
+  Menu as MenuIcon,
+  Refresh as RefreshIcon,
+} from "@mui/icons-material";
 import { useNavigate, useLocation } from "react-router";
 import { useSettingsStore } from "../stores/useSettingsStore";
+import { useDataLoader } from "../hooks/useAuctionData";
 
 const NAV_ITEMS = [
   { label: "대시보드", path: "/dashboard" },
   { label: "데이터 분석", path: "/data-analysis" },
 ];
+
+/** "2026-04-14" → "04/14" 형태로 짧게 표기 */
+const formatLatestDataDate = (iso: string | undefined): string | null => {
+  if (!iso) return null;
+  const match = iso.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (!match) return null;
+  return `${match[2]}/${match[3]}`;
+};
 
 const GlobalNavbar = () => {
   const theme = useTheme();
@@ -34,9 +49,26 @@ const GlobalNavbar = () => {
   const toggleThemeMode = useSettingsStore((s) => s.toggleThemeMode);
   const displayMode = useSettingsStore((s) => s.displayMode);
   const toggleDisplayMode = useSettingsStore((s) => s.toggleDisplayMode);
-  const hasCompletedOnboarding = useSettingsStore(
-    (s) => s.hasCompletedOnboarding
-  );
+
+  const { isRefreshing, latestDataDate, softRefresh } = useDataLoader();
+
+  const latestDataLabel = formatLatestDataDate(latestDataDate);
+
+  /**
+   * 수동 새로고침. 새 데이터가 있으면 즉시 reload, 이미 최신이면
+   * 스피너가 돌아갔다 돌아오는 것으로 사용자에게 충분히 피드백된다.
+   */
+  const handleRefresh = async () => {
+    if (isRefreshing) return;
+    try {
+      const { updated } = await softRefresh();
+      if (updated) {
+        window.location.reload();
+      }
+    } catch (err) {
+      console.error("[handleRefresh] 실패:", err);
+    }
+  };
 
   const isActive = (path: string) =>
     location.pathname === path ||
@@ -115,6 +147,70 @@ const GlobalNavbar = () => {
                 {item.label}
               </Button>
             ))}
+
+          {/* 데이터 기준일 */}
+          {latestDataLabel && (
+            <Tooltip
+              title={
+                latestDataDate
+                  ? `데이터 기준일: ${latestDataDate}`
+                  : "데이터 기준일"
+              }
+            >
+              <Box
+                sx={{
+                  display: { xs: "none", sm: "flex" },
+                  alignItems: "center",
+                  gap: 0.5,
+                  mr: 0.5,
+                  px: 1,
+                  py: 0.25,
+                  borderRadius: "0.375rem",
+                  border: `1px solid ${theme.palette.divider}`,
+                  color: theme.palette.text.secondary,
+                  fontSize: "0.75rem",
+                  fontVariantNumeric: "tabular-nums",
+                  lineHeight: 1,
+                }}
+              >
+                <Box
+                  sx={{
+                    width: 6,
+                    height: 6,
+                    borderRadius: "50%",
+                    bgcolor: theme.palette.primary.main,
+                  }}
+                />
+                기준 {latestDataLabel}
+              </Box>
+            </Tooltip>
+          )}
+
+          {/* 수동 새로고침 */}
+          <Tooltip
+            title={isRefreshing ? "데이터 갱신 중..." : "데이터 새로고침"}
+          >
+            <span>
+              <IconButton
+                onClick={handleRefresh}
+                disabled={isRefreshing}
+                aria-label={
+                  isRefreshing ? "데이터 갱신 중" : "데이터 새로고침"
+                }
+                sx={{
+                  color: theme.palette.text.primary,
+                  width: 40,
+                  height: 40,
+                }}
+              >
+                {isRefreshing ? (
+                  <CircularProgress size={18} thickness={5} />
+                ) : (
+                  <RefreshIcon fontSize="small" />
+                )}
+              </IconButton>
+            </span>
+          </Tooltip>
 
           {/* 큰글씨 토글 */}
           <Tooltip

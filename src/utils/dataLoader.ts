@@ -10,10 +10,12 @@ import {
 export interface DataLoadingState {
   isLoading: boolean;
   isInitialized: boolean;
+  isRefreshing: boolean;
   hasError: boolean;
   error?: string;
   progress?: number; // 0-100
   lastUpdated?: string;
+  latestDataDate?: string;
   totalRecords?: number;
 }
 
@@ -31,6 +33,7 @@ class DataLoaderService {
   private loadingState: DataLoadingState = {
     isLoading: false,
     isInitialized: false,
+    isRefreshing: false,
     hasError: false,
   };
 
@@ -331,9 +334,11 @@ class DataLoaderService {
             this.loadingState = {
               isLoading: false,
               isInitialized: true,
+              isRefreshing: false,
               hasError: false,
               progress: 100,
               lastUpdated: localMetadata.lastUpdated,
+              latestDataDate: localMetadata.dateRangeLatest,
               totalRecords: localMetadata.totalRecords,
             };
             this.notifyStateChange();
@@ -385,9 +390,11 @@ class DataLoaderService {
       this.loadingState = {
         isLoading: false,
         isInitialized: true,
+        isRefreshing: false,
         hasError: false,
         progress: 100,
         lastUpdated: finalMetadata?.lastUpdated,
+        latestDataDate: finalMetadata?.dateRangeLatest,
         totalRecords: finalMetadata?.totalRecords,
       };
 
@@ -398,11 +405,73 @@ class DataLoaderService {
       this.loadingState = {
         ...this.loadingState,
         isLoading: false,
+        isRefreshing: false,
         hasError: true,
         error: error instanceof Error ? error.message : "알 수 없는 오류",
       };
     } finally {
       this.notifyStateChange();
+    }
+  }
+
+  /**
+   * 사용자 수동 새로고침. 전체 로딩 화면을 띄우지 않고 백그라운드에서
+   * 데이터셋을 다시 받아 로컬 버전과 비교한다. 반환값의 `updated`가
+   * true면 호출 측에서 화면을 재진입시켜 새 데이터를 반영해야 한다.
+   *
+   * NOTE: fetchServerVersion은 HTTP ETag/Last-Modified를 반환하지만
+   * 로컬 metadata.version은 JSON 본문의 ISO 타임스탬프라 서로 네임스페이스가
+   * 다르다. 그래서 버전 비교는 반드시 다운로드 후 dataset.version으로 한다.
+   */
+  async softRefresh(): Promise<{ updated: boolean }> {
+    if (
+      this.loadingState.isRefreshing ||
+      this.loadingState.isLoading ||
+      !this.loadingState.isInitialized
+    ) {
+      return { updated: false };
+    }
+
+    const localMetadata = await this.getLocalMetadata();
+    if (!localMetadata) {
+      throw new Error("로컬 데이터가 없습니다. 앱을 다시 시작해 주세요.");
+    }
+
+    this.loadingState = { ...this.loadingState, isRefreshing: true };
+    this.notifyStateChange();
+
+    try {
+      console.log("🔄 수동 새로고침: 데이터셋 다운로드 중...");
+      const dataset = await this.downloadCompleteDataset();
+
+      if (dataset.version === localMetadata.version) {
+        console.log("✅ 이미 최신 데이터");
+        this.loadingState = { ...this.loadingState, isRefreshing: false };
+        this.notifyStateChange();
+        return { updated: false };
+      }
+
+      console.log(
+        `🔄 새 버전 감지 (${localMetadata.version} → ${dataset.version})`
+      );
+      await this.saveToIndexedDB(dataset);
+
+      const newMetadata = await this.getLocalMetadata();
+      this.loadingState = {
+        ...this.loadingState,
+        isRefreshing: false,
+        progress: 100,
+        lastUpdated: newMetadata?.lastUpdated,
+        latestDataDate: newMetadata?.dateRangeLatest,
+        totalRecords: newMetadata?.totalRecords,
+      };
+      this.notifyStateChange();
+      return { updated: true };
+    } catch (error) {
+      console.error("❌ 소프트 새로고침 실패:", error);
+      this.loadingState = { ...this.loadingState, isRefreshing: false };
+      this.notifyStateChange();
+      throw error;
     }
   }
 
@@ -557,9 +626,11 @@ class DataLoaderService {
       this.loadingState = {
         isLoading: false,
         isInitialized: true,
+        isRefreshing: false,
         hasError: false,
         progress: 100,
         lastUpdated: metadata?.lastUpdated,
+        latestDataDate: metadata?.dateRangeLatest,
         totalRecords: metadata?.totalRecords,
       };
       console.log("✅ 강제 업데이트 완료");
