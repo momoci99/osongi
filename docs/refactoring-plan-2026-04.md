@@ -219,7 +219,30 @@ components/<Area>/<ChartName>/
   - [x] 1.3 `DataAnalysisChart` → 폴더 분해 완료 (`index.tsx`, `useDrawAnalysisChart.ts`, `seriesBuilder.ts`)
   - [x] 1.4 `DashboardChartGradePerKg` → 폴더 분해 완료 (`index.tsx`, `useDrawGradeBarKg.ts`, `chartHelpers.ts`)
   - [x] 1.5 `DashboardChartGradePerPrice` → 폴더 분해 완료 (`index.tsx`, `useDrawGradeBarPrice.ts`, `chartHelpers.ts`)
-- [ ] Phase 3 — `SeasonOffDashboard` 분해
-- [ ] Phase 2 — `Dashboard` 페이지 분해
-- [ ] Phase 6 — Navbar / AnalysisFilters 정리
-- [ ] Phase 5 — `dataLoader` 분해
+- [x] Phase 3 — `SeasonOffDashboard` 분해 ✅
+  - `types/seasonOff.ts` — 타입 6개 이동
+  - `hooks/useSeasonOffData.ts` — fetch + 연간 데이터 파생
+  - `SeasonOff/SeasonSummaryCards.tsx` — 시즌 요약 카드 4장
+  - `SeasonOff/YearlyTrendBars.tsx` — 연간 거래량 수평 바
+  - `SeasonOff/MonthlyPatternList.tsx` — 월별 패턴 리스트
+  - `SeasonOff/RegionRankingList.tsx` — 지역 랭킹 리스트
+  - `SeasonOffDashboard.tsx` — 레이아웃 shell (~70 라인)
+- [x] Phase 2 — `Dashboard` 페이지 분해 ✅
+  - `utils/isInSeason.ts` — 시즌 판정 함수 추출
+  - `hooks/useDashboardManifests.ts` — daily/weekly fetch + refresh
+  - `components/Dashboard/DashboardHeader.tsx` — 타이틀 + 새로고침 + 지역 셀렉터
+  - `components/Dashboard/RegionBreakdownTable.tsx` — 지역 등급 시세 테이블
+  - `components/Dashboard/DashboardKpiRow.tsx` — KPI 카드 4장
+  - `components/Dashboard/DashboardCharts.tsx` — 등급별 + 주간 차트 그리드
+  - `pages/Dashboard.tsx` — 레이아웃 shell (~80 라인)
+- [x] Phase 6 — Navbar / AnalysisFilters 정리 ✅
+  - 6.1 `GlobalNavbar.tsx` (317 → ~150): `Navbar/NavItems.tsx`, `Navbar/DataDateBadge.tsx`, `Navbar/RefreshButton.tsx`, `Navbar/MobileDrawer.tsx`
+  - 6.2 `AnalysisFilters.tsx` (317 → ~130): `Filters/RegionSelect.tsx`, `Filters/UnionSelect.tsx`, `Filters/DateRangePicker.tsx`, `Filters/ComparisonToggle.tsx`
+- [x] Phase 5 — `dataLoader` 분해 ✅
+  - `dataLoader/versionCheck.ts` (82줄) — `fetchServerVersion` (HEAD → Range → full 3단계)
+  - `dataLoader/validation.ts` (55줄) — `validateLocalData`, `getLocalMetadata`
+  - `dataLoader/download.ts` (61줄) — `downloadCompleteDataset` (스트리밍 + progress)
+  - `dataLoader/persistence.ts` (67줄) — `saveToIndexedDB`, `performDatabaseReset`
+  - `dataLoader/aggregations.ts` (84줄) — `queryByDateRange`, `getAggregatedData`, `QueryFilters`
+  - `dataLoader/index.ts` (313줄) — `DataLoaderService` 클래스 + 상태 관리
+  - 원본 `dataLoader.ts`는 `export * from "./dataLoader/index"` 배럴로 축소
