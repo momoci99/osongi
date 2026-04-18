@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Box,
   Typography,
@@ -8,8 +9,12 @@ import {
   MenuItem,
   Chip,
   Button,
+  Collapse,
+  useMediaQuery,
+  useTheme,
   type SelectChangeEvent,
 } from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { GRADE_OPTIONS, REGION_UNION_MAP } from "../../const/Common";
 import type { AnalysisFilters } from "../../utils/analysisUtils";
 import SectionCard from "../common/SectionCard";
@@ -29,6 +34,10 @@ export default function AnalysisFiltersComponent({
   onFiltersChange,
   onResetFilters,
 }: AnalysisFiltersProps) {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const [filtersOpen, setFiltersOpen] = useState(false);
+
   const availableUnions = (() => {
     if (filters.regions.length === 0) {
       return Object.values(REGION_UNION_MAP).flat().sort();
@@ -53,91 +62,116 @@ export default function AnalysisFiltersComponent({
   };
 
   return (
-    <SectionCard sx={{ p: 2.5, mb: 2.5 }}>
+    <SectionCard sx={{ p: { xs: 1.5, sm: 2.5 }, mb: 2.5 }}>
       <Box
         sx={{
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          mb: 2,
+          mb: 1.5,
         }}
       >
-        <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
-          필터
-        </Typography>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+            필터
+          </Typography>
+          {isMobile && (
+            <Button
+              size="small"
+              variant="text"
+              endIcon={
+                <ExpandMoreIcon
+                  sx={{
+                    transform: filtersOpen ? "rotate(180deg)" : "rotate(0deg)",
+                    transition: "transform 0.2s ease",
+                  }}
+                />
+              }
+              onClick={() => setFiltersOpen((open) => !open)}
+            >
+              {filtersOpen ? "접기" : "열기"}
+            </Button>
+          )}
+        </Box>
         <Button variant="outlined" size="small" onClick={onResetFilters}>
           초기화
         </Button>
       </Box>
 
-      <Grid container spacing={2}>
-        <Grid size={{ xs: 12, sm: 6 }}>
-          <RegionSelect filters={filters} onFiltersChange={onFiltersChange} />
-        </Grid>
+      <Collapse
+        in={!isMobile || filtersOpen}
+        timeout="auto"
+        unmountOnExit={isMobile}
+      >
+        <Grid container spacing={{ xs: 1.25, sm: 2 }}>
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <RegionSelect filters={filters} onFiltersChange={onFiltersChange} />
+          </Grid>
 
-        <Grid size={{ xs: 12, sm: 6 }}>
-          <UnionSelect
-            filters={filters}
-            onFiltersChange={onFiltersChange}
-            availableUnions={availableUnions}
-          />
-        </Grid>
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <UnionSelect
+              filters={filters}
+              onFiltersChange={onFiltersChange}
+              availableUnions={availableUnions}
+            />
+          </Grid>
 
-        <Grid size={{ xs: 12, md: 6 }}>
-          <FormControl fullWidth size="small">
-            <InputLabel>등급</InputLabel>
-            <Select
-              multiple
-              value={filters.grades}
-              label="등급"
-              onChange={handleGradeChange}
-              renderValue={(selected) => (
-                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                  {selected.map((value) => {
-                    const option = GRADE_OPTIONS.find(
-                      (opt) => opt.value === value,
-                    );
-                    return (
-                      <Chip
-                        key={value}
-                        label={option?.label || value}
-                        size="small"
-                        variant="outlined"
-                      />
-                    );
-                  })}
-                </Box>
-              )}
-            >
-              {GRADE_OPTIONS.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Grid>
+          <Grid size={{ xs: 12, md: 6 }}>
+            <FormControl fullWidth size="small">
+              <InputLabel>등급</InputLabel>
+              <Select
+                multiple
+                value={filters.grades}
+                label="등급"
+                onChange={handleGradeChange}
+                renderValue={(selected) => (
+                  <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                    {selected.map((value) => {
+                      const option = GRADE_OPTIONS.find(
+                        (opt) => opt.value === value,
+                      );
+                      return (
+                        <Chip
+                          key={value}
+                          label={option?.label || value}
+                          size="small"
+                          variant="outlined"
+                        />
+                      );
+                    })}
+                  </Box>
+                )}
+              >
+                {GRADE_OPTIONS.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
 
-        <Grid size={{ xs: 12, md: 6 }}>
-          <DateRangePickerField
-            startDate={filters.startDate}
-            endDate={filters.endDate}
-            onStartDateChange={(date) => {
-              if (date) onFiltersChange({ ...filters, startDate: date });
-            }}
-            onEndDateChange={(date) => {
-              if (date) onFiltersChange({ ...filters, endDate: date });
-            }}
-          />
-        </Grid>
+          <Grid size={{ xs: 12, md: 6 }}>
+            <DateRangePickerField
+              startDate={filters.startDate}
+              endDate={filters.endDate}
+              onStartDateChange={(date) => {
+                if (date) onFiltersChange({ ...filters, startDate: date });
+              }}
+              onEndDateChange={(date) => {
+                if (date) onFiltersChange({ ...filters, endDate: date });
+              }}
+            />
+          </Grid>
 
-        <Grid size={12}>
-          <ComparisonToggle
-            filters={filters}
-            onFiltersChange={onFiltersChange}
-          />
+          <Grid size={12}>
+            <ComparisonToggle
+              filters={filters}
+              onFiltersChange={onFiltersChange}
+            />
+          </Grid>
         </Grid>
-      </Grid>
+      </Collapse>
     </SectionCard>
   );
 }

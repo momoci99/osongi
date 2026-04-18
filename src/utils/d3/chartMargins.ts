@@ -11,6 +11,13 @@ export type ChartMargin = {
 export const isMobileWidth = (width: number): boolean => width < 600;
 
 /**
+ * 현재 문서가 큰글씨 모드인지 판단합니다.
+ */
+export const isLargeDisplay = (): boolean =>
+  typeof document !== "undefined" &&
+  document.documentElement.dataset.display === "large";
+
+/**
  * 현재 너비에 따라 모바일 또는 데스크톱 마진을 선택합니다.
  */
 export const selectMargin = (

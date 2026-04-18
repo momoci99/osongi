@@ -55,7 +55,8 @@ const DashboardKpiCard = (props: DashboardKpiCardProps) => {
           )}
         </Box>
         <Typography
-          variant="h4"
+          variant="h3"
+          className="kpi-value"
           sx={{
             fontWeight: 700,
             fontSize: "1.75rem",

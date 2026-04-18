@@ -1,6 +1,19 @@
 /* 큰글씨 모드 */
+:root {
+  --font-axis: 10px;
+  --font-legend: 12px;
+}
+
 html[data-display="large"] {
   font-size: 17px;
+  --font-axis: 12px;
+  --font-legend: 14px;
+}
+
+html[data-display="large"] .MuiTypography-h3,
+html[data-display="large"] .kpi-value {
+  font-size: 2.25rem !important;
+  line-height: 1.15 !important;
 }
 
 html[data-display="large"] .MuiTypography-h4,

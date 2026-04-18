@@ -5,6 +5,7 @@ import {
   MenuItem,
   IconButton,
   Tooltip,
+  useMediaQuery,
   useTheme,
 } from "@mui/material";
 import RefreshIcon from "@mui/icons-material/Refresh";
@@ -19,20 +20,34 @@ type DashboardHeaderProps = {
   inSeason: boolean;
 };
 
+type RegionSelectorProps = {
+  compact?: boolean;
+};
+
 /** 리전 셀렉터 공통 */
-const RegionSelector = () => {
+const RegionSelector = ({ compact = false }: RegionSelectorProps) => {
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const myRegion = useSettingsStore((s) => s.myRegion);
   const setMyRegion = useSettingsStore((s) => s.setMyRegion);
 
   return (
-    <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, mb: 2 }}>
-      <Typography
-        variant="body2"
-        sx={{ color: theme.palette.text.secondary, flexShrink: 0 }}
-      >
-        내 지역
-      </Typography>
+    <Box
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        gap: 1,
+        mb: compact ? 0 : { xs: 1, sm: 2 },
+      }}
+    >
+      {(!compact || !isMobile) && (
+        <Typography
+          variant="body2"
+          sx={{ color: theme.palette.text.secondary, flexShrink: 0 }}
+        >
+          내 지역
+        </Typography>
+      )}
       <Select
         value={myRegion ?? ""}
         onChange={(e) =>
@@ -41,8 +56,9 @@ const RegionSelector = () => {
         size="small"
         variant="outlined"
         sx={{
-          minWidth: 100,
-          fontSize: "0.875rem",
+          minWidth: { xs: 88, sm: 100 },
+          height: { xs: 36, sm: 40 },
+          fontSize: { xs: "0.8125rem", sm: "0.875rem" },
           fontWeight: 600,
           "& .MuiOutlinedInput-notchedOutline": {
             borderColor: theme.palette.divider,
@@ -129,17 +145,24 @@ const InSeasonHeader = ({
   const theme = useTheme();
 
   return (
-    <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1.5 }}>
+    <Box
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        gap: { xs: 0.75, sm: 1 },
+        mb: { xs: 1, sm: 1.5 },
+      }}
+    >
       <Box
         sx={{
-          width: 6,
-          height: 6,
+          width: { xs: 4, sm: 6 },
+          height: { xs: 4, sm: 6 },
           borderRadius: "50%",
           bgcolor: theme.palette.primary.main,
           flexShrink: 0,
         }}
       />
-      <RegionSelector />
+      <RegionSelector compact />
       <Box sx={{ display: "flex", alignItems: "center", gap: 0.5, ml: "auto" }}>
         <Typography
           variant="caption"

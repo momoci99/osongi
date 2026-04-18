@@ -109,6 +109,34 @@ export const getComparisonDateRange = (
 };
 
 /**
+ * 직전 1주 비교 기간을 반환한다. (mainStart 기준 7일 전~1일 전)
+ */
+export const getPresetLastWeek = (
+  startDate: Date
+): { startDate: Date; endDate: Date } => {
+  const compEnd = new Date(startDate);
+  compEnd.setDate(compEnd.getDate() - 1);
+  const compStart = new Date(startDate);
+  compStart.setDate(compStart.getDate() - 7);
+  return { startDate: compStart, endDate: compEnd };
+};
+
+/**
+ * 시즌 시작부터 비교 기간을 반환한다. (해당 연도 시즌 시작일 ~ mainEndDate)
+ */
+export const getPresetSeasonStart = (
+  startDate: Date,
+  endDate: Date
+): { startDate: Date; endDate: Date } => {
+  const compStart = new Date(
+    startDate.getFullYear(),
+    MUSHROOM_SEASON.START_MONTH - 1,
+    1
+  );
+  return { startDate: compStart, endDate: new Date(endDate) };
+};
+
+/**
  * 단일 날짜 데이터를 HTTP로 로드한다.
  */
 export const loadDateData = async (

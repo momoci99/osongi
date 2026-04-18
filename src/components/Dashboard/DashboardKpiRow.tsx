@@ -9,7 +9,11 @@ type DashboardKpiRowProps = {
 };
 
 const DashboardKpiRow = ({ latestDaily, latestDate }: DashboardKpiRowProps) => (
-  <Grid container spacing={2}>
+  <Grid
+    container
+    spacing={{ xs: 1, sm: 2 }}
+    sx={{ mt: { xs: 1, sm: 0 }, alignItems: "stretch" }}
+  >
     <Grid size={{ xs: 6, sm: 3 }}>
       <DashboardKpiCard
         title="총 판매량"

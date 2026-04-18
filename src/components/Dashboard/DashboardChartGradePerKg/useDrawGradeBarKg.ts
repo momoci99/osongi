@@ -4,6 +4,8 @@ import type { Theme } from "@mui/material/styles";
 import { GradeKeyToKorean } from "../../../const/Common";
 import { getMargin, ensureGradient } from "./chartHelpers";
 import type { ChartDatum } from "./chartHelpers";
+import { isLargeDisplay, isMobileWidth } from "../../../utils/d3/chartMargins";
+import { FONT_SIZES } from "../../../const/Numbers";
 
 type UseDrawGradeBarKgParams = {
   data: ChartDatum[];
@@ -32,6 +34,14 @@ export const useDrawGradeBarKg = ({
     if (!container || !svgEl) return;
 
     const width = container.clientWidth;
+    const isMobile = isMobileWidth(width);
+    const fontSize = isLargeDisplay()
+      ? isMobile
+        ? FONT_SIZES.LARGE.MOBILE
+        : FONT_SIZES.LARGE.DESKTOP
+      : isMobile
+        ? FONT_SIZES.MOBILE
+        : FONT_SIZES.DESKTOP;
     const MARGIN = getMargin(data);
     const innerWidth = Math.max(0, width - MARGIN.left - MARGIN.right);
     const innerHeight = Math.max(0, height - MARGIN.top - MARGIN.bottom);
@@ -63,8 +73,8 @@ export const useDrawGradeBarKg = ({
     const fontFamily = theme.typography.fontFamily as string;
 
     drawGrid(g, y, innerWidth, theme);
-    drawXAxis(g, x, innerHeight, labelYOffset, fontFamily, axisColor);
-    drawYAxis(g, y, fontFamily, theme, innerHeight);
+    drawXAxis(g, x, innerHeight, labelYOffset, fontFamily, axisColor, fontSize.AXIS);
+    drawYAxis(g, y, fontFamily, theme, innerHeight, fontSize);
 
     const gradientId = ensureGradient(svg, theme);
     const barHover =
@@ -82,6 +92,7 @@ export const useDrawGradeBarKg = ({
       barHover,
       fontFamily,
       theme,
+      valueFontSize: fontSize.AXIS,
     });
   }, [data, height, yMaxOverride, labelYOffset, theme]);
 
@@ -134,6 +145,7 @@ const drawXAxis = (
   labelYOffset: number,
   fontFamily: string,
   axisColor: string,
+  axisFontSize: string,
 ) => {
   g.selectAll<SVGGElement, unknown>("g.x-axis")
     .data([null])
@@ -152,7 +164,7 @@ const drawXAxis = (
       gAxis
         .selectAll<SVGTextElement, unknown>("text")
         .style("font-family", fontFamily)
-        .style("font-size", "11px")
+        .style("font-size", axisFontSize)
         .attr("transform", `translate(0,${labelYOffset})`)
         .each(function () {
           const self = d3.select<SVGTextElement, string>(this);
@@ -183,6 +195,7 @@ const drawYAxis = (
   fontFamily: string,
   theme: Theme,
   innerHeight: number,
+  fontSize: { AXIS: string; TITLE: string },
 ) => {
   g.selectAll<SVGGElement, unknown>("g.y-axis")
     .data([null])
@@ -198,7 +211,7 @@ const drawYAxis = (
       gAxis
         .selectAll<SVGTextElement, unknown>("text")
         .style("font-family", fontFamily)
-        .style("font-size", "11px")
+        .style("font-size", fontSize.AXIS)
         .style("fill", theme.palette.text.secondary);
       gAxis
         .selectAll("path, line")
@@ -215,7 +228,7 @@ const drawYAxis = (
     .attr("text-anchor", "middle")
     .style("font-family", fontFamily)
     .style("fill", theme.palette.text.primary)
-    .style("font-size", "12px")
+    .style("font-size", fontSize.TITLE)
     .style("font-weight", "600")
     .text("무게 (kg)");
 };
@@ -230,6 +243,7 @@ type DrawBarsParams = {
   barHover: string;
   fontFamily: string;
   theme: Theme;
+  valueFontSize: string;
 };
 
 /** 막대 + 값 라벨 + 호버 인터랙션 */
@@ -243,6 +257,7 @@ const drawBars = ({
   barHover,
   fontFamily,
   theme,
+  valueFontSize,
 }: DrawBarsParams) => {
   const plot = g
     .selectAll<SVGGElement, unknown>("g.plot")
@@ -320,7 +335,7 @@ const drawBars = ({
           .attr("y", (d) => y(d.quantityKg) - 6)
           .attr("text-anchor", "middle")
           .style("font-family", fontFamily)
-          .style("font-size", "10px")
+          .style("font-size", valueFontSize)
           .style("fill", theme.palette.text.secondary)
           .style("opacity", "0")
           .text((d) => d.quantityKg.toLocaleString())

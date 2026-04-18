@@ -48,6 +48,20 @@ export const FONT_SIZES = {
     LEGEND: "12px",
     MESSAGE: "16px",
   },
+  LARGE: {
+    MOBILE: {
+      TITLE: "14px",
+      AXIS: "10px",
+      LEGEND: "12px",
+      MESSAGE: "16px",
+    },
+    DESKTOP: {
+      TITLE: "16px",
+      AXIS: "12px",
+      LEGEND: "14px",
+      MESSAGE: "18px",
+    },
+  },
 } as const;
 
 // ===== 적응적 틱 간격 임계값 =====

@@ -5,13 +5,19 @@ import {
   Typography,
   ToggleButton,
   ToggleButtonGroup,
+  IconButton,
+  Tooltip,
   useTheme,
 } from "@mui/material";
+import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import type { GradeBreakdown } from "../../utils/analysisUtils";
 import { GradeKeyToKorean } from "../../const/Common";
 import { useContainerSize } from "../../hooks/useContainerSize";
+import { isLargeDisplay, isMobileWidth } from "../../utils/d3/chartMargins";
+import { FONT_SIZES } from "../../const/Numbers";
 import { createD3Tooltip, removeD3Tooltip } from "../../utils/d3Tooltip";
 import { getGradeColorMap } from "../../utils/chartUtils";
+import { useChartExport } from "../../hooks/useChartExport";
 import EmptyState from "../common/EmptyState";
 import SectionCard from "../common/SectionCard";
 
@@ -26,6 +32,10 @@ export default function GradeBreakdownChart({
   const [containerRef, { width: containerWidth }] = useContainerSize();
   const theme = useTheme();
   const [basis, setBasis] = useState<"quantity" | "amount">("quantity");
+  const { exportToPng } = useChartExport(
+    svgRef,
+    theme.palette.background.paper,
+  );
 
   useEffect(() => {
     if (!svgRef.current || data.length === 0 || containerWidth === 0) return;
@@ -34,6 +44,14 @@ export default function GradeBreakdownChart({
     svg.selectAll("*").remove();
 
     const gradeColors = getGradeColorMap(theme);
+    const isMobile = isMobileWidth(containerWidth);
+    const fontSize = isLargeDisplay()
+      ? isMobile
+        ? FONT_SIZES.LARGE.MOBILE
+        : FONT_SIZES.LARGE.DESKTOP
+      : isMobile
+        ? FONT_SIZES.MOBILE
+        : FONT_SIZES.DESKTOP;
 
     const size = Math.min(containerWidth * 0.85, 360);
     const outerRadius = size / 2 - 8;
@@ -69,15 +87,14 @@ export default function GradeBreakdownChart({
       .outerRadius(outerRadius + 6)
       .cornerRadius(3);
 
-    g
-      .selectAll("path")
+    g.selectAll("path")
       .data(pie(pieData))
       .enter()
       .append("path")
       .attr("d", arc as any)
       .attr(
         "fill",
-        (d) => gradeColors[d.data.gradeKey] || theme.palette.grey[500]
+        (d) => gradeColors[d.data.gradeKey] || theme.palette.grey[500],
       )
       .attr("stroke", theme.palette.background.paper)
       .attr("stroke-width", 2)
@@ -115,7 +132,7 @@ export default function GradeBreakdownChart({
 
         tooltip.html(
           `<div style="font-weight:600;color:${color};margin-bottom:2px;">${gradeName}</div>` +
-            `<div>${pct}% | ${val}</div>`
+            `<div>${pct}% | ${val}</div>`,
         );
 
         const [mx, my] = d3.pointer(event, document.body);
@@ -140,14 +157,14 @@ export default function GradeBreakdownChart({
       .attr("text-anchor", "middle")
       .attr("dy", "-0.3em")
       .style("fill", theme.palette.text.secondary)
-      .style("font-size", "0.8rem")
+      .style("font-size", fontSize.LEGEND)
       .text("합계");
 
     g.append("text")
       .attr("text-anchor", "middle")
       .attr("dy", "1.1em")
       .style("fill", theme.palette.text.primary)
-      .style("font-size", "1rem")
+      .style("font-size", fontSize.MESSAGE)
       .style("font-weight", "700")
       .style("font-variant-numeric", "tabular-nums")
       .text(totalValue);
@@ -160,7 +177,7 @@ export default function GradeBreakdownChart({
 
     const cols = 2;
     const colWidth = (containerWidth - 32) / cols;
-    const rowHeight = 28;
+    const rowHeight = isMobile ? 24 : 28;
 
     pieData.forEach((d, i) => {
       const col = i % cols;
@@ -181,7 +198,8 @@ export default function GradeBreakdownChart({
         .attr("opacity", 0.9);
 
       const gradeName =
-        GradeKeyToKorean[d.gradeKey as keyof typeof GradeKeyToKorean] || d.gradeKey;
+        GradeKeyToKorean[d.gradeKey as keyof typeof GradeKeyToKorean] ||
+        d.gradeKey;
       const pct = `${(d.value * 100).toFixed(1)}%`;
 
       item
@@ -189,7 +207,7 @@ export default function GradeBreakdownChart({
         .attr("x", 18)
         .attr("y", 11)
         .style("fill", theme.palette.text.primary)
-        .style("font-size", "0.8rem")
+        .style("font-size", fontSize.LEGEND)
         .style("font-weight", "500")
         .text(gradeName);
 
@@ -199,7 +217,7 @@ export default function GradeBreakdownChart({
         .attr("y", 11)
         .attr("text-anchor", "end")
         .style("fill", theme.palette.text.secondary)
-        .style("font-size", "0.8rem")
+        .style("font-size", fontSize.LEGEND)
         .style("font-weight", "600")
         .style("font-variant-numeric", "tabular-nums")
         .text(pct);
@@ -223,9 +241,21 @@ export default function GradeBreakdownChart({
           mb: 1.5,
         }}
       >
-        <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
-          등급별 비중
-        </Typography>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+          <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+            등급별 비중
+          </Typography>
+          {data.length > 0 && (
+            <Tooltip title="PNG 다운로드">
+              <IconButton
+                size="small"
+                onClick={() => exportToPng("등급별비중")}
+              >
+                <FileDownloadIcon fontSize="small" />
+              </IconButton>
+            </Tooltip>
+          )}
+        </Box>
         <ToggleButtonGroup
           value={basis}
           exclusive

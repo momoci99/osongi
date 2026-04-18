@@ -1,10 +1,12 @@
 import { useState, useEffect, useRef } from "react";
-import { Box, ToggleButton, ToggleButtonGroup } from "@mui/material";
+import { Box, ToggleButton, ToggleButtonGroup, IconButton, Tooltip } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
+import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import type { WeeklyPriceDatum } from "../../../types/data";
 import { CHART_LAYOUT } from "../../../const/Numbers";
 import useDrawAnalysisChart from "./useDrawAnalysisChart";
 import type { ChartMode } from "./seriesBuilder";
+import { useChartExport } from "../../../hooks/useChartExport";
 
 export type DataAnalysisChartProps = {
   data: WeeklyPriceDatum[];
@@ -46,6 +48,7 @@ const DataAnalysisChart = ({
     containerHeight: containerSize.height,
     mode,
   });
+  const { exportToPng } = useChartExport(svgRef, theme.palette.background.paper);
 
   const handleModeChange = (
     _event: React.MouseEvent<HTMLElement>,
@@ -56,7 +59,14 @@ const DataAnalysisChart = ({
 
   return (
     <Box sx={{ width: "100%", mb: 4 }}>
-      <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}>
+      <Box sx={{ display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 1, mb: 2 }}>
+        {data.length > 0 && (
+          <Tooltip title="PNG 다운로드">
+            <IconButton size="small" onClick={() => exportToPng("가격수량추이")}>
+              <FileDownloadIcon fontSize="small" />
+            </IconButton>
+          </Tooltip>
+        )}
         <ToggleButtonGroup
           value={mode}
           exclusive

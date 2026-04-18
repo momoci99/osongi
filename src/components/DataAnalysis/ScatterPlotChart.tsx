@@ -5,13 +5,19 @@ import {
   Typography,
   FormControlLabel,
   Switch,
+  IconButton,
+  Tooltip,
   useTheme,
 } from "@mui/material";
+import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import type { ScatterDatum } from "../../utils/analysisUtils";
 import { GradeKeyToKorean } from "../../const/Common";
 import { useContainerSize } from "../../hooks/useContainerSize";
+import { isLargeDisplay } from "../../utils/d3/chartMargins";
+import { FONT_SIZES } from "../../const/Numbers";
 import { createD3Tooltip, removeD3Tooltip } from "../../utils/d3Tooltip";
 import { getGradeColorMap } from "../../utils/chartUtils";
+import { useChartExport } from "../../hooks/useChartExport";
 import EmptyState from "../common/EmptyState";
 import SectionCard from "../common/SectionCard";
 
@@ -28,6 +34,7 @@ export default function ScatterPlotChart({
   const [containerRef, { width: containerWidth }] = useContainerSize();
   const theme = useTheme();
   const [showTrend, setShowTrend] = useState(false);
+  const { exportToPng } = useChartExport(svgRef, theme.palette.background.paper);
 
   useEffect(() => {
     if (!svgRef.current || data.length === 0 || containerWidth === 0) return;
@@ -38,6 +45,13 @@ export default function ScatterPlotChart({
     const gradeColors = getGradeColorMap(theme);
 
     const isMobile = containerWidth < 500;
+    const fontSize = isLargeDisplay()
+      ? isMobile
+        ? FONT_SIZES.LARGE.MOBILE
+        : FONT_SIZES.LARGE.DESKTOP
+      : isMobile
+        ? FONT_SIZES.MOBILE
+        : FONT_SIZES.DESKTOP;
     const margin = isMobile
       ? { top: 16, right: 16, bottom: 40, left: 55 }
       : { top: 16, right: 20, bottom: 44, left: 70 };
@@ -160,7 +174,6 @@ export default function ScatterPlotChart({
       });
 
     // Axes
-    const axisFontSize = isMobile ? "9px" : "11px";
 
     g.append("g")
       .attr("transform", `translate(0,${innerHeight})`)
@@ -172,7 +185,7 @@ export default function ScatterPlotChart({
       )
       .selectAll("text")
       .style("fill", theme.palette.text.secondary)
-      .style("font-size", axisFontSize);
+      .style("font-size", fontSize.AXIS);
 
     g.append("g")
       .call(
@@ -183,17 +196,16 @@ export default function ScatterPlotChart({
       )
       .selectAll("text")
       .style("fill", theme.palette.text.secondary)
-      .style("font-size", axisFontSize);
+      .style("font-size", fontSize.AXIS);
 
     // Axis labels
-    const labelSize = isMobile ? "10px" : "12px";
 
     g.append("text")
       .attr("x", innerWidth / 2)
       .attr("y", innerHeight + (isMobile ? 32 : 38))
       .attr("text-anchor", "middle")
       .style("fill", theme.palette.text.secondary)
-      .style("font-size", labelSize)
+      .style("font-size", fontSize.TITLE)
       .text("물량 (kg)");
 
     g.append("text")
@@ -202,7 +214,7 @@ export default function ScatterPlotChart({
       .attr("y", isMobile ? -40 : -52)
       .attr("text-anchor", "middle")
       .style("fill", theme.palette.text.secondary)
-      .style("font-size", labelSize)
+      .style("font-size", fontSize.TITLE)
       .text("단가 (원/kg)");
 
     // Style axis lines
@@ -222,9 +234,18 @@ export default function ScatterPlotChart({
           mb: 1,
         }}
       >
-        <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
-          가격-물량 상관
-        </Typography>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+          <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+            가격-물량 상관
+          </Typography>
+          {data.length > 0 && (
+            <Tooltip title="PNG 다운로드">
+              <IconButton size="small" onClick={() => exportToPng("가격물량상관")}>
+                <FileDownloadIcon fontSize="small" />
+              </IconButton>
+            </Tooltip>
+          )}
+        </Box>
         <FormControlLabel
           control={
             <Switch

@@ -6,7 +6,12 @@ import type { WeeklyPriceDatum } from "../../../types/data";
 import { getGradeColorArray } from "../../../utils/chartUtils";
 import { createD3Tooltip, removeD3Tooltip } from "../../../utils/d3Tooltip";
 import { addDropShadowFilter } from "../../../utils/d3/dropShadowFilter";
-import { selectMargin, isMobileWidth } from "../../../utils/d3/chartMargins";
+import {
+  selectMargin,
+  isMobileWidth,
+  isLargeDisplay,
+} from "../../../utils/d3/chartMargins";
+import { FONT_SIZES } from "../../../const/Numbers";
 import { buildTimeAxis } from "../../../utils/d3/timeAxisTicks";
 import {
   buildWeeklySeries,
@@ -52,10 +57,17 @@ export const useDrawWeeklyToggle = ({
     }
 
     const isMobile = isMobileWidth(containerWidth);
+    const fontSize = isLargeDisplay()
+      ? isMobile
+        ? FONT_SIZES.LARGE.MOBILE
+        : FONT_SIZES.LARGE.DESKTOP
+      : isMobile
+        ? FONT_SIZES.MOBILE
+        : FONT_SIZES.DESKTOP;
     const margin = selectMargin(
       containerWidth,
       { top: 20, right: 20, bottom: 100, left: 60 },
-      { top: 20, right: 120, bottom: 60, left: 80 }
+      { top: 20, right: 120, bottom: 60, left: 80 },
     );
     const innerWidth = containerWidth - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
@@ -70,21 +82,30 @@ export const useDrawWeeklyToggle = ({
     const series = buildWeeklySeries(
       processedData,
       gradeKeys,
-      getGradeColorArray(theme)
+      getGradeColorArray(theme),
     );
 
     const xScale = d3
       .scaleTime()
-      .domain(d3.extent(processedData, (datum) => datum.parsedDate) as [Date, Date])
+      .domain(
+        d3.extent(processedData, (datum) => datum.parsedDate) as [Date, Date],
+      )
       .range([0, innerWidth]);
 
-    const yScale = d3.scaleLinear().domain([0, yMax]).nice().range([innerHeight, 0]);
+    const yScale = d3
+      .scaleLinear()
+      .domain([0, yMax])
+      .nice()
+      .range([innerHeight, 0]);
 
     const mainGroup = svg
       .append("g")
       .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
-    const dropShadowId = addDropShadowFilter(svg, theme.palette.mode === "dark");
+    const dropShadowId = addDropShadowFilter(
+      svg,
+      theme.palette.mode === "dark",
+    );
 
     mainGroup
       .append("g")
@@ -127,28 +148,30 @@ export const useDrawWeeklyToggle = ({
       .tickFormat((value) =>
         chartMode === "price"
           ? `${Math.round(value as number).toLocaleString()}원`
-          : `${Math.round(value as number).toLocaleString()}kg`
+          : `${Math.round(value as number).toLocaleString()}kg`,
       )
       .ticks(yTickCount);
-    const axisFontSize = isMobile ? "10px" : "12px";
-
     mainGroup
       .append("g")
       .attr("transform", `translate(0, ${innerHeight})`)
       .call(xAxis)
       .selectAll("text")
       .style("fill", theme.palette.text.primary)
-      .style("font-size", axisFontSize);
+      .style("font-size", fontSize.AXIS);
 
     mainGroup
       .append("g")
       .call(yAxis)
       .selectAll("text")
       .style("fill", theme.palette.text.primary)
-      .style("font-size", axisFontSize);
+      .style("font-size", fontSize.AXIS);
 
-    mainGroup.selectAll(".domain").style("stroke", theme.palette.text.secondary);
-    mainGroup.selectAll(".tick line").style("stroke", theme.palette.text.secondary);
+    mainGroup
+      .selectAll(".domain")
+      .style("stroke", theme.palette.text.secondary);
+    mainGroup
+      .selectAll(".tick line")
+      .style("stroke", theme.palette.text.secondary);
 
     mainGroup
       .append("text")
@@ -157,7 +180,7 @@ export const useDrawWeeklyToggle = ({
       .attr("x", -innerHeight / 2)
       .attr("text-anchor", "middle")
       .style("fill", theme.palette.text.primary)
-      .style("font-size", isMobile ? "12px" : "14px")
+      .style("font-size", fontSize.TITLE)
       .style("font-weight", "500")
       .text(chartMode === "price" ? "단가 (원/kg)" : "수량 (kg)");
 
@@ -168,6 +191,7 @@ export const useDrawWeeklyToggle = ({
       innerHeight,
       isMobile,
       theme,
+      legendFontSize: fontSize.LEGEND,
     });
 
     return () => {
@@ -254,7 +278,7 @@ const drawSeries = ({
   points
     .on("mouseenter", function onMouseEnter(event, datum) {
       const originalPoint = gradeSeries.points.find(
-        (point) => point.date.getTime() === datum.date.getTime()
+        (point) => point.date.getTime() === datum.date.getTime(),
       );
 
       if (!originalPoint) {
@@ -310,6 +334,7 @@ type DrawLegendParams = {
   innerHeight: number;
   isMobile: boolean;
   theme: Theme;
+  legendFontSize: string;
 };
 
 /**
@@ -322,19 +347,26 @@ const drawLegend = ({
   innerHeight,
   isMobile,
   theme,
+  legendFontSize,
 }: DrawLegendParams) => {
-  const legend = mainGroup.append("g").attr(
-    "transform",
-    isMobile ? `translate(0, ${innerHeight + 40})` : `translate(${innerWidth + 20}, 20)`
-  );
-
-  series.forEach((gradeSeries, index) => {
-    const legendItem = legend.append("g").attr(
+  const legend = mainGroup
+    .append("g")
+    .attr(
       "transform",
       isMobile
-        ? `translate(${(index % 3) * (innerWidth / 3)}, ${Math.floor(index / 3) * 25})`
-        : `translate(0, ${index * 25})`
+        ? `translate(0, ${innerHeight + 40})`
+        : `translate(${innerWidth + 20}, 20)`,
     );
+
+  series.forEach((gradeSeries, index) => {
+    const legendItem = legend
+      .append("g")
+      .attr(
+        "transform",
+        isMobile
+          ? `translate(${(index % 3) * (innerWidth / 3)}, ${Math.floor(index / 3) * 25})`
+          : `translate(0, ${index * 25})`,
+      );
 
     legendItem
       .append("line")
@@ -358,11 +390,11 @@ const drawLegend = ({
       .attr("y", 0)
       .attr("dy", "0.35em")
       .style("fill", theme.palette.text.primary)
-      .style("font-size", isMobile ? "10px" : "12px")
+      .style("font-size", legendFontSize)
       .text(
         GradeKeyToKorean[
           gradeSeries.gradeKey as keyof typeof GradeKeyToKorean
-        ] || gradeSeries.gradeKey
+        ] || gradeSeries.gradeKey,
       );
   });
 };
