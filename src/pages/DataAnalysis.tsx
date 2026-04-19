@@ -7,6 +7,7 @@ import type { MushroomAuctionDataRaw } from "../types/data";
 import { GRADE_OPTIONS } from "../const/Common";
 import {
   type AnalysisFilters,
+  type MovingAverageDatum,
   getDefaultDateRange,
   applyFilters,
   transformToChartData,
@@ -15,7 +16,7 @@ import {
   calculateGradeBreakdown,
   transformToScatterData,
   calculateRegionComparison,
-  getComparisonDateRange,
+  calculateMovingAverages,
 } from "../utils/analysisUtils";
 import { loadDateRangeData } from "../utils/dataAnalysisLoader";
 import AnalysisFiltersComponent from "../components/DataAnalysis/AnalysisFilters";
@@ -150,6 +151,12 @@ const DataAnalysis = () => {
     [filteredData, filters.grades]
   );
 
+  // 이동평균
+  const maData = useMemo<MovingAverageDatum[]>(
+    () => calculateMovingAverages(chartData),
+    [chartData]
+  );
+
   // 필터 초기화
   const handleResetFilters = () => {
     const { startDate, endDate } = getDefaultDateRange();
@@ -200,6 +207,7 @@ const DataAnalysis = () => {
                 filteredDataLength={filteredData.length}
                 chartMode={chartMode}
                 onChartModeChange={setChartMode}
+                maData={maData}
               />
             </Grid>
             <Grid size={{ xs: 12, md: 5 }}>

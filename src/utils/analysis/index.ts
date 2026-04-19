@@ -5,3 +5,4 @@ export * from "./scatter";
 export * from "./region";
 export * from "./dateRange";
 export * from "./convert";
+export * from "./statistics";

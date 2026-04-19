@@ -2,7 +2,9 @@ import { useState, useEffect, useRef } from "react";
 import { Box, ToggleButton, ToggleButtonGroup, IconButton, Tooltip } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
+import ShowChartIcon from "@mui/icons-material/ShowChart";
 import type { WeeklyPriceDatum } from "../../../types/data";
+import type { MovingAverageDatum } from "../../../utils/analysis/statistics";
 import { CHART_LAYOUT } from "../../../const/Numbers";
 import useDrawAnalysisChart from "./useDrawAnalysisChart";
 import type { ChartMode } from "./seriesBuilder";
@@ -13,6 +15,7 @@ export type DataAnalysisChartProps = {
   height?: number;
   mode: ChartMode;
   onModeChange: (mode: ChartMode) => void;
+  maData: MovingAverageDatum[];
 };
 
 /**
@@ -23,10 +26,12 @@ const DataAnalysisChart = ({
   height = CHART_LAYOUT.DEFAULT_HEIGHT,
   mode,
   onModeChange,
+  maData,
 }: DataAnalysisChartProps) => {
   const theme = useTheme();
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
+  const [showMA, setShowMA] = useState(false);
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -47,6 +52,8 @@ const DataAnalysisChart = ({
     containerWidth: containerSize.width,
     containerHeight: containerSize.height,
     mode,
+    maData,
+    showMA: showMA && mode === "price",
   });
   const { exportToPng } = useChartExport(svgRef, theme.palette.background.paper);
 
@@ -64,6 +71,22 @@ const DataAnalysisChart = ({
           <Tooltip title="PNG 다운로드">
             <IconButton size="small" onClick={() => exportToPng("가격수량추이")}>
               <FileDownloadIcon fontSize="small" />
+            </IconButton>
+          </Tooltip>
+        )}
+        {mode === "price" && (
+          <Tooltip title={showMA ? "이동평균선 숨기기" : "이동평균선 표시"}>
+            <IconButton
+              size="small"
+              onClick={() => setShowMA((prev) => !prev)}
+              sx={{
+                color: showMA ? theme.palette.primary.main : theme.palette.text.disabled,
+                border: `1px solid ${showMA ? theme.palette.primary.main : theme.palette.divider}`,
+                borderRadius: 1,
+                transition: "color 0.2s, border-color 0.2s",
+              }}
+            >
+              <ShowChartIcon fontSize="small" />
             </IconButton>
           </Tooltip>
         )}

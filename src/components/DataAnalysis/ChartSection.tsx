@@ -1,25 +1,28 @@
 import { Box, Typography } from "@mui/material";
 import type { WeeklyPriceDatum } from "../../types/data";
+import type { MovingAverageDatum } from "../../utils/analysis/statistics";
 import DataAnalysisChart from "./DataAnalysisChart";
 import { CHART_LAYOUT, UI_LAYOUT } from "../../const/Numbers";
 import EmptyState from "../common/EmptyState";
 import SectionCard from "../common/SectionCard";
 
-interface ChartSectionProps {
+type ChartSectionProps = {
   chartData: WeeklyPriceDatum[];
   loading: boolean;
   filteredDataLength: number;
   chartMode: "price" | "quantity";
   onChartModeChange: (mode: "price" | "quantity") => void;
-}
+  maData: MovingAverageDatum[];
+};
 
-export default function ChartSection({
+const ChartSection = ({
   chartData,
   loading,
   filteredDataLength,
   chartMode,
   onChartModeChange,
-}: ChartSectionProps) {
+  maData,
+}: ChartSectionProps) => {
   return (
     <SectionCard sx={{ width: "100%" }}>
       <Box
@@ -44,10 +47,13 @@ export default function ChartSection({
           height={CHART_LAYOUT.DEFAULT_HEIGHT}
           mode={chartMode}
           onModeChange={onChartModeChange}
+          maData={maData}
         />
       ) : (
         <EmptyState height={CHART_LAYOUT.DEFAULT_HEIGHT} />
       )}
     </SectionCard>
   );
-}
+};
+
+export default ChartSection;
