@@ -9,6 +9,8 @@ import { MUSHROOM_SEASON, DATE_CONSTANTS } from "../../../const/Numbers";
 
 export type ChartMode = "price" | "quantity";
 
+export type ChartLayout = "subplot" | "overlay";
+
 /** 등급 우선순위 정렬 기준 */
 export const GRADE_ORDER = [
   "grade1",
@@ -98,6 +100,12 @@ export const getYAccessor = (
   mode === "price" ? (d) => d.unitPriceWon : (d) => d.quantityKg;
 
 /**
+ * 차트 데이터에서 고유 시리즈(지역-등급 조합) 수를 계산합니다.
+ */
+export const countUniqueSeries = (data: WeeklyPriceDatum[]): number =>
+  new Set(data.map((d) => `${d.region}-${d.gradeKey}`)).size;
+
+/**
  * 연도 내 데이터를 지역/등급별 시리즈로 변환합니다.
  */
 export const buildYearSeries = (
@@ -164,4 +172,74 @@ export const collectLegendItems = (
     );
     return (indexA === -1 ? 999 : indexA) - (indexB === -1 ? 999 : indexB);
   });
+};
+
+/** 오버레이 모드용 정규화 데이터 */
+export type NormalizedDatum = WeeklyPriceDatum & { normalizedDate: Date };
+
+export type OverlaySeries = {
+  year: number;
+  region: string;
+  gradeKey: string;
+  data: NormalizedDatum[];
+  color: string;
+  dashPattern: string;
+  seriesKey: string;
+};
+
+/** 날짜의 월-일을 기준년(2000)으로 정규화합니다. */
+export const normalizeToBaseYear = (dateStr: string): Date => {
+  const d = new Date(dateStr);
+  return new Date(2000, d.getMonth(), d.getDate());
+};
+
+/** 연도별 색상 팔레트 */
+export const YEAR_COLORS = [
+  "#1f77b4",
+  "#ff7f0e",
+  "#2ca02c",
+  "#d62728",
+  "#9467bd",
+  "#8c564b",
+  "#e377c2",
+  "#7f7f7f",
+  "#bcbd22",
+  "#17becf",
+];
+
+/**
+ * 오버레이 모드용 시리즈를 생성합니다.
+ * 색상은 연도별, 대시 패턴은 등급별로 구분합니다.
+ */
+export const buildOverlayYearSeries = (
+  normalizedData: NormalizedDatum[],
+  year: number,
+  yearColorScale: d3.ScaleOrdinal<number, string>,
+): OverlaySeries[] => {
+  const seriesMap = new Map<string, OverlaySeries>();
+
+  normalizedData.forEach((d) => {
+    if (!d.region || !d.gradeKey) return;
+    const key = `${year}-${d.region}-${d.gradeKey}`;
+    if (!seriesMap.has(key)) {
+      seriesMap.set(key, {
+        year,
+        region: d.region,
+        gradeKey: d.gradeKey,
+        data: [],
+        color: yearColorScale(year),
+        dashPattern: getGradeDashPattern(d.gradeKey),
+        seriesKey: key,
+      });
+    }
+    seriesMap.get(key)!.data.push(d);
+  });
+
+  seriesMap.forEach((s) => {
+    s.data.sort(
+      (a, b) => a.normalizedDate.getTime() - b.normalizedDate.getTime(),
+    );
+  });
+
+  return Array.from(seriesMap.values());
 };

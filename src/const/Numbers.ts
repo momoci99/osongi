@@ -16,6 +16,7 @@ export const DEFAULT_DATE_RANGE = {
 // ===== 차트 레이아웃 상수 =====
 export const CHART_LAYOUT = {
   DEFAULT_HEIGHT: 400,
+  EXPANDED_HEIGHT: 700,
   MIN_HEIGHT: 300,
   MOBILE_BREAKPOINT: 768,
 } as const;
@@ -138,4 +139,3 @@ export const TABLE_CONSTANTS = {
   QUANTITY_COLUMN_WIDTH: 80, // 수량 컬럼 너비
   PRICE_COLUMN_WIDTH: 100, // 단가 컬럼 너비
 } as const;
-

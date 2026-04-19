@@ -55,6 +55,7 @@ const DataAnalysis = () => {
   });
 
   const [chartMode, setChartMode] = useState<"price" | "quantity">("price");
+  const [chartExpanded, setChartExpanded] = useState(false);
 
   // 메인 데이터 로드
   useEffect(() => {
@@ -246,22 +247,45 @@ const DataAnalysis = () => {
           </Box>
 
           {/* 가격 추이 + 등급별 비중 (2열) */}
-          <Grid container spacing={2} sx={{ mb: 2.5 }}>
-            <Grid size={{ xs: 12, md: 7 }}>
-              <ChartSection
-                chartData={chartData}
-                loading={loading}
-                filteredDataLength={filteredData.length}
-                chartMode={chartMode}
-                onChartModeChange={setChartMode}
-                maData={maData}
-                emptyMessage={chartEmptyMessage}
-              />
+          {chartExpanded ? (
+            <>
+              <Box sx={{ mb: 2.5 }}>
+                <ChartSection
+                  chartData={chartData}
+                  loading={loading}
+                  filteredDataLength={filteredData.length}
+                  chartMode={chartMode}
+                  onChartModeChange={setChartMode}
+                  maData={maData}
+                  emptyMessage={chartEmptyMessage}
+                  expanded={chartExpanded}
+                  onExpandedChange={setChartExpanded}
+                />
+              </Box>
+              <Box sx={{ mb: 2.5 }}>
+                <GradeBreakdownChart data={gradeBreakdown} />
+              </Box>
+            </>
+          ) : (
+            <Grid container spacing={2} sx={{ mb: 2.5 }}>
+              <Grid size={{ xs: 12, md: 7 }}>
+                <ChartSection
+                  chartData={chartData}
+                  loading={loading}
+                  filteredDataLength={filteredData.length}
+                  chartMode={chartMode}
+                  onChartModeChange={setChartMode}
+                  maData={maData}
+                  emptyMessage={chartEmptyMessage}
+                  expanded={chartExpanded}
+                  onExpandedChange={setChartExpanded}
+                />
+              </Grid>
+              <Grid size={{ xs: 12, md: 5 }}>
+                <GradeBreakdownChart data={gradeBreakdown} />
+              </Grid>
             </Grid>
-            <Grid size={{ xs: 12, md: 5 }}>
-              <GradeBreakdownChart data={gradeBreakdown} />
-            </Grid>
-          </Grid>
+          )}
 
           {/* 산점도 + 지역 비교 (2열) */}
           <Grid container spacing={2} sx={{ mb: 2.5 }}>
