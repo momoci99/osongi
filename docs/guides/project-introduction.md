@@ -15,29 +15,29 @@
 
 ### 주요 사용자
 
-| 페르소나 | 특성 | 주요 관심사 |
-|---------|------|------------|
-| 채취자·농가 | 40~70대, 모바일 | 시세 빠르게 확인 |
-| 조합 관계자·분석가 | PC 사용자 | 통계 분석, 보고서 |
+| 페르소나           | 특성            | 주요 관심사       |
+| ------------------ | --------------- | ----------------- |
+| 채취자·농가        | 40~70대, 모바일 | 시세 빠르게 확인  |
+| 조합 관계자·분석가 | PC 사용자       | 통계 분석, 보고서 |
 
 ---
 
 ## 2. 기술 스택
 
-| 분야 | 기술 | 버전 |
-|------|------|------|
-| 프레임워크 | React + TypeScript | 19 + TS 5.8 |
-| 빌드 | Vite | 7.1 |
-| 라우팅 | React Router | 7.10 |
-| UI | MUI (Material UI) | 7.3 |
-| 상태 관리 | Zustand | 5.0 |
-| 로컬 DB | Dexie (IndexedDB) | 4.2 |
-| 차트 | D3.js | 7.9 |
-| 날짜 | date-fns | 4.1 |
-| 검증 | Zod | 4.0 |
-| 테스트 | Vitest + Playwright | 3.2 + 1.59 |
-| UI 테스트 | Storybook | 9.1 |
-| 배포 | Vercel | — |
+| 분야       | 기술                | 버전        |
+| ---------- | ------------------- | ----------- |
+| 프레임워크 | React + TypeScript  | 19 + TS 5.8 |
+| 빌드       | Vite                | 7.1         |
+| 라우팅     | React Router        | 7.10        |
+| UI         | MUI (Material UI)   | 7.3         |
+| 상태 관리  | Zustand             | 5.0         |
+| 로컬 DB    | Dexie (IndexedDB)   | 4.2         |
+| 차트       | D3.js               | 7.9         |
+| 날짜       | date-fns            | 4.1         |
+| 검증       | Zod                 | 4.0         |
+| 테스트     | Vitest + Playwright | 3.2 + 1.59  |
+| UI 테스트  | Storybook           | 9.1         |
+| 배포       | Vercel              | —           |
 
 ---
 
@@ -112,10 +112,10 @@ osongi/
 
 ## 4. 라우팅
 
-| 경로 | 컴포넌트 | 설명 |
-|------|---------|------|
-| `/` | `Dashboard` | 대시보드 (기본 페이지) |
-| `/data-analysis` | `DataAnalysis` | 데이터 분석 |
+| 경로             | 컴포넌트       | 설명                   |
+| ---------------- | -------------- | ---------------------- |
+| `/`              | `Dashboard`    | 대시보드 (기본 페이지) |
+| `/data-analysis` | `DataAnalysis` | 데이터 분석            |
 
 모든 라우트는 `src/App.tsx`에서 `<Routes>`로 관리합니다.
 
@@ -151,14 +151,14 @@ osongi/
 
 ### 등급 체계
 
-| 키 | 한글 |
-|----|------|
-| `grade1` | 1등품 |
-| `grade2` | 2등품 |
-| `grade3Stopped` | 3등품(생장정지품) |
-| `grade3Estimated` | 3등품(개산품) |
-| `gradeBelow` | 등외품 |
-| `mixedGrade` | 혼합품 |
+| 키                | 한글              |
+| ----------------- | ----------------- |
+| `grade1`          | 1등품             |
+| `grade2`          | 2등품             |
+| `grade3Stopped`   | 3등품(생장정지품) |
+| `grade3Estimated` | 3등품(개산품)     |
+| `gradeBelow`      | 등외품            |
+| `mixedGrade`      | 혼합품            |
 
 ### 지역 및 조합
 
@@ -195,11 +195,11 @@ IndexedDB 캐싱 (Dexie) — 오프라인/저속 네트워크 지원
 
 ```typescript
 {
-  themeMode: "dark" | "light";        // 라이트/다크 모드
-  myRegion: RegionType | null;        // 사용자 지역
-  myUnion: string | null;             // 사용자 조합
-  hasCompletedOnboarding: boolean;    // 온보딩 완료 여부
-  displayMode: "default" | "large";   // 글씨 크기 모드
+  themeMode: "dark" | "light"; // 라이트/다크 모드
+  myRegion: RegionType | null; // 사용자 지역
+  myUnion: string | null; // 사용자 조합
+  hasCompletedOnboarding: boolean; // 온보딩 완료 여부
+  displayMode: "default" | "large"; // 글씨 크기 모드
 }
 ```
 
@@ -226,23 +226,23 @@ IndexedDB 캐싱 (Dexie) — 오프라인/저속 네트워크 지원
 
 ### 색상 토큰 (Modern Forest)
 
-| 토큰 | 라이트 | 다크 |
-|------|--------|------|
-| 배경 | `#FAFAF9` | `#171412` |
-| 텍스트 | `#1C1917` | `#FAF9F7` |
+| 토큰    | 라이트    | 다크      |
+| ------- | --------- | --------- |
+| 배경    | `#FAFAF9` | `#171412` |
+| 텍스트  | `#1C1917` | `#FAF9F7` |
 | Primary | `#166534` | `#22C55E` |
-| Accent | `#B45309` | `#FBBF24` |
+| Accent  | `#B45309` | `#FBBF24` |
 
 ### 등급별 컬러
 
-| 등급 | 색상 계열 |
-|------|----------|
-| grade1 | 초록 |
-| grade2 | 파랑 |
-| grade3Stopped | 주황 |
-| grade3Estimated | 보라 |
-| gradeBelow | 빨강 |
-| mixedGrade | 회색 |
+| 등급            | 색상 계열 |
+| --------------- | --------- |
+| grade1          | 초록      |
+| grade2          | 파랑      |
+| grade3Stopped   | 주황      |
+| grade3Estimated | 보라      |
+| gradeBelow      | 빨강      |
+| mixedGrade      | 회색      |
 
 ### 폰트
 
@@ -278,17 +278,17 @@ npm run generate-complete-dataset  # 통합 데이터셋 생성
 
 ## 10. 코딩 컨벤션
 
-| 항목 | 규칙 |
-|------|------|
-| 타입 정의 | `type` 사용 (`interface` 아님) |
-| 컴포넌트 | 화살표 함수 (`const Foo = () => {}`) |
-| 내보내기 | `export default`, 파일 끝에 위치 |
-| 차트 | D3.js 직접 구현 (래핑 라이브러리 금지) |
-| 주석 | 한국어, JSDoc 형태 (`/** ... */`) |
-| 컴포넌트 크기 | 300줄 이하 유지 |
-| 원칙 | Clean Code, SOLID |
-| 테스트 | Vitest + React Testing Library (pre-push 훅 자동 실행) |
-| 라이트/다크 | 두 모드 모두 지원 필수 |
+| 항목          | 규칙                                                   |
+| ------------- | ------------------------------------------------------ |
+| 타입 정의     | `type` 사용 (`interface` 아님)                         |
+| 컴포넌트      | 화살표 함수 (`const Foo = () => {}`)                   |
+| 내보내기      | `export default`, 파일 끝에 위치                       |
+| 차트          | D3.js 직접 구현 (래핑 라이브러리 금지)                 |
+| 주석          | 한국어, JSDoc 형태 (`/** ... */`)                      |
+| 컴포넌트 크기 | 300줄 이하 유지                                        |
+| 원칙          | Clean Code, SOLID                                      |
+| 테스트        | Vitest + React Testing Library (pre-push 훅 자동 실행) |
+| 라이트/다크   | 두 모드 모두 지원 필수                                 |
 
 ---
 
@@ -334,23 +334,23 @@ npm run storybook
 
 ### 주요 진입 파일
 
-| 파일 | 역할 |
-|------|------|
-| `src/App.tsx` | 라우팅 진입점 |
-| `src/theme.ts` | MUI 테마 정의 |
-| `src/types/data.ts` | 데이터 타입 |
-| `src/stores/useSettingsStore.ts` | 설정 상태 |
-| `src/utils/dataLoader/index.ts` | 데이터 로드 핵심 |
-| `vite.config.ts` | 빌드 설정 |
+| 파일                             | 역할             |
+| -------------------------------- | ---------------- |
+| `src/App.tsx`                    | 라우팅 진입점    |
+| `src/theme.ts`                   | MUI 테마 정의    |
+| `src/types/data.ts`              | 데이터 타입      |
+| `src/stores/useSettingsStore.ts` | 설정 상태        |
+| `src/utils/dataLoader/index.ts`  | 데이터 로드 핵심 |
+| `vite.config.ts`                 | 빌드 설정        |
 
 ---
 
 ## 13. 참고 문서
 
-| 문서 | 위치 |
-|------|------|
-| AI 개발 지침 | `CLAUDE.md` |
-| Copilot 지침 | `.github/copilot-instructions.md` |
-| 제품 로드맵 | `docs/planning/product-roadmap-2026.md` |
-| 구현 문서 | `docs/implementation/` |
-| 테스트 계획 | `docs/guides/test-plan.md` |
+| 문서         | 위치                                    |
+| ------------ | --------------------------------------- |
+| AI 개발 지침 | `CLAUDE.md`                             |
+| Copilot 지침 | `.github/copilot-instructions.md`       |
+| 제품 로드맵  | `docs/planning/product-roadmap-2026.md` |
+| 구현 문서    | `docs/implementation/`                  |
+| 테스트 계획  | `docs/guides/test-plan.md`              |
