@@ -8,6 +8,7 @@ import { GRADE_OPTIONS } from "../const/Common";
 import {
   type AnalysisFilters,
   type MovingAverageDatum,
+  type SeasonReport,
   getDefaultDateRange,
   applyFilters,
   transformToChartData,
@@ -17,12 +18,14 @@ import {
   transformToScatterData,
   calculateRegionComparison,
   calculateMovingAverages,
+  generateSeasonReport,
 } from "../utils/analysisUtils";
 import { loadDateRangeData } from "../utils/dataAnalysisLoader";
 import AnalysisFiltersComponent from "../components/DataAnalysis/AnalysisFilters";
 import AnalysisKPISection from "../components/DataAnalysis/AnalysisKPI";
 import ChartSection from "../components/DataAnalysis/ChartSection";
 import GradeBreakdownChart from "../components/DataAnalysis/GradeBreakdownChart";
+import SeasonReportSection from "../components/DataAnalysis/SeasonReport/index";
 import ScatterPlotChart from "../components/DataAnalysis/ScatterPlotChart";
 import RegionComparisonSection from "../components/DataAnalysis/RegionComparisonSection";
 import TableSection from "../components/DataAnalysis/TableSection";
@@ -157,6 +160,20 @@ const DataAnalysis = () => {
     [chartData]
   );
 
+  // 시즌 리포트
+  const seasonReport = useMemo<SeasonReport>(() => {
+    const comparisonWeeklyData =
+      filters.comparisonEnabled && filteredComparisonData.length > 0
+        ? transformToChartData(filteredComparisonData, filters.grades)
+        : undefined;
+    return generateSeasonReport(chartData, filters.grades, comparisonWeeklyData);
+  }, [
+    chartData,
+    filters.grades,
+    filters.comparisonEnabled,
+    filteredComparisonData,
+  ]);
+
   // 필터 초기화
   const handleResetFilters = () => {
     const { startDate, endDate } = getDefaultDateRange();
@@ -197,6 +214,11 @@ const DataAnalysis = () => {
             comparison={kpiComparison}
             loading={loading}
           />
+
+          {/* 시즌 요약 리포트 */}
+          <Box sx={{ mb: 2.5 }}>
+            <SeasonReportSection report={seasonReport} loading={loading} />
+          </Box>
 
           {/* 가격 추이 + 등급별 비중 (2열) */}
           <Grid container spacing={2} sx={{ mb: 2.5 }}>

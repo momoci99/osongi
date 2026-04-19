@@ -115,7 +115,6 @@ test("송이 공판현황 데이터 파싱", async ({ page }) => {
 
     // 기존 데이터 로드 (비교용)
     let existingData: any[] = [];
-    let shouldUpdate = true;
 
     if (fs.existsSync(filename)) {
       try {

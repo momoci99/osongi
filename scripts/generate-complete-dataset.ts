@@ -6,13 +6,7 @@
   Output: public/auction-data/complete-dataset.json
 */
 
-import {
-  readdirSync,
-  readFileSync,
-  mkdirSync,
-  writeFileSync,
-  existsSync,
-} from "fs";
+import { readdirSync, readFileSync, writeFileSync } from "fs";
 import { join } from "path";
 
 // Raw auction record type (matching existing data structure)

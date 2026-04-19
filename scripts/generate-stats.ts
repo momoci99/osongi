@@ -71,19 +71,6 @@ interface SummaryOutputShape {
   };
 }
 
-interface YearlyOutputShape {
-  generatedAt: string;
-  yearly: Record<
-    string,
-    {
-      totalQuantityKg: number;
-      totalAmountWon: number;
-      topRegion: { region: string; quantityKg: number } | null;
-      topUnion: { union: string; quantityKg: number } | null;
-    }
-  >;
-}
-
 interface WeeklyPriceDatum {
   date: string; // YYYY-MM-DD
   gradeKey: string; // grade1, grade2, etc.
@@ -300,7 +287,7 @@ if (latestDateStr) {
 }
 
 // Weekly data generation (last 7 days from latest date)
-let weeklyData: WeeklyPriceDatum[] = [];
+const weeklyData: WeeklyPriceDatum[] = [];
 if (latestDateParts) {
   const [latestY, latestM, latestD] = latestDateParts as [
     number,
@@ -376,7 +363,7 @@ if (latestDateParts) {
           });
         }
       }
-    } catch (e) {
+    } catch {
       console.warn(`No data found for ${dateStr}, skipping...`);
       // Skip missing days - chart can handle gaps
     }
@@ -437,7 +424,7 @@ let secondLatestDateStr: string | null = null;
 }
 
 // Build region-grade breakdown for latest date
-let regionGradeBreakdown: Record<string, RegionGradeEntry[]> = {};
+const regionGradeBreakdown: Record<string, RegionGradeEntry[]> = {};
 let previousDayComparison: ExtendedDailyOutput["latestDaily"] extends infer T
   ? T extends { previousDayComparison: infer P }
     ? P
@@ -548,13 +535,6 @@ interface RegionRanking {
   region: string;
   avgPriceWon: number;
   totalQuantityKg: number;
-}
-
-interface SeasonManifest {
-  generatedAt: string;
-  latestSeasonSummary: SeasonSummary | null;
-  monthlyPatterns: MonthlyPattern[];
-  regionRanking: RegionRanking[];
 }
 
 // Collect season data (months 8-12 for each year)

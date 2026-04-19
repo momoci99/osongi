@@ -30,16 +30,6 @@ const createEvenlySpacedTicks = (dates: Date[], maxTicks: number): Date[] => {
   return selectedTicks;
 };
 
-const createSteppedTicks = (dates: Date[], step: number): Date[] => {
-  const ticks = dates.filter((_, index) => index % step === 0);
-
-  if (ticks.length === 0) {
-    return dates.length > 0 ? [dates[0]] : [];
-  }
-
-  return ticks;
-};
-
 const createIntervalTicks = (
   interval: d3.CountableTimeInterval,
   start: Date,
