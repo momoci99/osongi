@@ -19,6 +19,7 @@ import {
   calculateRegionComparison,
   calculateMovingAverages,
   generateSeasonReport,
+  calculatePriceDistribution,
 } from "../utils/analysisUtils";
 import { loadDateRangeData } from "../utils/dataAnalysisLoader";
 import AnalysisFiltersComponent from "../components/DataAnalysis/AnalysisFilters";
@@ -28,6 +29,7 @@ import GradeBreakdownChart from "../components/DataAnalysis/GradeBreakdownChart"
 import SeasonReportSection from "../components/DataAnalysis/SeasonReport/index";
 import ScatterPlotChart from "../components/DataAnalysis/ScatterPlotChart";
 import RegionComparisonSection from "../components/DataAnalysis/RegionComparisonSection";
+import PriceDistributionChart from "../components/DataAnalysis/PriceDistributionChart";
 import TableSection from "../components/DataAnalysis/TableSection";
 
 const DataAnalysis = () => {
@@ -160,6 +162,12 @@ const DataAnalysis = () => {
     [chartData]
   );
 
+  // 가격 분포
+  const distributionData = useMemo(
+    () => calculatePriceDistribution(chartData),
+    [chartData]
+  );
+
   // 시즌 리포트
   const seasonReport = useMemo<SeasonReport>(() => {
     const comparisonWeeklyData =
@@ -246,6 +254,11 @@ const DataAnalysis = () => {
               <RegionComparisonSection data={regionComparison} />
             </Grid>
           </Grid>
+
+          {/* 가격 분포 히스토그램 */}
+          <Box sx={{ mb: 2.5 }}>
+            <PriceDistributionChart data={distributionData} loading={loading} />
+          </Box>
 
           {/* 상세 테이블 */}
           <TableSection

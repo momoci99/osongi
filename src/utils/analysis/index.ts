@@ -7,3 +7,4 @@ export * from "./dateRange";
 export * from "./convert";
 export * from "./statistics";
 export * from "./report";
+export * from "./distribution";
