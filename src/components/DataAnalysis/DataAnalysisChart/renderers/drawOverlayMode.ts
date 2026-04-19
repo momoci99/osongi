@@ -69,9 +69,20 @@ export const drawOverlayMode = ({
     allOverlaySeries.push(...buildOverlayYearSeries(normalized, year, yearColorScale));
   });
 
+  const allNormalizedDates = allOverlaySeries.flatMap((s) =>
+    s.data.map((d) => d.normalizedDate),
+  );
+  const [rawMin, rawMax] =
+    allNormalizedDates.length > 0
+      ? (d3.extent(allNormalizedDates) as [Date, Date])
+      : [new Date(2000, 7, 1), new Date(2000, 11, 31)];
+  const ONE_WEEK_MS = 7 * 24 * 60 * 60 * 1000;
+  const xDomainMin = new Date(rawMin.getTime() - ONE_WEEK_MS);
+  const xDomainMax = new Date(rawMax.getTime() + ONE_WEEK_MS);
+
   const xScale = d3
     .scaleTime()
-    .domain([new Date(2000, 7, 1), new Date(2000, 11, 31)])
+    .domain([xDomainMin, xDomainMax])
     .range([0, plotWidth]);
 
   const yExtent = d3.extent(seasonData, yValue) as [number, number];
