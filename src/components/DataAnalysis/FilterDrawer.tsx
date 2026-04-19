@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import FilterControls from "./FilterControls";
+import PresetChips from "./Filters/PresetChips";
 import type { AnalysisFilters } from "../../utils/analysisUtils";
 import { FILTER_DRAWER } from "../../const/Numbers";
 
@@ -73,6 +74,13 @@ const FilterDrawer = ({
 
   const content = (
     <Box sx={{ flex: 1, overflowY: "auto", px: 2, py: 2 }}>
+      <PresetChips filters={filters} onApply={onFiltersChange} />
+      <Box
+        sx={{
+          borderBottom: `1px solid ${theme.palette.divider}`,
+          my: 1.5,
+        }}
+      />
       <FilterControls
         filters={filters}
         onFiltersChange={onFiltersChange}
