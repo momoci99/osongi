@@ -18,6 +18,7 @@ import {
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { GRADE_OPTIONS, REGION_UNION_MAP } from "../../const/Common";
+import { TEST_IDS } from "../../test-ids";
 import type { AnalysisFilters } from "../../utils/analysisUtils";
 import SectionCard from "../common/SectionCard";
 import RegionSelect from "./Filters/RegionSelect";
@@ -133,7 +134,7 @@ export default function AnalysisFiltersComponent({
           </Grid>
 
           <Grid size={{ xs: 12, md: 6 }}>
-            <FormControl fullWidth size="small">
+            <FormControl fullWidth size="small" data-testid={TEST_IDS.GRADE_SELECT}>
               <InputLabel>등급</InputLabel>
               <Select
                 multiple

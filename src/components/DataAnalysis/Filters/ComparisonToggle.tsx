@@ -8,6 +8,7 @@ import {
   Stack,
 } from "@mui/material";
 import type { AnalysisFilters } from "../../../utils/analysisUtils";
+import { TEST_IDS } from "../../../test-ids";
 import {
   getComparisonDateRange,
   getPresetLastWeek,
@@ -82,6 +83,7 @@ const ComparisonToggle = ({
       <FormControlLabel
         control={
           <Switch
+            data-testid={TEST_IDS.COMPARISON_TOGGLE}
             checked={filters.comparisonEnabled}
             onChange={handleToggle}
             size="small"

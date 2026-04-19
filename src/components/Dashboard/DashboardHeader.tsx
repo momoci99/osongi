@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import { AVAILABLE_REGIONS } from "../../const/Common";
+import { TEST_IDS } from "../../test-ids";
 import { useSettingsStore } from "../../stores/useSettingsStore";
 
 type DashboardHeaderProps = {
@@ -49,6 +50,7 @@ const RegionSelector = ({ compact = false }: RegionSelectorProps) => {
         </Typography>
       )}
       <Select
+        data-testid={TEST_IDS.REGION_SELECT}
         value={myRegion ?? ""}
         onChange={(e) =>
           setMyRegion(e.target.value as (typeof AVAILABLE_REGIONS)[number])

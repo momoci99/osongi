@@ -18,6 +18,7 @@ import {
 
 const GITHUB_REPO_URL = "https://github.com/momoci99/osongi";
 import { useNavigate, useLocation } from "react-router";
+import { TEST_IDS } from "../test-ids";
 import { useSettingsStore } from "../stores/useSettingsStore";
 import { useDataLoader } from "../hooks/useAuctionData";
 import NavItems from "./Navbar/NavItems";
@@ -65,6 +66,7 @@ const GlobalNavbar = () => {
   return (
     <>
       <AppBar
+        data-testid={TEST_IDS.APP_BAR}
         position="sticky"
         elevation={0}
         sx={{
