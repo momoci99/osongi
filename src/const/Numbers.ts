@@ -21,6 +21,11 @@ export const CHART_LAYOUT = {
   MOBILE_BREAKPOINT: 768,
 } as const;
 
+// ===== 필터 Drawer 설정 =====
+export const FILTER_DRAWER = {
+  WIDTH: 300,
+} as const;
+
 // ===== 차트 여백 설정 =====
 export const CHART_MARGINS = {
   TOP: 40,

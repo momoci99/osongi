@@ -8,6 +8,9 @@ type AnalysisFilterState = {
   filters: AnalysisFilters;
   setFilters: (filters: AnalysisFilters) => void;
   resetFilters: () => void;
+  drawerOpen: boolean;
+  toggleDrawer: () => void;
+  setDrawerOpen: (open: boolean) => void;
 };
 
 const createDefaultFilters = (): AnalysisFilters => {
@@ -42,6 +45,9 @@ export const useAnalysisFilterStore = create<AnalysisFilterState>()(
       filters: createDefaultFilters(),
       setFilters: (filters) => set({ filters }),
       resetFilters: () => set({ filters: createDefaultFilters() }),
+      drawerOpen: true,
+      toggleDrawer: () => set((s) => ({ drawerOpen: !s.drawerOpen })),
+      setDrawerOpen: (open) => set({ drawerOpen: open }),
     }),
     {
       name: "osongi-analysis-filters",

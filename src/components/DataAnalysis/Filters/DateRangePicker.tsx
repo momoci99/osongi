@@ -8,6 +8,7 @@ type DateRangePickerFieldProps = {
   onEndDateChange: (date: Date | null) => void;
   startLabel?: string;
   endLabel?: string;
+  direction?: "row" | "column";
 };
 
 const DateRangePickerField = ({
@@ -17,9 +18,10 @@ const DateRangePickerField = ({
   onEndDateChange,
   startLabel = "시작일",
   endLabel = "종료일",
+  direction = "row",
 }: DateRangePickerFieldProps) => {
   return (
-    <Box sx={{ display: "flex", gap: 1.5 }}>
+    <Box sx={{ display: "flex", flexDirection: direction, gap: 1.5 }}>
       <DatePicker
         label={startLabel}
         value={startDate}

@@ -101,4 +101,27 @@ describe("useAnalysisFilterStore", () => {
       expect(reset.comparisonEnabled).toBe(false);
     });
   });
+
+  /** drawerOpen 상태 */
+  describe("drawerOpen", () => {
+    it("기본값은 true이다", () => {
+      expect(useAnalysisFilterStore.getState().drawerOpen).toBe(true);
+    });
+
+    it("toggleDrawer로 토글한다", () => {
+      useAnalysisFilterStore.getState().toggleDrawer();
+      expect(useAnalysisFilterStore.getState().drawerOpen).toBe(false);
+
+      useAnalysisFilterStore.getState().toggleDrawer();
+      expect(useAnalysisFilterStore.getState().drawerOpen).toBe(true);
+    });
+
+    it("setDrawerOpen으로 직접 설정한다", () => {
+      useAnalysisFilterStore.getState().setDrawerOpen(false);
+      expect(useAnalysisFilterStore.getState().drawerOpen).toBe(false);
+
+      useAnalysisFilterStore.getState().setDrawerOpen(true);
+      expect(useAnalysisFilterStore.getState().drawerOpen).toBe(true);
+    });
+  });
 });

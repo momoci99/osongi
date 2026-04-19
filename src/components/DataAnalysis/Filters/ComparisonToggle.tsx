@@ -21,6 +21,7 @@ type PresetId = "year" | "lastWeek" | "seasonStart";
 type ComparisonToggleProps = {
   filters: AnalysisFilters;
   onFiltersChange: (filters: AnalysisFilters) => void;
+  dateDirection?: "row" | "column";
 };
 
 const PRESETS: { id: PresetId; label: string }[] = [
@@ -32,6 +33,7 @@ const PRESETS: { id: PresetId; label: string }[] = [
 const ComparisonToggle = ({
   filters,
   onFiltersChange,
+  dateDirection = "row",
 }: ComparisonToggleProps) => {
   const [selectedPreset, setSelectedPreset] = useState<PresetId | null>(null);
 
@@ -96,7 +98,7 @@ const ComparisonToggle = ({
         }
       />
       {filters.comparisonEnabled && (
-        <Box sx={{ flex: 1, minWidth: 280 }}>
+        <Box sx={{ flex: 1, minWidth: dateDirection === "column" ? 0 : 280 }}>
           <Stack direction="row" sx={{ mb: 1.5, flexWrap: "wrap", gap: 0.75 }}>
             {PRESETS.map((preset) => (
               <Chip
@@ -127,6 +129,7 @@ const ComparisonToggle = ({
             }}
             startLabel="비교 시작일"
             endLabel="비교 종료일"
+            direction={dateDirection}
           />
         </Box>
       )}
