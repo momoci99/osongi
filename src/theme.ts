@@ -37,7 +37,7 @@ declare module "@mui/material/styles" {
 const MODERN_FOREST = {
   light: {
     background: "#FAFAF9",
-    paper: "#FFFFFF",
+    paper: "#F7F6F4",
     border: "#E7E5E4",
     foreground: "#1C1917",
     muted: "#78716C",
@@ -188,7 +188,6 @@ export const createAppTheme = (mode: PaletteMode) => {
     },
   });
 };
-
 
 // 기본 light 테마 (하위 호환성을 위해)
 export const theme = createAppTheme("light");
