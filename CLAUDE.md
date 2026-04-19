@@ -22,6 +22,8 @@ npm run dev          # 개발 서버
 npm run build        # 프로덕션 빌드
 npm run lint         # ESLint
 npm run storybook    # Storybook (포트 6006)
+npm run test         # 단위 테스트 (Vitest)
+npm run test:e2e     # E2E 테스트 (Playwright)
 npm run collect-data # Playwright로 공판 데이터 수집
 ```
 
@@ -32,6 +34,7 @@ npm run collect-data # Playwright로 공판 데이터 수집
 - 한국어 주석 사용.
 - 주석은 JSDoc 형태(`/** ... */`)를 사용한다. `// ===== ... =====` 같은 구분선 스타일은 사용하지 않는다.
 - 테스트 코드를 함께 작성한다. (Vitest + React Testing Library)
+- pre-push 훅이 있어 push 전 테스트가 자동 실행된다. (Husky)
 
 ## 코딩 컨벤션
 
