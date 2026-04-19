@@ -1,9 +1,40 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="ko">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="canonical" href="https://osongi.vercel.app/" />
+    <link rel="manifest" href="/site.webmanifest" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="대한민국 송이버섯 공판 시세 대시보드. 최신 시세, 거래량, 지역별 현황과 기간별 데이터 분석을 한 화면에서 확인할 수 있습니다."
+    />
+    <meta
+      name="keywords"
+      content="송이버섯, 송이, 공판, 시세, 대시보드, 데이터 분석, 산림조합, 경매, 가격, 거래량"
+    />
+    <meta
+      name="robots"
+      content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1"
+    />
+    <meta name="application-name" content="오송이" />
+    <meta name="theme-color" content="#8b5a2b" />
+    <meta name="color-scheme" content="light dark" />
+    <meta property="og:locale" content="ko_KR" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="오송이" />
+    <meta property="og:title" content="오송이 | 송이버섯 공판 시세 대시보드" />
+    <meta
+      property="og:description"
+      content="대한민국 송이버섯 공판 시세 대시보드. 최신 시세, 거래량, 지역별 현황과 기간별 데이터 분석을 한 화면에서 확인할 수 있습니다."
+    />
+    <meta property="og:url" content="https://osongi.vercel.app/" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="오송이 | 송이버섯 공판 시세 대시보드" />
+    <meta
+      name="twitter:description"
+      content="대한민국 송이버섯 공판 시세 대시보드. 최신 시세, 거래량, 지역별 현황과 기간별 데이터 분석을 한 화면에서 확인할 수 있습니다."
+    />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -11,10 +42,40 @@
       href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
       rel="stylesheet"
     />
-    <title>오송이</title>
+    <title>오송이 | 송이버섯 공판 시세 대시보드</title>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "name": "오송이",
+            "url": "https://osongi.vercel.app/",
+            "inLanguage": "ko-KR",
+            "description": "대한민국 송이버섯 공판 시세 대시보드와 데이터 분석 서비스"
+          },
+          {
+            "@type": "DataCatalog",
+            "name": "오송이 송이버섯 공판 데이터",
+            "url": "https://osongi.vercel.app/",
+            "inLanguage": "ko-KR",
+            "description": "2013년부터 누적된 송이버섯 공판 데이터를 탐색하고 분석할 수 있는 데이터 카탈로그",
+            "provider": {
+              "@type": "Organization",
+              "name": "오송이"
+            }
+          }
+        ]
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
+    <noscript>
+      오송이는 대한민국 송이버섯 공판 시세와 데이터 분석을 제공하는
+      서비스입니다. JavaScript를 활성화하면 최신 대시보드와 상세 분석 화면을
+      이용할 수 있습니다.
+    </noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

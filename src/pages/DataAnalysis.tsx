@@ -31,7 +31,6 @@ import ScatterPlotChart from "../components/DataAnalysis/ScatterPlotChart";
 import RegionComparisonSection from "../components/DataAnalysis/RegionComparisonSection";
 import PriceDistributionChart from "../components/DataAnalysis/PriceDistributionChart";
 import TableSection from "../components/DataAnalysis/TableSection";
-import usePageSeo from "../hooks/usePageSeo";
 
 const DataAnalysis = () => {
   const [rawData, setRawData] = useState<MushroomAuctionDataRaw[]>([]);
@@ -56,19 +55,6 @@ const DataAnalysis = () => {
   });
 
   const [chartMode, setChartMode] = useState<"price" | "quantity">("price");
-
-  usePageSeo({
-    title: "송이버섯 데이터 분석",
-    description:
-      "기간, 지역, 조합, 등급 필터를 조합해 2013년 이후 송이버섯 공판 데이터를 비교 분석하고 추이와 분포를 확인할 수 있습니다.",
-    path: "/data-analysis",
-    keywords: [
-      "송이버섯 데이터 분석",
-      "송이 가격 추이",
-      "송이 지역 비교",
-      "송이 통계",
-    ],
-  });
 
   // 메인 데이터 로드
   useEffect(() => {
