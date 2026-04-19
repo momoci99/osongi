@@ -4,12 +4,9 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { ko } from "date-fns/locale";
 import type { MushroomAuctionDataRaw } from "../types/data";
-import { GRADE_OPTIONS } from "../const/Common";
 import {
-  type AnalysisFilters,
   type MovingAverageDatum,
   type SeasonReport,
-  getDefaultDateRange,
   applyFilters,
   transformToChartData,
   calculateKPI,
@@ -22,6 +19,7 @@ import {
   calculatePriceDistribution,
 } from "../utils/analysisUtils";
 import { loadDateRangeData } from "../utils/dataAnalysisLoader";
+import { useAnalysisFilterStore } from "../stores/useAnalysisFilterStore";
 import AnalysisFiltersComponent from "../components/DataAnalysis/AnalysisFilters";
 import AnalysisKPISection from "../components/DataAnalysis/AnalysisKPI";
 import ChartSection from "../components/DataAnalysis/ChartSection";
@@ -39,20 +37,8 @@ const DataAnalysis = () => {
   >([]);
   const [loading, setLoading] = useState(false);
 
-  // 필터 상태 (새 구조)
-  const [filters, setFilters] = useState<AnalysisFilters>(() => {
-    const { startDate, endDate } = getDefaultDateRange();
-    return {
-      regions: [],
-      unions: [],
-      grades: GRADE_OPTIONS.map((o) => o.value),
-      startDate,
-      endDate,
-      comparisonEnabled: false,
-      comparisonStartDate: null,
-      comparisonEndDate: null,
-    };
-  });
+  // 필터 상태 (localStorage 영속화)
+  const { filters, setFilters, resetFilters } = useAnalysisFilterStore();
 
   const [chartMode, setChartMode] = useState<"price" | "quantity">("price");
   const [chartExpanded, setChartExpanded] = useState(false);
@@ -198,17 +184,7 @@ const DataAnalysis = () => {
 
   // 필터 초기화
   const handleResetFilters = () => {
-    const { startDate, endDate } = getDefaultDateRange();
-    setFilters({
-      regions: [],
-      unions: [],
-      grades: GRADE_OPTIONS.map((o) => o.value),
-      startDate,
-      endDate,
-      comparisonEnabled: false,
-      comparisonStartDate: null,
-      comparisonEndDate: null,
-    });
+    resetFilters();
   };
 
   return (
