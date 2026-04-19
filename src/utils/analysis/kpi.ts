@@ -9,6 +9,9 @@ export type AnalysisKPI = {
   maxPrice: { value: number; date: string; grade: string };
   minPrice: { value: number; date: string; grade: string };
   tradingDays: number;
+  medianPrice: number;
+  priceStdDev: number;
+  priceCV: number;
 };
 
 /**
@@ -23,6 +26,9 @@ export type KPIComparison = {
     maxPrice: number;
     minPrice: number;
     tradingDays: number;
+    medianPrice: number;
+    priceStdDev: number;
+    priceCV: number;
   };
 };
 
@@ -60,6 +66,7 @@ export const calculateKPI = (
   let maxPrice = { value: 0, date: "", grade: "" };
   let minPrice = { value: Infinity, date: "", grade: "" };
   const tradingDates = new Set<string>();
+  const prices: number[] = [];
 
   data.forEach((record) => {
     selectedGrades.forEach((gradeKey) => {
@@ -67,6 +74,7 @@ export const calculateKPI = (
       if (quantity > 0 && unitPrice > 0) {
         totalWeightedPrice += unitPrice * quantity;
         totalQuantity += quantity;
+        prices.push(unitPrice);
         if (record.date) {
           tradingDates.add(record.date);
         }
@@ -85,12 +93,30 @@ export const calculateKPI = (
     minPrice = { value: 0, date: "", grade: "" };
   }
 
+  const avgPrice = totalQuantity > 0 ? Math.round(totalWeightedPrice / totalQuantity) : 0;
+  const n = prices.length;
+  let medianPrice = 0;
+  let priceStdDev = 0;
+  let priceCV = 0;
+
+  if (n > 0) {
+    const sorted = [...prices].sort((a, b) => a - b);
+    const mid = Math.floor(n / 2);
+    medianPrice = n % 2 === 0 ? Math.round((sorted[mid - 1] + sorted[mid]) / 2) : sorted[mid];
+    const variance = prices.reduce((sum, p) => sum + (p - avgPrice) ** 2, 0) / n;
+    priceStdDev = Math.round(Math.sqrt(variance));
+    priceCV = avgPrice > 0 ? parseFloat(((priceStdDev / avgPrice) * 100).toFixed(1)) : 0;
+  }
+
   return {
-    avgPrice: totalQuantity > 0 ? Math.round(totalWeightedPrice / totalQuantity) : 0,
+    avgPrice,
     totalQuantity,
     maxPrice,
     minPrice,
     tradingDays: tradingDates.size,
+    medianPrice,
+    priceStdDev,
+    priceCV,
   };
 };
 
@@ -113,6 +139,9 @@ export const calculateKPIComparison = (
       maxPrice: pctChange(current.maxPrice.value, previous.maxPrice.value),
       minPrice: pctChange(current.minPrice.value, previous.minPrice.value),
       tradingDays: pctChange(current.tradingDays, previous.tradingDays),
+      medianPrice: pctChange(current.medianPrice, previous.medianPrice),
+      priceStdDev: pctChange(current.priceStdDev, previous.priceStdDev),
+      priceCV: pctChange(current.priceCV, previous.priceCV),
     },
   };
 };
