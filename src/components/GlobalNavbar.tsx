@@ -23,7 +23,7 @@ import RefreshButton from "./Navbar/RefreshButton";
 import MobileDrawer from "./Navbar/MobileDrawer";
 
 const NAV_ITEMS = [
-  { label: "대시보드", path: "/dashboard" },
+  { label: "대시보드", path: "/" },
   { label: "데이터 분석", path: "/data-analysis" },
 ];
 
@@ -57,9 +57,7 @@ const GlobalNavbar = () => {
     }
   };
 
-  const isActive = (path: string) =>
-    location.pathname === path ||
-    (path === "/dashboard" && location.pathname === "/");
+  const isActive = (path: string) => location.pathname === path;
 
   return (
     <>

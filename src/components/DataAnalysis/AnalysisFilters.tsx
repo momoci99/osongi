@@ -10,6 +10,8 @@ import {
   Chip,
   Button,
   Collapse,
+  Snackbar,
+  Alert,
   useMediaQuery,
   useTheme,
   type SelectChangeEvent,
@@ -22,6 +24,7 @@ import RegionSelect from "./Filters/RegionSelect";
 import UnionSelect from "./Filters/UnionSelect";
 import DateRangePickerField from "./Filters/DateRangePicker";
 import ComparisonToggle from "./Filters/ComparisonToggle";
+import ActiveFilterSummary from "./Filters/ActiveFilterSummary";
 
 interface AnalysisFiltersProps {
   filters: AnalysisFilters;
@@ -37,6 +40,17 @@ export default function AnalysisFiltersComponent({
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const [filtersOpen, setFiltersOpen] = useState(false);
+  const [removedUnionsCount, setRemovedUnionsCount] = useState(0);
+  const [toastOpen, setToastOpen] = useState(false);
+
+  const handleFiltersChange = (next: AnalysisFilters) => {
+    const removed = filters.unions.length - next.unions.length;
+    if (removed > 0) {
+      setRemovedUnionsCount(removed);
+      setToastOpen(true);
+    }
+    onFiltersChange(next);
+  };
 
   const availableUnions = (() => {
     if (filters.regions.length === 0) {
@@ -98,6 +112,8 @@ export default function AnalysisFiltersComponent({
         </Button>
       </Box>
 
+      <ActiveFilterSummary filters={filters} onFiltersChange={onFiltersChange} />
+
       <Collapse
         in={!isMobile || filtersOpen}
         timeout="auto"
@@ -105,7 +121,7 @@ export default function AnalysisFiltersComponent({
       >
         <Grid container spacing={{ xs: 1.25, sm: 2 }}>
           <Grid size={{ xs: 12, sm: 6 }}>
-            <RegionSelect filters={filters} onFiltersChange={onFiltersChange} />
+            <RegionSelect filters={filters} onFiltersChange={handleFiltersChange} />
           </Grid>
 
           <Grid size={{ xs: 12, sm: 6 }}>
@@ -172,6 +188,17 @@ export default function AnalysisFiltersComponent({
           </Grid>
         </Grid>
       </Collapse>
+
+      <Snackbar
+        open={toastOpen}
+        autoHideDuration={2500}
+        onClose={() => setToastOpen(false)}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <Alert severity="info" variant="filled" onClose={() => setToastOpen(false)}>
+          선택 불가 조합 {removedUnionsCount}개가 해제되었습니다.
+        </Alert>
+      </Snackbar>
     </SectionCard>
   );
 }

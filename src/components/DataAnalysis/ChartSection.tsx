@@ -13,6 +13,7 @@ type ChartSectionProps = {
   chartMode: "price" | "quantity";
   onChartModeChange: (mode: "price" | "quantity") => void;
   maData: MovingAverageDatum[];
+  emptyMessage?: string;
 };
 
 const ChartSection = ({
@@ -22,6 +23,7 @@ const ChartSection = ({
   chartMode,
   onChartModeChange,
   maData,
+  emptyMessage,
 }: ChartSectionProps) => {
   return (
     <SectionCard sx={{ width: "100%" }}>
@@ -50,7 +52,7 @@ const ChartSection = ({
           maData={maData}
         />
       ) : (
-        <EmptyState height={CHART_LAYOUT.DEFAULT_HEIGHT} />
+        <EmptyState height={CHART_LAYOUT.DEFAULT_HEIGHT} message={emptyMessage} />
       )}
     </SectionCard>
   );

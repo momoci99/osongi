@@ -24,12 +24,14 @@ const DateRangePickerField = ({
         label={startLabel}
         value={startDate}
         onChange={onStartDateChange}
+        maxDate={endDate ?? undefined}
         slotProps={{ textField: { fullWidth: true, size: "small" } }}
       />
       <DatePicker
         label={endLabel}
         value={endDate}
         onChange={onEndDateChange}
+        minDate={startDate ?? undefined}
         slotProps={{ textField: { fullWidth: true, size: "small" } }}
       />
     </Box>

@@ -16,6 +16,7 @@ import {
   transformToChartData,
   convertAuctionRecordToRaw,
 } from "../analysisUtils";
+import { REGION_UNION_MAP } from "../../const/Common";
 import type { AnalysisFilters } from "../analysisUtils";
 import {
   createMockAuctionRecord,
@@ -582,6 +583,76 @@ describe("calculateRegionComparison", () => {
     // 가중평균: (100000*10 + 200000*10) / 20 = 150000
     expect(result[0].avgPrice).toBe(150000);
     expect(result[0].totalQuantity).toBe(20);
+  });
+});
+
+/** REGION_UNION_MAP 데이터 정합성 회귀 테스트 */
+describe("REGION_UNION_MAP 상수 정합성", () => {
+  it("경북에 예천이 포함되어야 한다", () => {
+    expect(REGION_UNION_MAP["경북"]).toContain("예천");
+  });
+
+  it("경북에 오타 예청이 없어야 한다", () => {
+    expect(REGION_UNION_MAP["경북"]).not.toContain("예청");
+  });
+
+  it("경북에 영천이 포함되어야 한다", () => {
+    expect(REGION_UNION_MAP["경북"]).toContain("영천");
+  });
+
+  it("강원에 의성이 없어야 한다 (경북 전용 조합)", () => {
+    expect(REGION_UNION_MAP["강원"]).not.toContain("의성");
+  });
+});
+
+/** applyFilters 날짜 파싱 안정성 */
+describe("applyFilters 날짜 파싱 안정성", () => {
+  const baseFilters: AnalysisFilters = {
+    regions: [],
+    unions: [],
+    grades: [],
+    startDate: new Date(2013, 8, 1),
+    endDate: new Date(2013, 9, 31),
+    comparisonEnabled: false,
+    comparisonStartDate: null,
+    comparisonEndDate: null,
+  };
+
+  it("zero-pad 없는 날짜(2013-9-26)를 올바르게 파싱해 범위 내 포함한다", () => {
+    const data = [
+      createMockAuctionRecord({ date: "2013-9-26" }),
+    ];
+    const result = applyFilters(data, baseFilters);
+    expect(result).toHaveLength(1);
+  });
+
+  it("표준 형식(2013-09-26)도 동일하게 동작한다", () => {
+    const data = [
+      createMockAuctionRecord({ date: "2013-09-26" }),
+    ];
+    const result = applyFilters(data, baseFilters);
+    expect(result).toHaveLength(1);
+  });
+});
+
+/** applyFilters 기간 역전 */
+describe("applyFilters 기간 역전", () => {
+  it("startDate > endDate 이면 빈 배열을 반환한다", () => {
+    const filters: AnalysisFilters = {
+      regions: [],
+      unions: [],
+      grades: [],
+      startDate: new Date(2024, 9, 10),
+      endDate: new Date(2024, 9, 1),
+      comparisonEnabled: false,
+      comparisonStartDate: null,
+      comparisonEndDate: null,
+    };
+    const data = [
+      createMockAuctionRecord({ date: "2024-10-05" }),
+    ];
+    const result = applyFilters(data, filters);
+    expect(result).toHaveLength(0);
   });
 });
 

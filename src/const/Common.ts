@@ -28,7 +28,7 @@ export const REGION_UNION_MAP: Record<
   (typeof AVAILABLE_REGIONS)[number],
   string[]
 > = {
-  강원: ["홍천", "양구", "인제", "고성", "양양", "강릉", "삼척", "의성"],
+  강원: ["홍천", "양구", "인제", "고성", "양양", "강릉", "삼척"],
   경북: [
     "의성",
     "안동",
@@ -38,10 +38,11 @@ export const REGION_UNION_MAP: Record<
     "청도",
     "상주",
     "문경",
-    "예청",
+    "예천",
     "영주",
     "봉화",
     "울진",
+    "영천",
   ],
   경남: ["거창"],
 };

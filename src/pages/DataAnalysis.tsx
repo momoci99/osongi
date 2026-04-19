@@ -31,6 +31,7 @@ import ScatterPlotChart from "../components/DataAnalysis/ScatterPlotChart";
 import RegionComparisonSection from "../components/DataAnalysis/RegionComparisonSection";
 import PriceDistributionChart from "../components/DataAnalysis/PriceDistributionChart";
 import TableSection from "../components/DataAnalysis/TableSection";
+import usePageSeo from "../hooks/usePageSeo";
 
 const DataAnalysis = () => {
   const [rawData, setRawData] = useState<MushroomAuctionDataRaw[]>([]);
@@ -56,6 +57,19 @@ const DataAnalysis = () => {
 
   const [chartMode, setChartMode] = useState<"price" | "quantity">("price");
 
+  usePageSeo({
+    title: "송이버섯 데이터 분석",
+    description:
+      "기간, 지역, 조합, 등급 필터를 조합해 2013년 이후 송이버섯 공판 데이터를 비교 분석하고 추이와 분포를 확인할 수 있습니다.",
+    path: "/data-analysis",
+    keywords: [
+      "송이버섯 데이터 분석",
+      "송이 가격 추이",
+      "송이 지역 비교",
+      "송이 통계",
+    ],
+  });
+
   // 메인 데이터 로드
   useEffect(() => {
     const loadData = async () => {
@@ -63,7 +77,7 @@ const DataAnalysis = () => {
       try {
         const data = await loadDateRangeData(
           filters.startDate,
-          filters.endDate
+          filters.endDate,
         );
         setRawData(data);
       } catch (error) {
@@ -90,7 +104,7 @@ const DataAnalysis = () => {
       try {
         const data = await loadDateRangeData(
           filters.comparisonStartDate!,
-          filters.comparisonEndDate!
+          filters.comparisonEndDate!,
         );
         setComparisonRawData(data);
       } catch (error) {
@@ -107,7 +121,7 @@ const DataAnalysis = () => {
   // 필터 적용된 데이터
   const filteredData = useMemo(
     () => applyFilters(rawData, filters),
-    [rawData, filters]
+    [rawData, filters],
   );
 
   const filteredComparisonData = useMemo(() => {
@@ -128,7 +142,7 @@ const DataAnalysis = () => {
   // KPI
   const kpi = useMemo(
     () => calculateKPI(filteredData, filters.grades),
-    [filteredData, filters.grades]
+    [filteredData, filters.grades],
   );
 
   const kpiComparison = useMemo(() => {
@@ -141,31 +155,31 @@ const DataAnalysis = () => {
   // 등급별 비중
   const gradeBreakdown = useMemo(
     () => calculateGradeBreakdown(filteredData, filters.grades),
-    [filteredData, filters.grades]
+    [filteredData, filters.grades],
   );
 
   // 산점도
   const scatterData = useMemo(
     () => transformToScatterData(filteredData, filters.grades),
-    [filteredData, filters.grades]
+    [filteredData, filters.grades],
   );
 
   // 지역 비교
   const regionComparison = useMemo(
     () => calculateRegionComparison(filteredData, filters.grades),
-    [filteredData, filters.grades]
+    [filteredData, filters.grades],
   );
 
   // 이동평균
   const maData = useMemo<MovingAverageDatum[]>(
     () => calculateMovingAverages(chartData),
-    [chartData]
+    [chartData],
   );
 
   // 가격 분포
   const distributionData = useMemo(
     () => calculatePriceDistribution(chartData),
-    [chartData]
+    [chartData],
   );
 
   // 시즌 리포트
@@ -174,13 +188,26 @@ const DataAnalysis = () => {
       filters.comparisonEnabled && filteredComparisonData.length > 0
         ? transformToChartData(filteredComparisonData, filters.grades)
         : undefined;
-    return generateSeasonReport(chartData, filters.grades, comparisonWeeklyData);
+    return generateSeasonReport(
+      chartData,
+      filters.grades,
+      comparisonWeeklyData,
+    );
   }, [
     chartData,
     filters.grades,
     filters.comparisonEnabled,
     filteredComparisonData,
   ]);
+
+  const chartEmptyMessage = useMemo(() => {
+    if (filters.startDate > filters.endDate) {
+      const fmt = (d: Date) =>
+        d.toLocaleDateString("ko-KR", { month: "2-digit", day: "2-digit" });
+      return `시작일(${fmt(filters.startDate)})이 종료일(${fmt(filters.endDate)})보다 늦습니다. 기간을 조정해주세요.`;
+    }
+    return undefined;
+  }, [filters.startDate, filters.endDate]);
 
   // 필터 초기화
   const handleResetFilters = () => {
@@ -202,7 +229,11 @@ const DataAnalysis = () => {
       <Container maxWidth="xl">
         <Box sx={{ py: 3 }}>
           {/* 헤더 */}
-          <Typography variant="h4" component="h1" sx={{ fontWeight: 700, mb: 0.5 }}>
+          <Typography
+            variant="h4"
+            component="h1"
+            sx={{ fontWeight: 700, mb: 0.5 }}
+          >
             데이터 분석
           </Typography>
           <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
@@ -238,6 +269,7 @@ const DataAnalysis = () => {
                 chartMode={chartMode}
                 onChartModeChange={setChartMode}
                 maData={maData}
+                emptyMessage={chartEmptyMessage}
               />
             </Grid>
             <Grid size={{ xs: 12, md: 5 }}>

@@ -3,9 +3,11 @@ import { Box, Typography, CircularProgress } from "@mui/material";
 interface EmptyStateProps {
   loading?: boolean;
   height?: number;
+  message?: string;
+  subMessage?: string;
 }
 
-export default function EmptyState({ loading = false, height = 160 }: EmptyStateProps) {
+export default function EmptyState({ loading = false, height = 160, message, subMessage }: EmptyStateProps) {
   if (loading) {
     return (
       <Box
@@ -38,10 +40,10 @@ export default function EmptyState({ loading = false, height = 160 }: EmptyState
       }}
     >
       <Typography variant="body2" color="text.secondary">
-        표시할 데이터가 없습니다
+        {message ?? "표시할 데이터가 없습니다"}
       </Typography>
       <Typography variant="caption" color="text.secondary">
-        필터 조건을 조정해보세요
+        {subMessage ?? "필터 조건을 조정해보세요"}
       </Typography>
     </Box>
   );
