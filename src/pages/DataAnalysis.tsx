@@ -9,6 +9,7 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import FilterListIcon from "@mui/icons-material/FilterList";
+import TuneIcon from "@mui/icons-material/Tune";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { ko } from "date-fns/locale";
@@ -57,6 +58,11 @@ const DataAnalysis = () => {
 
   const [chartMode, setChartMode] = useState<"price" | "quantity">("price");
   const [chartExpanded, setChartExpanded] = useState(false);
+
+  const FILTER_FAB_SEEN_KEY = "osongi_filter_fab_seen";
+  const [isFilterFabExtended, setIsFilterFabExtended] = useState(
+    () => !localStorage.getItem(FILTER_FAB_SEEN_KEY),
+  );
 
   // 메인 데이터 로드
   useEffect(() => {
@@ -197,9 +203,16 @@ const DataAnalysis = () => {
     return undefined;
   }, [filters.startDate, filters.endDate]);
 
-  // 필터 초기화
   const handleResetFilters = () => {
     resetFilters();
+  };
+
+  const handleFilterFabClick = () => {
+    if (isFilterFabExtended) {
+      localStorage.setItem(FILTER_FAB_SEEN_KEY, "1");
+      setIsFilterFabExtended(false);
+    }
+    toggleDrawer();
   };
 
   return (
@@ -331,11 +344,33 @@ const DataAnalysis = () => {
       {!drawerOpen && (
         <Fab
           color="primary"
-          onClick={toggleDrawer}
+          variant={isFilterFabExtended ? "extended" : "circular"}
+          onClick={handleFilterFabClick}
           aria-label="필터 열기"
-          sx={{ position: "fixed", bottom: 24, right: 24, zIndex: 1200 }}
+          sx={{
+            position: "fixed",
+            bottom: 24,
+            right: 24,
+            zIndex: 1200,
+            ...(isFilterFabExtended && {
+              gap: 1,
+              px: 2.5,
+              animation: "fabPulse 2s ease-in-out 0.5s 2",
+              "@keyframes fabPulse": {
+                "0%, 100%": { boxShadow: "0 0 0 0 rgba(25,118,210,0.4)" },
+                "50%": { boxShadow: "0 0 0 10px rgba(25,118,210,0)" },
+              },
+            }),
+          }}
         >
-          <FilterListIcon />
+          {isFilterFabExtended ? (
+            <>
+              <TuneIcon />
+              필터 설정
+            </>
+          ) : (
+            <FilterListIcon />
+          )}
         </Fab>
       )}
     </LocalizationProvider>
