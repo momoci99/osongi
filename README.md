@@ -178,3 +178,9 @@ npm run storybook
 ## 데이터 소스
 
 - [산림조합중앙회 송이 공판 현황](https://iforest.nfcf.or.kr/forest/user.tdf?a=user.songi.SongiApp&c=1001&mc=CYB_FIF_DGS_SNI&pmsh_item_c=01)
+
+## 다음 단계
+
+- 사용자 피드백 수집 및 UI/UX 개선
+- 과거 시즌 (엑셀로 제공된 데이터) 통합
+- 날씨와 연동한 데이터 분석 기능 추가
