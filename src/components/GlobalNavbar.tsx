@@ -13,7 +13,10 @@ import {
   Brightness4,
   Brightness7,
   Menu as MenuIcon,
+  GitHub as GitHubIcon,
 } from "@mui/icons-material";
+
+const GITHUB_REPO_URL = "https://github.com/momoci99/osongi";
 import { useNavigate, useLocation } from "react-router";
 import { useSettingsStore } from "../stores/useSettingsStore";
 import { useDataLoader } from "../hooks/useAuctionData";
@@ -102,6 +105,19 @@ const GlobalNavbar = () => {
             isRefreshing={isRefreshing}
             onRefresh={handleRefresh}
           />
+
+          {/* GitHub 저장소 링크 */}
+          <Tooltip title="GitHub 저장소">
+            <IconButton
+              component="a"
+              href={GITHUB_REPO_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              sx={{ color: theme.palette.text.primary }}
+            >
+              <GitHubIcon />
+            </IconButton>
+          </Tooltip>
 
           {/* 큰글씨 토글 */}
           <Tooltip
