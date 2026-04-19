@@ -3,6 +3,12 @@
 대한민국 산림조합중앙회에서 제공하는 송이버섯 공판 시세를 시각화하여 제공하는 대시보드 서비스입니다.
 2013년부터 현재까지의 공판 데이터를 수집하고, 실시간 시세 확인 및 다양한 분석 기능을 제공합니다.
 
+# 목적
+
+- 채취자와 농가가 산지·시장 현장에서 빠르게 시세를 확인할 수 있도록 지원
+- 조합 관계자와 분석가가 시즌 통계 분석과 보고서 작성을 효율적으로 수행할 수 있도록 도구 제공
+- 40~70대 주요 사용자층을 위한 가독성과 접근성 최적화
+
 ## 주의사항
 
 - 이 프로젝트는 ai agent(claude code)로 개발된 프로젝트입니다.
@@ -141,12 +147,33 @@ npm run dev
 # 프로덕션 빌드
 npm run build
 
-# Storybook
-npm run storybook
+# 빌드 결과 미리보기
+npm run preview
 
 # 린트
 npm run lint
 ```
+
+## 테스트
+
+```bash
+# 단위 테스트 (1회 실행)
+npm run test
+
+# 단위 테스트 (watch 모드)
+npm run test:watch
+
+# 단위 테스트 커버리지
+npm run test:coverage
+
+# E2E 테스트 (Playwright)
+npm run test:e2e
+
+# Storybook
+npm run storybook
+```
+
+> pre-push 훅(Husky)이 설정되어 있어, `git push` 전 단위 테스트가 자동 실행됩니다.
 
 ## 데이터 소스
 
