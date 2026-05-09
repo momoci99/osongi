@@ -4,4 +4,5 @@ export const TEST_IDS = {
   REGION_SELECT: "region-select",
   GRADE_SELECT: "grade-select",
   COMPARISON_TOGGLE: "comparison-toggle",
+  ADVANCED_FILTER_BUTTON: "advanced-filter-button",
 } as const;

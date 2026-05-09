@@ -44,6 +44,10 @@ test.describe("데이터 분석", () => {
   }) => {
     await page.goto("/data-analysis");
     await waitForAppReady(page);
+    // 고급 필터 다이얼로그 열기
+    const advancedBtn = page.locator(`[data-testid="${TEST_IDS.ADVANCED_FILTER_BUTTON}"]`);
+    await advancedBtn.waitFor();
+    await advancedBtn.click();
     const comparisonToggle = page.locator(`[data-testid="${TEST_IDS.COMPARISON_TOGGLE}"]`);
     await comparisonToggle.waitFor();
     await expect(comparisonToggle).not.toBeChecked();

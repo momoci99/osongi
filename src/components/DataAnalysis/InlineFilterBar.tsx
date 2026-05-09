@@ -134,6 +134,7 @@ const InlineFilterBar = ({
               size="small"
               startIcon={<TuneIcon />}
               onClick={onAdvancedClick}
+              data-testid={TEST_IDS.ADVANCED_FILTER_BUTTON}
             >
               고급 필터
               {activeCount > 0 && (
