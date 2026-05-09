@@ -7,14 +7,10 @@ const config: StorybookConfig = {
   ],
   "addons": [
     "@chromatic-com/storybook",
-    "@storybook/addon-docs",
-    "@storybook/addon-onboarding",
+    "@storybook/addon-vitest",
     "@storybook/addon-a11y",
-    "@storybook/addon-vitest"
+    "@storybook/addon-docs"
   ],
-  "framework": {
-    "name": "@storybook/react-vite",
-    "options": {}
-  }
+  "framework": "@storybook/react-vite"
 };
 export default config;
