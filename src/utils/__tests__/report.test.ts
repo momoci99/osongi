@@ -158,3 +158,91 @@ describe("generateSeasonReport", () => {
     expect(report.insights).toEqual([]);
   });
 });
+
+describe("generateSeasonReport — gradeAnalysis", () => {
+  it("등급별 가중평균 단가를 올바르게 계산한다", () => {
+    /** grade1: 10kg×100,000 + 10kg×200,000 → 총량 20kg, 가중평균 150,000 */
+    const data = [
+      createMockWeeklyPriceDatum({ gradeKey: "grade1", quantityKg: 10, unitPriceWon: 100000 }),
+      createMockWeeklyPriceDatum({ gradeKey: "grade1", quantityKg: 10, unitPriceWon: 200000 }),
+      createMockWeeklyPriceDatum({ gradeKey: "grade2", quantityKg: 5,  unitPriceWon: 80000 }),
+    ];
+
+    const report = generateSeasonReport(data, ["grade1", "grade2"]);
+    const g1 = report.gradeAnalysis.find((g) => g.gradeKey === "grade1")!;
+    const g2 = report.gradeAnalysis.find((g) => g.gradeKey === "grade2")!;
+
+    expect(g1.avgPrice).toBe(150000);
+    expect(g1.totalQuantity).toBe(20);
+    expect(g2.avgPrice).toBe(80000);
+    expect(g2.totalQuantity).toBe(5);
+  });
+
+  it("selectedGrades에 데이터 없는 등급이 포함되면 avgPrice=0, totalQuantity=0이다", () => {
+    const data = [
+      createMockWeeklyPriceDatum({ gradeKey: "grade1", quantityKg: 10, unitPriceWon: 100000 }),
+    ];
+
+    const report = generateSeasonReport(data, ["grade1", "grade2"]);
+    const g2 = report.gradeAnalysis.find((g) => g.gradeKey === "grade2")!;
+
+    expect(g2.avgPrice).toBe(0);
+    expect(g2.totalQuantity).toBe(0);
+    expect(g2.quantityShare).toBe(0);
+  });
+
+  it("비교 데이터의 등급별 priceChange를 올바르게 계산한다", () => {
+    const current = [
+      createMockWeeklyPriceDatum({ gradeKey: "grade1", quantityKg: 10, unitPriceWon: 110000 }),
+    ];
+    const comparison = [
+      createMockWeeklyPriceDatum({ gradeKey: "grade1", quantityKg: 10, unitPriceWon: 100000 }),
+    ];
+
+    const report = generateSeasonReport(current, ["grade1"], comparison);
+    const g1 = report.gradeAnalysis.find((g) => g.gradeKey === "grade1")!;
+
+    /** (110000-100000)/100000 × 100 = 10.0 */
+    expect(g1.priceChange).toBeCloseTo(10.0, 1);
+  });
+});
+
+describe("generateSeasonReport — volatility", () => {
+  it("가격이 모두 동일하면 priceStdDev=0, priceCV=0이다", () => {
+    const data = Array.from({ length: 5 }, () =>
+      createMockWeeklyPriceDatum({ gradeKey: "grade1", unitPriceWon: 100000 })
+    );
+
+    const report = generateSeasonReport(data, ["grade1"]);
+
+    expect(report.volatility.priceStdDev).toBe(0);
+    expect(report.volatility.priceCV).toBe(0);
+  });
+
+  it("gradeMetrics에 selectedGrades별 변동성이 포함된다", () => {
+    /** grade1: 고변동 / grade2: 저변동 */
+    const data = [
+      createMockWeeklyPriceDatum({ gradeKey: "grade1", unitPriceWon: 50000 }),
+      createMockWeeklyPriceDatum({ gradeKey: "grade1", unitPriceWon: 300000 }),
+      createMockWeeklyPriceDatum({ gradeKey: "grade2", unitPriceWon: 100000 }),
+      createMockWeeklyPriceDatum({ gradeKey: "grade2", unitPriceWon: 105000 }),
+    ];
+
+    const report = generateSeasonReport(data, ["grade1", "grade2"]);
+
+    expect(report.volatility.gradeMetrics).toHaveLength(2);
+    expect(report.volatility.volatileGrade).toBe("grade1");
+    expect(report.volatility.stableGrade).toBe("grade2");
+  });
+
+  it("데이터 없는 등급은 gradeMetrics에서 제외된다", () => {
+    const data = [
+      createMockWeeklyPriceDatum({ gradeKey: "grade1", unitPriceWon: 100000 }),
+    ];
+
+    const report = generateSeasonReport(data, ["grade1", "grade2"]);
+
+    expect(report.volatility.gradeMetrics).toHaveLength(1);
+    expect(report.volatility.gradeMetrics[0].gradeKey).toBe("grade1");
+  });
+});

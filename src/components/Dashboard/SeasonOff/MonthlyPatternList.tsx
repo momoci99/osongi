@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { Box, Typography, useTheme } from "@mui/material";
 import DashboardCard from "../DashboardCard";
 import type { MonthlyPattern } from "../../../types/seasonOff";
@@ -26,7 +27,10 @@ type MonthlyPatternListProps = {
 /** 시즌 내 월별 패턴 리스트 */
 const MonthlyPatternList = ({ patterns }: MonthlyPatternListProps) => {
   const theme = useTheme();
-  const maxQty = Math.max(...patterns.map((pp) => pp.avgQuantityKg));
+  const maxQty = useMemo(
+    () => Math.max(...patterns.map((pp) => pp.avgQuantityKg)),
+    [patterns]
+  );
 
   return (
     <>

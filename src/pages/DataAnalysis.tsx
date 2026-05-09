@@ -181,23 +181,17 @@ const DataAnalysis = () => {
     [chartData],
   );
 
+  // 비교 기간 차트 데이터
+  const comparisonChartData = useMemo(() => {
+    if (!filters.comparisonEnabled || filteredComparisonData.length === 0) return undefined;
+    return transformToChartData(filteredComparisonData, filters.grades);
+  }, [filteredComparisonData, filters.grades, filters.comparisonEnabled]);
+
   // 시즌 리포트
-  const seasonReport = useMemo<SeasonReport>(() => {
-    const comparisonWeeklyData =
-      filters.comparisonEnabled && filteredComparisonData.length > 0
-        ? transformToChartData(filteredComparisonData, filters.grades)
-        : undefined;
-    return generateSeasonReport(
-      chartData,
-      filters.grades,
-      comparisonWeeklyData,
-    );
-  }, [
-    chartData,
-    filters.grades,
-    filters.comparisonEnabled,
-    filteredComparisonData,
-  ]);
+  const seasonReport = useMemo<SeasonReport>(
+    () => generateSeasonReport(chartData, filters.grades, comparisonChartData),
+    [chartData, filters.grades, comparisonChartData],
+  );
 
   const chartEmptyMessage = useMemo(() => {
     if (filters.startDate > filters.endDate) {

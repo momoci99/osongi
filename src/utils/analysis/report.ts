@@ -154,38 +154,27 @@ const calculateSummary = (data: WeeklyPriceDatum[]): SeasonReportSummary => {
  * 등급별 리포트를 생성한다.
  */
 const calculateGradeAnalysis = (
-  data: WeeklyPriceDatum[],
+  gradeDataMap: Map<string, WeeklyPriceDatum[]>,
   selectedGrades: string[],
   totalQuantityKg: number,
-  comparisonData?: WeeklyPriceDatum[]
+  comparisonGradeDataMap?: Map<string, WeeklyPriceDatum[]>
 ): GradeAnalysisItem[] => {
   return selectedGrades.map((gradeKey) => {
-    const currentGradeData = data.filter((datum) => datum.gradeKey === gradeKey);
-    const totalQuantity = currentGradeData.reduce(
-      (sum, datum) => sum + datum.quantityKg,
-      0
-    );
+    const currentGradeData = gradeDataMap.get(gradeKey) ?? [];
+    const totalQuantity = currentGradeData.reduce((sum, datum) => sum + datum.quantityKg, 0);
     const totalAmountWon = currentGradeData.reduce(
       (sum, datum) => sum + datum.quantityKg * datum.unitPriceWon,
       0
     );
     const avgPrice = calculateAveragePrice(totalAmountWon, totalQuantity);
 
-    const comparisonGradeData = comparisonData?.filter(
-      (datum) => datum.gradeKey === gradeKey
-    );
-    const comparisonQuantity = comparisonGradeData?.reduce(
-      (sum, datum) => sum + datum.quantityKg,
-      0
-    );
-    const comparisonAmount = comparisonGradeData?.reduce(
+    const comparisonGradeData = comparisonGradeDataMap?.get(gradeKey) ?? [];
+    const comparisonQuantity = comparisonGradeData.reduce((sum, datum) => sum + datum.quantityKg, 0);
+    const comparisonAmount = comparisonGradeData.reduce(
       (sum, datum) => sum + datum.quantityKg * datum.unitPriceWon,
       0
     );
-    const comparisonAvgPrice = calculateAveragePrice(
-      comparisonAmount ?? 0,
-      comparisonQuantity ?? 0
-    );
+    const comparisonAvgPrice = calculateAveragePrice(comparisonAmount, comparisonQuantity);
 
     return {
       gradeKey,
@@ -193,7 +182,7 @@ const calculateGradeAnalysis = (
       totalQuantity,
       quantityShare: totalQuantityKg > 0 ? totalQuantity / totalQuantityKg : 0,
       priceChange:
-        comparisonData === undefined
+        comparisonGradeDataMap === undefined
           ? null
           : calculatePercentChange(avgPrice, comparisonAvgPrice),
     };
@@ -271,14 +260,13 @@ const calculatePriceHighlights = (
  */
 const calculateVolatility = (
   data: WeeklyPriceDatum[],
-  selectedGrades: string[]
+  selectedGrades: string[],
+  gradeDataMap: Map<string, WeeklyPriceDatum[]>
 ): SeasonReportVolatility => {
   const overall = calculatePriceVolatility(data.map((datum) => datum.unitPriceWon));
   const gradeMetrics = selectedGrades
     .map((gradeKey) => {
-      const prices = data
-        .filter((datum) => datum.gradeKey === gradeKey)
-        .map((datum) => datum.unitPriceWon);
+      const prices = (gradeDataMap.get(gradeKey) ?? []).map((datum) => datum.unitPriceWon);
 
       if (prices.length === 0) {
         return null;
@@ -365,22 +353,41 @@ const calculateYoYComparison = (
 /**
  * 필터링된 차트 데이터를 기반으로 시즌 리포트를 생성한다.
  */
+/** 데이터를 gradeKey 기준으로 그룹핑한다. */
+const buildGradeDataMap = (data: WeeklyPriceDatum[]): Map<string, WeeklyPriceDatum[]> => {
+  const map = new Map<string, WeeklyPriceDatum[]>();
+  for (const datum of data) {
+    const group = map.get(datum.gradeKey) ?? [];
+    group.push(datum);
+    map.set(datum.gradeKey, group);
+  }
+  return map;
+};
+
+/**
+ * 필터링된 차트 데이터를 기반으로 시즌 리포트를 생성한다.
+ */
 export const generateSeasonReport = (
   data: WeeklyPriceDatum[],
   selectedGrades: string[],
   comparisonData?: WeeklyPriceDatum[]
 ): SeasonReport => {
+  const gradeDataMap = buildGradeDataMap(data);
+  const comparisonGradeDataMap = comparisonData !== undefined
+    ? buildGradeDataMap(comparisonData)
+    : undefined;
+
   const period = calculatePeriod(data);
   const summary = calculateSummary(data);
   const gradeAnalysis = calculateGradeAnalysis(
-    data,
+    gradeDataMap,
     selectedGrades,
     summary.totalQuantityKg,
-    comparisonData
+    comparisonGradeDataMap
   );
   const regionAnalysis = calculateRegionAnalysis(data);
   const priceHighlights = calculatePriceHighlights(data);
-  const volatility = calculateVolatility(data, selectedGrades);
+  const volatility = calculateVolatility(data, selectedGrades, gradeDataMap);
   const yoyComparison = calculateYoYComparison(summary, comparisonData);
 
   const report: SeasonReport = {

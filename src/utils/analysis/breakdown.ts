@@ -54,8 +54,12 @@ export const calculateGradeBreakdown = (
     });
   });
 
-  const totalQuantity = Array.from(gradeMap.values()).reduce((s, v) => s + v.quantity, 0);
-  const totalAmount = Array.from(gradeMap.values()).reduce((s, v) => s + v.amount, 0);
+  let totalQuantity = 0;
+  let totalAmount = 0;
+  gradeMap.forEach((v) => {
+    totalQuantity += v.quantity;
+    totalAmount += v.amount;
+  });
 
   return selectedGrades
     .filter((key) => gradeMap.has(key))

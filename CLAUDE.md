@@ -38,7 +38,7 @@ npm run collect-data # Playwright로 공판 데이터 수집
 - pre-push 훅이 있어 push 전 테스트가 자동 실행된다. (Husky)
 
 ## 코딩 컨벤션
-
+- useEffect는 기명 함수를 사용한다.
 - Props 등 타입 정의는 `interface`가 아닌 `type`을 사용한다.
 - 컴포넌트는 화살표 함수로 선언한다. (`const Foo = () => {}`)
 - `export default`를 사용하며, 파일 끝에 위치시킨다.

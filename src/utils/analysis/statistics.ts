@@ -32,7 +32,7 @@ export const calculateMovingAverages = (
 
   groups.forEach((groupData) => {
     const sorted = [...groupData].sort(
-      (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+      (a, b) => a.date.localeCompare(b.date)
     );
 
     sorted.forEach((d, i) => {

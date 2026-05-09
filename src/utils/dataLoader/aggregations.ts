@@ -63,17 +63,15 @@ export const getAggregatedData = async (filters: QueryFilters) => {
   );
 
   // 등급별 평균 가격
+  const grade1Records = records.filter((r) => r.grade1Quantity > 0);
+  const grade2Records = records.filter((r) => r.grade2Quantity > 0);
   const gradeAverages = {
-    grade1:
-      records
-        .filter((r) => r.grade1Quantity > 0)
-        .reduce((sum, r) => sum + r.grade1UnitPrice, 0) /
-        records.filter((r) => r.grade1Quantity > 0).length || 0,
-    grade2:
-      records
-        .filter((r) => r.grade2Quantity > 0)
-        .reduce((sum, r) => sum + r.grade2UnitPrice, 0) /
-        records.filter((r) => r.grade2Quantity > 0).length || 0,
+    grade1: grade1Records.length > 0
+      ? grade1Records.reduce((sum, r) => sum + r.grade1UnitPrice, 0) / grade1Records.length
+      : 0,
+    grade2: grade2Records.length > 0
+      ? grade2Records.reduce((sum, r) => sum + r.grade2UnitPrice, 0) / grade2Records.length
+      : 0,
   };
 
   return {

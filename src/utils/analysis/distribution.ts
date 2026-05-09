@@ -30,12 +30,16 @@ export const calculatePriceDistribution = (
   const step = (maxPrice - minPrice) / numBins;
   const thresholds = Array.from({ length: numBins + 1 }, (_, i) => minPrice + i * step);
 
-  const gradeKeys = [...new Set(validData.map((d) => d.gradeKey))];
+  const gradeGroups = new Map<string, typeof validData>();
+  for (const d of validData) {
+    const group = gradeGroups.get(d.gradeKey) ?? [];
+    group.push(d);
+    gradeGroups.set(d.gradeKey, group);
+  }
+
   const result: DistributionBin[] = [];
 
-  for (const gradeKey of gradeKeys) {
-    const gradeData = validData.filter((d) => d.gradeKey === gradeKey);
-
+  for (const [gradeKey, gradeData] of gradeGroups) {
     for (let i = 0; i < numBins; i++) {
       const x0 = thresholds[i];
       const x1 = thresholds[i + 1];
