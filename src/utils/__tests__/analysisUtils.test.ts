@@ -386,6 +386,9 @@ describe("calculateKPIComparison", () => {
     maxPrice: { value: avgPrice, date: "2024-10-01", grade: "grade1" },
     minPrice: { value: avgPrice, date: "2024-10-01", grade: "grade1" },
     tradingDays: 5,
+    medianPrice: avgPrice,
+    priceStdDev: 0,
+    priceCV: 0,
   });
 
   it("변동률을 정확히 계산한다", () => {

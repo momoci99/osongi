@@ -5,7 +5,7 @@ import {
   formatPrice,
   transformToTableData,
 } from "../tableUtils";
-import { createMockAuctionRecord, SAMPLE_GRADES, SAMPLE_ALL_GRADES } from "./fixtures";
+import { createMockAuctionRecord, SAMPLE_GRADES } from "./fixtures";
 
 /** getGradeName */
 describe("getGradeName", () => {

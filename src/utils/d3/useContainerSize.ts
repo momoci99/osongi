@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 
 type ContainerWidthResult = {
-  containerRef: React.RefObject<HTMLDivElement>;
+  containerRef: React.RefObject<HTMLDivElement | null>;
   width: number;
 };
 
 type ContainerSizeResult = {
-  containerRef: React.RefObject<HTMLDivElement>;
+  containerRef: React.RefObject<HTMLDivElement | null>;
   width: number;
   height: number;
 };

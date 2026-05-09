@@ -110,9 +110,11 @@ export const useDrawGradeBarKg = ({
   return { containerRef, svgRef };
 };
 
+type GSelection = d3.Selection<SVGGElement, null, SVGSVGElement, unknown>;
+
 /** 수평 그리드 라인 */
 const drawGrid = (
-  g: d3.Selection<SVGGElement, unknown, null, undefined>,
+  g: GSelection,
   y: d3.ScaleLinear<number, number>,
   innerWidth: number,
   theme: Theme,
@@ -139,7 +141,7 @@ const drawGrid = (
 
 /** X축 + 라벨 줄바꿈 */
 const drawXAxis = (
-  g: d3.Selection<SVGGElement, unknown, null, undefined>,
+  g: GSelection,
   x: d3.ScaleBand<string>,
   innerHeight: number,
   labelYOffset: number,
@@ -190,7 +192,7 @@ const drawXAxis = (
 
 /** Y축 + 라벨 */
 const drawYAxis = (
-  g: d3.Selection<SVGGElement, unknown, null, undefined>,
+  g: GSelection,
   y: d3.ScaleLinear<number, number>,
   fontFamily: string,
   theme: Theme,
@@ -234,7 +236,7 @@ const drawYAxis = (
 };
 
 type DrawBarsParams = {
-  g: d3.Selection<SVGGElement, unknown, null, undefined>;
+  g: GSelection;
   data: ChartDatum[];
   x: d3.ScaleBand<string>;
   y: d3.ScaleLinear<number, number>;

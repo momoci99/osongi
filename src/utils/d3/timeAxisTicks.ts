@@ -74,9 +74,9 @@ export const buildTimeAxis = (
   } else if (dateCount <= 92) {
     tickValues = createIntervalTicks(d3.timeWeek, start, end);
   } else {
-    const monthInterval = dateCount > 200
-      ? d3.timeMonth.every(2) ?? d3.timeMonth
-      : d3.timeMonth.every(1) ?? d3.timeMonth;
+    const monthInterval = (dateCount > 200
+      ? d3.timeMonth.every(2)
+      : d3.timeMonth.every(1)) as d3.CountableTimeInterval ?? d3.timeMonth;
 
     tickValues = createIntervalTicks(monthInterval, start, end);
   }
