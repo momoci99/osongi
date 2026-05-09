@@ -1,7 +1,8 @@
-/// <reference types="vitest/config" />
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
+import { defineConfig } from "vitest/config";
+import react, { reactCompilerPreset } from "@vitejs/plugin-react";
+import babel from "@rolldown/plugin-babel";
 import { compression } from "vite-plugin-compression2";
+import { playwright } from "@vitest/browser-playwright";
 
 // https://vite.dev/config/
 import path from "node:path";
@@ -15,11 +16,8 @@ const dirname =
 // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
 export default defineConfig({
   plugins: [
-    react({
-      babel: {
-        plugins: ["babel-plugin-react-compiler"],
-      },
-    }),
+    react(),
+    babel({ presets: [reactCompilerPreset()] }),
 
     // 압축 설정 - 필요한 파일들만 선택적으로 압축
     compression({
@@ -37,12 +35,12 @@ export default defineConfig({
     rollupOptions: {
       output: {
         // 청크 분할로 캐싱 효율성 증대
-        manualChunks: {
-          vendor: ["react", "react-dom"],
-          router: ["react-router"],
-          ui: ["@mui/material", "@mui/icons-material"],
-          charts: ["d3"],
-          date: ["date-fns"],
+        manualChunks: (id) => {
+          if (id.includes("node_modules/react-dom") || id.includes("node_modules/react/")) return "vendor";
+          if (id.includes("node_modules/react-router")) return "router";
+          if (id.includes("node_modules/@mui")) return "ui";
+          if (id.includes("node_modules/d3")) return "charts";
+          if (id.includes("node_modules/date-fns")) return "date";
         },
       },
     },
@@ -73,7 +71,7 @@ export default defineConfig({
           browser: {
             enabled: true,
             headless: true,
-            provider: "playwright",
+            provider: playwright(),
             instances: [
               {
                 browser: "chromium",
