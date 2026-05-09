@@ -9,7 +9,7 @@ const formatLatestDataDate = (iso: string | undefined): string | null => {
   if (!iso) return null;
   const match = iso.match(/^(\d{4})-(\d{2})-(\d{2})/);
   if (!match) return null;
-  return `${match[2]}/${match[3]}`;
+  return `${match[1]}.${match[2]}.${match[3]}`;
 };
 
 const DataDateBadge = ({ latestDataDate }: DataDateBadgeProps) => {
