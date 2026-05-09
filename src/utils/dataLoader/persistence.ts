@@ -5,6 +5,7 @@ import {
   CURRENT_DB_VERSION,
 } from "../database";
 import type { ProgressCallback } from "./download";
+import { INDEXED_DB_BATCH_SIZE } from "../../const/DataLoader";
 
 /** IndexedDB에 데이터 저장 */
 export const saveToIndexedDB = async (
@@ -20,7 +21,7 @@ export const saveToIndexedDB = async (
     await db.metadata.clear();
 
     // 새 데이터 일괄 삽입
-    const batchSize = 1000;
+    const batchSize = INDEXED_DB_BATCH_SIZE;
     for (let i = 0; i < data.length; i += batchSize) {
       const batch = data.slice(i, i + batchSize);
       await db.auctionData.bulkAdd(batch);

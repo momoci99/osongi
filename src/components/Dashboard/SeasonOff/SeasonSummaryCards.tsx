@@ -4,6 +4,7 @@ import type {
   SeasonSummary,
   RegionSeasonSummary,
 } from "../../../types/seasonOff";
+import { KILOGRAMS_PER_TON, WON_PER_EOK } from "../../../const/Units";
 
 type SeasonSummaryCardsProps = {
   summary: SeasonSummary;
@@ -40,7 +41,7 @@ const SeasonSummaryCards = ({
             <Typography variant="h5" sx={{ fontWeight: 700 }}>
               {(
                 (regionSeason?.totalQuantityKg ?? summary.totalQuantityKg) /
-                1000
+                KILOGRAMS_PER_TON
               ).toFixed(1)}
               <Typography
                 component="span"
@@ -63,7 +64,7 @@ const SeasonSummaryCards = ({
             <Typography variant="h5" sx={{ fontWeight: 700 }}>
               {(
                 (regionSeason?.totalAmountWon ?? summary.totalAmountWon) /
-                100_000_000
+                WON_PER_EOK
               ).toFixed(1)}
               <Typography
                 component="span"

@@ -1,3 +1,8 @@
+import {
+  VERSION_PROBE_RANGE_END_BYTE,
+  HTTP_PARTIAL_CONTENT_STATUS,
+} from "../../const/DataLoader";
+
 /** 서버 버전 체크 (HEAD → Range → full 3단계) */
 export const fetchServerVersion = async (): Promise<{
   version: string;
@@ -42,12 +47,12 @@ export const fetchServerVersion = async (): Promise<{
       // JSON 파일의 처음 1KB만 가져와서 version 필드 추출
       const rangeResponse = await fetch("/auction-data/complete-dataset.json", {
         headers: {
-          Range: "bytes=0-1023", // 처음 1KB만
+          Range: `bytes=0-${VERSION_PROBE_RANGE_END_BYTE}`, // 처음 1KB만
         },
         cache: "no-cache",
       });
 
-      if (rangeResponse.status === 206) {
+      if (rangeResponse.status === HTTP_PARTIAL_CONTENT_STATUS) {
         // Partial Content
         const partialText = await rangeResponse.text();
         const versionMatch = partialText.match(/"version":\s*"([^"]+)"/);

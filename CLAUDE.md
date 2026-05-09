@@ -44,3 +44,4 @@ npm run collect-data # Playwright로 공판 데이터 수집
 - `export default`를 사용하며, 파일 끝에 위치시킨다.
 - kentbeck의 "Clean Code" 원칙을 따른다. (의미 있는 이름, 작은 함수, 단일 책임 등)
 - 컴포넌트의 라인수는 가능한 300줄 이하로 유지.
+- 매직 넘버는 상수화 처리. src/const 에 정리

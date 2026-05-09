@@ -1,6 +1,7 @@
 import { Box, Typography, useTheme } from "@mui/material";
 import DashboardCard from "../DashboardCard";
 import type { MonthlyPattern } from "../../../types/seasonOff";
+import { KILOGRAMS_PER_TON } from "../../../const/Units";
 
 const MONTH_NAMES = [
   "",
@@ -54,7 +55,7 @@ const MonthlyPatternList = ({ patterns }: MonthlyPatternListProps) => {
                   sx={{ color: theme.palette.text.secondary }}
                 >
                   평균 {p.avgPriceWon.toLocaleString()}원/kg ·{" "}
-                  {(p.avgQuantityKg / 1000).toFixed(1)}톤
+                  {(p.avgQuantityKg / KILOGRAMS_PER_TON).toFixed(1)}톤
                 </Typography>
               </Box>
               <Box

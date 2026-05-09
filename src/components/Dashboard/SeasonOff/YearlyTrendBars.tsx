@@ -1,6 +1,7 @@
 import { Box, Typography, useTheme } from "@mui/material";
 import DashboardCard from "../DashboardCard";
 import type { YearlyChartEntry } from "../../../hooks/useSeasonOffData";
+import { KILOGRAMS_PER_TON } from "../../../const/Units";
 
 type YearlyTrendBarsProps = {
   yearlyEntries: YearlyChartEntry[];
@@ -60,7 +61,7 @@ const YearlyTrendBars = ({
                   variant="caption"
                   sx={{ flexShrink: 0, fontWeight: 500 }}
                 >
-                  {(entry.totalQuantityKg / 1000).toFixed(0)}톤
+                  {(entry.totalQuantityKg / KILOGRAMS_PER_TON).toFixed(0)}톤
                 </Typography>
               </Box>
             );

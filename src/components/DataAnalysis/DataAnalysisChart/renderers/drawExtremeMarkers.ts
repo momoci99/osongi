@@ -2,6 +2,7 @@ import * as d3 from "d3";
 import type { Theme } from "@mui/material/styles";
 import type { WeeklyPriceDatum } from "../../../../types/data";
 import type { AnalysisSeries, ChartMode } from "../seriesBuilder";
+import { KRW_TEN_THOUSAND_UNIT } from "../../../../const/Units";
 
 export type DrawExtremeMarkersParams = {
   subplotGroup: d3.Selection<SVGGElement, unknown, null, undefined>;
@@ -67,8 +68,8 @@ export const drawExtremeMarkers = ({
       const value = yValue(point);
       const unit = mode === "price" ? "원" : "kg";
       const label =
-        value >= 10000
-          ? `${(value / 10000).toFixed(1)}만${unit}`
+        value >= KRW_TEN_THOUSAND_UNIT
+          ? `${(value / KRW_TEN_THOUSAND_UNIT).toFixed(1)}만${unit}`
           : `${value.toLocaleString()}${unit}`;
 
       markerGroup

@@ -1,4 +1,5 @@
 import type { WeeklyPriceDatum } from "../../types/data";
+import { MA_SHORT_WINDOW, MA_LONG_WINDOW } from "../../const/Analysis";
 
 export type MovingAverageDatum = {
   date: string;
@@ -8,13 +9,15 @@ export type MovingAverageDatum = {
   ma14: number | null;
 };
 
+const DEFAULT_MA_WINDOWS = [MA_SHORT_WINDOW, MA_LONG_WINDOW];
+
 /**
  * 등급+지역별 단순이동평균(SMA)을 계산한다.
  * windows 배열의 각 값은 직전 N개 데이터 포인트 기준이다.
  */
 export const calculateMovingAverages = (
   data: WeeklyPriceDatum[],
-  windows: number[] = [7, 14]
+  windows: number[] = DEFAULT_MA_WINDOWS
 ): MovingAverageDatum[] => {
   const groups = new Map<string, WeeklyPriceDatum[]>();
 
@@ -44,8 +47,8 @@ export const calculateMovingAverages = (
         date: d.date,
         gradeKey: d.gradeKey,
         region: d.region!,
-        ma7: windows.includes(7) ? sma(7) : null,
-        ma14: windows.includes(14) ? sma(14) : null,
+        ma7: windows.includes(MA_SHORT_WINDOW) ? sma(MA_SHORT_WINDOW) : null,
+        ma14: windows.includes(MA_LONG_WINDOW) ? sma(MA_LONG_WINDOW) : null,
       });
     });
   });

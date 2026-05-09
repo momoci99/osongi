@@ -9,6 +9,7 @@ import { getGradeColorMap } from "../../utils/chartUtils";
 import { isMobileWidth } from "../../utils/d3/chartMargins";
 import EmptyState from "../common/EmptyState";
 import SectionCard from "../common/SectionCard";
+import { KRW_TEN_THOUSAND_UNIT } from "../../const/Units";
 
 type PriceDistributionChartProps = {
   data: DistributionBin[];
@@ -17,7 +18,7 @@ type PriceDistributionChartProps = {
 };
 
 const formatWon = (val: number): string => {
-  if (val >= 10000) return `${Math.round(val / 10000)}만`;
+  if (val >= KRW_TEN_THOUSAND_UNIT) return `${Math.round(val / KRW_TEN_THOUSAND_UNIT)}만`;
   return val.toLocaleString();
 };
 
