@@ -13,12 +13,15 @@ type AnalysisFilterState = {
   setAdvancedDialogOpen: (open: boolean) => void;
 };
 
+/** 기본 선택 등급: 주요 거래 등급(1·2등품)만 표시해 첫 진입 가시성 확보 */
+const DEFAULT_GRADES = ["grade1", "grade2"];
+
 const createDefaultFilters = (): AnalysisFilters => {
   const { startDate, endDate } = getDefaultDateRange();
   return {
     regions: [],
     unions: [],
-    grades: GRADE_OPTIONS.map((o) => o.value),
+    grades: DEFAULT_GRADES,
     startDate,
     endDate,
     comparisonEnabled: false,
@@ -26,6 +29,32 @@ const createDefaultFilters = (): AnalysisFilters => {
     comparisonEndDate: null,
   };
 };
+
+type PersistedFiltersState = { filters: AnalysisFilters };
+
+/**
+ * localStorage 저장값 마이그레이션 함수.
+ * 버전 올릴 때마다 `fromVersion < N` 블록을 누적 추가한다.
+ *
+ * v0 → v1: grades 기본값을 전체 6개 → ["grade1", "grade2"]로 축소
+ */
+const migrateFiltersState = (
+  raw: unknown,
+  fromVersion: number,
+): PersistedFiltersState => {
+  let state = raw as PersistedFiltersState;
+
+  if (fromVersion < 1) {
+    state = {
+      ...state,
+      filters: { ...state.filters, grades: DEFAULT_GRADES },
+    };
+  }
+
+  return state;
+};
+
+const STORE_VERSION = 1;
 
 /** Date 필드 키 목록 */
 const DATE_KEYS: (keyof AnalysisFilters)[] = [
@@ -53,6 +82,8 @@ export const useAnalysisFilterStore = create<AnalysisFilterState>()(
     }),
     {
       name: "osongi-analysis-filters",
+      version: STORE_VERSION,
+      migrate: migrateFiltersState,
       partialize: (state) => ({ filters: state.filters }),
       storage: {
         getItem: (name) => {

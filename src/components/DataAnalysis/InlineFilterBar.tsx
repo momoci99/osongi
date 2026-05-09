@@ -84,11 +84,11 @@ const InlineFilterBar = ({
             data-testid={TEST_IDS.GRADE_SELECT}
             sx={{ minWidth: 200 }}
           >
-            <InputLabel>등급</InputLabel>
+            <InputLabel>등급 ({filters.grades.length}/{GRADE_OPTIONS.length})</InputLabel>
             <Select
               multiple
               value={filters.grades}
-              label="등급"
+              label={`등급 (${filters.grades.length}/${GRADE_OPTIONS.length})`}
               onChange={handleGradeChange}
               renderValue={(selected) => (
                 <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>

@@ -1,6 +1,5 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import { useAnalysisFilterStore } from "../useAnalysisFilterStore";
-import { GRADE_OPTIONS } from "../../const/Common";
 
 describe("useAnalysisFilterStore", () => {
   beforeEach(() => {
@@ -17,11 +16,11 @@ describe("useAnalysisFilterStore", () => {
       expect(useAnalysisFilterStore.getState().filters.unions).toEqual([]);
     });
 
-    it("grades는 모든 등급을 포함한다", () => {
-      const allGrades = GRADE_OPTIONS.map((o) => o.value);
-      expect(useAnalysisFilterStore.getState().filters.grades).toEqual(
-        allGrades,
-      );
+    it("grades는 기본 선택 등급(1·2등품)만 포함한다", () => {
+      expect(useAnalysisFilterStore.getState().filters.grades).toEqual([
+        "grade1",
+        "grade2",
+      ]);
     });
 
     it("comparisonEnabled는 false이다", () => {
@@ -97,7 +96,7 @@ describe("useAnalysisFilterStore", () => {
 
       const reset = useAnalysisFilterStore.getState().filters;
       expect(reset.regions).toEqual([]);
-      expect(reset.grades).toEqual(GRADE_OPTIONS.map((o) => o.value));
+      expect(reset.grades).toEqual(["grade1", "grade2"]);
       expect(reset.comparisonEnabled).toBe(false);
     });
   });
