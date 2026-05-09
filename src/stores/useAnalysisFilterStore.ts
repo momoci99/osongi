@@ -8,9 +8,9 @@ type AnalysisFilterState = {
   filters: AnalysisFilters;
   setFilters: (filters: AnalysisFilters) => void;
   resetFilters: () => void;
-  drawerOpen: boolean;
-  toggleDrawer: () => void;
-  setDrawerOpen: (open: boolean) => void;
+  advancedDialogOpen: boolean;
+  toggleAdvancedDialog: () => void;
+  setAdvancedDialogOpen: (open: boolean) => void;
 };
 
 const createDefaultFilters = (): AnalysisFilters => {
@@ -38,6 +38,7 @@ const DATE_KEYS: (keyof AnalysisFilters)[] = [
 /**
  * 분석 필터 상태를 localStorage에 영속화하는 스토어.
  * Date 객체의 직렬화/역직렬화를 커스텀 storage로 처리한다.
+ * 다이얼로그 열림 상태는 영속화하지 않는다 (partialize).
  */
 export const useAnalysisFilterStore = create<AnalysisFilterState>()(
   persist(
@@ -45,12 +46,14 @@ export const useAnalysisFilterStore = create<AnalysisFilterState>()(
       filters: createDefaultFilters(),
       setFilters: (filters) => set({ filters }),
       resetFilters: () => set({ filters: createDefaultFilters() }),
-      drawerOpen: true,
-      toggleDrawer: () => set((s) => ({ drawerOpen: !s.drawerOpen })),
-      setDrawerOpen: (open) => set({ drawerOpen: open }),
+      advancedDialogOpen: false,
+      toggleAdvancedDialog: () =>
+        set((s) => ({ advancedDialogOpen: !s.advancedDialogOpen })),
+      setAdvancedDialogOpen: (open) => set({ advancedDialogOpen: open }),
     }),
     {
       name: "osongi-analysis-filters",
+      partialize: (state) => ({ filters: state.filters }),
       storage: {
         getItem: (name) => {
           const raw = localStorage.getItem(name);

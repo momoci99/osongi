@@ -102,26 +102,30 @@ describe("useAnalysisFilterStore", () => {
     });
   });
 
-  /** drawerOpen 상태 */
-  describe("drawerOpen", () => {
-    it("기본값은 true이다", () => {
-      expect(useAnalysisFilterStore.getState().drawerOpen).toBe(true);
+  /** advancedDialogOpen 상태 */
+  describe("advancedDialogOpen", () => {
+    beforeEach(() => {
+      useAnalysisFilterStore.getState().setAdvancedDialogOpen(false);
     });
 
-    it("toggleDrawer로 토글한다", () => {
-      useAnalysisFilterStore.getState().toggleDrawer();
-      expect(useAnalysisFilterStore.getState().drawerOpen).toBe(false);
-
-      useAnalysisFilterStore.getState().toggleDrawer();
-      expect(useAnalysisFilterStore.getState().drawerOpen).toBe(true);
+    it("기본값은 false이다", () => {
+      expect(useAnalysisFilterStore.getState().advancedDialogOpen).toBe(false);
     });
 
-    it("setDrawerOpen으로 직접 설정한다", () => {
-      useAnalysisFilterStore.getState().setDrawerOpen(false);
-      expect(useAnalysisFilterStore.getState().drawerOpen).toBe(false);
+    it("toggleAdvancedDialog로 토글한다", () => {
+      useAnalysisFilterStore.getState().toggleAdvancedDialog();
+      expect(useAnalysisFilterStore.getState().advancedDialogOpen).toBe(true);
 
-      useAnalysisFilterStore.getState().setDrawerOpen(true);
-      expect(useAnalysisFilterStore.getState().drawerOpen).toBe(true);
+      useAnalysisFilterStore.getState().toggleAdvancedDialog();
+      expect(useAnalysisFilterStore.getState().advancedDialogOpen).toBe(false);
+    });
+
+    it("setAdvancedDialogOpen으로 직접 설정한다", () => {
+      useAnalysisFilterStore.getState().setAdvancedDialogOpen(true);
+      expect(useAnalysisFilterStore.getState().advancedDialogOpen).toBe(true);
+
+      useAnalysisFilterStore.getState().setAdvancedDialogOpen(false);
+      expect(useAnalysisFilterStore.getState().advancedDialogOpen).toBe(false);
     });
   });
 });

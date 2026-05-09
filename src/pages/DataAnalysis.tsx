@@ -5,10 +5,10 @@ import {
   Grid,
   Typography,
   Fab,
+  Badge,
   useTheme,
   useMediaQuery,
 } from "@mui/material";
-import FilterListIcon from "@mui/icons-material/FilterList";
 import TuneIcon from "@mui/icons-material/Tune";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
@@ -38,8 +38,8 @@ import ScatterPlotChart from "../components/DataAnalysis/ScatterPlotChart";
 import RegionComparisonSection from "../components/DataAnalysis/RegionComparisonSection";
 import PriceDistributionChart from "../components/DataAnalysis/PriceDistributionChart";
 import TableSection from "../components/DataAnalysis/TableSection";
-import FilterDrawer from "../components/DataAnalysis/FilterDrawer";
-import { FILTER_DRAWER } from "../const/Numbers";
+import InlineFilterBar from "../components/DataAnalysis/InlineFilterBar";
+import AdvancedFilterDialog from "../components/DataAnalysis/AdvancedFilterDialog";
 import ActiveFilterSummary from "../components/DataAnalysis/Filters/ActiveFilterSummary";
 
 const DataAnalysis = () => {
@@ -50,8 +50,13 @@ const DataAnalysis = () => {
   const [loading, setLoading] = useState(false);
 
   // 필터 상태 (localStorage 영속화)
-  const { filters, setFilters, resetFilters, drawerOpen, toggleDrawer } =
-    useAnalysisFilterStore();
+  const {
+    filters,
+    setFilters,
+    resetFilters,
+    advancedDialogOpen,
+    setAdvancedDialogOpen,
+  } = useAnalysisFilterStore();
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
@@ -59,10 +64,10 @@ const DataAnalysis = () => {
   const [chartMode, setChartMode] = useState<"price" | "quantity">("price");
   const [chartExpanded, setChartExpanded] = useState(false);
 
-  const FILTER_FAB_SEEN_KEY = "osongi_filter_fab_seen";
-  const [isFilterFabExtended, setIsFilterFabExtended] = useState(
-    () => !localStorage.getItem(FILTER_FAB_SEEN_KEY),
-  );
+  const advancedActiveCount =
+    filters.regions.length +
+    filters.unions.length +
+    (filters.comparisonEnabled ? 1 : 0);
 
   // 메인 데이터 로드
   useEffect(() => {
@@ -207,29 +212,11 @@ const DataAnalysis = () => {
     resetFilters();
   };
 
-  const handleFilterFabClick = () => {
-    if (isFilterFabExtended) {
-      localStorage.setItem(FILTER_FAB_SEEN_KEY, "1");
-      setIsFilterFabExtended(false);
-    }
-    toggleDrawer();
-  };
-
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={ko}>
-      <Box sx={{ display: "flex", overflow: "hidden" }}>
-        <Box
-          component="main"
-          sx={{
-            flexGrow: 1,
-            minWidth: 0,
-            transition: "margin 225ms cubic-bezier(0, 0, 0.2, 1)",
-            marginRight:
-              drawerOpen && !isMobile ? `${FILTER_DRAWER.WIDTH}px` : 0,
-          }}
-        >
-          <Container maxWidth="xl">
-            <Box sx={{ py: 3 }}>
+      <Box component="main" sx={{ minWidth: 0 }}>
+        <Container maxWidth="xl">
+          <Box sx={{ py: 3 }}>
               {/* 헤더 */}
               <Typography
                 variant="h4"
@@ -241,6 +228,14 @@ const DataAnalysis = () => {
               <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
                 필터를 조합하여 송이버섯 공판 데이터를 다각도로 분석하세요.
               </Typography>
+
+              {/* 인라인 필터 바 */}
+              <InlineFilterBar
+                filters={filters}
+                onFiltersChange={setFilters}
+                onAdvancedClick={() => setAdvancedDialogOpen(true)}
+                onResetFilters={handleResetFilters}
+              />
 
               {/* 활성 필터 요약 */}
               <Box sx={{ mb: 2.5 }}>
@@ -329,48 +324,36 @@ const DataAnalysis = () => {
               />
             </Box>
           </Container>
-        </Box>
-
-        <FilterDrawer
-          filters={filters}
-          onFiltersChange={setFilters}
-          onResetFilters={handleResetFilters}
-          open={drawerOpen}
-          onClose={toggleDrawer}
-        />
       </Box>
 
-      {/* FAB — Drawer가 닫혀있을 때만 표시 */}
-      {!drawerOpen && (
+      <AdvancedFilterDialog
+        filters={filters}
+        onFiltersChange={setFilters}
+        onResetFilters={handleResetFilters}
+        open={advancedDialogOpen}
+        onClose={() => setAdvancedDialogOpen(false)}
+      />
+
+      {/* 모바일 전용 FAB — 고급 필터 모달 진입 */}
+      {isMobile && (
         <Fab
           color="primary"
-          variant={isFilterFabExtended ? "extended" : "circular"}
-          onClick={handleFilterFabClick}
-          aria-label="필터 열기"
+          onClick={() => setAdvancedDialogOpen(true)}
+          aria-label="고급 필터 열기"
           sx={{
             position: "fixed",
             bottom: 24,
             right: 24,
             zIndex: 1200,
-            ...(isFilterFabExtended && {
-              gap: 1,
-              px: 2.5,
-              animation: "fabPulse 2s ease-in-out 0.5s 2",
-              "@keyframes fabPulse": {
-                "0%, 100%": { boxShadow: "0 0 0 0 rgba(25,118,210,0.4)" },
-                "50%": { boxShadow: "0 0 0 10px rgba(25,118,210,0)" },
-              },
-            }),
           }}
         >
-          {isFilterFabExtended ? (
-            <>
-              <TuneIcon />
-              필터 설정
-            </>
-          ) : (
-            <FilterListIcon />
-          )}
+          <Badge
+            badgeContent={advancedActiveCount}
+            color="error"
+            overlap="circular"
+          >
+            <TuneIcon />
+          </Badge>
         </Fab>
       )}
     </LocalizationProvider>
