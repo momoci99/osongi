@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { RESIZE_DEBOUNCE_MS } from "../../const/Numbers";
 
 type ContainerWidthResult = {
   containerRef: React.RefObject<HTMLDivElement | null>;
@@ -38,20 +39,28 @@ export const useContainerSize = (
       return;
     }
 
-    const resizeObserver = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        const { width, height } = entry.contentRect;
+    let debounceTimer: ReturnType<typeof setTimeout> | undefined;
 
-        setSize({
-          width,
-          height: height || fallbackHeight,
-        });
-      }
+    const resizeObserver = new ResizeObserver((entries) => {
+      const entry = entries[entries.length - 1];
+      const { width, height } = entry.contentRect;
+      const nextHeight = height || fallbackHeight;
+
+      /** 연속 리사이즈를 디바운스해 D3 전체 재구축 빈도를 낮춘다. */
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => {
+        setSize((prev) =>
+          prev.width === width && prev.height === nextHeight
+            ? prev
+            : { width, height: nextHeight }
+        );
+      }, RESIZE_DEBOUNCE_MS);
     });
 
     resizeObserver.observe(container);
 
     return () => {
+      clearTimeout(debounceTimer);
       resizeObserver.disconnect();
     };
   }, [fallbackHeight]);

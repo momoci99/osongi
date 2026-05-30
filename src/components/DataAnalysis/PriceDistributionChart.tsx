@@ -3,7 +3,7 @@ import * as d3 from "d3";
 import { Box, Typography, useTheme } from "@mui/material";
 import type { DistributionBin } from "../../utils/analysisUtils";
 import { GradeKeyToKorean } from "../../const/Common";
-import { useContainerSize } from "../../hooks/useContainerSize";
+import { useContainerSize } from "../../utils/d3/useContainerSize";
 import { createD3Tooltip, removeD3Tooltip } from "../../utils/d3Tooltip";
 import { getGradeColorMap } from "../../utils/chartUtils";
 import { isMobileWidth } from "../../utils/d3/chartMargins";
@@ -29,7 +29,7 @@ const PriceDistributionChart = ({
   height = 280,
 }: PriceDistributionChartProps) => {
   const svgRef = useRef<SVGSVGElement>(null);
-  const [containerRef, { width: containerWidth }] = useContainerSize();
+  const { containerRef, width: containerWidth } = useContainerSize();
   const theme = useTheme();
 
   const gradeColors = useMemo(() => getGradeColorMap(theme), [theme]);

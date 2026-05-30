@@ -9,12 +9,10 @@ import {
   Box,
   useMediaQuery,
 } from "@mui/material";
-import {
-  Brightness4,
-  Brightness7,
-  Menu as MenuIcon,
-  GitHub as GitHubIcon,
-} from "@mui/icons-material";
+import Brightness4 from "@mui/icons-material/Brightness4";
+import Brightness7 from "@mui/icons-material/Brightness7";
+import MenuIcon from "@mui/icons-material/Menu";
+import GitHubIcon from "@mui/icons-material/GitHub";
 
 const GITHUB_REPO_URL = "https://github.com/momoci99/osongi";
 import { useNavigate, useLocation } from "react-router";

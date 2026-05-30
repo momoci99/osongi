@@ -139,3 +139,6 @@ export const TABLE_CONSTANTS = {
   QUANTITY_COLUMN_WIDTH: 80, // 수량 컬럼 너비
   PRICE_COLUMN_WIDTH: 100, // 단가 컬럼 너비
 } as const;
+
+/** 컨테이너 리사이즈 디바운스 지연(ms). 연속 리사이즈 시 D3 재구축 스래싱 완화. */
+export const RESIZE_DEBOUNCE_MS = 100;
