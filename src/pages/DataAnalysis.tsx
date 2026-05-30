@@ -149,7 +149,7 @@ const DataAnalysis = () => {
       return null;
     const prevKPI = calculateKPI(filteredComparisonData, filters.grades);
     return calculateKPIComparison(kpi, prevKPI);
-  }, [kpi, filteredComparisonData, filters]);
+  }, [kpi, filteredComparisonData, filters.grades, filters.comparisonEnabled]);
 
   // 등급별 비중
   const gradeBreakdown = useMemo(
