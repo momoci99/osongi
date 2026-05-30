@@ -1,7 +1,7 @@
 import { TableHead, TableRow, TableCell, useTheme } from "@mui/material";
 import { TABLE_CONSTANTS } from "../../../const/Numbers";
 
-export default function DataTableHeader() {
+const DataTableHeader = () => {
   const theme = useTheme();
 
   return (
@@ -66,4 +66,6 @@ export default function DataTableHeader() {
       </TableRow>
     </TableHead>
   );
-}
+};
+
+export default DataTableHeader;

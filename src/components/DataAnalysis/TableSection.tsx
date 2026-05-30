@@ -20,17 +20,17 @@ import DataTablePagination from "./Table/DataTablePagination";
 import EmptyState from "../common/EmptyState";
 import SectionCard from "../common/SectionCard";
 
-interface TableSectionProps {
+type TableSectionProps = {
   loading: boolean;
   filteredData: MushroomAuctionDataRaw[];
   filters: AnalysisFilters;
-}
+};
 
-export default function TableSection({
+const TableSection = ({
   loading,
   filteredData,
   filters,
-}: TableSectionProps) {
+}: TableSectionProps) => {
   const theme = useTheme();
   const [page, setPage] = useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = useState<number>(
@@ -122,4 +122,6 @@ export default function TableSection({
       )}
     </SectionCard>
   );
-}
+};
+
+export default TableSection;

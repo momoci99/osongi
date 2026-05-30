@@ -12,7 +12,7 @@ import {
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import type { ScatterDatum } from "../../utils/analysisUtils";
 import { GradeKeyToKorean } from "../../const/Common";
-import { useContainerSize } from "../../hooks/useContainerSize";
+import { useContainerSize } from "../../utils/d3/useContainerSize";
 import { isLargeDisplay } from "../../utils/d3/chartMargins";
 import { FONT_SIZES } from "../../const/Numbers";
 import { createD3Tooltip, removeD3Tooltip } from "../../utils/d3Tooltip";
@@ -21,17 +21,17 @@ import { useChartExport } from "../../hooks/useChartExport";
 import EmptyState from "../common/EmptyState";
 import SectionCard from "../common/SectionCard";
 
-interface ScatterPlotChartProps {
+type ScatterPlotChartProps = {
   data: ScatterDatum[];
   height?: number;
-}
+};
 
-export default function ScatterPlotChart({
+const ScatterPlotChart = ({
   data,
   height = 320,
-}: ScatterPlotChartProps) {
+}: ScatterPlotChartProps) => {
   const svgRef = useRef<SVGSVGElement>(null);
-  const [containerRef, { width: containerWidth }] = useContainerSize();
+  const { containerRef, width: containerWidth } = useContainerSize();
   const theme = useTheme();
   const [showTrend, setShowTrend] = useState(false);
   const { exportToPng } = useChartExport(svgRef, theme.palette.background.paper);
@@ -275,4 +275,6 @@ export default function ScatterPlotChart({
       </div>
     </SectionCard>
   );
-}
+};
+
+export default ScatterPlotChart;

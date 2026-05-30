@@ -1,25 +1,24 @@
 import { useEffect, useRef } from "react";
 import { Typography, useTheme } from "@mui/material";
 import * as d3 from "d3";
-import { useContainerSize } from "../../hooks/useContainerSize";
+import { useContainerSize } from "../../utils/d3/useContainerSize";
 import EmptyState from "../common/EmptyState";
 import SectionCard from "../common/SectionCard";
 
-interface RegionData {
+type RegionData = {
   region: string;
   avgPrice: number;
   totalQuantity: number;
-}
+};
 
-interface RegionComparisonSectionProps {
+type RegionComparisonSectionProps = {
   data: RegionData[];
-}
+};
 
-export default function RegionComparisonSection({
-  data,
-}: RegionComparisonSectionProps) {
+const RegionComparisonSection = ({ data }: RegionComparisonSectionProps) => {
   const svgRef = useRef<SVGSVGElement>(null);
-  const [containerRef, { width: containerWidth, height: containerHeight }] = useContainerSize();
+  const { containerRef, width: containerWidth, height: containerHeight } =
+    useContainerSize();
   const theme = useTheme();
 
   useEffect(() => {
@@ -163,4 +162,6 @@ export default function RegionComparisonSection({
       </div>
     </SectionCard>
   );
-}
+};
+
+export default RegionComparisonSection;

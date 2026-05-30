@@ -1,13 +1,13 @@
 import { Box, Typography, CircularProgress } from "@mui/material";
 
-interface EmptyStateProps {
+type EmptyStateProps = {
   loading?: boolean;
   height?: number;
   message?: string;
   subMessage?: string;
-}
+};
 
-export default function EmptyState({ loading = false, height = 160, message, subMessage }: EmptyStateProps) {
+const EmptyState = ({ loading = false, height = 160, message, subMessage }: EmptyStateProps) => {
   if (loading) {
     return (
       <Box
@@ -47,4 +47,6 @@ export default function EmptyState({ loading = false, height = 160, message, sub
       </Typography>
     </Box>
   );
-}
+};
+
+export default EmptyState;

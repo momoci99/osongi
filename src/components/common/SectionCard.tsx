@@ -2,12 +2,12 @@ import { Paper, useTheme } from "@mui/material";
 import type { ReactNode } from "react";
 import type { SxProps, Theme } from "@mui/material/styles";
 
-interface SectionCardProps {
+type SectionCardProps = {
   children: ReactNode;
   sx?: SxProps<Theme>;
-}
+};
 
-export default function SectionCard({ children, sx }: SectionCardProps) {
+const SectionCard = ({ children, sx }: SectionCardProps) => {
   const theme = useTheme();
 
   return (
@@ -23,4 +23,6 @@ export default function SectionCard({ children, sx }: SectionCardProps) {
       {children}
     </Paper>
   );
-}
+};
+
+export default SectionCard;

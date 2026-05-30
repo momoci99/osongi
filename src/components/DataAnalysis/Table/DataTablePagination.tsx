@@ -1,21 +1,21 @@
 import { TablePagination, useTheme } from "@mui/material";
 import { TABLE_CONSTANTS } from "../../../const/Numbers";
 
-interface DataTablePaginationProps {
+type DataTablePaginationProps = {
   count: number;
   page: number;
   rowsPerPage: number;
   onPageChange: (event: unknown, newPage: number) => void;
   onRowsPerPageChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-}
+};
 
-export default function DataTablePagination({
+const DataTablePagination = ({
   count,
   page,
   rowsPerPage,
   onPageChange,
   onRowsPerPageChange,
-}: DataTablePaginationProps) {
+}: DataTablePaginationProps) => {
   const theme = useTheme();
 
   return (
@@ -37,4 +37,6 @@ export default function DataTablePagination({
       }}
     />
   );
-}
+};
+
+export default DataTablePagination;

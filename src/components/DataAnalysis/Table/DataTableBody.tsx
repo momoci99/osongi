@@ -3,11 +3,11 @@ import type { TableRowData } from "../../../utils/tableUtils";
 import { formatNumber, formatPrice } from "../../../utils/tableUtils";
 import { TABLE_CONSTANTS } from "../../../const/Numbers";
 
-interface DataTableBodyProps {
+type DataTableBodyProps = {
   data: TableRowData[];
-}
+};
 
-export default function DataTableBody({ data }: DataTableBodyProps) {
+const DataTableBody = ({ data }: DataTableBodyProps) => {
   const theme = useTheme();
 
   return (
@@ -50,4 +50,6 @@ export default function DataTableBody({ data }: DataTableBodyProps) {
       ))}
     </TableBody>
   );
-}
+};
+
+export default DataTableBody;

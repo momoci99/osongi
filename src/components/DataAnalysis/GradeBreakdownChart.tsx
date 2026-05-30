@@ -12,7 +12,7 @@ import {
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import type { GradeBreakdown } from "../../utils/analysisUtils";
 import { GradeKeyToKorean } from "../../const/Common";
-import { useContainerSize } from "../../hooks/useContainerSize";
+import { useContainerSize } from "../../utils/d3/useContainerSize";
 import { isLargeDisplay, isMobileWidth } from "../../utils/d3/chartMargins";
 import { FONT_SIZES } from "../../const/Numbers";
 import { createD3Tooltip, removeD3Tooltip } from "../../utils/d3Tooltip";
@@ -21,15 +21,13 @@ import { useChartExport } from "../../hooks/useChartExport";
 import EmptyState from "../common/EmptyState";
 import SectionCard from "../common/SectionCard";
 
-interface GradeBreakdownChartProps {
+type GradeBreakdownChartProps = {
   data: GradeBreakdown[];
-}
+};
 
-export default function GradeBreakdownChart({
-  data,
-}: GradeBreakdownChartProps) {
+const GradeBreakdownChart = ({ data }: GradeBreakdownChartProps) => {
   const svgRef = useRef<SVGSVGElement>(null);
-  const [containerRef, { width: containerWidth }] = useContainerSize();
+  const { containerRef, width: containerWidth } = useContainerSize();
   const theme = useTheme();
   const [basis, setBasis] = useState<"quantity" | "amount">("quantity");
   const { exportToPng } = useChartExport(
@@ -279,4 +277,6 @@ export default function GradeBreakdownChart({
       </div>
     </SectionCard>
   );
-}
+};
+
+export default GradeBreakdownChart;
