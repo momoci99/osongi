@@ -3,6 +3,7 @@ import type { WeeklyPriceDatum } from "../../../types/data";
 import {
   getGradeDashPattern,
   getGradeColorArray,
+  getRegionGradeColor,
 } from "../../../utils/chartUtils";
 import type { Theme } from "@mui/material/styles";
 import { MUSHROOM_SEASON, DATE_CONSTANTS } from "../../../const/Numbers";
@@ -106,11 +107,33 @@ export const countUniqueSeries = (data: WeeklyPriceDatum[]): number =>
   new Set(data.map((d) => `${d.region}-${d.gradeKey}`)).size;
 
 /**
+ * 데이터에 2개 이상 지역이 있는지 확인합니다.
+ */
+export const isMultiRegion = (data: WeeklyPriceDatum[]): boolean =>
+  new Set(data.map((d) => d.region).filter(Boolean)).size > 1;
+
+/**
+ * 지역 수에 따라 색상 해석기를 반환합니다.
+ * 다지역: 지역=색조, 등급=명도/채도 / 단일 지역: 기존 등급 색상 유지
+ */
+export const buildColorResolver = (
+  data: WeeklyPriceDatum[],
+  theme: Theme,
+): (region: string, gradeKey: string) => string => {
+  if (isMultiRegion(data)) {
+    const isDark = theme.palette.mode === "dark";
+    return (region, gradeKey) => getRegionGradeColor(region, gradeKey, isDark);
+  }
+  const colorScale = buildColorScale(data, theme);
+  return (_region, gradeKey) => colorScale(gradeKey);
+};
+
+/**
  * 연도 내 데이터를 지역/등급별 시리즈로 변환합니다.
  */
 export const buildYearSeries = (
   yearData: WeeklyPriceDatum[],
-  colorScale: d3.ScaleOrdinal<string, string>,
+  colorResolver: (region: string, gradeKey: string) => string,
 ): AnalysisSeries[] => {
   const seriesMap = new Map<string, AnalysisSeries>();
 
@@ -122,7 +145,7 @@ export const buildYearSeries = (
         region: d.region,
         gradeKey: d.gradeKey,
         data: [],
-        color: colorScale(d.gradeKey),
+        color: colorResolver(d.region, d.gradeKey),
         dashPattern: getGradeDashPattern(d.gradeKey),
       });
     }
@@ -143,7 +166,7 @@ export const buildYearSeries = (
  */
 export const collectLegendItems = (
   yearGroups: Map<number, WeeklyPriceDatum[]>,
-  colorScale: d3.ScaleOrdinal<string, string>,
+  colorResolver: (region: string, gradeKey: string) => string,
 ): LegendItem[] => {
   const itemMap = new Map<string, LegendItem>();
 
@@ -155,7 +178,7 @@ export const collectLegendItems = (
         itemMap.set(key, {
           region: d.region,
           gradeKey: d.gradeKey,
-          color: colorScale(d.gradeKey),
+          color: colorResolver(d.region, d.gradeKey),
           dashPattern: getGradeDashPattern(d.gradeKey),
         });
       }

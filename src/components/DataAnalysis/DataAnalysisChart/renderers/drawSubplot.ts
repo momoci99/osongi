@@ -20,7 +20,7 @@ export type DrawSubplotParams = {
   subplotWidth: number;
   subplotHeight: number;
   globalYScale: d3.ScaleLinear<number, number>;
-  colorScale: d3.ScaleOrdinal<string, string>;
+  colorResolver: (region: string, gradeKey: string) => string;
   yValue: (d: WeeklyPriceDatum) => number;
   mode: ChartMode;
   isMobile: boolean;
@@ -42,7 +42,7 @@ export const drawSubplot = ({
   subplotWidth,
   subplotHeight,
   globalYScale,
-  colorScale,
+  colorResolver,
   yValue,
   mode,
   isMobile,
@@ -115,7 +115,7 @@ export const drawSubplot = ({
       .style("font-size", fontSize.axis);
   }
 
-  const seriesList = buildYearSeries(yearData, colorScale);
+  const seriesList = buildYearSeries(yearData, colorResolver);
   seriesList.forEach((series) => {
     drawSeriesLineAndPoints({
       subplotGroup,

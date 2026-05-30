@@ -3,7 +3,7 @@ import * as d3 from "d3";
 import type { Theme } from "@mui/material/styles";
 import type { WeeklyPriceDatum } from "../../../../types/data";
 import type { MovingAverageDatum } from "../../../../utils/analysis/statistics";
-import { buildColorScale, collectLegendItems } from "../seriesBuilder";
+import { buildColorResolver, collectLegendItems } from "../seriesBuilder";
 import type { ChartMode } from "../seriesBuilder";
 import { drawSubplot } from "./drawSubplot";
 import { drawLegend } from "./drawLegend";
@@ -61,7 +61,7 @@ export const drawSubplotMode = ({
     .domain([0, yExtent[1] * 1.1])
     .range([subplotHeight, 0]);
 
-  const colorScale = buildColorScale(seasonData, theme);
+  const colorResolver = buildColorResolver(seasonData, theme);
 
   const filteredMAData = maData.filter((d) => {
     const month = new Date(d.date).getMonth() + 1;
@@ -83,7 +83,7 @@ export const drawSubplotMode = ({
       subplotWidth,
       subplotHeight,
       globalYScale,
-      colorScale,
+      colorResolver,
       yValue,
       mode,
       isMobile,
@@ -96,7 +96,7 @@ export const drawSubplotMode = ({
     });
   });
 
-  const legendItems = collectLegendItems(yearGroups, colorScale);
+  const legendItems = collectLegendItems(yearGroups, colorResolver);
   const legendTop = margin.top + subplotHeight + margin.bottom + 4;
   const availableWidth = containerWidth - margin.left - margin.right;
 

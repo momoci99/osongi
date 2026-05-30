@@ -9,6 +9,7 @@ import {
   createDataSeries,
   getResponsiveSettings,
   calculateTickInterval,
+  getRegionGradeColor,
 } from "../chartUtils";
 import { createAppTheme } from "../../theme";
 import { createMockWeeklyPriceDatum, SAMPLE_ALL_GRADES } from "./fixtures";
@@ -236,6 +237,45 @@ describe("getResponsiveSettings", () => {
     const result = getResponsiveSettings(1024, true);
     expect(result.isMobile).toBe(true);
     expect(result.margin.left).toBe(CHART_MARGINS.MOBILE.LEFT);
+  });
+});
+
+/** getRegionGradeColor */
+describe("getRegionGradeColor", () => {
+  it("유효한 hex 색상을 반환한다", () => {
+    const color = getRegionGradeColor("강원", "grade1", false);
+    expect(color).toMatch(/^#[0-9a-f]{6}$/i);
+  });
+
+  it("라이트/다크 모드에서 서로 다른 색상을 반환한다", () => {
+    const light = getRegionGradeColor("강원", "grade1", false);
+    const dark = getRegionGradeColor("강원", "grade1", true);
+    expect(light).not.toBe(dark);
+  });
+
+  it("지역이 다르면 색상이 다르다", () => {
+    const gangwon = getRegionGradeColor("강원", "grade1", false);
+    const gyeongbuk = getRegionGradeColor("경북", "grade1", false);
+    const gyeongnam = getRegionGradeColor("경남", "grade1", false);
+    expect(gangwon).not.toBe(gyeongbuk);
+    expect(gyeongbuk).not.toBe(gyeongnam);
+  });
+
+  it("같은 지역 내 등급이 다르면 색상이 다르다", () => {
+    const grade1 = getRegionGradeColor("강원", "grade1", false);
+    const grade2 = getRegionGradeColor("강원", "grade2", false);
+    expect(grade1).not.toBe(grade2);
+  });
+
+  it("미지 지역은 hue=0으로 폴백하여 유효한 색상을 반환한다", () => {
+    const color = getRegionGradeColor("미지역", "grade1", false);
+    expect(color).toMatch(/^#[0-9a-f]{6}$/i);
+  });
+
+  it("미지 등급은 grade1 파라미터로 폴백한다", () => {
+    const expected = getRegionGradeColor("강원", "grade1", false);
+    const fallback = getRegionGradeColor("강원", "unknownGrade", false);
+    expect(fallback).toBe(expected);
   });
 });
 

@@ -21,6 +21,13 @@ export const GRADE_OPTIONS = [
  */
 export const AVAILABLE_REGIONS = ["강원", "경북", "경남"] as const;
 
+/** 지역별 HSL 기본 색조 (단위: degree) */
+export const REGION_BASE_HUES: Record<string, number> = {
+  강원: 210,
+  경북: 28,
+  경남: 270,
+};
+
 /**
  * 지역별 조합 맵
  */

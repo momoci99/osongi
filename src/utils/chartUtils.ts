@@ -1,6 +1,7 @@
+import * as d3 from "d3";
 import type { Theme } from "@mui/material/styles";
 import type { WeeklyPriceDatum } from "../types/data";
-import { 
+import {
   GRADE_DASH_PATTERNS,
   GRADE_COLOR_INDICES,
   CHART_LAYOUT,
@@ -10,6 +11,7 @@ import {
   MUSHROOM_SEASON,
   DATE_CONSTANTS
 } from "../const/Numbers";
+import { REGION_BASE_HUES } from "../const/Common";
 
 // 등급별 대시 패턴 정의
 export const getGradeDashPattern = (gradeKey: string): string => {
@@ -123,6 +125,28 @@ export const getResponsiveSettings = (
       message: isMobile ? FONT_SIZES.MOBILE.MESSAGE : FONT_SIZES.DESKTOP.MESSAGE,
     },
   };
+};
+
+/** 등급별 HSL 명도/채도 파라미터 */
+const GRADE_HSL_PARAMS: Record<string, { s: number; lLight: number; lDark: number }> = {
+  grade1:          { s: 0.80, lLight: 0.30, lDark: 0.68 },
+  grade2:          { s: 0.68, lLight: 0.45, lDark: 0.55 },
+  grade3Stopped:   { s: 0.55, lLight: 0.52, lDark: 0.48 },
+  grade3Estimated: { s: 0.42, lLight: 0.58, lDark: 0.42 },
+  gradeBelow:      { s: 0.30, lLight: 0.62, lDark: 0.38 },
+  mixedGrade:      { s: 0.12, lLight: 0.58, lDark: 0.42 },
+};
+
+/** 다지역 모드: 지역=색조, 등급=명도/채도 조합으로 색상을 계산한다 */
+export const getRegionGradeColor = (
+  region: string,
+  gradeKey: string,
+  isDark: boolean,
+): string => {
+  const hue = REGION_BASE_HUES[region] ?? 0;
+  const params = GRADE_HSL_PARAMS[gradeKey] ?? GRADE_HSL_PARAMS.grade1;
+  const l = isDark ? params.lDark : params.lLight;
+  return d3.hsl(hue, params.s, l).formatHex();
 };
 
 // 적응적 틱 간격 계산
