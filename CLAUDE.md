@@ -27,6 +27,18 @@ npm run test:e2e     # E2E 테스트 (Playwright)
 npm run collect-data # Playwright로 공판 데이터 수집
 ```
 
+## React 컴포넌트 작업 원칙
+
+React 컴포넌트를 새로 작성하거나 리팩터링할 때 `vercel-react-best-practices` 스킬을 활용한다.
+특히 아래 상황에서 적용한다:
+- 번들 최적화 (배럴 임포트, 코드 분할)
+- 리렌더 최소화 (메모, 의존성 배열)
+- 데이터 페칭 패턴
+- D3 차트 리사이즈/성능
+
+단, 이 프로젝트는 **Vite SPA**이므로 `server-*`, Next.js 전용 규칙은 무시한다.
+**React Compiler(`babel-plugin-react-compiler`) 활성** → 수동 `useMemo`/`useCallback` 추가는 명백한 deps 오류가 없는 한 불필요.
+
 ## 규칙
 
 - 파일 생성 전 반드시 상위 디렉토리 구조를 확인한다. 기존 디렉토리 규칙에 맞는 위치에 생성한다. (대안이 있다면 제시한다.)
