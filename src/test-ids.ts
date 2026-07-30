@@ -5,4 +5,5 @@ export const TEST_IDS = {
   GRADE_SELECT: "grade-select",
   COMPARISON_TOGGLE: "comparison-toggle",
   ADVANCED_FILTER_BUTTON: "advanced-filter-button",
+  APP_FOOTER: "app-footer",
 } as const;

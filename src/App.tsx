@@ -10,6 +10,7 @@ import GlobalNavbar from "./components/GlobalNavbar";
 import DataInitializer from "./components/DataInitializer";
 import RegionOnboarding from "./components/RegionOnboarding";
 import ErrorBoundary from "./components/ErrorBoundary";
+import AppFooter from "./components/common/AppFooter";
 import { useSettingsStore } from "./stores/useSettingsStore";
 
 const App = () => {
@@ -34,6 +35,7 @@ const App = () => {
             <Route path="dashboard" element={<Navigate to="/" replace />} />
             <Route path="data-analysis" element={<DataAnalysis />} />
           </Routes>
+          <AppFooter />
         </DataInitializer>
       </ErrorBoundary>
     </ThemeProvider>
