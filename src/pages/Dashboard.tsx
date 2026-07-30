@@ -1,6 +1,8 @@
 import { Box, Container, Grid, Skeleton } from "@mui/material";
 import { useSettingsStore } from "../stores/useSettingsStore";
 import useDashboardManifests from "../hooks/useDashboardManifests";
+import usePageMeta from "../hooks/usePageMeta";
+import { PAGE_META } from "../const/Seo";
 import isInSeason from "../utils/isInSeason";
 import DashboardHeader from "../components/Dashboard/DashboardHeader";
 import RegionBreakdownTable from "../components/Dashboard/RegionBreakdownTable";
@@ -9,6 +11,8 @@ import DashboardCharts from "../components/Dashboard/DashboardCharts";
 import SeasonOffDashboard from "../components/Dashboard/SeasonOffDashboard";
 
 const Dashboard = () => {
+  usePageMeta(PAGE_META.dashboard);
+
   const myRegion = useSettingsStore((s) => s.myRegion);
   const { data, isRefreshing, handleRefresh } = useDashboardManifests();
 

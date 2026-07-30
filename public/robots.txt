@@ -1,4 +1,10 @@
 User-agent: *
 Allow: /
 
+# 원본 데이터 파일은 색인 대상이 아니다.
+# 검색 가치가 없고, 원 저작권자의 데이터를 그대로 담고 있어 노출을 넓힐 이유가 없다.
+# (앱의 클라이언트 요청은 크롤러 규칙과 무관하게 정상 동작한다)
+Disallow: /auction-data/
+Disallow: /auction-stats/
+
 Sitemap: https://osongi.vercel.app/sitemap.xml

@@ -4,6 +4,9 @@
  * 임의로 축소하지 않는다. (docs/planning/data-rights-check.md 참조)
  */
 
+/** 배포 도메인. canonical·OG 절대 URL 생성 기준 */
+export const SITE_URL = "https://osongi.vercel.app";
+
 /** 데이터 원본: 산림조합중앙회 송이 공판 현황 */
 export const DATA_SOURCE = {
   name: "산림조합중앙회 송이 공판 현황",

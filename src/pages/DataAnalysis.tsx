@@ -41,8 +41,12 @@ import TableSection from "../components/DataAnalysis/TableSection";
 import InlineFilterBar from "../components/DataAnalysis/InlineFilterBar";
 import AdvancedFilterDialog from "../components/DataAnalysis/AdvancedFilterDialog";
 import ActiveFilterSummary from "../components/DataAnalysis/Filters/ActiveFilterSummary";
+import usePageMeta from "../hooks/usePageMeta";
+import { PAGE_META } from "../const/Seo";
 
 const DataAnalysis = () => {
+  usePageMeta(PAGE_META.dataAnalysis);
+
   const [rawData, setRawData] = useState<MushroomAuctionDataRaw[]>([]);
   const [comparisonRawData, setComparisonRawData] = useState<
     MushroomAuctionDataRaw[]

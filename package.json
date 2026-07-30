@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc --build --noEmit && vite build",
+    "build": "npm run generate-sitemap && tsc --build --noEmit && vite build",
     "type-check": "tsc --build --noEmit",
     "lint": "eslint .",
     "preview": "vite preview",
@@ -21,7 +21,9 @@
     "test:watch": "vitest --project unit",
     "test:coverage": "vitest run --project unit --coverage",
     "test:e2e": "playwright test",
-    "prepare": "husky"
+    "prepare": "husky",
+    "generate-brand-assets": "tsx scripts/generate-brand-assets.ts",
+    "generate-sitemap": "tsx scripts/generate-sitemap.ts"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",

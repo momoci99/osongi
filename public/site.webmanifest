@@ -1,18 +1,37 @@
 {
-  "name": "오송이",
+  "name": "오송이 | 송이버섯 공판 시세",
   "short_name": "오송이",
   "description": "대한민국 송이버섯 공판 시세 대시보드 및 데이터 분석 서비스",
   "lang": "ko-KR",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
-  "background_color": "#f6f1e8",
-  "theme_color": "#8b5a2b",
+  "background_color": "#FAFAF9",
+  "theme_color": "#166534",
   "icons": [
     {
       "src": "/favicon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any"
+    },
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }
