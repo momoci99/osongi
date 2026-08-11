@@ -1,5 +1,8 @@
 import { Box, Container, Divider, Link, Stack, Typography } from "@mui/material";
+import { Link as RouterLink } from "react-router";
 import { TEST_IDS } from "../../test-ids";
+import { AVAILABLE_REGIONS } from "../../const/Common";
+import { REGION_ROUTE_PREFIX, regionPath } from "../../const/Regions";
 import {
   CODE_LICENSE,
   CONTACT_EMAIL,
@@ -51,6 +54,41 @@ const AppFooter = () => {
             <Typography variant="caption" sx={{ color: "text.secondary" }}>
               {UPDATE_CYCLE_NOTICE}
             </Typography>
+          </Stack>
+
+          <Divider flexItem />
+
+          {/** 지역 페이지로 가는 링크를 전 페이지에 두어 크롤러 순회 경로를 만든다 */}
+          <Stack spacing={0.75}>
+            <Typography
+              variant="overline"
+              sx={{ color: "text.secondary", letterSpacing: "0.08em" }}
+            >
+              지역별 시세
+            </Typography>
+            <Stack direction="row" spacing={2} useFlexGap sx={{ flexWrap: "wrap" }}>
+              {AVAILABLE_REGIONS.map((region) => (
+                <Link
+                  key={region}
+                  component={RouterLink}
+                  to={regionPath(region)}
+                  underline="hover"
+                  variant="body2"
+                  sx={{ color: "text.secondary" }}
+                >
+                  {region} 송이 시세
+                </Link>
+              ))}
+              <Link
+                component={RouterLink}
+                to={REGION_ROUTE_PREFIX}
+                underline="hover"
+                variant="body2"
+                sx={{ color: "text.secondary", fontWeight: 600 }}
+              >
+                전체 조합 보기
+              </Link>
+            </Stack>
           </Stack>
 
           <Divider flexItem />

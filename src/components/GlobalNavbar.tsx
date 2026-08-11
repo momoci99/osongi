@@ -26,6 +26,7 @@ import MobileDrawer from "./Navbar/MobileDrawer";
 
 const NAV_ITEMS = [
   { label: "대시보드", path: "/" },
+  { label: "지역별 시세", path: "/region" },
   { label: "데이터 분석", path: "/data-analysis" },
 ];
 

@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "npm run generate-sitemap && tsc --build --noEmit && vite build",
+    "build": "npm run generate-region-stats && npm run generate-sitemap && tsc --build --noEmit && vite build && npm run prerender",
     "type-check": "tsc --build --noEmit",
     "lint": "eslint .",
     "preview": "vite preview",
@@ -23,7 +23,9 @@
     "test:e2e": "playwright test",
     "prepare": "husky",
     "generate-brand-assets": "tsx scripts/generate-brand-assets.ts",
-    "generate-sitemap": "tsx scripts/generate-sitemap.ts"
+    "generate-sitemap": "tsx scripts/generate-sitemap.ts",
+    "generate-region-stats": "tsx scripts/generate-region-stats.ts",
+    "prerender": "tsx scripts/prerender-scope-pages.ts"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",

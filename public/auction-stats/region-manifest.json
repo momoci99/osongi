@@ -1,0 +1,3026 @@
+{
+  "generatedAt": "2026-08-11T14:04:57.853Z",
+  "latestDate": "2025-11-12",
+  "latestSeasonYear": 2025,
+  "regions": {
+    "강원": {
+      "name": "강원",
+      "region": "강원",
+      "latestSeasonYear": 2025,
+      "season": {
+        "startDate": "2025-09-22",
+        "endDate": "2025-11-12",
+        "totalQuantityKg": 31659.53,
+        "totalAmountWon": 7452348106,
+        "avgPricePerKg": 235390
+      },
+      "grades": [
+        {
+          "gradeKey": "grade1",
+          "quantityKg": 1078.35,
+          "avgUnitPriceWon": 603598
+        },
+        {
+          "gradeKey": "grade2",
+          "quantityKg": 1794.46,
+          "avgUnitPriceWon": 411264
+        },
+        {
+          "gradeKey": "grade3Stopped",
+          "quantityKg": 4913.83,
+          "avgUnitPriceWon": 285309
+        },
+        {
+          "gradeKey": "grade3Estimated",
+          "quantityKg": 8569.38,
+          "avgUnitPriceWon": 250189
+        },
+        {
+          "gradeKey": "gradeBelow",
+          "quantityKg": 14972.97,
+          "avgUnitPriceWon": 165679
+        },
+        {
+          "gradeKey": "mixedGrade",
+          "quantityKg": 330.54,
+          "avgUnitPriceWon": 111399
+        }
+      ],
+      "yearly": [
+        {
+          "year": 2013,
+          "totalQuantityKg": 9007.72,
+          "totalAmountWon": 1978930347,
+          "avgPricePerKg": 219693
+        },
+        {
+          "year": 2014,
+          "totalQuantityKg": 13023.4,
+          "totalAmountWon": 2284474691,
+          "avgPricePerKg": 175413
+        },
+        {
+          "year": 2015,
+          "totalQuantityKg": 16576.22,
+          "totalAmountWon": 3306698556,
+          "avgPricePerKg": 199484
+        },
+        {
+          "year": 2016,
+          "totalQuantityKg": 33964.25,
+          "totalAmountWon": 4619720338,
+          "avgPricePerKg": 136017
+        },
+        {
+          "year": 2017,
+          "totalQuantityKg": 13874.16,
+          "totalAmountWon": 2793996773,
+          "avgPricePerKg": 201381
+        },
+        {
+          "year": 2018,
+          "totalQuantityKg": 30530.87,
+          "totalAmountWon": 5238092446,
+          "avgPricePerKg": 171567
+        },
+        {
+          "year": 2019,
+          "totalQuantityKg": 27983.91,
+          "totalAmountWon": 5354173586,
+          "avgPricePerKg": 191330
+        },
+        {
+          "year": 2020,
+          "totalQuantityKg": 31301.08,
+          "totalAmountWon": 5409324566,
+          "avgPricePerKg": 172816
+        },
+        {
+          "year": 2021,
+          "totalQuantityKg": 12145.16,
+          "totalAmountWon": 3345792827,
+          "avgPricePerKg": 275484
+        },
+        {
+          "year": 2022,
+          "totalQuantityKg": 20760.42,
+          "totalAmountWon": 4856065029,
+          "avgPricePerKg": 233910
+        },
+        {
+          "year": 2023,
+          "totalQuantityKg": 23432.66,
+          "totalAmountWon": 5746832890,
+          "avgPricePerKg": 245249
+        },
+        {
+          "year": 2024,
+          "totalQuantityKg": 29298.95,
+          "totalAmountWon": 7605140367,
+          "avgPricePerKg": 259570
+        },
+        {
+          "year": 2025,
+          "totalQuantityKg": 31659.53,
+          "totalAmountWon": 7452348106,
+          "avgPricePerKg": 235390
+        }
+      ],
+      "peak": {
+        "date": "2025-10-03",
+        "gradeKey": "grade1",
+        "priceWon": 1611200
+      },
+      "latestDaily": {
+        "date": "2025-11-12",
+        "totalQuantityKg": 0,
+        "grades": []
+      },
+      "unions": [
+        "홍천",
+        "양구",
+        "인제",
+        "고성",
+        "양양",
+        "강릉",
+        "삼척"
+      ]
+    },
+    "경북": {
+      "name": "경북",
+      "region": "경북",
+      "latestSeasonYear": 2025,
+      "season": {
+        "startDate": "2025-09-29",
+        "endDate": "2025-11-12",
+        "totalQuantityKg": 80372.63,
+        "totalAmountWon": 15132251588,
+        "avgPricePerKg": 188276
+      },
+      "grades": [
+        {
+          "gradeKey": "grade1",
+          "quantityKg": 1741.08,
+          "avgUnitPriceWon": 420317
+        },
+        {
+          "gradeKey": "grade2",
+          "quantityKg": 4226.3,
+          "avgUnitPriceWon": 332871
+        },
+        {
+          "gradeKey": "grade3Stopped",
+          "quantityKg": 6271.66,
+          "avgUnitPriceWon": 264208
+        },
+        {
+          "gradeKey": "grade3Estimated",
+          "quantityKg": 26068.94,
+          "avgUnitPriceWon": 213154
+        },
+        {
+          "gradeKey": "gradeBelow",
+          "quantityKg": 35979.28,
+          "avgUnitPriceWon": 145179
+        },
+        {
+          "gradeKey": "mixedGrade",
+          "quantityKg": 6085.37,
+          "avgUnitPriceWon": 91446
+        }
+      ],
+      "yearly": [
+        {
+          "year": 2013,
+          "totalQuantityKg": 50182.64,
+          "totalAmountWon": 9456691125,
+          "avgPricePerKg": 188445
+        },
+        {
+          "year": 2014,
+          "totalQuantityKg": 78124,
+          "totalAmountWon": 12491756511,
+          "avgPricePerKg": 159897
+        },
+        {
+          "year": 2015,
+          "totalQuantityKg": 65917.75,
+          "totalAmountWon": 11418386616,
+          "avgPricePerKg": 173222
+        },
+        {
+          "year": 2016,
+          "totalQuantityKg": 223706.64,
+          "totalAmountWon": 22319407079,
+          "avgPricePerKg": 99771
+        },
+        {
+          "year": 2017,
+          "totalQuantityKg": 63333.18,
+          "totalAmountWon": 14096985350,
+          "avgPricePerKg": 222585
+        },
+        {
+          "year": 2018,
+          "totalQuantityKg": 135896.84,
+          "totalAmountWon": 19062736721,
+          "avgPricePerKg": 140274
+        },
+        {
+          "year": 2019,
+          "totalQuantityKg": 77194.97,
+          "totalAmountWon": 12865591621,
+          "avgPricePerKg": 166664
+        },
+        {
+          "year": 2020,
+          "totalQuantityKg": 81444.65,
+          "totalAmountWon": 11480115615,
+          "avgPricePerKg": 140956
+        },
+        {
+          "year": 2021,
+          "totalQuantityKg": 86252.8,
+          "totalAmountWon": 18208401924,
+          "avgPricePerKg": 211105
+        },
+        {
+          "year": 2022,
+          "totalQuantityKg": 39647.08,
+          "totalAmountWon": 9759947983,
+          "avgPricePerKg": 246171
+        },
+        {
+          "year": 2023,
+          "totalQuantityKg": 120229.45,
+          "totalAmountWon": 20950599488,
+          "avgPricePerKg": 174255
+        },
+        {
+          "year": 2024,
+          "totalQuantityKg": 35692.47,
+          "totalAmountWon": 7747500961,
+          "avgPricePerKg": 217063
+        },
+        {
+          "year": 2025,
+          "totalQuantityKg": 80372.63,
+          "totalAmountWon": 15132251588,
+          "avgPricePerKg": 188276
+        }
+      ],
+      "peak": {
+        "date": "2025-10-03",
+        "gradeKey": "grade1",
+        "priceWon": 1100000
+      },
+      "latestDaily": {
+        "date": "2025-11-12",
+        "totalQuantityKg": 0,
+        "grades": []
+      },
+      "unions": [
+        "의성",
+        "안동",
+        "청송",
+        "영덕",
+        "포항",
+        "청도",
+        "상주",
+        "문경",
+        "예천",
+        "영주",
+        "봉화",
+        "울진",
+        "영천"
+      ]
+    },
+    "경남": {
+      "name": "경남",
+      "region": "경남",
+      "latestSeasonYear": 2025,
+      "season": {
+        "startDate": "2025-09-29",
+        "endDate": "2025-11-12",
+        "totalQuantityKg": 9521.54,
+        "totalAmountWon": 1845892426,
+        "avgPricePerKg": 193865
+      },
+      "grades": [
+        {
+          "gradeKey": "grade1",
+          "quantityKg": 243.84,
+          "avgUnitPriceWon": 466269
+        },
+        {
+          "gradeKey": "grade2",
+          "quantityKg": 320.78,
+          "avgUnitPriceWon": 365647
+        },
+        {
+          "gradeKey": "grade3Stopped",
+          "quantityKg": 1068.82,
+          "avgUnitPriceWon": 266286
+        },
+        {
+          "gradeKey": "grade3Estimated",
+          "quantityKg": 3280.7,
+          "avgUnitPriceWon": 181125
+        },
+        {
+          "gradeKey": "gradeBelow",
+          "quantityKg": 2316.5,
+          "avgUnitPriceWon": 202706
+        },
+        {
+          "gradeKey": "mixedGrade",
+          "quantityKg": 2290.9,
+          "avgUnitPriceWon": 116332
+        }
+      ],
+      "yearly": [
+        {
+          "year": 2013,
+          "totalQuantityKg": 1580.25,
+          "totalAmountWon": 345687474,
+          "avgPricePerKg": 218755
+        },
+        {
+          "year": 2014,
+          "totalQuantityKg": 1148.9,
+          "totalAmountWon": 181583117,
+          "avgPricePerKg": 158050
+        },
+        {
+          "year": 2015,
+          "totalQuantityKg": 2719.51,
+          "totalAmountWon": 497213185,
+          "avgPricePerKg": 182832
+        },
+        {
+          "year": 2016,
+          "totalQuantityKg": 8057.05,
+          "totalAmountWon": 915394590,
+          "avgPricePerKg": 113614
+        },
+        {
+          "year": 2017,
+          "totalQuantityKg": 2926.8,
+          "totalAmountWon": 683518171,
+          "avgPricePerKg": 233538
+        },
+        {
+          "year": 2018,
+          "totalQuantityKg": 6495.7,
+          "totalAmountWon": 955954109,
+          "avgPricePerKg": 147167
+        },
+        {
+          "year": 2019,
+          "totalQuantityKg": 5821.43,
+          "totalAmountWon": 1024694236,
+          "avgPricePerKg": 176021
+        },
+        {
+          "year": 2020,
+          "totalQuantityKg": 5250.16,
+          "totalAmountWon": 851507324,
+          "avgPricePerKg": 162187
+        },
+        {
+          "year": 2021,
+          "totalQuantityKg": 3795.15,
+          "totalAmountWon": 1022012000,
+          "avgPricePerKg": 269294
+        },
+        {
+          "year": 2022,
+          "totalQuantityKg": 2620.25,
+          "totalAmountWon": 609322611,
+          "avgPricePerKg": 232544
+        },
+        {
+          "year": 2023,
+          "totalQuantityKg": 9771.46,
+          "totalAmountWon": 2367977024,
+          "avgPricePerKg": 242336
+        },
+        {
+          "year": 2024,
+          "totalQuantityKg": 4182.65,
+          "totalAmountWon": 910688477,
+          "avgPricePerKg": 217730
+        },
+        {
+          "year": 2025,
+          "totalQuantityKg": 9521.54,
+          "totalAmountWon": 1845892426,
+          "avgPricePerKg": 193865
+        }
+      ],
+      "peak": {
+        "date": "2025-10-02",
+        "gradeKey": "grade1",
+        "priceWon": 740000
+      },
+      "latestDaily": {
+        "date": "2025-11-12",
+        "totalQuantityKg": 0,
+        "grades": []
+      },
+      "unions": [
+        "거창"
+      ]
+    }
+  },
+  "unions": {
+    "홍천": {
+      "name": "홍천",
+      "region": "강원",
+      "latestSeasonYear": 2025,
+      "season": {
+        "startDate": "2025-09-25",
+        "endDate": "2025-11-12",
+        "totalQuantityKg": 4888.34,
+        "totalAmountWon": 1155117746,
+        "avgPricePerKg": 236301
+      },
+      "grades": [
+        {
+          "gradeKey": "grade1",
+          "quantityKg": 71.64,
+          "avgUnitPriceWon": 661207
+        },
+        {
+          "gradeKey": "grade2",
+          "quantityKg": 195.53,
+          "avgUnitPriceWon": 441222
+        },
+        {
+          "gradeKey": "grade3Stopped",
+          "quantityKg": 1024.52,
+          "avgUnitPriceWon": 256084
+        },
+        {
+          "gradeKey": "grade3Estimated",
+          "quantityKg": 1742.92,
+          "avgUnitPriceWon": 253902
+        },
+        {
+          "gradeKey": "gradeBelow",
+          "quantityKg": 1853.73,
+          "avgUnitPriceWon": 170781
+        }
+      ],
+      "yearly": [
+        {
+          "year": 2013,
+          "totalQuantityKg": 472.3,
+          "totalAmountWon": 110827875,
+          "avgPricePerKg": 234656
+        },
+        {
+          "year": 2014,
+          "totalQuantityKg": 123.77,
+          "totalAmountWon": 15647300,
+          "avgPricePerKg": 126422
+        },
+        {
+          "year": 2015,
+          "totalQuantityKg": 136.41,
+          "totalAmountWon": 26173625,
+          "avgPricePerKg": 191875
+        },
+        {
+          "year": 2016,
+          "totalQuantityKg": 556.8,
+          "totalAmountWon": 76098875,
+          "avgPricePerKg": 136672
+        },
+        {
+          "year": 2017,
+          "totalQuantityKg": 3550.25,
+          "totalAmountWon": 696155540,
+          "avgPricePerKg": 196086
+        },
+        {
+          "year": 2018,
+          "totalQuantityKg": 2012.1,
+          "totalAmountWon": 306404085,
+          "avgPricePerKg": 152281
+        },
+        {
+          "year": 2019,
+          "totalQuantityKg": 3797.1,
+          "totalAmountWon": 661604580,
+          "avgPricePerKg": 174239
+        },
+        {
+          "year": 2020,
+          "totalQuantityKg": 5323.85,
+          "totalAmountWon": 803183787,
+          "avgPricePerKg": 150865
+        },
+        {
+          "year": 2022,
+          "totalQuantityKg": 3463.84,
+          "totalAmountWon": 687208820,
+          "avgPricePerKg": 198395
+        },
+        {
+          "year": 2023,
+          "totalQuantityKg": 3423.8,
+          "totalAmountWon": 715621705,
+          "avgPricePerKg": 209014
+        },
+        {
+          "year": 2024,
+          "totalQuantityKg": 1068.1,
+          "totalAmountWon": 263597310,
+          "avgPricePerKg": 246791
+        },
+        {
+          "year": 2025,
+          "totalQuantityKg": 4888.34,
+          "totalAmountWon": 1155117746,
+          "avgPricePerKg": 236301
+        }
+      ],
+      "peak": {
+        "date": "2025-09-27",
+        "gradeKey": "grade1",
+        "priceWon": 851900
+      },
+      "latestDaily": {
+        "date": "2025-11-12",
+        "totalQuantityKg": 0,
+        "grades": []
+      },
+      "quantityRank": {
+        "rank": 10,
+        "of": 20
+      }
+    },
+    "양구": {
+      "name": "양구",
+      "region": "강원",
+      "latestSeasonYear": 2025,
+      "season": {
+        "startDate": "2025-09-22",
+        "endDate": "2025-11-12",
+        "totalQuantityKg": 2694,
+        "totalAmountWon": 594201987,
+        "avgPricePerKg": 220565
+      },
+      "grades": [
+        {
+          "gradeKey": "grade1",
+          "quantityKg": 20.42,
+          "avgUnitPriceWon": 545882
+        },
+        {
+          "gradeKey": "grade2",
+          "quantityKg": 53.51,
+          "avgUnitPriceWon": 466154
+        },
+        {
+          "gradeKey": "grade3Stopped",
+          "quantityKg": 431.7,
+          "avgUnitPriceWon": 292508
+        },
+        {
+          "gradeKey": "grade3Estimated",
+          "quantityKg": 651.38,
+          "avgUnitPriceWon": 256251
+        },
+        {
+          "gradeKey": "gradeBelow",
+          "quantityKg": 1536.99,
+          "avgUnitPriceWon": 172362
+        }
+      ],
+      "yearly": [
+        {
+          "year": 2013,
+          "totalQuantityKg": 585.39,
+          "totalAmountWon": 123932969,
+          "avgPricePerKg": 211710
+        },
+        {
+          "year": 2014,
+          "totalQuantityKg": 97.75,
+          "totalAmountWon": 15500102,
+          "avgPricePerKg": 158569
+        },
+        {
+          "year": 2015,
+          "totalQuantityKg": 78.99,
+          "totalAmountWon": 12239812,
+          "avgPricePerKg": 154954
+        },
+        {
+          "year": 2016,
+          "totalQuantityKg": 385.04,
+          "totalAmountWon": 51838671,
+          "avgPricePerKg": 134632
+        },
+        {
+          "year": 2017,
+          "totalQuantityKg": 2068.56,
+          "totalAmountWon": 359453379,
+          "avgPricePerKg": 173770
+        },
+        {
+          "year": 2019,
+          "totalQuantityKg": 1780.39,
+          "totalAmountWon": 280452526,
+          "avgPricePerKg": 157523
+        },
+        {
+          "year": 2020,
+          "totalQuantityKg": 1011.35,
+          "totalAmountWon": 115950931,
+          "avgPricePerKg": 114650
+        },
+        {
+          "year": 2022,
+          "totalQuantityKg": 1295.71,
+          "totalAmountWon": 232317615,
+          "avgPricePerKg": 179298
+        },
+        {
+          "year": 2023,
+          "totalQuantityKg": 580.58,
+          "totalAmountWon": 121896340,
+          "avgPricePerKg": 209956
+        },
+        {
+          "year": 2024,
+          "totalQuantityKg": 434.35,
+          "totalAmountWon": 95681950,
+          "avgPricePerKg": 220288
+        },
+        {
+          "year": 2025,
+          "totalQuantityKg": 2694,
+          "totalAmountWon": 594201987,
+          "avgPricePerKg": 220565
+        }
+      ],
+      "peak": {
+        "date": "2025-09-24",
+        "gradeKey": "grade1",
+        "priceWon": 1110000
+      },
+      "latestDaily": {
+        "date": "2025-11-12",
+        "totalQuantityKg": 0,
+        "grades": []
+      },
+      "quantityRank": {
+        "rank": 17,
+        "of": 20
+      }
+    },
+    "인제": {
+      "name": "인제",
+      "region": "강원",
+      "latestSeasonYear": 2025,
+      "season": {
+        "startDate": "2025-09-22",
+        "endDate": "2025-11-12",
+        "totalQuantityKg": 8550.57,
+        "totalAmountWon": 1976732133,
+        "avgPricePerKg": 231181
+      },
+      "grades": [
+        {
+          "gradeKey": "grade1",
+          "quantityKg": 375.78,
+          "avgUnitPriceWon": 618968
+        },
+        {
+          "gradeKey": "grade2",
+          "quantityKg": 719.99,
+          "avgUnitPriceWon": 400220
+        },
+        {
+          "gradeKey": "grade3Stopped",
+          "quantityKg": 1593.11,
+          "avgUnitPriceWon": 283297
+        },
+        {
+          "gradeKey": "grade3Estimated",
+          "quantityKg": 1976.69,
+          "avgUnitPriceWon": 233955
+        },
+        {
+          "gradeKey": "gradeBelow",
+          "quantityKg": 3885,
+          "avgUnitPriceWon": 139563
+        }
+      ],
+      "yearly": [
+        {
+          "year": 2013,
+          "totalQuantityKg": 1601.8,
+          "totalAmountWon": 372368846,
+          "avgPricePerKg": 232469
+        },
+        {
+          "year": 2014,
+          "totalQuantityKg": 358,
+          "totalAmountWon": 52311624,
+          "avgPricePerKg": 146122
+        },
+        {
+          "year": 2015,
+          "totalQuantityKg": 1906.96,
+          "totalAmountWon": 424799280,
+          "avgPricePerKg": 222763
+        },
+        {
+          "year": 2016,
+          "totalQuantityKg": 873.21,
+          "totalAmountWon": 114342267,
+          "avgPricePerKg": 130945
+        },
+        {
+          "year": 2017,
+          "totalQuantityKg": 5216.62,
+          "totalAmountWon": 960398789,
+          "avgPricePerKg": 184104
+        },
+        {
+          "year": 2018,
+          "totalQuantityKg": 901.32,
+          "totalAmountWon": 145078732,
+          "avgPricePerKg": 160963
+        },
+        {
+          "year": 2019,
+          "totalQuantityKg": 3953.74,
+          "totalAmountWon": 828294062,
+          "avgPricePerKg": 209496
+        },
+        {
+          "year": 2020,
+          "totalQuantityKg": 5893.56,
+          "totalAmountWon": 1097417641,
+          "avgPricePerKg": 186206
+        },
+        {
+          "year": 2021,
+          "totalQuantityKg": 858.14,
+          "totalAmountWon": 220779480,
+          "avgPricePerKg": 257277
+        },
+        {
+          "year": 2022,
+          "totalQuantityKg": 4112.36,
+          "totalAmountWon": 840979040,
+          "avgPricePerKg": 204500
+        },
+        {
+          "year": 2023,
+          "totalQuantityKg": 1571.08,
+          "totalAmountWon": 476082482,
+          "avgPricePerKg": 303029
+        },
+        {
+          "year": 2024,
+          "totalQuantityKg": 1550.76,
+          "totalAmountWon": 375904904,
+          "avgPricePerKg": 242400
+        },
+        {
+          "year": 2025,
+          "totalQuantityKg": 8550.57,
+          "totalAmountWon": 1976732133,
+          "avgPricePerKg": 231181
+        }
+      ],
+      "peak": {
+        "date": "2025-09-23",
+        "gradeKey": "grade1",
+        "priceWon": 1150000
+      },
+      "latestDaily": {
+        "date": "2025-11-12",
+        "totalQuantityKg": 0,
+        "grades": []
+      },
+      "quantityRank": {
+        "rank": 4,
+        "of": 20
+      }
+    },
+    "고성": {
+      "name": "고성",
+      "region": "강원",
+      "latestSeasonYear": 2025,
+      "season": {
+        "startDate": "2025-09-26",
+        "endDate": "2025-11-12",
+        "totalQuantityKg": 3897.22,
+        "totalAmountWon": 816659625,
+        "avgPricePerKg": 209549
+      },
+      "grades": [
+        {
+          "gradeKey": "grade1",
+          "quantityKg": 65.22,
+          "avgUnitPriceWon": 492067
+        },
+        {
+          "gradeKey": "grade2",
+          "quantityKg": 164.9,
+          "avgUnitPriceWon": 399460
+        },
+        {
+          "gradeKey": "grade3Stopped",
+          "quantityKg": 389.58,
+          "avgUnitPriceWon": 294958
+        },
+        {
+          "gradeKey": "grade3Estimated",
+          "quantityKg": 1047.46,
+          "avgUnitPriceWon": 230998
+        },
+        {
+          "gradeKey": "gradeBelow",
+          "quantityKg": 1967.35,
+          "avgUnitPriceWon": 170716
+        },
+        {
+          "gradeKey": "mixedGrade",
+          "quantityKg": 262.71,
+          "avgUnitPriceWon": 98837
+        }
+      ],
+      "yearly": [
+        {
+          "year": 2013,
+          "totalQuantityKg": 817.69,
+          "totalAmountWon": 195777180,
+          "avgPricePerKg": 239427
+        },
+        {
+          "year": 2014,
+          "totalQuantityKg": 906.24,
+          "totalAmountWon": 184924057,
+          "avgPricePerKg": 204056
+        },
+        {
+          "year": 2015,
+          "totalQuantityKg": 1980.8,
+          "totalAmountWon": 382184665,
+          "avgPricePerKg": 192945
+        },
+        {
+          "year": 2016,
+          "totalQuantityKg": 3515.37,
+          "totalAmountWon": 514597860,
+          "avgPricePerKg": 146385
+        },
+        {
+          "year": 2017,
+          "totalQuantityKg": 156.34,
+          "totalAmountWon": 30615636,
+          "avgPricePerKg": 195827
+        },
+        {
+          "year": 2018,
+          "totalQuantityKg": 3489.88,
+          "totalAmountWon": 626691745,
+          "avgPricePerKg": 179574
+        },
+        {
+          "year": 2019,
+          "totalQuantityKg": 4014.42,
+          "totalAmountWon": 768742664,
+          "avgPricePerKg": 191495
+        },
+        {
+          "year": 2020,
+          "totalQuantityKg": 4175.66,
+          "totalAmountWon": 698946279,
+          "avgPricePerKg": 167386
+        },
+        {
+          "year": 2021,
+          "totalQuantityKg": 1856.5,
+          "totalAmountWon": 531909499,
+          "avgPricePerKg": 286512
+        },
+        {
+          "year": 2022,
+          "totalQuantityKg": 2318.28,
+          "totalAmountWon": 580017755,
+          "avgPricePerKg": 250193
+        },
+        {
+          "year": 2023,
+          "totalQuantityKg": 2658.08,
+          "totalAmountWon": 685079925,
+          "avgPricePerKg": 257735
+        },
+        {
+          "year": 2024,
+          "totalQuantityKg": 2847.66,
+          "totalAmountWon": 911529136,
+          "avgPricePerKg": 320098
+        },
+        {
+          "year": 2025,
+          "totalQuantityKg": 3897.22,
+          "totalAmountWon": 816659625,
+          "avgPricePerKg": 209549
+        }
+      ],
+      "peak": {
+        "date": "2025-09-27",
+        "gradeKey": "grade1",
+        "priceWon": 947900
+      },
+      "latestDaily": {
+        "date": "2025-11-12",
+        "totalQuantityKg": 0,
+        "grades": []
+      },
+      "quantityRank": {
+        "rank": 12,
+        "of": 20
+      }
+    },
+    "양양": {
+      "name": "양양",
+      "region": "강원",
+      "latestSeasonYear": 2025,
+      "season": {
+        "startDate": "2025-09-27",
+        "endDate": "2025-11-12",
+        "totalQuantityKg": 5885.27,
+        "totalAmountWon": 1620513259,
+        "avgPricePerKg": 275351
+      },
+      "grades": [
+        {
+          "gradeKey": "grade1",
+          "quantityKg": 351.19,
+          "avgUnitPriceWon": 696343
+        },
+        {
+          "gradeKey": "grade2",
+          "quantityKg": 298,
+          "avgUnitPriceWon": 462123
+        },
+        {
+          "gradeKey": "grade3Stopped",
+          "quantityKg": 643.09,
+          "avgUnitPriceWon": 351166
+        },
+        {
+          "gradeKey": "grade3Estimated",
+          "quantityKg": 1358.53,
+          "avgUnitPriceWon": 292893
+        },
+        {
+          "gradeKey": "gradeBelow",
+          "quantityKg": 3234.46,
+          "avgUnitPriceWon": 189990
+        }
+      ],
+      "yearly": [
+        {
+          "year": 2013,
+          "totalQuantityKg": 200.15,
+          "totalAmountWon": 32684829,
+          "avgPricePerKg": 163302
+        },
+        {
+          "year": 2014,
+          "totalQuantityKg": 1386.81,
+          "totalAmountWon": 295024330,
+          "avgPricePerKg": 212736
+        },
+        {
+          "year": 2015,
+          "totalQuantityKg": 5598.75,
+          "totalAmountWon": 1225918114,
+          "avgPricePerKg": 218963
+        },
+        {
+          "year": 2016,
+          "totalQuantityKg": 9311.34,
+          "totalAmountWon": 1536264987,
+          "avgPricePerKg": 164989
+        },
+        {
+          "year": 2017,
+          "totalQuantityKg": 1371.85,
+          "totalAmountWon": 392450951,
+          "avgPricePerKg": 286074
+        },
+        {
+          "year": 2018,
+          "totalQuantityKg": 10698.3,
+          "totalAmountWon": 2071677806,
+          "avgPricePerKg": 193646
+        },
+        {
+          "year": 2019,
+          "totalQuantityKg": 7605.69,
+          "totalAmountWon": 1641926377,
+          "avgPricePerKg": 215881
+        },
+        {
+          "year": 2020,
+          "totalQuantityKg": 7943.15,
+          "totalAmountWon": 1599773575,
+          "avgPricePerKg": 201403
+        },
+        {
+          "year": 2021,
+          "totalQuantityKg": 2948.24,
+          "totalAmountWon": 982321843,
+          "avgPricePerKg": 333189
+        },
+        {
+          "year": 2022,
+          "totalQuantityKg": 4734.28,
+          "totalAmountWon": 1377366679,
+          "avgPricePerKg": 290935
+        },
+        {
+          "year": 2023,
+          "totalQuantityKg": 5322.6,
+          "totalAmountWon": 1862765347,
+          "avgPricePerKg": 349973
+        },
+        {
+          "year": 2024,
+          "totalQuantityKg": 5729.03,
+          "totalAmountWon": 1956209000,
+          "avgPricePerKg": 341456
+        },
+        {
+          "year": 2025,
+          "totalQuantityKg": 5885.27,
+          "totalAmountWon": 1620513259,
+          "avgPricePerKg": 275351
+        }
+      ],
+      "peak": {
+        "date": "2025-10-03",
+        "gradeKey": "grade1",
+        "priceWon": 1611200
+      },
+      "latestDaily": {
+        "date": "2025-11-12",
+        "totalQuantityKg": 0,
+        "grades": []
+      },
+      "quantityRank": {
+        "rank": 9,
+        "of": 20
+      }
+    },
+    "강릉": {
+      "name": "강릉",
+      "region": "강원",
+      "latestSeasonYear": 2025,
+      "season": {
+        "startDate": "2025-09-29",
+        "endDate": "2025-11-12",
+        "totalQuantityKg": 2124.92,
+        "totalAmountWon": 471846344,
+        "avgPricePerKg": 222054
+      },
+      "grades": [
+        {
+          "gradeKey": "grade1",
+          "quantityKg": 111.66,
+          "avgUnitPriceWon": 411808
+        },
+        {
+          "gradeKey": "grade2",
+          "quantityKg": 146.74,
+          "avgUnitPriceWon": 367416
+        },
+        {
+          "gradeKey": "grade3Stopped",
+          "quantityKg": 179.63,
+          "avgUnitPriceWon": 271378
+        },
+        {
+          "gradeKey": "grade3Estimated",
+          "quantityKg": 588.99,
+          "avgUnitPriceWon": 228067
+        },
+        {
+          "gradeKey": "gradeBelow",
+          "quantityKg": 1030.07,
+          "avgUnitPriceWon": 172819
+        },
+        {
+          "gradeKey": "mixedGrade",
+          "quantityKg": 67.83,
+          "avgUnitPriceWon": 160055
+        }
+      ],
+      "yearly": [
+        {
+          "year": 2013,
+          "totalQuantityKg": 1520.47,
+          "totalAmountWon": 349461491,
+          "avgPricePerKg": 229838
+        },
+        {
+          "year": 2014,
+          "totalQuantityKg": 2024.95,
+          "totalAmountWon": 406838268,
+          "avgPricePerKg": 200913
+        },
+        {
+          "year": 2015,
+          "totalQuantityKg": 2221.07,
+          "totalAmountWon": 416366623,
+          "avgPricePerKg": 187462
+        },
+        {
+          "year": 2016,
+          "totalQuantityKg": 3047.03,
+          "totalAmountWon": 378428199,
+          "avgPricePerKg": 124196
+        },
+        {
+          "year": 2018,
+          "totalQuantityKg": 1021.5,
+          "totalAmountWon": 179104854,
+          "avgPricePerKg": 175335
+        },
+        {
+          "year": 2019,
+          "totalQuantityKg": 1513.61,
+          "totalAmountWon": 255601833,
+          "avgPricePerKg": 168869
+        },
+        {
+          "year": 2020,
+          "totalQuantityKg": 998.74,
+          "totalAmountWon": 183831972,
+          "avgPricePerKg": 184064
+        },
+        {
+          "year": 2021,
+          "totalQuantityKg": 479.08,
+          "totalAmountWon": 125253857,
+          "avgPricePerKg": 261447
+        },
+        {
+          "year": 2022,
+          "totalQuantityKg": 789.23,
+          "totalAmountWon": 172449086,
+          "avgPricePerKg": 218503
+        },
+        {
+          "year": 2023,
+          "totalQuantityKg": 846.63,
+          "totalAmountWon": 244081027,
+          "avgPricePerKg": 288297
+        },
+        {
+          "year": 2024,
+          "totalQuantityKg": 4419.51,
+          "totalAmountWon": 1157985479,
+          "avgPricePerKg": 262017
+        },
+        {
+          "year": 2025,
+          "totalQuantityKg": 2124.92,
+          "totalAmountWon": 471846344,
+          "avgPricePerKg": 222054
+        }
+      ],
+      "peak": {
+        "date": "2025-09-29",
+        "gradeKey": "grade1",
+        "priceWon": 850000
+      },
+      "latestDaily": {
+        "date": "2025-11-12",
+        "totalQuantityKg": 0,
+        "grades": []
+      },
+      "quantityRank": {
+        "rank": 18,
+        "of": 20
+      }
+    },
+    "삼척": {
+      "name": "삼척",
+      "region": "강원",
+      "latestSeasonYear": 2025,
+      "season": {
+        "startDate": "2025-09-30",
+        "endDate": "2025-11-12",
+        "totalQuantityKg": 3619.21,
+        "totalAmountWon": 817277012,
+        "avgPricePerKg": 225816
+      },
+      "grades": [
+        {
+          "gradeKey": "grade1",
+          "quantityKg": 82.44,
+          "avgUnitPriceWon": 450691
+        },
+        {
+          "gradeKey": "grade2",
+          "quantityKg": 215.79,
+          "avgUnitPriceWon": 375961
+        },
+        {
+          "gradeKey": "grade3Stopped",
+          "quantityKg": 652.2,
+          "avgUnitPriceWon": 264505
+        },
+        {
+          "gradeKey": "grade3Estimated",
+          "quantityKg": 1203.41,
+          "avgUnitPriceWon": 247521
+        },
+        {
+          "gradeKey": "gradeBelow",
+          "quantityKg": 1465.37,
+          "avgUnitPriceWon": 156011
+        }
+      ],
+      "yearly": [
+        {
+          "year": 2013,
+          "totalQuantityKg": 3809.92,
+          "totalAmountWon": 793877157,
+          "avgPricePerKg": 208371
+        },
+        {
+          "year": 2014,
+          "totalQuantityKg": 8125.88,
+          "totalAmountWon": 1314229010,
+          "avgPricePerKg": 161734
+        },
+        {
+          "year": 2015,
+          "totalQuantityKg": 4653.24,
+          "totalAmountWon": 819016437,
+          "avgPricePerKg": 176010
+        },
+        {
+          "year": 2016,
+          "totalQuantityKg": 16275.46,
+          "totalAmountWon": 1948149479,
+          "avgPricePerKg": 119699
+        },
+        {
+          "year": 2017,
+          "totalQuantityKg": 1510.54,
+          "totalAmountWon": 354922478,
+          "avgPricePerKg": 234964
+        },
+        {
+          "year": 2018,
+          "totalQuantityKg": 12407.77,
+          "totalAmountWon": 1909135224,
+          "avgPricePerKg": 153866
+        },
+        {
+          "year": 2019,
+          "totalQuantityKg": 5318.96,
+          "totalAmountWon": 917551545,
+          "avgPricePerKg": 172506
+        },
+        {
+          "year": 2020,
+          "totalQuantityKg": 5954.77,
+          "totalAmountWon": 910220381,
+          "avgPricePerKg": 152856
+        },
+        {
+          "year": 2021,
+          "totalQuantityKg": 6003.2,
+          "totalAmountWon": 1485528147,
+          "avgPricePerKg": 247456
+        },
+        {
+          "year": 2022,
+          "totalQuantityKg": 4046.72,
+          "totalAmountWon": 965726034,
+          "avgPricePerKg": 238644
+        },
+        {
+          "year": 2023,
+          "totalQuantityKg": 9029.89,
+          "totalAmountWon": 1641306064,
+          "avgPricePerKg": 181764
+        },
+        {
+          "year": 2024,
+          "totalQuantityKg": 13249.54,
+          "totalAmountWon": 2844232589,
+          "avgPricePerKg": 214667
+        },
+        {
+          "year": 2025,
+          "totalQuantityKg": 3619.21,
+          "totalAmountWon": 817277012,
+          "avgPricePerKg": 225816
+        }
+      ],
+      "peak": {
+        "date": "2025-09-30",
+        "gradeKey": "grade2",
+        "priceWon": 600000
+      },
+      "latestDaily": {
+        "date": "2025-11-12",
+        "totalQuantityKg": 0,
+        "grades": []
+      },
+      "quantityRank": {
+        "rank": 14,
+        "of": 20
+      }
+    },
+    "의성": {
+      "name": "의성",
+      "region": "경북",
+      "latestSeasonYear": 2025,
+      "season": {
+        "startDate": "2025-10-08",
+        "endDate": "2025-11-12",
+        "totalQuantityKg": 297.96,
+        "totalAmountWon": 51519758,
+        "avgPricePerKg": 172908
+      },
+      "grades": [
+        {
+          "gradeKey": "grade1",
+          "quantityKg": 1.51,
+          "avgUnitPriceWon": 315073
+        },
+        {
+          "gradeKey": "grade2",
+          "quantityKg": 13.49,
+          "avgUnitPriceWon": 238339
+        },
+        {
+          "gradeKey": "grade3Stopped",
+          "quantityKg": 61.34,
+          "avgUnitPriceWon": 211919
+        },
+        {
+          "gradeKey": "grade3Estimated",
+          "quantityKg": 97.24,
+          "avgUnitPriceWon": 192934
+        },
+        {
+          "gradeKey": "gradeBelow",
+          "quantityKg": 101.02,
+          "avgUnitPriceWon": 138306
+        },
+        {
+          "gradeKey": "mixedGrade",
+          "quantityKg": 23.36,
+          "avgUnitPriceWon": 89774
+        }
+      ],
+      "yearly": [
+        {
+          "year": 2014,
+          "totalQuantityKg": 289.45,
+          "totalAmountWon": 40008217,
+          "avgPricePerKg": 138222
+        },
+        {
+          "year": 2015,
+          "totalQuantityKg": 276.94,
+          "totalAmountWon": 46420229,
+          "avgPricePerKg": 167618
+        },
+        {
+          "year": 2016,
+          "totalQuantityKg": 3790.97,
+          "totalAmountWon": 382200228,
+          "avgPricePerKg": 100819
+        },
+        {
+          "year": 2017,
+          "totalQuantityKg": 277.67,
+          "totalAmountWon": 59245415,
+          "avgPricePerKg": 213366
+        },
+        {
+          "year": 2018,
+          "totalQuantityKg": 1609.05,
+          "totalAmountWon": 223526070,
+          "avgPricePerKg": 138918
+        },
+        {
+          "year": 2019,
+          "totalQuantityKg": 984.03,
+          "totalAmountWon": 164537594,
+          "avgPricePerKg": 167208
+        },
+        {
+          "year": 2020,
+          "totalQuantityKg": 1931.52,
+          "totalAmountWon": 265414704,
+          "avgPricePerKg": 137412
+        },
+        {
+          "year": 2021,
+          "totalQuantityKg": 1583.19,
+          "totalAmountWon": 345124748,
+          "avgPricePerKg": 217993
+        },
+        {
+          "year": 2022,
+          "totalQuantityKg": 501.68,
+          "totalAmountWon": 99342173,
+          "avgPricePerKg": 198019
+        },
+        {
+          "year": 2023,
+          "totalQuantityKg": 2313.68,
+          "totalAmountWon": 378739828,
+          "avgPricePerKg": 163696
+        },
+        {
+          "year": 2024,
+          "totalQuantityKg": 233.77,
+          "totalAmountWon": 47918685,
+          "avgPricePerKg": 204982
+        },
+        {
+          "year": 2025,
+          "totalQuantityKg": 297.96,
+          "totalAmountWon": 51519758,
+          "avgPricePerKg": 172908
+        }
+      ],
+      "peak": {
+        "date": "2025-10-12",
+        "gradeKey": "grade1",
+        "priceWon": 480000
+      },
+      "latestDaily": {
+        "date": "2025-11-12",
+        "totalQuantityKg": 0,
+        "grades": []
+      },
+      "quantityRank": {
+        "rank": 20,
+        "of": 20
+      }
+    },
+    "안동": {
+      "name": "안동",
+      "region": "경북",
+      "latestSeasonYear": 2025,
+      "season": {
+        "startDate": "2025-10-02",
+        "endDate": "2025-11-12",
+        "totalQuantityKg": 8072.39,
+        "totalAmountWon": 1420455107,
+        "avgPricePerKg": 175965
+      },
+      "grades": [
+        {
+          "gradeKey": "grade1",
+          "quantityKg": 71.67,
+          "avgUnitPriceWon": 442935
+        },
+        {
+          "gradeKey": "grade2",
+          "quantityKg": 541.17,
+          "avgUnitPriceWon": 343157
+        },
+        {
+          "gradeKey": "grade3Stopped",
+          "quantityKg": 299.36,
+          "avgUnitPriceWon": 267202
+        },
+        {
+          "gradeKey": "grade3Estimated",
+          "quantityKg": 2186.76,
+          "avgUnitPriceWon": 209919
+        },
+        {
+          "gradeKey": "gradeBelow",
+          "quantityKg": 4289.77,
+          "avgUnitPriceWon": 142584
+        },
+        {
+          "gradeKey": "mixedGrade",
+          "quantityKg": 683.66,
+          "avgUnitPriceWon": 76528
+        }
+      ],
+      "yearly": [
+        {
+          "year": 2013,
+          "totalQuantityKg": 1299.43,
+          "totalAmountWon": 293524712,
+          "avgPricePerKg": 225887
+        },
+        {
+          "year": 2014,
+          "totalQuantityKg": 3140.81,
+          "totalAmountWon": 488662017,
+          "avgPricePerKg": 155585
+        },
+        {
+          "year": 2015,
+          "totalQuantityKg": 819.59,
+          "totalAmountWon": 139562831,
+          "avgPricePerKg": 170284
+        },
+        {
+          "year": 2016,
+          "totalQuantityKg": 12121.17,
+          "totalAmountWon": 1254703688,
+          "avgPricePerKg": 103513
+        },
+        {
+          "year": 2017,
+          "totalQuantityKg": 3543.07,
+          "totalAmountWon": 778913264,
+          "avgPricePerKg": 219841
+        },
+        {
+          "year": 2018,
+          "totalQuantityKg": 12713.67,
+          "totalAmountWon": 1747909528,
+          "avgPricePerKg": 137483
+        },
+        {
+          "year": 2019,
+          "totalQuantityKg": 11716.22,
+          "totalAmountWon": 1855007485,
+          "avgPricePerKg": 158328
+        },
+        {
+          "year": 2020,
+          "totalQuantityKg": 12359.25,
+          "totalAmountWon": 1584491242,
+          "avgPricePerKg": 128203
+        },
+        {
+          "year": 2021,
+          "totalQuantityKg": 11794.78,
+          "totalAmountWon": 2402089864,
+          "avgPricePerKg": 203657
+        },
+        {
+          "year": 2022,
+          "totalQuantityKg": 5625.69,
+          "totalAmountWon": 1225408217,
+          "avgPricePerKg": 217824
+        },
+        {
+          "year": 2023,
+          "totalQuantityKg": 18985.48,
+          "totalAmountWon": 2871462121,
+          "avgPricePerKg": 151245
+        },
+        {
+          "year": 2024,
+          "totalQuantityKg": 2305.3,
+          "totalAmountWon": 506148164,
+          "avgPricePerKg": 219558
+        },
+        {
+          "year": 2025,
+          "totalQuantityKg": 8072.39,
+          "totalAmountWon": 1420455107,
+          "avgPricePerKg": 175965
+        }
+      ],
+      "peak": {
+        "date": "2025-10-29",
+        "gradeKey": "grade1",
+        "priceWon": 610000
+      },
+      "latestDaily": {
+        "date": "2025-11-12",
+        "totalQuantityKg": 0,
+        "grades": []
+      },
+      "quantityRank": {
+        "rank": 6,
+        "of": 20
+      }
+    },
+    "청송": {
+      "name": "청송",
+      "region": "경북",
+      "latestSeasonYear": 2025,
+      "season": {
+        "startDate": "2025-09-30",
+        "endDate": "2025-11-12",
+        "totalQuantityKg": 7247.56,
+        "totalAmountWon": 1472457890,
+        "avgPricePerKg": 203166
+      },
+      "grades": [
+        {
+          "gradeKey": "grade1",
+          "quantityKg": 449.22,
+          "avgUnitPriceWon": 369434
+        },
+        {
+          "gradeKey": "grade2",
+          "quantityKg": 731.63,
+          "avgUnitPriceWon": 295364
+        },
+        {
+          "gradeKey": "grade3Stopped",
+          "quantityKg": 930.98,
+          "avgUnitPriceWon": 255576
+        },
+        {
+          "gradeKey": "grade3Estimated",
+          "quantityKg": 2397.25,
+          "avgUnitPriceWon": 201523
+        },
+        {
+          "gradeKey": "gradeBelow",
+          "quantityKg": 2738.48,
+          "avgUnitPriceWon": 134880
+        }
+      ],
+      "yearly": [
+        {
+          "year": 2013,
+          "totalQuantityKg": 1890.59,
+          "totalAmountWon": 370339618,
+          "avgPricePerKg": 195886
+        },
+        {
+          "year": 2014,
+          "totalQuantityKg": 8723.23,
+          "totalAmountWon": 1259579863,
+          "avgPricePerKg": 144394
+        },
+        {
+          "year": 2015,
+          "totalQuantityKg": 4522.57,
+          "totalAmountWon": 769838002,
+          "avgPricePerKg": 170221
+        },
+        {
+          "year": 2016,
+          "totalQuantityKg": 24794.21,
+          "totalAmountWon": 2391732469,
+          "avgPricePerKg": 96463
+        },
+        {
+          "year": 2017,
+          "totalQuantityKg": 4406.35,
+          "totalAmountWon": 978742003,
+          "avgPricePerKg": 222121
+        },
+        {
+          "year": 2018,
+          "totalQuantityKg": 13601.01,
+          "totalAmountWon": 1895706123,
+          "avgPricePerKg": 139380
+        },
+        {
+          "year": 2019,
+          "totalQuantityKg": 10072.05,
+          "totalAmountWon": 1716133852,
+          "avgPricePerKg": 170386
+        },
+        {
+          "year": 2020,
+          "totalQuantityKg": 11296.33,
+          "totalAmountWon": 1535208344,
+          "avgPricePerKg": 135903
+        },
+        {
+          "year": 2021,
+          "totalQuantityKg": 15225.97,
+          "totalAmountWon": 3360794244,
+          "avgPricePerKg": 220728
+        },
+        {
+          "year": 2022,
+          "totalQuantityKg": 4748.7,
+          "totalAmountWon": 1117327653,
+          "avgPricePerKg": 235291
+        },
+        {
+          "year": 2023,
+          "totalQuantityKg": 16542.77,
+          "totalAmountWon": 3191443289,
+          "avgPricePerKg": 192921
+        },
+        {
+          "year": 2024,
+          "totalQuantityKg": 2040.63,
+          "totalAmountWon": 484563655,
+          "avgPricePerKg": 237458
+        },
+        {
+          "year": 2025,
+          "totalQuantityKg": 7247.56,
+          "totalAmountWon": 1472457890,
+          "avgPricePerKg": 203166
+        }
+      ],
+      "peak": {
+        "date": "2025-10-02",
+        "gradeKey": "grade1",
+        "priceWon": 725000
+      },
+      "latestDaily": {
+        "date": "2025-11-12",
+        "totalQuantityKg": 0,
+        "grades": []
+      },
+      "quantityRank": {
+        "rank": 7,
+        "of": 20
+      }
+    },
+    "영덕": {
+      "name": "영덕",
+      "region": "경북",
+      "latestSeasonYear": 2025,
+      "season": {
+        "startDate": "2025-10-03",
+        "endDate": "2025-11-12",
+        "totalQuantityKg": 17988.73,
+        "totalAmountWon": 3416094963,
+        "avgPricePerKg": 189902
+      },
+      "grades": [
+        {
+          "gradeKey": "grade1",
+          "quantityKg": 367.5,
+          "avgUnitPriceWon": 425068
+        },
+        {
+          "gradeKey": "grade2",
+          "quantityKg": 785.06,
+          "avgUnitPriceWon": 350940
+        },
+        {
+          "gradeKey": "grade3Stopped",
+          "quantityKg": 1486.57,
+          "avgUnitPriceWon": 275882
+        },
+        {
+          "gradeKey": "grade3Estimated",
+          "quantityKg": 5870.85,
+          "avgUnitPriceWon": 220732
+        },
+        {
+          "gradeKey": "gradeBelow",
+          "quantityKg": 6766.7,
+          "avgUnitPriceWon": 154377
+        },
+        {
+          "gradeKey": "mixedGrade",
+          "quantityKg": 2712.05,
+          "avgUnitPriceWon": 86187
+        }
+      ],
+      "yearly": [
+        {
+          "year": 2013,
+          "totalQuantityKg": 17251.33,
+          "totalAmountWon": 2844602125,
+          "avgPricePerKg": 164892
+        },
+        {
+          "year": 2014,
+          "totalQuantityKg": 33149.36,
+          "totalAmountWon": 4730554895,
+          "avgPricePerKg": 142704
+        },
+        {
+          "year": 2015,
+          "totalQuantityKg": 24481.34,
+          "totalAmountWon": 4011464448,
+          "avgPricePerKg": 163858
+        },
+        {
+          "year": 2016,
+          "totalQuantityKg": 96705.65,
+          "totalAmountWon": 8429209361,
+          "avgPricePerKg": 87164
+        },
+        {
+          "year": 2017,
+          "totalQuantityKg": 20368.86,
+          "totalAmountWon": 4367305866,
+          "avgPricePerKg": 214411
+        },
+        {
+          "year": 2018,
+          "totalQuantityKg": 52803.81,
+          "totalAmountWon": 7070634138,
+          "avgPricePerKg": 133904
+        },
+        {
+          "year": 2019,
+          "totalQuantityKg": 16646.76,
+          "totalAmountWon": 2592005541,
+          "avgPricePerKg": 155706
+        },
+        {
+          "year": 2020,
+          "totalQuantityKg": 18310.06,
+          "totalAmountWon": 2537055391,
+          "avgPricePerKg": 138561
+        },
+        {
+          "year": 2021,
+          "totalQuantityKg": 28189.68,
+          "totalAmountWon": 5225640599,
+          "avgPricePerKg": 185374
+        },
+        {
+          "year": 2022,
+          "totalQuantityKg": 11563.49,
+          "totalAmountWon": 3239377880,
+          "avgPricePerKg": 280138
+        },
+        {
+          "year": 2023,
+          "totalQuantityKg": 32394.18,
+          "totalAmountWon": 5349982962,
+          "avgPricePerKg": 165153
+        },
+        {
+          "year": 2024,
+          "totalQuantityKg": 15301.67,
+          "totalAmountWon": 3196186399,
+          "avgPricePerKg": 208878
+        },
+        {
+          "year": 2025,
+          "totalQuantityKg": 17988.73,
+          "totalAmountWon": 3416094963,
+          "avgPricePerKg": 189902
+        }
+      ],
+      "peak": {
+        "date": "2025-10-03",
+        "gradeKey": "grade1",
+        "priceWon": 1100000
+      },
+      "latestDaily": {
+        "date": "2025-11-12",
+        "totalQuantityKg": 0,
+        "grades": []
+      },
+      "quantityRank": {
+        "rank": 1,
+        "of": 20
+      }
+    },
+    "포항": {
+      "name": "포항",
+      "region": "경북",
+      "latestSeasonYear": 2025,
+      "season": {
+        "startDate": "2025-10-02",
+        "endDate": "2025-11-12",
+        "totalQuantityKg": 8228.26,
+        "totalAmountWon": 1789108451,
+        "avgPricePerKg": 217435
+      },
+      "grades": [
+        {
+          "gradeKey": "grade1",
+          "quantityKg": 225.72,
+          "avgUnitPriceWon": 465778
+        },
+        {
+          "gradeKey": "grade2",
+          "quantityKg": 440.48,
+          "avgUnitPriceWon": 386417
+        },
+        {
+          "gradeKey": "grade3Stopped",
+          "quantityKg": 604.69,
+          "avgUnitPriceWon": 313079
+        },
+        {
+          "gradeKey": "grade3Estimated",
+          "quantityKg": 3389.9,
+          "avgUnitPriceWon": 238593
+        },
+        {
+          "gradeKey": "gradeBelow",
+          "quantityKg": 2395.62,
+          "avgUnitPriceWon": 167766
+        },
+        {
+          "gradeKey": "mixedGrade",
+          "quantityKg": 1171.85,
+          "avgUnitPriceWon": 97059
+        }
+      ],
+      "yearly": [
+        {
+          "year": 2013,
+          "totalQuantityKg": 11970.75,
+          "totalAmountWon": 2012687902,
+          "avgPricePerKg": 168134
+        },
+        {
+          "year": 2014,
+          "totalQuantityKg": 8704.97,
+          "totalAmountWon": 1800505752,
+          "avgPricePerKg": 206837
+        },
+        {
+          "year": 2015,
+          "totalQuantityKg": 15102.43,
+          "totalAmountWon": 2749404557,
+          "avgPricePerKg": 182050
+        },
+        {
+          "year": 2016,
+          "totalQuantityKg": 21857.23,
+          "totalAmountWon": 2593573186,
+          "avgPricePerKg": 118660
+        },
+        {
+          "year": 2017,
+          "totalQuantityKg": 11748.73,
+          "totalAmountWon": 2822419496,
+          "avgPricePerKg": 240232
+        },
+        {
+          "year": 2018,
+          "totalQuantityKg": 12856,
+          "totalAmountWon": 1874600469,
+          "avgPricePerKg": 145815
+        },
+        {
+          "year": 2019,
+          "totalQuantityKg": 5602.29,
+          "totalAmountWon": 951552949,
+          "avgPricePerKg": 169851
+        },
+        {
+          "year": 2020,
+          "totalQuantityKg": 0.35,
+          "totalAmountWon": 108590,
+          "avgPricePerKg": 310257
+        },
+        {
+          "year": 2024,
+          "totalQuantityKg": 6955.47,
+          "totalAmountWon": 1514880638,
+          "avgPricePerKg": 217797
+        },
+        {
+          "year": 2025,
+          "totalQuantityKg": 8228.26,
+          "totalAmountWon": 1789108451,
+          "avgPricePerKg": 217435
+        }
+      ],
+      "peak": {
+        "date": "2025-10-30",
+        "gradeKey": "grade1",
+        "priceWon": 687800
+      },
+      "latestDaily": {
+        "date": "2025-11-12",
+        "totalQuantityKg": 0,
+        "grades": []
+      },
+      "quantityRank": {
+        "rank": 5,
+        "of": 20
+      }
+    },
+    "청도": {
+      "name": "청도",
+      "region": "경북",
+      "latestSeasonYear": 2025,
+      "season": {
+        "startDate": "2025-10-01",
+        "endDate": "2025-11-12",
+        "totalQuantityKg": 4524.7,
+        "totalAmountWon": 1016159572,
+        "avgPricePerKg": 224581
+      },
+      "grades": [
+        {
+          "gradeKey": "grade1",
+          "quantityKg": 44.59,
+          "avgUnitPriceWon": 446517
+        },
+        {
+          "gradeKey": "grade2",
+          "quantityKg": 127.2,
+          "avgUnitPriceWon": 422583
+        },
+        {
+          "gradeKey": "grade3Stopped",
+          "quantityKg": 279.17,
+          "avgUnitPriceWon": 367259
+        },
+        {
+          "gradeKey": "grade3Estimated",
+          "quantityKg": 1544.84,
+          "avgUnitPriceWon": 248526
+        },
+        {
+          "gradeKey": "gradeBelow",
+          "quantityKg": 2528.9,
+          "avgUnitPriceWon": 180330
+        }
+      ],
+      "yearly": [
+        {
+          "year": 2013,
+          "totalQuantityKg": 4159.86,
+          "totalAmountWon": 871950967,
+          "avgPricePerKg": 209611
+        },
+        {
+          "year": 2014,
+          "totalQuantityKg": 4576.36,
+          "totalAmountWon": 933087199,
+          "avgPricePerKg": 203893
+        },
+        {
+          "year": 2015,
+          "totalQuantityKg": 9884.87,
+          "totalAmountWon": 1849130297,
+          "avgPricePerKg": 187067
+        },
+        {
+          "year": 2016,
+          "totalQuantityKg": 16543.21,
+          "totalAmountWon": 1997758040,
+          "avgPricePerKg": 120760
+        },
+        {
+          "year": 2017,
+          "totalQuantityKg": 3400.56,
+          "totalAmountWon": 807064851,
+          "avgPricePerKg": 237333
+        },
+        {
+          "year": 2018,
+          "totalQuantityKg": 12938.53,
+          "totalAmountWon": 2068079497,
+          "avgPricePerKg": 159839
+        },
+        {
+          "year": 2019,
+          "totalQuantityKg": 8107.56,
+          "totalAmountWon": 1474898504,
+          "avgPricePerKg": 181916
+        },
+        {
+          "year": 2020,
+          "totalQuantityKg": 7332.32,
+          "totalAmountWon": 1123656112,
+          "avgPricePerKg": 153247
+        },
+        {
+          "year": 2021,
+          "totalQuantityKg": 2765.13,
+          "totalAmountWon": 701434551,
+          "avgPricePerKg": 253671
+        },
+        {
+          "year": 2022,
+          "totalQuantityKg": 2745.21,
+          "totalAmountWon": 801755710,
+          "avgPricePerKg": 292056
+        },
+        {
+          "year": 2023,
+          "totalQuantityKg": 8162.02,
+          "totalAmountWon": 1616919540,
+          "avgPricePerKg": 198103
+        },
+        {
+          "year": 2024,
+          "totalQuantityKg": 3960.99,
+          "totalAmountWon": 880556507,
+          "avgPricePerKg": 222307
+        },
+        {
+          "year": 2025,
+          "totalQuantityKg": 4524.7,
+          "totalAmountWon": 1016159572,
+          "avgPricePerKg": 224581
+        }
+      ],
+      "peak": {
+        "date": "2025-10-30",
+        "gradeKey": "grade1",
+        "priceWon": 750000
+      },
+      "latestDaily": {
+        "date": "2025-11-12",
+        "totalQuantityKg": 0,
+        "grades": []
+      },
+      "quantityRank": {
+        "rank": 11,
+        "of": 20
+      }
+    },
+    "상주": {
+      "name": "상주",
+      "region": "경북",
+      "latestSeasonYear": 2025,
+      "season": {
+        "startDate": "2025-09-29",
+        "endDate": "2025-11-12",
+        "totalQuantityKg": 6873.37,
+        "totalAmountWon": 1117581327,
+        "avgPricePerKg": 162596
+      },
+      "grades": [
+        {
+          "gradeKey": "grade1",
+          "quantityKg": 86.5,
+          "avgUnitPriceWon": 376605
+        },
+        {
+          "gradeKey": "grade2",
+          "quantityKg": 299.6,
+          "avgUnitPriceWon": 297975
+        },
+        {
+          "gradeKey": "grade3Stopped",
+          "quantityKg": 1178.47,
+          "avgUnitPriceWon": 220172
+        },
+        {
+          "gradeKey": "grade3Estimated",
+          "quantityKg": 1448.86,
+          "avgUnitPriceWon": 182902
+        },
+        {
+          "gradeKey": "gradeBelow",
+          "quantityKg": 3597.36,
+          "avgUnitPriceWon": 123390
+        },
+        {
+          "gradeKey": "mixedGrade",
+          "quantityKg": 262.58,
+          "avgUnitPriceWon": 104296
+        }
+      ],
+      "yearly": [
+        {
+          "year": 2017,
+          "totalQuantityKg": 1259.25,
+          "totalAmountWon": 288954555,
+          "avgPricePerKg": 229466
+        },
+        {
+          "year": 2019,
+          "totalQuantityKg": 1914.48,
+          "totalAmountWon": 289807777,
+          "avgPricePerKg": 151377
+        },
+        {
+          "year": 2020,
+          "totalQuantityKg": 2142.53,
+          "totalAmountWon": 258947100,
+          "avgPricePerKg": 120860
+        },
+        {
+          "year": 2021,
+          "totalQuantityKg": 2162.09,
+          "totalAmountWon": 447304422,
+          "avgPricePerKg": 206885
+        },
+        {
+          "year": 2022,
+          "totalQuantityKg": 1530.14,
+          "totalAmountWon": 304691914,
+          "avgPricePerKg": 199127
+        },
+        {
+          "year": 2023,
+          "totalQuantityKg": 3111.81,
+          "totalAmountWon": 557666832,
+          "avgPricePerKg": 179210
+        },
+        {
+          "year": 2024,
+          "totalQuantityKg": 454.99,
+          "totalAmountWon": 99987281,
+          "avgPricePerKg": 219757
+        },
+        {
+          "year": 2025,
+          "totalQuantityKg": 6873.37,
+          "totalAmountWon": 1117581327,
+          "avgPricePerKg": 162596
+        }
+      ],
+      "peak": {
+        "date": "2025-09-29",
+        "gradeKey": "grade1",
+        "priceWon": 675000
+      },
+      "latestDaily": {
+        "date": "2025-11-12",
+        "totalQuantityKg": 0,
+        "grades": []
+      },
+      "quantityRank": {
+        "rank": 8,
+        "of": 20
+      }
+    },
+    "문경": {
+      "name": "문경",
+      "region": "경북",
+      "latestSeasonYear": 2025,
+      "season": {
+        "startDate": "2025-09-29",
+        "endDate": "2025-11-12",
+        "totalQuantityKg": 15034.7,
+        "totalAmountWon": 2550505794,
+        "avgPricePerKg": 169641
+      },
+      "grades": [
+        {
+          "gradeKey": "grade1",
+          "quantityKg": 212.2,
+          "avgUnitPriceWon": 408560
+        },
+        {
+          "gradeKey": "grade2",
+          "quantityKg": 763.9,
+          "avgUnitPriceWon": 307092
+        },
+        {
+          "gradeKey": "grade3Stopped",
+          "quantityKg": 930,
+          "avgUnitPriceWon": 247556
+        },
+        {
+          "gradeKey": "grade3Estimated",
+          "quantityKg": 5595,
+          "avgUnitPriceWon": 188224
+        },
+        {
+          "gradeKey": "gradeBelow",
+          "quantityKg": 7533.6,
+          "avgUnitPriceWon": 125555
+        }
+      ],
+      "yearly": [
+        {
+          "year": 2013,
+          "totalQuantityKg": 1365.8,
+          "totalAmountWon": 301716000,
+          "avgPricePerKg": 220908
+        },
+        {
+          "year": 2014,
+          "totalQuantityKg": 1200.5,
+          "totalAmountWon": 159035100,
+          "avgPricePerKg": 132474
+        },
+        {
+          "year": 2016,
+          "totalQuantityKg": 8538.2,
+          "totalAmountWon": 934791940,
+          "avgPricePerKg": 109483
+        },
+        {
+          "year": 2017,
+          "totalQuantityKg": 9746.75,
+          "totalAmountWon": 2089979485,
+          "avgPricePerKg": 214428
+        },
+        {
+          "year": 2018,
+          "totalQuantityKg": 6076.7,
+          "totalAmountWon": 830053270,
+          "avgPricePerKg": 136596
+        },
+        {
+          "year": 2019,
+          "totalQuantityKg": 10887.3,
+          "totalAmountWon": 1747247768,
+          "avgPricePerKg": 160485
+        },
+        {
+          "year": 2020,
+          "totalQuantityKg": 9238.15,
+          "totalAmountWon": 1224306080,
+          "avgPricePerKg": 132527
+        },
+        {
+          "year": 2021,
+          "totalQuantityKg": 7457.73,
+          "totalAmountWon": 1669785404,
+          "avgPricePerKg": 223900
+        },
+        {
+          "year": 2022,
+          "totalQuantityKg": 6541.01,
+          "totalAmountWon": 1303446835,
+          "avgPricePerKg": 199273
+        },
+        {
+          "year": 2023,
+          "totalQuantityKg": 19426.42,
+          "totalAmountWon": 3307776508,
+          "avgPricePerKg": 170272
+        },
+        {
+          "year": 2024,
+          "totalQuantityKg": 2925.03,
+          "totalAmountWon": 652748646,
+          "avgPricePerKg": 223160
+        },
+        {
+          "year": 2025,
+          "totalQuantityKg": 15034.7,
+          "totalAmountWon": 2550505794,
+          "avgPricePerKg": 169641
+        }
+      ],
+      "peak": {
+        "date": "2025-09-30",
+        "gradeKey": "grade1",
+        "priceWon": 865000
+      },
+      "latestDaily": {
+        "date": "2025-11-12",
+        "totalQuantityKg": 0,
+        "grades": []
+      },
+      "quantityRank": {
+        "rank": 2,
+        "of": 20
+      }
+    },
+    "예천": {
+      "name": "예천",
+      "region": "경북",
+      "latestSeasonYear": 2025,
+      "season": {
+        "startDate": "2025-10-02",
+        "endDate": "2025-11-12",
+        "totalQuantityKg": 3793.06,
+        "totalAmountWon": 721328856,
+        "avgPricePerKg": 190171
+      },
+      "grades": [
+        {
+          "gradeKey": "grade1",
+          "quantityKg": 59.37,
+          "avgUnitPriceWon": 395531
+        },
+        {
+          "gradeKey": "grade2",
+          "quantityKg": 164.11,
+          "avgUnitPriceWon": 335213
+        },
+        {
+          "gradeKey": "grade3Stopped",
+          "quantityKg": 308.79,
+          "avgUnitPriceWon": 273275
+        },
+        {
+          "gradeKey": "grade3Estimated",
+          "quantityKg": 1062.04,
+          "avgUnitPriceWon": 221589
+        },
+        {
+          "gradeKey": "gradeBelow",
+          "quantityKg": 1450.17,
+          "avgUnitPriceWon": 167187
+        },
+        {
+          "gradeKey": "mixedGrade",
+          "quantityKg": 748.58,
+          "avgUnitPriceWon": 107756
+        }
+      ],
+      "yearly": [
+        {
+          "year": 2013,
+          "totalQuantityKg": 474.32,
+          "totalAmountWon": 104799161,
+          "avgPricePerKg": 220946
+        },
+        {
+          "year": 2014,
+          "totalQuantityKg": 372.58,
+          "totalAmountWon": 54926341,
+          "avgPricePerKg": 147422
+        },
+        {
+          "year": 2016,
+          "totalQuantityKg": 2395.16,
+          "totalAmountWon": 278644126,
+          "avgPricePerKg": 116336
+        },
+        {
+          "year": 2017,
+          "totalQuantityKg": 1455.1,
+          "totalAmountWon": 285587830,
+          "avgPricePerKg": 196267
+        },
+        {
+          "year": 2018,
+          "totalQuantityKg": 1455.16,
+          "totalAmountWon": 216281209,
+          "avgPricePerKg": 148631
+        },
+        {
+          "year": 2019,
+          "totalQuantityKg": 2248.16,
+          "totalAmountWon": 397169424,
+          "avgPricePerKg": 176664
+        },
+        {
+          "year": 2020,
+          "totalQuantityKg": 2765.5,
+          "totalAmountWon": 401277645,
+          "avgPricePerKg": 145101
+        },
+        {
+          "year": 2021,
+          "totalQuantityKg": 1901.35,
+          "totalAmountWon": 449825124,
+          "avgPricePerKg": 236582
+        },
+        {
+          "year": 2022,
+          "totalQuantityKg": 987.18,
+          "totalAmountWon": 200483076,
+          "avgPricePerKg": 203087
+        },
+        {
+          "year": 2023,
+          "totalQuantityKg": 3634.94,
+          "totalAmountWon": 782678876,
+          "avgPricePerKg": 215321
+        },
+        {
+          "year": 2024,
+          "totalQuantityKg": 850.74,
+          "totalAmountWon": 210335501,
+          "avgPricePerKg": 247238
+        },
+        {
+          "year": 2025,
+          "totalQuantityKg": 3793.06,
+          "totalAmountWon": 721328856,
+          "avgPricePerKg": 190171
+        }
+      ],
+      "peak": {
+        "date": "2025-10-03",
+        "gradeKey": "grade1",
+        "priceWon": 550000
+      },
+      "latestDaily": {
+        "date": "2025-11-12",
+        "totalQuantityKg": 0,
+        "grades": []
+      },
+      "quantityRank": {
+        "rank": 13,
+        "of": 20
+      }
+    },
+    "영주": {
+      "name": "영주",
+      "region": "경북",
+      "latestSeasonYear": 2025,
+      "season": {
+        "startDate": "2025-10-07",
+        "endDate": "2025-11-12",
+        "totalQuantityKg": 1829.15,
+        "totalAmountWon": 321804841,
+        "avgPricePerKg": 175931
+      },
+      "grades": [
+        {
+          "gradeKey": "grade1",
+          "quantityKg": 6.86,
+          "avgUnitPriceWon": 411766
+        },
+        {
+          "gradeKey": "grade2",
+          "quantityKg": 49.02,
+          "avgUnitPriceWon": 343245
+        },
+        {
+          "gradeKey": "grade3Stopped",
+          "quantityKg": 45.68,
+          "avgUnitPriceWon": 293056
+        },
+        {
+          "gradeKey": "grade3Estimated",
+          "quantityKg": 501.42,
+          "avgUnitPriceWon": 223464
+        },
+        {
+          "gradeKey": "gradeBelow",
+          "quantityKg": 1138.27,
+          "avgUnitPriceWon": 150012
+        },
+        {
+          "gradeKey": "mixedGrade",
+          "quantityKg": 87.9,
+          "avgUnitPriceWon": 67854
+        }
+      ],
+      "yearly": [
+        {
+          "year": 2020,
+          "totalQuantityKg": 2134.12,
+          "totalAmountWon": 299024969,
+          "avgPricePerKg": 140116
+        },
+        {
+          "year": 2021,
+          "totalQuantityKg": 1362.64,
+          "totalAmountWon": 317886359,
+          "avgPricePerKg": 233287
+        },
+        {
+          "year": 2022,
+          "totalQuantityKg": 741.15,
+          "totalAmountWon": 170018687,
+          "avgPricePerKg": 229398
+        },
+        {
+          "year": 2023,
+          "totalQuantityKg": 3091.66,
+          "totalAmountWon": 517953003,
+          "avgPricePerKg": 167532
+        },
+        {
+          "year": 2025,
+          "totalQuantityKg": 1829.15,
+          "totalAmountWon": 321804841,
+          "avgPricePerKg": 175931
+        }
+      ],
+      "peak": {
+        "date": "2025-10-17",
+        "gradeKey": "grade1",
+        "priceWon": 524000
+      },
+      "latestDaily": {
+        "date": "2025-11-12",
+        "totalQuantityKg": 0,
+        "grades": []
+      },
+      "quantityRank": {
+        "rank": 19,
+        "of": 20
+      }
+    },
+    "봉화": {
+      "name": "봉화",
+      "region": "경북",
+      "latestSeasonYear": 2025,
+      "season": {
+        "startDate": "2025-10-07",
+        "endDate": "2025-11-12",
+        "totalQuantityKg": 3607.16,
+        "totalAmountWon": 694115566,
+        "avgPricePerKg": 192427
+      },
+      "grades": [
+        {
+          "gradeKey": "grade1",
+          "quantityKg": 124.58,
+          "avgUnitPriceWon": 535403
+        },
+        {
+          "gradeKey": "grade2",
+          "quantityKg": 153.56,
+          "avgUnitPriceWon": 336529
+        },
+        {
+          "gradeKey": "grade3Stopped",
+          "quantityKg": 46.1,
+          "avgUnitPriceWon": 250424
+        },
+        {
+          "gradeKey": "grade3Estimated",
+          "quantityKg": 945.16,
+          "avgUnitPriceWon": 226947
+        },
+        {
+          "gradeKey": "gradeBelow",
+          "quantityKg": 2337.76,
+          "avgUnitPriceWon": 149584
+        }
+      ],
+      "yearly": [
+        {
+          "year": 2013,
+          "totalQuantityKg": 1608.4,
+          "totalAmountWon": 388166842,
+          "avgPricePerKg": 241337
+        },
+        {
+          "year": 2014,
+          "totalQuantityKg": 1429.1,
+          "totalAmountWon": 192312030,
+          "avgPricePerKg": 134569
+        },
+        {
+          "year": 2015,
+          "totalQuantityKg": 379.3,
+          "totalAmountWon": 68953536,
+          "avgPricePerKg": 181792
+        },
+        {
+          "year": 2016,
+          "totalQuantityKg": 6754.04,
+          "totalAmountWon": 700574115,
+          "avgPricePerKg": 103727
+        },
+        {
+          "year": 2017,
+          "totalQuantityKg": 2507.72,
+          "totalAmountWon": 502408085,
+          "avgPricePerKg": 200345
+        },
+        {
+          "year": 2018,
+          "totalQuantityKg": 3898,
+          "totalAmountWon": 550862821,
+          "avgPricePerKg": 141319
+        },
+        {
+          "year": 2020,
+          "totalQuantityKg": 1976.09,
+          "totalAmountWon": 279455964,
+          "avgPricePerKg": 141419
+        },
+        {
+          "year": 2021,
+          "totalQuantityKg": 1650.79,
+          "totalAmountWon": 402189845,
+          "avgPricePerKg": 243635
+        },
+        {
+          "year": 2022,
+          "totalQuantityKg": 1435.3,
+          "totalAmountWon": 335706077,
+          "avgPricePerKg": 233893
+        },
+        {
+          "year": 2023,
+          "totalQuantityKg": 4516.2,
+          "totalAmountWon": 906141149,
+          "avgPricePerKg": 200642
+        },
+        {
+          "year": 2024,
+          "totalQuantityKg": 663.88,
+          "totalAmountWon": 154175485,
+          "avgPricePerKg": 232234
+        },
+        {
+          "year": 2025,
+          "totalQuantityKg": 3607.16,
+          "totalAmountWon": 694115566,
+          "avgPricePerKg": 192427
+        }
+      ],
+      "peak": {
+        "date": "2025-10-11",
+        "gradeKey": "grade1",
+        "priceWon": 732600
+      },
+      "latestDaily": {
+        "date": "2025-11-12",
+        "totalQuantityKg": 0,
+        "grades": []
+      },
+      "quantityRank": {
+        "rank": 15,
+        "of": 20
+      }
+    },
+    "울진": {
+      "name": "울진",
+      "region": "경북",
+      "latestSeasonYear": 2025,
+      "season": {
+        "startDate": "2025-10-02",
+        "endDate": "2025-11-12",
+        "totalQuantityKg": 2875.59,
+        "totalAmountWon": 561119463,
+        "avgPricePerKg": 195132
+      },
+      "grades": [
+        {
+          "gradeKey": "grade1",
+          "quantityKg": 91.36,
+          "avgUnitPriceWon": 438809
+        },
+        {
+          "gradeKey": "grade2",
+          "quantityKg": 157.08,
+          "avgUnitPriceWon": 349806
+        },
+        {
+          "gradeKey": "grade3Stopped",
+          "quantityKg": 100.51,
+          "avgUnitPriceWon": 249968
+        },
+        {
+          "gradeKey": "grade3Estimated",
+          "quantityKg": 1029.62,
+          "avgUnitPriceWon": 220634
+        },
+        {
+          "gradeKey": "gradeBelow",
+          "quantityKg": 1101.63,
+          "avgUnitPriceWon": 157236
+        },
+        {
+          "gradeKey": "mixedGrade",
+          "quantityKg": 395.39,
+          "avgUnitPriceWon": 102614
+        }
+      ],
+      "yearly": [
+        {
+          "year": 2013,
+          "totalQuantityKg": 10089.11,
+          "totalAmountWon": 2253336843,
+          "avgPricePerKg": 223343
+        },
+        {
+          "year": 2014,
+          "totalQuantityKg": 16234.19,
+          "totalAmountWon": 2799208437,
+          "avgPricePerKg": 172427
+        },
+        {
+          "year": 2015,
+          "totalQuantityKg": 10450.71,
+          "totalAmountWon": 1783612716,
+          "avgPricePerKg": 170669
+        },
+        {
+          "year": 2016,
+          "totalQuantityKg": 30206.8,
+          "totalAmountWon": 3356219928,
+          "avgPricePerKg": 111108
+        },
+        {
+          "year": 2017,
+          "totalQuantityKg": 4619.12,
+          "totalAmountWon": 1116364500,
+          "avgPricePerKg": 241683
+        },
+        {
+          "year": 2018,
+          "totalQuantityKg": 17944.91,
+          "totalAmountWon": 2585083596,
+          "avgPricePerKg": 144057
+        },
+        {
+          "year": 2019,
+          "totalQuantityKg": 9016.12,
+          "totalAmountWon": 1677230727,
+          "avgPricePerKg": 186026
+        },
+        {
+          "year": 2020,
+          "totalQuantityKg": 11958.43,
+          "totalAmountWon": 1971169475,
+          "avgPricePerKg": 164835
+        },
+        {
+          "year": 2021,
+          "totalQuantityKg": 12159.45,
+          "totalAmountWon": 2886326765,
+          "avgPricePerKg": 237373
+        },
+        {
+          "year": 2022,
+          "totalQuantityKg": 3227.53,
+          "totalAmountWon": 962389760,
+          "avgPricePerKg": 298182
+        },
+        {
+          "year": 2023,
+          "totalQuantityKg": 8050.29,
+          "totalAmountWon": 1469835381,
+          "avgPricePerKg": 182582
+        },
+        {
+          "year": 2025,
+          "totalQuantityKg": 2875.59,
+          "totalAmountWon": 561119463,
+          "avgPricePerKg": 195132
+        }
+      ],
+      "peak": {
+        "date": "2025-10-03",
+        "gradeKey": "grade1",
+        "priceWon": 583000
+      },
+      "latestDaily": {
+        "date": "2025-11-12",
+        "totalQuantityKg": 0,
+        "grades": []
+      },
+      "quantityRank": {
+        "rank": 16,
+        "of": 20
+      }
+    },
+    "영천": {
+      "name": "영천",
+      "region": "경북",
+      "latestSeasonYear": 2025,
+      "season": null,
+      "grades": [],
+      "yearly": [
+        {
+          "year": 2013,
+          "totalQuantityKg": 73.05,
+          "totalAmountWon": 15566955,
+          "avgPricePerKg": 213100
+        },
+        {
+          "year": 2014,
+          "totalQuantityKg": 303.45,
+          "totalAmountWon": 33876660,
+          "avgPricePerKg": 111638
+        }
+      ],
+      "peak": null,
+      "latestDaily": null
+    },
+    "거창": {
+      "name": "거창",
+      "region": "경남",
+      "latestSeasonYear": 2025,
+      "season": {
+        "startDate": "2025-09-29",
+        "endDate": "2025-11-12",
+        "totalQuantityKg": 9521.54,
+        "totalAmountWon": 1845892426,
+        "avgPricePerKg": 193865
+      },
+      "grades": [
+        {
+          "gradeKey": "grade1",
+          "quantityKg": 243.84,
+          "avgUnitPriceWon": 466269
+        },
+        {
+          "gradeKey": "grade2",
+          "quantityKg": 320.78,
+          "avgUnitPriceWon": 365647
+        },
+        {
+          "gradeKey": "grade3Stopped",
+          "quantityKg": 1068.82,
+          "avgUnitPriceWon": 266286
+        },
+        {
+          "gradeKey": "grade3Estimated",
+          "quantityKg": 3280.7,
+          "avgUnitPriceWon": 181125
+        },
+        {
+          "gradeKey": "gradeBelow",
+          "quantityKg": 2316.5,
+          "avgUnitPriceWon": 202706
+        },
+        {
+          "gradeKey": "mixedGrade",
+          "quantityKg": 2290.9,
+          "avgUnitPriceWon": 116332
+        }
+      ],
+      "yearly": [
+        {
+          "year": 2013,
+          "totalQuantityKg": 1580.25,
+          "totalAmountWon": 345687474,
+          "avgPricePerKg": 218755
+        },
+        {
+          "year": 2014,
+          "totalQuantityKg": 1148.9,
+          "totalAmountWon": 181583117,
+          "avgPricePerKg": 158050
+        },
+        {
+          "year": 2015,
+          "totalQuantityKg": 2719.51,
+          "totalAmountWon": 497213185,
+          "avgPricePerKg": 182832
+        },
+        {
+          "year": 2016,
+          "totalQuantityKg": 8057.05,
+          "totalAmountWon": 915394590,
+          "avgPricePerKg": 113614
+        },
+        {
+          "year": 2017,
+          "totalQuantityKg": 2926.8,
+          "totalAmountWon": 683518171,
+          "avgPricePerKg": 233538
+        },
+        {
+          "year": 2018,
+          "totalQuantityKg": 6495.7,
+          "totalAmountWon": 955954109,
+          "avgPricePerKg": 147167
+        },
+        {
+          "year": 2019,
+          "totalQuantityKg": 5821.43,
+          "totalAmountWon": 1024694236,
+          "avgPricePerKg": 176021
+        },
+        {
+          "year": 2020,
+          "totalQuantityKg": 5250.16,
+          "totalAmountWon": 851507324,
+          "avgPricePerKg": 162187
+        },
+        {
+          "year": 2021,
+          "totalQuantityKg": 3795.15,
+          "totalAmountWon": 1022012000,
+          "avgPricePerKg": 269294
+        },
+        {
+          "year": 2022,
+          "totalQuantityKg": 2620.25,
+          "totalAmountWon": 609322611,
+          "avgPricePerKg": 232544
+        },
+        {
+          "year": 2023,
+          "totalQuantityKg": 9771.46,
+          "totalAmountWon": 2367977024,
+          "avgPricePerKg": 242336
+        },
+        {
+          "year": 2024,
+          "totalQuantityKg": 4182.65,
+          "totalAmountWon": 910688477,
+          "avgPricePerKg": 217730
+        },
+        {
+          "year": 2025,
+          "totalQuantityKg": 9521.54,
+          "totalAmountWon": 1845892426,
+          "avgPricePerKg": 193865
+        }
+      ],
+      "peak": {
+        "date": "2025-10-02",
+        "gradeKey": "grade1",
+        "priceWon": 740000
+      },
+      "latestDaily": {
+        "date": "2025-11-12",
+        "totalQuantityKg": 0,
+        "grades": []
+      },
+      "quantityRank": {
+        "rank": 3,
+        "of": 20
+      }
+    }
+  }
+}

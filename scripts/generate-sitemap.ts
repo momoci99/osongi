@@ -10,6 +10,7 @@
 */
 import { existsSync, readdirSync, writeFileSync } from "fs";
 import { join } from "path";
+import { REGION_ROUTE_PREFIX, SCOPE_ROUTES, encodeRoute } from "../src/const/Regions";
 
 const SITE_URL = "https://osongi.vercel.app";
 const DATA_ROOT = join(process.cwd(), "public", "auction-data");
@@ -21,9 +22,21 @@ type SitemapEntry = {
   priority: string;
 };
 
+/**
+ * 지역·조합 경로는 한글이라 sitemap 에서는 퍼센트 인코딩이 필수다.
+ * (sitemap 프로토콜은 URL 이스케이프를 요구한다)
+ */
+const SCOPE_ENTRIES: readonly SitemapEntry[] = SCOPE_ROUTES.map((route) => ({
+  path: encodeRoute(route.path),
+  changefreq: "daily",
+  priority: route.union ? "0.7" : "0.8",
+}));
+
 const ENTRIES: readonly SitemapEntry[] = [
   { path: "/", changefreq: "daily", priority: "1.0" },
+  { path: REGION_ROUTE_PREFIX, changefreq: "daily", priority: "0.9" },
   { path: "/data-analysis", changefreq: "weekly", priority: "0.8" },
+  ...SCOPE_ENTRIES,
 ];
 
 /** 디렉터리명 중 숫자인 것만 내림차순으로 반환 */
