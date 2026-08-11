@@ -7,6 +7,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { useDataLoader } from "../hooks/useAuctionData";
+import { TEST_IDS } from "../test-ids";
 
 type DataInitializerProps = {
   children: React.ReactNode;
@@ -48,6 +49,7 @@ const DataInitializer = ({ children }: DataInitializerProps) => {
 
     return (
       <Box
+        data-testid={TEST_IDS.DATA_LOADING}
         sx={{
           display: "flex",
           flexDirection: "column",
@@ -173,7 +175,11 @@ const DataInitializer = ({ children }: DataInitializerProps) => {
   // 초기화 완료 - 정상 컨텐츠 표시
   if (isInitialized) {
     return (
-      <>
+      /**
+       * e2e 는 이 표식이 붙는 시점을 "데이터 준비 완료"로 본다.
+       * display:contents 라 자식들의 레이아웃에는 영향을 주지 않는다.
+       */
+      <Box data-testid={TEST_IDS.APP_CONTENT} sx={{ display: "contents" }}>
         {/* 데이터 상태 정보 (개발 시에만 표시하거나 설정으로 토글 가능) */}
         {process.env.NODE_ENV === "development" && (
           <Box
@@ -195,7 +201,7 @@ const DataInitializer = ({ children }: DataInitializerProps) => {
           </Box>
         )}
         {children}
-      </>
+      </Box>
     );
   }
 

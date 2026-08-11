@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { setupCompletedOnboarding, waitForAppReady } from "./helpers";
+import { setupCompletedOnboarding, waitForDataReady } from "./helpers";
 import { TEST_IDS } from "../../src/test-ids";
 
 test.describe("데이터 분석", () => {
@@ -9,7 +9,7 @@ test.describe("데이터 분석", () => {
 
   test("페이지 헤더와 필터 영역이 렌더링된다", async ({ page }) => {
     await page.goto("/data-analysis");
-    await waitForAppReady(page);
+    await waitForDataReady(page);
     await expect(
       page.getByRole("heading", { name: "데이터 분석" }),
     ).toBeVisible();
@@ -22,7 +22,7 @@ test.describe("데이터 분석", () => {
 
   test("등급 셀렉터에서 항목을 선택 해제할 수 있다", async ({ page }) => {
     await page.goto("/data-analysis");
-    await waitForAppReady(page);
+    await waitForDataReady(page);
     // 등급 Multiple Select 열기 (해당 FormControl의 combobox)
     const gradeSelect = page
       .locator(`[data-testid="${TEST_IDS.GRADE_SELECT}"]`)
@@ -43,7 +43,7 @@ test.describe("데이터 분석", () => {
     page,
   }) => {
     await page.goto("/data-analysis");
-    await waitForAppReady(page);
+    await waitForDataReady(page);
     // 고급 필터 다이얼로그 열기
     const advancedBtn = page.locator(`[data-testid="${TEST_IDS.ADVANCED_FILTER_BUTTON}"]`);
     await advancedBtn.waitFor();
