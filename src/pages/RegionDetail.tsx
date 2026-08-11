@@ -42,6 +42,12 @@ const buildLinkItems = (
     .sort((a, b) => (b.totalQuantityKg ?? 0) - (a.totalQuantityKg ?? 0));
 };
 
+/** 조합 페이지에서만 비교 기준을 준다. 지역 페이지는 비교 대상이 자기 자신이라 무의미 */
+const compareBaseline = (
+  stats: ScopeStats,
+  isUnion: boolean
+): number | null | undefined => (isUnion ? stats.season?.avgPricePerKg : undefined);
+
 type ScopeBodyProps = {
   stats: ScopeStats;
   manifest: RegionManifest;
@@ -84,11 +90,12 @@ const ScopeBody = ({ stats, manifest, union }: ScopeBodyProps) => {
       <ScopeLinkGrid
         title={
           isUnion
-            ? `${stats.region}의 다른 조합 시세`
+            ? `${stats.region}의 다른 조합 시세 (${stats.name} 대비)`
             : `${stats.region} 조합별 시세`
         }
         items={linkItems}
         emptyMessage="연결된 조합 페이지가 없습니다."
+        compareToPricePerKg={compareBaseline(stats, isUnion)}
       />
     </>
   );

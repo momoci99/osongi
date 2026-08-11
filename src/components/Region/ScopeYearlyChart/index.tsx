@@ -76,13 +76,23 @@ const ScopeYearlyChart = ({
         </Box>
       </Box>
       <DashboardCard>
-        <div ref={containerRef} style={{ width: "100%", position: "relative" }}>
+        {/** 막대가 최소 폭을 못 지키는 좁은 화면에서는 SVG가 컨테이너보다 넓어져 가로로 스크롤된다 */}
+        <Box
+          ref={containerRef}
+          sx={{
+            width: "100%",
+            position: "relative",
+            overflowX: "auto",
+            overflowY: "hidden",
+            WebkitOverflowScrolling: "touch",
+          }}
+        >
           <svg
             ref={svgRef}
             role="img"
             aria-label={`${scopeName} 연도별 공판량과 평균 단가 추이 차트`}
           />
-        </div>
+        </Box>
       </DashboardCard>
     </Box>
   );

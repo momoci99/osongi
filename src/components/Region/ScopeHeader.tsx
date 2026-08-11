@@ -9,6 +9,33 @@ type ScopeHeaderProps = {
   latestDate: string;
 };
 
+const NARRATIVE_SX = {
+  color: "text.secondary",
+  lineHeight: 1.75,
+  mb: 0.75,
+  maxWidth: "68ch",
+} as const;
+
+const DETAILS_SX = {
+  mt: 0.5,
+  "&[open] summary::after": { content: '"▲"' },
+} as const;
+
+const SUMMARY_SX = {
+  cursor: "pointer",
+  display: "inline-flex",
+  alignItems: "center",
+  gap: 0.5,
+  fontSize: "0.8125rem",
+  fontWeight: 600,
+  color: "text.secondary",
+  listStyle: "none",
+  mb: 1,
+  "&::-webkit-details-marker": { display: "none" },
+  "&::after": { content: '"▼"', fontSize: "0.625rem", opacity: 0.7 },
+  "&:hover": { color: "text.primary" },
+} as const;
+
 /**
  * 지역·조합 페이지 상단.
  * H1 하나와 요약 문단을 두어 검색엔진이 페이지 주제를 문장으로 파악할 수 있게 한다.
@@ -16,7 +43,7 @@ type ScopeHeaderProps = {
 const ScopeHeader = ({ stats, latestDate }: ScopeHeaderProps) => {
   const theme = useTheme();
   const isUnion = stats.name !== stats.region;
-  const paragraphs = buildScopeNarrative(stats);
+  const [leadParagraph, ...restParagraphs] = buildScopeNarrative(stats);
 
   return (
     <Box component="header" sx={{ mb: 3 }}>
@@ -79,20 +106,33 @@ const ScopeHeader = ({ stats, latestDate }: ScopeHeaderProps) => {
         {scopeLabel(stats)} · 최신 공판 데이터 {latestDate}
       </Typography>
 
-      {paragraphs.map((paragraph) => (
-        <Typography
-          key={paragraph.slice(0, 24)}
-          variant="body2"
-          sx={{
-            color: theme.palette.text.secondary,
-            lineHeight: 1.75,
-            mb: 0.75,
-            maxWidth: "68ch",
-          }}
-        >
-          {paragraph}
+      {leadParagraph && (
+        <Typography variant="body2" sx={NARRATIVE_SX}>
+          {leadParagraph}
         </Typography>
-      ))}
+      )}
+
+      {restParagraphs.length > 0 && (
+        /**
+         * 요약 문단은 색인 자산이라 지울 수 없지만, 전부 펼쳐 두면
+         * 지표가 스크롤 아래로 밀린다. native details 로 접어 두면
+         * DOM에는 남아 크롤러가 읽고 프리렌더 HTML과도 구조가 같다.
+         */
+        <Box component="details" sx={DETAILS_SX}>
+          <Box component="summary" sx={SUMMARY_SX}>
+            시즌 요약 자세히 보기
+          </Box>
+          {restParagraphs.map((paragraph) => (
+            <Typography
+              key={paragraph.slice(0, 24)}
+              variant="body2"
+              sx={NARRATIVE_SX}
+            >
+              {paragraph}
+            </Typography>
+          ))}
+        </Box>
+      )}
     </Box>
   );
 };

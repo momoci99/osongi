@@ -21,7 +21,8 @@ body{margin:0;background:var(--pr-bg);color:var(--pr-fg);font-family:"Pretendard
 .scope-kpis div{border:1px solid var(--pr-border);border-radius:0.75rem;background:var(--pr-paper);padding:16px}
 .scope-kpis dt{font-size:0.8125rem;color:var(--pr-muted);font-weight:500;margin-bottom:6px}
 .scope-kpis dd{margin:0;font-size:1.25rem;font-weight:700;line-height:1.25}
-.prerender table{width:100%;border-collapse:collapse;border:1px solid var(--pr-border);border-radius:0.75rem;background:var(--pr-paper);overflow:hidden;font-size:0.875rem}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.prerender table{width:100%;min-width:340px;border-collapse:collapse;border:1px solid var(--pr-border);border-radius:0.75rem;background:var(--pr-paper);overflow:hidden;font-size:0.875rem}
 .prerender thead th{text-align:right;font-weight:600;color:var(--pr-muted);padding:10px 12px;border-bottom:1px solid var(--pr-border);font-size:0.8125rem}
 .prerender thead th:first-child{text-align:left}
 .prerender tbody th{text-align:left;font-weight:500;padding:10px 12px}
@@ -32,7 +33,12 @@ body{margin:0;background:var(--pr-bg);color:var(--pr-fg);font-family:"Pretendard
 .scope-links a{display:block;color:var(--pr-fg);font-weight:600;font-size:0.875rem;text-decoration:none}
 .scope-links a:hover{color:var(--pr-primary)}
 .scope-links span{display:block;font-size:0.75rem;color:var(--pr-muted);margin-top:2px}
+.scope-more{margin-top:4px}
+.scope-more summary{cursor:pointer;list-style:none;font-size:0.8125rem;font-weight:600;color:var(--pr-muted);margin-bottom:8px}
+.scope-more summary::-webkit-details-marker{display:none}
+.scope-more summary::after{content:"▼";font-size:0.625rem;margin-left:6px;opacity:0.7}
+.scope-more[open] summary::after{content:"▲"}
 .scope-source{font-size:0.75rem!important;margin-top:32px!important}
 .scope-source a{color:inherit}
-@media (max-width:600px){.prerender h1{font-size:1.5rem}.prerender{padding:16px 12px 40px}}
+@media (max-width:600px){.prerender h1{font-size:1.5rem}.prerender{padding:16px 12px 40px}.prerender table{font-size:0.8125rem}.prerender thead th,.prerender tbody th,.prerender tbody td{padding:8px 10px;white-space:nowrap}.scope-links{grid-template-columns:1fr}.scope-links li{display:flex;align-items:center;justify-content:space-between;gap:8px}.scope-links span{margin-top:0;text-align:right;white-space:nowrap}}
 `.trim();

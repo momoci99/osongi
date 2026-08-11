@@ -18,4 +18,21 @@ export const YEARLY_TREND_CHART = {
   FONT_SIZE: 11,
   /** 기본 차트 높이 (px) */
   HEIGHT: 260,
+  /** 막대가 이보다 얇아지면 판독이 안 된다. 가로 스크롤로 전환하는 기준 (px) */
+  MIN_BAR_WIDTH: 14,
+  /** 모바일에서 오른쪽 가격 축 라벨을 생략해 확보하는 여백 (px) */
+  MOBILE_RIGHT_MARGIN: 12,
+} as const;
+
+/** 등급별 비중 막대 */
+export const GRADE_SHARE_BAR = {
+  HEIGHT: 6,
+  RADIUS: "3px",
+  OPACITY: 0.8,
+} as const;
+
+/** 조합 간 단가 비교 배지 */
+export const SCOPE_DELTA = {
+  /** 이 값 미만 차이는 "비슷함"으로 묶는다 (%) */
+  FLAT_THRESHOLD: 1,
 } as const;

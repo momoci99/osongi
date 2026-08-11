@@ -48,8 +48,26 @@ describe("RegionDetail", () => {
     expect(
       await screen.findByRole("heading", { level: 1, name: "봉화 송이 시세" })
     ).toBeInTheDocument();
-    expect(screen.getByText("300,000원")).toBeInTheDocument();
-    expect(screen.getByText("820,000원")).toBeInTheDocument();
+    /** 값과 단위를 분리해 렌더하므로 숫자만으로 찾는다 */
+    expect(screen.getByText("300,000")).toBeInTheDocument();
+    expect(screen.getByText("820,000")).toBeInTheDocument();
+  });
+
+  it("순위 모집단을 캡션에 밝힌다", async () => {
+    await renderAt("/region/경북/봉화");
+
+    expect(await screen.findByText("3")).toBeInTheDocument();
+    expect(screen.getByText("2025 시즌 집계 21개 조합 중")).toBeInTheDocument();
+  });
+
+  it("다른 조합 시세에 현재 조합 대비 차이를 붙인다", async () => {
+    await renderAt("/region/경북/봉화");
+
+    /** 울진 270,000원은 봉화 300,000원 대비 10% 낮다 */
+    expect(
+      await screen.findByRole("navigation", { name: /봉화 대비/ })
+    ).toBeInTheDocument();
+    expect(screen.getByText(/10%/)).toBeInTheDocument();
   });
 
   it("조합 페이지 제목·canonical을 조합 기준으로 갱신한다", async () => {
@@ -69,7 +87,7 @@ describe("RegionDetail", () => {
     expect(
       await screen.findByRole("heading", { level: 1, name: "경북 송이 시세" })
     ).toBeInTheDocument();
-    expect(screen.getByText("2곳")).toBeInTheDocument();
+    expect(screen.getByText("곳")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /울진/ })).toBeInTheDocument();
   });
 

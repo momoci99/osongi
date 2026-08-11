@@ -116,21 +116,39 @@ const gradeTable = (
   caption: string
 ): string => {
   if (stats.grades.length === 0) return "";
+  const total = stats.grades.reduce((sum, grade) => sum + grade.quantityKg, 0);
   const rows = stats.grades
     .map(
       (grade) => `<tr>
         <th scope="row">${escapeHtml(gradeLabel(grade.gradeKey))}</th>
         <td>${number(grade.avgUnitPriceWon)}</td>
         <td>${number(grade.quantityKg)}</td>
+        <td>${total > 0 ? ((grade.quantityKg / total) * 100).toFixed(1) : "0.0"}%</td>
       </tr>`
     )
     .join("");
 
   return `<h2>${escapeHtml(caption)}</h2>
-    <table>
-      <thead><tr><th scope="col">등급</th><th scope="col">평균 단가(원/kg)</th><th scope="col">공판량(kg)</th></tr></thead>
+    <div class="table-wrap"><table>
+      <thead><tr><th scope="col">등급</th><th scope="col">평균 단가(원/kg)</th><th scope="col">공판량(kg)</th><th scope="col">비중</th></tr></thead>
       <tbody>${rows}</tbody>
-    </table>`;
+    </table></div>`;
+};
+
+/**
+ * 요약 문단. 첫 문단만 펼치고 나머지는 details 로 접는다.
+ * 클라이언트 렌더와 같은 구조여서 첫 페인트 뒤 화면이 튀지 않고,
+ * 접힌 내용도 DOM 에 있어 색인에는 영향이 없다.
+ */
+const narrative = (stats: ScopeStats): string => {
+  const [lead, ...rest] = buildScopeNarrative(stats);
+  if (!lead) return "";
+  const head = `<p>${escapeHtml(lead)}</p>`;
+  if (rest.length === 0) return head;
+
+  return `${head}<details class="scope-more"><summary>시즌 요약 자세히 보기</summary>${rest
+    .map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`)
+    .join("")}</details>`;
 };
 
 const yearlyTable = (stats: ScopeStats): string => {
@@ -147,10 +165,10 @@ const yearlyTable = (stats: ScopeStats): string => {
     .join("");
 
   return `<h2>연도별 공판 추이</h2>
-    <table>
+    <div class="table-wrap"><table>
       <thead><tr><th scope="col">연도</th><th scope="col">평균 단가(원/kg)</th><th scope="col">공판량(톤)</th></tr></thead>
       <tbody>${rows}</tbody>
-    </table>`;
+    </table></div>`;
 };
 
 const linkList = (
@@ -189,8 +207,9 @@ const kpiList = (stats: ScopeStats): string => {
 
   if (stats.quantityRank) {
     entries.push({
-      term: "전국 조합 물량 순위",
-      value: `${stats.quantityRank.rank}위 / ${stats.quantityRank.of}곳`,
+      /** 집계가 있는 조합만 순위 모집단이라는 점을 문구로 못박는다 */
+      term: "물량 순위",
+      value: `${stats.quantityRank.rank}위 (집계 ${stats.quantityRank.of}개 조합 중)`,
     });
   }
 
@@ -271,9 +290,7 @@ const planScopePage = (
     ${breadcrumbNav(breadcrumbs)}
     <h1>${escapeHtml(heading)}</h1>
     <p class="scope-subtitle">${escapeHtml(subtitle)}</p>
-    ${buildScopeNarrative(stats)
-      .map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`)
-      .join("")}
+    ${narrative(stats)}
     ${kpiList(stats)}
     ${gradeTable(stats, `${stats.latestSeasonYear} 시즌 등급별 시세`)}
     ${stats.latestDaily && stats.latestDaily.grades.length > 0 ? gradeTable(stats.latestDaily, `최신 공판일 시세 (${stats.latestDaily.date})`) : ""}
@@ -290,25 +307,34 @@ const planScopePage = (
 
 const planIndexPage = (manifest: RegionManifest): PagePlan => {
   const regionItems = Object.values(manifest.regions).map((region) => ({
-    label: `${region.name} (조합 ${region.unions.length}곳)`,
+    label: `${region.name} (산림조합 ${region.unions.length}곳)`,
     path: regionPath(region.name),
     note: region.season ? `평균 ${number(region.season.avgPricePerKg)}원/kg` : "집계 없음",
   }));
 
-  const unionItems = Object.values(manifest.unions)
+  const unions = Object.values(manifest.unions);
+  const toItem = (union: ScopeStats) => ({
+    label: `${union.region} ${union.name}`,
+    path: unionPath(union.region, union.name),
+    note: union.season ? `평균 ${number(union.season.avgPricePerKg)}원/kg` : "집계 없음",
+  });
+
+  /** 클라이언트 화면과 같이 집계 없는 조합을 뒤로 분리한다 */
+  const unionItems = unions
+    .filter((union) => union.season !== null)
     .sort((a, b) => (b.season?.totalQuantityKg ?? 0) - (a.season?.totalQuantityKg ?? 0))
-    .map((union) => ({
-      label: `${union.region} ${union.name}`,
-      path: unionPath(union.region, union.name),
-      note: union.season ? `평균 ${number(union.season.avgPricePerKg)}원/kg` : "집계 없음",
-    }));
+    .map(toItem);
+  const unrecordedItems = unions
+    .filter((union) => union.season === null)
+    .map(toItem);
 
   const body = `<main class="prerender">
     ${breadcrumbNav([HOME_CRUMB, REGION_CRUMB])}
     <h1>지역별 송이 시세</h1>
-    <p>강원·경북·경남 ${Object.keys(manifest.regions).length}개 지역과 ${unionItems.length}개 산림조합의 송이버섯 공판 시세를 지역별로 제공합니다. ${manifest.latestSeasonYear} 시즌 등급별 평균 단가와 공판량, 연도별 추이를 각 페이지에서 확인할 수 있습니다.</p>
+    <p>강원·경북·경남 ${Object.keys(manifest.regions).length}개 지역과 ${unions.length}개 산림조합의 송이버섯 공판 시세를 지역별로 제공합니다. ${manifest.latestSeasonYear} 시즌 등급별 평균 단가와 공판량, 연도별 추이를 각 페이지에서 확인할 수 있습니다.</p>
     ${linkList("지역", regionItems)}
     ${linkList("산림조합 (최신 시즌 물량순)", unionItems)}
+    ${linkList("최신 시즌 집계 없음", unrecordedItems)}
     ${sourceNote(manifest.latestDate)}
   </main>`;
 

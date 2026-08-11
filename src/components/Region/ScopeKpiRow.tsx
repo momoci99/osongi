@@ -1,5 +1,5 @@
 import { Grid } from "@mui/material";
-import DashboardKpiCard from "../Dashboard/DashboardKpiCard";
+import ScopeKpiCard from "./ScopeKpiCard";
 import { GradeKeyToKorean } from "../../const/Common";
 import { KILOGRAMS_PER_TON } from "../../const/Units";
 import type { ScopeStats } from "../../types/region";
@@ -10,6 +10,8 @@ type ScopeKpiRowProps = {
   unionCount?: number;
 };
 
+const NO_DATA = "집계 없음";
+
 const gradeLabel = (gradeKey: string): string =>
   GradeKeyToKorean[gradeKey as keyof typeof GradeKeyToKorean] ?? gradeKey;
 
@@ -17,35 +19,36 @@ const gradeLabel = (gradeKey: string): string =>
 const ScopeKpiRow = ({ stats, unionCount }: ScopeKpiRowProps) => {
   const season = stats.season;
   const seasonCaption = `${stats.latestSeasonYear} 시즌`;
+  const isRegionPage = unionCount !== undefined;
+  const rank = stats.quantityRank;
 
   return (
     <Grid container spacing={{ xs: 1, sm: 2 }} sx={{ alignItems: "stretch" }}>
       <Grid size={{ xs: 6, sm: 3 }}>
-        <DashboardKpiCard
+        <ScopeKpiCard
           title="평균 단가"
-          content={
-            season ? `${season.avgPricePerKg.toLocaleString()}원` : "집계 없음"
-          }
+          value={season ? season.avgPricePerKg.toLocaleString("ko-KR") : NO_DATA}
+          unit={season ? "원" : undefined}
           caption={`${seasonCaption} · kg당`}
         />
       </Grid>
       <Grid size={{ xs: 6, sm: 3 }}>
-        <DashboardKpiCard
+        <ScopeKpiCard
           title="공판량"
-          content={
+          value={
             season
-              ? `${(season.totalQuantityKg / KILOGRAMS_PER_TON).toFixed(1)}톤`
-              : "집계 없음"
+              ? (season.totalQuantityKg / KILOGRAMS_PER_TON).toFixed(1)
+              : NO_DATA
           }
+          unit={season ? "톤" : undefined}
           caption={seasonCaption}
         />
       </Grid>
       <Grid size={{ xs: 6, sm: 3 }}>
-        <DashboardKpiCard
+        <ScopeKpiCard
           title="최고 단가"
-          content={
-            stats.peak ? `${stats.peak.priceWon.toLocaleString()}원` : "집계 없음"
-          }
+          value={stats.peak ? stats.peak.priceWon.toLocaleString("ko-KR") : NO_DATA}
+          unit={stats.peak ? "원" : undefined}
           caption={
             stats.peak
               ? `${stats.peak.date} · ${gradeLabel(stats.peak.gradeKey)}`
@@ -54,18 +57,20 @@ const ScopeKpiRow = ({ stats, unionCount }: ScopeKpiRowProps) => {
         />
       </Grid>
       <Grid size={{ xs: 6, sm: 3 }}>
-        <DashboardKpiCard
-          title={unionCount === undefined ? "전국 물량 순위" : "소속 조합"}
-          content={
-            unionCount === undefined
-              ? stats.quantityRank
-                ? `${stats.quantityRank.rank}위`
-                : "집계 없음"
-              : `${unionCount}곳`
+        <ScopeKpiCard
+          title={isRegionPage ? "소속 조합" : "물량 순위"}
+          value={
+            isRegionPage
+              ? String(unionCount)
+              : rank
+                ? String(rank.rank)
+                : NO_DATA
           }
+          unit={isRegionPage ? "곳" : rank ? "위" : undefined}
+          /** 허브의 조합 수(21)와 어긋나 보이지 않도록 모집단을 밝힌다 */
           caption={
-            unionCount === undefined && stats.quantityRank
-              ? `${seasonCaption} · ${stats.quantityRank.of}개 조합 중`
+            !isRegionPage && rank
+              ? `${seasonCaption} 집계 ${rank.of}개 조합 중`
               : seasonCaption
           }
         />

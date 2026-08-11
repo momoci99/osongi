@@ -1,4 +1,8 @@
-import { AVAILABLE_REGIONS, REGION_UNION_MAP } from "./Common";
+import { AVAILABLE_REGIONS, REGION_BASE_HUES, REGION_UNION_MAP } from "./Common";
+
+/** 지역 색 도트의 채도·명도 (HSL) */
+const REGION_DOT_SATURATION = 58;
+const REGION_DOT_LIGHTNESS = 48;
 
 export type RegionName = (typeof AVAILABLE_REGIONS)[number];
 
@@ -23,6 +27,18 @@ export const encodeRoute = (path: string): string =>
     .split("/")
     .map((segment) => encodeURIComponent(segment))
     .join("/");
+
+/**
+ * 지역 식별 색.
+ * 조합 목록이 지역 구분 없이 나열되면 어디 조합인지 매번 이름을 읽어야 한다.
+ * 대시보드가 쓰는 지역 색조를 그대로 재사용해 화면 간 색 의미를 통일한다.
+ */
+export const regionColor = (region: string): string => {
+  const hue = REGION_BASE_HUES[region];
+  return hue === undefined
+    ? "transparent"
+    : `hsl(${hue}, ${REGION_DOT_SATURATION}%, ${REGION_DOT_LIGHTNESS}%)`;
+};
 
 /** 유효한 지역명인지 검사 */
 export const isRegionName = (value: string | undefined): value is RegionName =>

@@ -20,7 +20,10 @@ const items: ScopeLinkItem[] = [
   },
 ];
 
-const renderGrid = (list: ScopeLinkItem[] = items) =>
+const renderGrid = (
+  list: ScopeLinkItem[] = items,
+  compareToPricePerKg?: number | null
+) =>
   render(
     <ThemeProvider theme={theme}>
       <MemoryRouter>
@@ -28,6 +31,7 @@ const renderGrid = (list: ScopeLinkItem[] = items) =>
           title="경북 조합별 시세"
           items={list}
           emptyMessage="연결된 조합 페이지가 없습니다."
+          compareToPricePerKg={compareToPricePerKg}
         />
       </MemoryRouter>
     </ThemeProvider>
@@ -62,6 +66,25 @@ describe("ScopeLinkGrid", () => {
     renderGrid();
 
     expect(screen.getByText("최신 시즌 집계 없음")).toBeInTheDocument();
+  });
+
+  it("기준 단가를 주면 항목마다 차이를 배지로 붙인다", () => {
+    renderGrid(items, 250000);
+
+    /** 봉화 300,000원은 기준 250,000원보다 20% 높다 */
+    expect(screen.getByText(/▲ 20%/)).toBeInTheDocument();
+  });
+
+  it("차이가 미미하면 배지를 붙이지 않는다", () => {
+    renderGrid(items, 300500);
+
+    expect(screen.queryByText(/%/)).not.toBeInTheDocument();
+  });
+
+  it("기준 단가가 없으면 배지를 붙이지 않는다", () => {
+    renderGrid();
+
+    expect(screen.queryByText(/▲|▼/)).not.toBeInTheDocument();
   });
 
   it("항목이 없으면 빈 상태 문구만 남는다", () => {

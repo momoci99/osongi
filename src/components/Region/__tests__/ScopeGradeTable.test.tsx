@@ -21,6 +21,12 @@ const renderTable = (props: Partial<{ grades: GradeStat[] }> = {}) =>
     </ThemeProvider>
   );
 
+/** 좁은 화면용 카드와 표가 같이 렌더되므로 표 안으로 범위를 좁혀 찾는다 */
+const tableRow = (gradeLabel: string) =>
+  within(screen.getByRole("table"))
+    .getByText(gradeLabel)
+    .closest("tr") as HTMLElement;
+
 describe("ScopeGradeTable", () => {
   it("소제목을 h2로 노출한다", () => {
     renderTable();
@@ -33,23 +39,39 @@ describe("ScopeGradeTable", () => {
   it("등급 키를 한글 등급명으로 바꿔 보여준다", () => {
     renderTable();
 
-    expect(screen.getByText("1등품")).toBeInTheDocument();
-    expect(screen.getByText("2등품")).toBeInTheDocument();
+    const table = within(screen.getByRole("table"));
+    expect(table.getByText("1등품")).toBeInTheDocument();
+    expect(table.getByText("2등품")).toBeInTheDocument();
   });
 
   it("단가·물량을 천 단위로 끊어 보여준다", () => {
     renderTable();
 
-    const row = screen.getByText("1등품").closest("tr");
-    expect(within(row!).getByText("500,000")).toBeInTheDocument();
-    expect(within(row!).getByText("2,500")).toBeInTheDocument();
+    const row = tableRow("1등품");
+    expect(within(row).getByText("500,000")).toBeInTheDocument();
+    expect(within(row).getByText("2,500")).toBeInTheDocument();
+  });
+
+  it("소수점 물량은 정수로 끊는다", () => {
+    renderTable({
+      grades: [{ gradeKey: "grade1", quantityKg: 2337.76, avgUnitPriceWon: 500000 }],
+    });
+
+    expect(within(tableRow("1등품")).getByText("2,338")).toBeInTheDocument();
   });
 
   it("전체 물량 대비 비중을 계산한다", () => {
     renderTable();
 
-    const row = screen.getByText("1등품").closest("tr");
-    expect(within(row!).getByText("25.0%")).toBeInTheDocument();
+    expect(within(tableRow("1등품")).getByText("25.0%")).toBeInTheDocument();
+  });
+
+  it("좁은 화면용 카드 목록을 표와 함께 렌더한다", () => {
+    renderTable();
+
+    /** 같은 등급이 카드와 표 양쪽에 있어야 CSS 분기가 성립한다 */
+    expect(screen.getAllByText("1등품")).toHaveLength(2);
+    expect(screen.getByText("2,500kg")).toBeInTheDocument();
   });
 
   it("등급이 없으면 안내 문구를 대신 보여준다", () => {
