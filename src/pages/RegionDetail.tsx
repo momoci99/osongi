@@ -1,4 +1,4 @@
-import { Container, Divider, Skeleton, Typography } from "@mui/material";
+import { Container, Skeleton, Typography } from "@mui/material";
 import { Navigate, useParams } from "react-router";
 import useRegionManifest from "../hooks/useRegionManifest";
 import usePageMeta from "../hooks/usePageMeta";
@@ -15,10 +15,12 @@ import ScopeHeader from "../components/Region/ScopeHeader";
 import ScopeKpiRow from "../components/Region/ScopeKpiRow";
 import ScopeGradeTable from "../components/Region/ScopeGradeTable";
 import ScopeYearlyChart from "../components/Region/ScopeYearlyChart";
-import ScopeLinkGrid, {
-  type ScopeLinkItem,
-} from "../components/Region/ScopeLinkGrid";
-import type { RegionManifest, ScopeStats } from "../types/region";
+import ScopeRankList from "../components/Region/ScopeRankList";
+import type {
+  RegionManifest,
+  ScopeLinkItem,
+  ScopeStats,
+} from "../types/region";
 
 /** 지역 페이지는 소속 조합, 조합 페이지는 같은 지역의 다른 조합을 링크한다 */
 const buildLinkItems = (
@@ -35,6 +37,7 @@ const buildLinkItems = (
       return {
         name,
         path: unionPath(region, name),
+        region,
         avgPricePerKg: stats?.season?.avgPricePerKg ?? null,
         totalQuantityKg: stats?.season?.totalQuantityKg ?? null,
       };
@@ -67,8 +70,6 @@ const ScopeBody = ({ stats, manifest, union }: ScopeBodyProps) => {
         unionCount={isUnion ? undefined : (manifest.regions[stats.region]?.unions.length ?? 0)}
       />
 
-      <Divider sx={{ my: 3 }} />
-
       <ScopeGradeTable
         grades={stats.grades}
         caption={`${stats.latestSeasonYear} 시즌 등급별 시세`}
@@ -87,11 +88,16 @@ const ScopeBody = ({ stats, manifest, union }: ScopeBodyProps) => {
         <ScopeYearlyChart yearly={stats.yearly} scopeName={stats.name} />
       )}
 
-      <ScopeLinkGrid
+      <ScopeRankList
         title={
           isUnion
-            ? `${stats.region}의 다른 조합 시세 (${stats.name} 대비)`
+            ? `${stats.region}의 다른 조합 시세`
             : `${stats.region} 조합별 시세`
+        }
+        caption={
+          isUnion
+            ? `${stats.latestSeasonYear} 시즌 · ${stats.name} 대비 단가 차이`
+            : `${stats.latestSeasonYear} 시즌 물량순`
         }
         items={linkItems}
         emptyMessage="연결된 조합 페이지가 없습니다."

@@ -1,5 +1,6 @@
 import { Box, Typography, useTheme } from "@mui/material";
 import DashboardCard from "../../Dashboard/DashboardCard";
+import ScopeSectionHeading from "../ScopeSectionHeading";
 import useDrawYearlyTrend from "./useDrawYearlyTrend";
 import { YEARLY_TREND_CHART } from "../../../const/Charts";
 import type { YearStat } from "../../../types/region";
@@ -44,37 +45,24 @@ const ScopeYearlyChart = ({
   const lastYear = yearly[yearly.length - 1]?.year;
 
   return (
-    <Box sx={{ mb: 3 }}>
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "baseline",
-          justifyContent: "space-between",
-          flexWrap: "wrap",
-          gap: 1,
-          mb: 1.5,
-        }}
-      >
-        <Typography
-          component="h2"
-          variant="h6"
-          sx={{ fontWeight: 700, fontSize: "1rem" }}
-        >
-          연도별 공판 추이 {firstYear && `(${firstYear}~${lastYear})`}
-        </Typography>
-        <Box sx={{ display: "flex", gap: 2 }}>
-          <LegendItem
-            color={theme.palette.chart.weight.main}
-            label="공판량(톤)"
-            shape="bar"
-          />
-          <LegendItem
-            color={theme.palette.chart.price.main}
-            label="평균 단가(원/kg)"
-            shape="line"
-          />
-        </Box>
-      </Box>
+    <Box>
+      <ScopeSectionHeading
+        title={`연도별 공판 추이${firstYear ? ` (${firstYear}~${lastYear})` : ""}`}
+        action={
+          <Box sx={{ display: "flex", gap: 2 }}>
+            <LegendItem
+              color={theme.palette.chart.weight.main}
+              label="공판량(톤)"
+              shape="bar"
+            />
+            <LegendItem
+              color={theme.palette.chart.price.main}
+              label="평균 단가(원/kg)"
+              shape="line"
+            />
+          </Box>
+        }
+      />
       <DashboardCard>
         {/** 막대가 최소 폭을 못 지키는 좁은 화면에서는 SVG가 컨테이너보다 넓어져 가로로 스크롤된다 */}
         <Box

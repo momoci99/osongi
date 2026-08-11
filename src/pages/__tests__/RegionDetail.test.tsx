@@ -65,8 +65,9 @@ describe("RegionDetail", () => {
 
     /** 울진 270,000원은 봉화 300,000원 대비 10% 낮다 */
     expect(
-      await screen.findByRole("navigation", { name: /봉화 대비/ })
+      await screen.findByRole("navigation", { name: "경북의 다른 조합 시세" })
     ).toBeInTheDocument();
+    expect(screen.getByText("봉화 대비 단가 차이", { exact: false })).toBeInTheDocument();
     expect(screen.getByText(/10%/)).toBeInTheDocument();
   });
 

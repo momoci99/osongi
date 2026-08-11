@@ -58,6 +58,21 @@ export type RegionScopeStats = ScopeStats & {
   unions: string[];
 };
 
+/** 조합 목록 정렬 기준 */
+export type UnionSortKey = "quantity" | "price";
+
+/** 지역·조합 상호 링크 목록의 행 하나 */
+export type ScopeLinkItem = {
+  name: string;
+  path: string;
+  /** 소속 지역. 색 도트와 물량 막대 색을 정한다 */
+  region: string;
+  avgPricePerKg: number | null;
+  totalQuantityKg: number | null;
+  /** 카드에 덧붙일 보조 설명 (조합 수 등) */
+  note?: string;
+};
+
 export type RegionManifest = {
   generatedAt: string;
   latestDate: string;

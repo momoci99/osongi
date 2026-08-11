@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import type { Theme } from "@mui/material/styles";
 import DashboardCard from "../Dashboard/DashboardCard";
+import ScopeSectionHeading from "./ScopeSectionHeading";
 import { GradeKeyToKorean } from "../../const/Common";
 import { GRADE_SHARE_BAR } from "../../const/Charts";
 import type { GradeStat } from "../../types/region";
@@ -227,14 +228,8 @@ const ScopeGradeTable = ({ grades, caption, emptyMessage }: ScopeGradeTableProps
   const rows = toRows(grades, theme);
 
   return (
-    <Box sx={{ mb: 3 }}>
-      <Typography
-        component="h2"
-        variant="h6"
-        sx={{ fontWeight: 700, fontSize: "1rem", mb: 1.5 }}
-      >
-        {caption}
-      </Typography>
+    <Box>
+      <ScopeSectionHeading title={caption} />
       <DashboardCard>
         {rows.length === 0 ? (
           <Typography

@@ -1,5 +1,14 @@
 import { AVAILABLE_REGIONS, REGION_BASE_HUES, REGION_UNION_MAP } from "./Common";
 
+/** 지역 필터에서 "필터 없음"을 뜻하는 값 */
+export const ALL_REGIONS_FILTER = "전체";
+
+/** 조합 목록 정렬 기준 라벨 */
+export const UNION_SORT_LABELS = {
+  quantity: "물량순",
+  price: "단가순",
+} as const;
+
 /** 지역 색 도트의 채도·명도 (HSL) */
 const REGION_DOT_SATURATION = 58;
 const REGION_DOT_LIGHTNESS = 48;
@@ -38,6 +47,17 @@ export const regionColor = (region: string): string => {
   return hue === undefined
     ? "transparent"
     : `hsl(${hue}, ${REGION_DOT_SATURATION}%, ${REGION_DOT_LIGHTNESS}%)`;
+};
+
+/**
+ * 지역 색의 반투명 버전.
+ * 물량 막대·행 배경처럼 텍스트 뒤에 색을 깔 때 도트와 같은 색상환을 유지한다.
+ */
+export const regionColorAlpha = (region: string, alpha: number): string => {
+  const hue = REGION_BASE_HUES[region];
+  return hue === undefined
+    ? "transparent"
+    : `hsla(${hue}, ${REGION_DOT_SATURATION}%, ${REGION_DOT_LIGHTNESS}%, ${alpha})`;
 };
 
 /** 유효한 지역명인지 검사 */
