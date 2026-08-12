@@ -30,7 +30,18 @@ const RegionSparkline = ({ yearly, color }: RegionSparklineProps) => {
       viewBox={`0 0 ${REGION_SPARKLINE.WIDTH} ${REGION_SPARKLINE.HEIGHT}`}
       width={REGION_SPARKLINE.WIDTH}
       height={REGION_SPARKLINE.HEIGHT}
-      sx={{ display: "block", overflow: "visible" }}
+      sx={{
+        display: "block",
+        overflow: "visible",
+        width: {
+          xs: REGION_SPARKLINE.MOBILE_WIDTH,
+          sm: REGION_SPARKLINE.WIDTH,
+        },
+        height: {
+          xs: REGION_SPARKLINE.MOBILE_HEIGHT,
+          sm: REGION_SPARKLINE.HEIGHT,
+        },
+      }}
     >
       <path d={paths.area} fill={color} opacity={REGION_SPARKLINE.AREA_OPACITY} />
       <path

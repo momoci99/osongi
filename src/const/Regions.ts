@@ -9,6 +9,16 @@ export const UNION_SORT_LABELS = {
   price: "단가순",
 } as const;
 
+/**
+ * 랭크 리스트 막대가 나타내는 값의 열 제목.
+ * 막대는 항상 현재 정렬 기준을 그린다. 그래야 제목을 읽지 않아도
+ * 목록이 무엇으로 줄 세워졌는지 눈으로 확인된다.
+ */
+export const UNION_METRIC_HEADERS = {
+  quantity: "공판량 비중",
+  price: "단가 (목록 최저~최고)",
+} as const;
+
 /** 지역 색 도트의 채도·명도 (HSL) */
 const REGION_DOT_SATURATION = 58;
 const REGION_DOT_LIGHTNESS = 48;

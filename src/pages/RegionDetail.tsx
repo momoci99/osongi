@@ -12,7 +12,8 @@ import {
 } from "../const/Regions";
 import { toScopeMetaFacts } from "../utils/regionNarrative";
 import ScopeHeader from "../components/Region/ScopeHeader";
-import ScopeKpiRow from "../components/Region/ScopeKpiRow";
+import ScopeHero from "../components/Region/ScopeHero";
+import ScopeStatSummary from "../components/Region/ScopeStatSummary";
 import ScopeGradeTable from "../components/Region/ScopeGradeTable";
 import ScopeYearlyChart from "../components/Region/ScopeYearlyChart";
 import ScopeRankList from "../components/Region/ScopeRankList";
@@ -45,11 +46,13 @@ const buildLinkItems = (
     .sort((a, b) => (b.totalQuantityKg ?? 0) - (a.totalQuantityKg ?? 0));
 };
 
-/** 조합 페이지에서만 비교 기준을 준다. 지역 페이지는 비교 대상이 자기 자신이라 무의미 */
-const compareBaseline = (
-  stats: ScopeStats,
-  isUnion: boolean
-): number | null | undefined => (isUnion ? stats.season?.avgPricePerKg : undefined);
+/**
+ * 단가 비교 기준.
+ * 조합 페이지는 지금 보는 조합, 지역 페이지는 그 지역 평균이다.
+ * 기준이 없으면 조합이 열 개 넘게 늘어서도 어디가 비싼지 숫자를 일일이 대봐야 한다.
+ */
+const compareBaseline = (stats: ScopeStats): number | null | undefined =>
+  stats.season?.avgPricePerKg;
 
 type ScopeBodyProps = {
   stats: ScopeStats;
@@ -64,11 +67,20 @@ const ScopeBody = ({ stats, manifest, union }: ScopeBodyProps) => {
 
   return (
     <>
-      <ScopeHeader stats={stats} latestDate={manifest.latestDate} />
-      <ScopeKpiRow
-        stats={stats}
-        unionCount={isUnion ? undefined : (manifest.regions[stats.region]?.unions.length ?? 0)}
-      />
+      <ScopeHero
+        stats={
+          <ScopeStatSummary
+            stats={stats}
+            unionCount={
+              isUnion
+                ? undefined
+                : (manifest.regions[stats.region]?.unions.length ?? 0)
+            }
+          />
+        }
+      >
+        <ScopeHeader stats={stats} latestDate={manifest.latestDate} />
+      </ScopeHero>
 
       <ScopeGradeTable
         grades={stats.grades}
@@ -96,12 +108,12 @@ const ScopeBody = ({ stats, manifest, union }: ScopeBodyProps) => {
         }
         caption={
           isUnion
-            ? `${stats.latestSeasonYear} 시즌 · ${stats.name} 대비 단가 차이`
-            : `${stats.latestSeasonYear} 시즌 물량순`
+            ? `${stats.latestSeasonYear} 시즌 물량순 · ${stats.name} 대비 단가 차이`
+            : `${stats.latestSeasonYear} 시즌 물량순 · 지역 평균 대비 단가 차이`
         }
         items={linkItems}
         emptyMessage="연결된 조합 페이지가 없습니다."
-        compareToPricePerKg={compareBaseline(stats, isUnion)}
+        compareToPricePerKg={compareBaseline(stats)}
       />
     </>
   );

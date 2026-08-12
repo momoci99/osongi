@@ -11,16 +11,17 @@ body{margin:0;background:var(--pr-bg);color:var(--pr-fg);font-family:"Pretendard
 .prerender{max-width:1152px;margin:0 auto;padding:24px 16px 48px}
 .prerender h1{font-size:1.75rem;font-weight:700;letter-spacing:-0.01em;margin:0 0 4px}
 .prerender h2{font-size:1rem;font-weight:700;margin:32px 0 12px}
-.prerender p{margin:0 0 8px;line-height:1.75;color:var(--pr-muted);max-width:68ch;font-size:0.9375rem}
+.prerender p{margin:0 0 8px;line-height:1.75;color:var(--pr-muted);max-width:62ch;font-size:0.9375rem}
 .scope-breadcrumb{font-size:0.8125rem;color:var(--pr-muted);margin-bottom:12px}
 .scope-breadcrumb a{color:inherit;text-decoration:none}
 .scope-breadcrumb a:hover{text-decoration:underline}
 .scope-breadcrumb .sep{margin:0 6px;opacity:0.5}
 .scope-subtitle{font-size:0.875rem!important;margin-bottom:16px!important}
-.scope-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin:20px 0 0}
-.scope-kpis div{border:1px solid var(--pr-border);border-radius:0.75rem;background:var(--pr-paper);padding:16px}
-.scope-kpis dt{font-size:0.8125rem;color:var(--pr-muted);font-weight:500;margin-bottom:6px}
-.scope-kpis dd{margin:0;font-size:1.25rem;font-weight:700;line-height:1.25}
+.scope-kpis{border:1px solid var(--pr-border);border-radius:0.75rem;background:var(--pr-paper);margin:20px 0 0;overflow:hidden;max-width:360px}
+.scope-kpis div{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:12px 16px}
+.scope-kpis div+div{border-top:1px solid var(--pr-border)}
+.scope-kpis dt{font-size:0.8125rem;color:var(--pr-muted);font-weight:500}
+.scope-kpis dd{margin:0;font-size:1.125rem;font-weight:700;line-height:1.25;text-align:right;font-variant-numeric:tabular-nums}
 .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
 .prerender table{width:100%;min-width:340px;border-collapse:collapse;border:1px solid var(--pr-border);border-radius:0.75rem;background:var(--pr-paper);overflow:hidden;font-size:0.875rem}
 .prerender thead th{text-align:right;font-weight:600;color:var(--pr-muted);padding:10px 12px;border-bottom:1px solid var(--pr-border);font-size:0.8125rem}

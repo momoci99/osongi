@@ -4,7 +4,8 @@ import ScopeSectionHeading from "./ScopeSectionHeading";
 import ScopeRankRow from "./ScopeRankRow";
 import { SCOPE_DELTA } from "../../const/Charts";
 import { SCOPE_RANK_LIST } from "../../const/RegionLayout";
-import type { ScopeLinkItem } from "../../types/region";
+import { UNION_METRIC_HEADERS } from "../../const/Regions";
+import type { ScopeLinkItem, UnionSortKey } from "../../types/region";
 
 type ScopeRankListProps = {
   title: string;
@@ -23,6 +24,8 @@ type ScopeRankListProps = {
   compareToPricePerKg?: number | null;
   /** 지역 색 도트와 지역명 표시 여부. 여러 지역이 섞인 목록에서만 켠다 */
   showRegion?: boolean;
+  /** 막대가 나타낼 지표. 목록의 정렬 기준과 항상 일치시킨다 */
+  metric?: UnionSortKey;
   /** 첫 섹션이면 위 여백을 줄인다 */
   dense?: boolean;
 };
@@ -37,23 +40,48 @@ const priceDelta = (
   return Math.abs(delta) < SCOPE_DELTA.FLAT_THRESHOLD ? null : delta;
 };
 
-/** 최대 물량을 100%로 잡은 막대 폭. 0에 가까운 값도 존재는 보이게 한다 */
-const barPercent = (quantityKg: number | null, max: number): number => {
-  if (quantityKg === null || max <= 0) return 0;
-  return Math.max(
-    SCOPE_RANK_LIST.MIN_BAR_PERCENT,
-    Math.round((quantityKg / max) * 100)
-  );
+/** 막대가 그릴 값의 범위. 물량은 0부터, 단가는 목록의 최저값부터 잰다 */
+type MetricScale = { min: number; max: number };
+
+/**
+ * 막대 기준 범위.
+ *
+ * 물량은 0이 의미 있는 바닥이라 최대값만 있으면 된다.
+ * 단가는 조합 간 차이가 16만~28만 구간에 몰려 있어 0부터 그리면
+ * 모든 막대가 60% 넘게 차 차이가 사라진다. 목록의 최저~최고를 축으로 잡는다.
+ */
+const metricScale = (items: ScopeLinkItem[], metric: UnionSortKey): MetricScale => {
+  const values = items
+    .map((item) => (metric === "quantity" ? item.totalQuantityKg : item.avgPricePerKg))
+    .filter((value): value is number => value !== null);
+
+  if (values.length === 0) return { min: 0, max: 0 };
+  const max = Math.max(...values);
+
+  return metric === "quantity" ? { min: 0, max } : { min: Math.min(...values), max };
 };
 
-type ColumnHeaderProps = { showRegion: boolean };
+const metricValue = (item: ScopeLinkItem, metric: UnionSortKey): number | null =>
+  metric === "quantity" ? item.totalQuantityKg : item.avgPricePerKg;
+
+/** 막대 폭. 0에 가까운 값도 존재는 보이게 한다 */
+const barPercent = (value: number | null, scale: MetricScale): number => {
+  if (value === null || scale.max <= 0) return 0;
+  const span = scale.max - scale.min;
+  /** 값이 모두 같으면 비교할 것이 없으니 가득 채운다 */
+  const ratio = span <= 0 ? 1 : (value - scale.min) / span;
+
+  return Math.max(SCOPE_RANK_LIST.MIN_BAR_PERCENT, Math.round(ratio * 100));
+};
+
+type ColumnHeaderProps = { showRegion: boolean; metric: UnionSortKey };
 
 /**
  * 열 제목 줄.
  * 값 옆마다 "평균", "원/kg", "톤"을 반복해 붙이면 행이 시끄러워진다.
  * 단위를 머리글로 한 번만 선언하고 행에는 숫자만 남긴다.
  */
-const ColumnHeader = ({ showRegion }: ColumnHeaderProps) => {
+const ColumnHeader = ({ showRegion, metric }: ColumnHeaderProps) => {
   const cellSx = { color: "text.secondary", whiteSpace: "nowrap" } as const;
 
   return (
@@ -82,7 +110,7 @@ const ColumnHeader = ({ showRegion }: ColumnHeaderProps) => {
         variant="caption"
         sx={{ ...cellSx, display: { xs: "none", sm: "block" } }}
       >
-        공판량 비중
+        {UNION_METRIC_HEADERS[metric]}
       </Typography>
       <Typography variant="caption" sx={{ ...cellSx, textAlign: "right" }}>
         톤
@@ -110,12 +138,10 @@ const ScopeRankList = ({
   toolbar,
   compareToPricePerKg,
   showRegion = false,
+  metric = "quantity",
   dense = false,
 }: ScopeRankListProps) => {
-  const maxQuantityKg = items.reduce(
-    (max, item) => Math.max(max, item.totalQuantityKg ?? 0),
-    0
-  );
+  const scale = metricScale(items, metric);
   let rank = 0;
 
   return (
@@ -133,7 +159,7 @@ const ScopeRankList = ({
         </Typography>
       ) : (
         <Box component="nav" aria-label={title}>
-          <ColumnHeader showRegion={showRegion} />
+          <ColumnHeader showRegion={showRegion} metric={metric} />
           {items.map((item) => {
             /** 집계가 없는 조합은 순위를 매기지 않는다 */
             const rowRank = item.totalQuantityKg === null ? null : ++rank;
@@ -143,7 +169,7 @@ const ScopeRankList = ({
                 key={item.path}
                 item={item}
                 rank={rowRank}
-                percent={barPercent(item.totalQuantityKg, maxQuantityKg)}
+                percent={barPercent(metricValue(item, metric), scale)}
                 delta={priceDelta(item.avgPricePerKg, compareToPricePerKg)}
                 showRegion={showRegion}
               />

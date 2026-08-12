@@ -67,16 +67,22 @@ const GradeDot = ({ color }: GradeDotProps) => (
   />
 );
 
-type ShareBarProps = { percent: number; color: string };
+type ShareBarProps = {
+  percent: number;
+  color: string;
+  /** 표 안에서는 트랙이 무한정 늘어나지 않게 상한을 둔다 */
+  maxWidth?: number;
+};
 
 /**
  * 비중을 숫자만 보여주면 등외품 편중 같은 쏠림이 눈에 들어오지 않는다.
  * 막대를 겹쳐 한눈에 비율이 읽히게 한다.
  */
-const ShareBar = ({ percent, color }: ShareBarProps) => (
+const ShareBar = ({ percent, color, maxWidth }: ShareBarProps) => (
   <Box
     sx={{
       width: "100%",
+      maxWidth,
       height: GRADE_SHARE_BAR.HEIGHT,
       borderRadius: GRADE_SHARE_BAR.RADIUS,
       bgcolor: "action.hover",
@@ -202,7 +208,11 @@ const GradeTable = ({ rows }: GradeRowsProps) => (
                   justifyContent: "flex-end",
                 }}
               >
-                <ShareBar percent={row.sharePercent} color={row.color} />
+                <ShareBar
+                  percent={row.sharePercent}
+                  color={row.color}
+                  maxWidth={GRADE_SHARE_BAR.TABLE_MAX_WIDTH}
+                />
                 <Typography
                   variant="caption"
                   sx={{

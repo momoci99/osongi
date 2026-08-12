@@ -29,6 +29,12 @@ export const GRADE_SHARE_BAR = {
   HEIGHT: 6,
   RADIUS: "3px",
   OPACITY: 0.8,
+  /**
+   * 표 안에서의 막대 최대 폭 (px).
+   * 트랙이 넓은 화면에서 200px 넘게 늘어나면 2% 항목은 점 하나만 남고
+   * 나머지가 전부 빈 트랙이 되어 표에 회색 띠만 늘어선다.
+   */
+  TABLE_MAX_WIDTH: 120,
 } as const;
 
 /** 조합 간 단가 비교 배지 */

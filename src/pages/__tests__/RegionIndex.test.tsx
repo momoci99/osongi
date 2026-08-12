@@ -97,10 +97,10 @@ describe("RegionIndex", () => {
     await renderIndex();
 
     expect(
-      await screen.findByText("최신 시즌 최고 단가", {}, { timeout: 3000 })
+      await screen.findByText("최고 단가 조합", {}, { timeout: 3000 })
     ).toBeInTheDocument();
     /** 인제 320,000원이 최고 단가 */
-    expect(screen.getByText("강원 인제 · kg당")).toBeInTheDocument();
+    expect(screen.getByText("강원 인제 · 2025 시즌")).toBeInTheDocument();
     /** 경북 12,000kg + 강원 5,000kg */
     expect(screen.getByText("전체 공판량")).toBeInTheDocument();
     expect(screen.getByText("17.0")).toBeInTheDocument();

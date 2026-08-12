@@ -123,7 +123,7 @@ const RegionSummaryCard = ({ region }: RegionSummaryCardProps) => {
 
       <Box
         sx={{
-          display: { xs: "none", sm: "flex" },
+          display: "flex",
           flexDirection: "column",
           alignItems: "flex-end",
           gap: 0.5,
@@ -131,7 +131,10 @@ const RegionSummaryCard = ({ region }: RegionSummaryCardProps) => {
         }}
       >
         <RegionSparkline yearly={region.yearly} color={color} />
-        <Typography variant="caption" sx={{ color: "text.secondary" }}>
+        <Typography
+          variant="caption"
+          sx={{ color: "text.secondary", display: { xs: "none", sm: "block" } }}
+        >
           {yearRangeLabel(years)} 단가
         </Typography>
       </Box>

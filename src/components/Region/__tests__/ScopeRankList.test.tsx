@@ -86,6 +86,14 @@ describe("ScopeRankList", () => {
     expect(screen.queryByRole("navigation")).not.toBeInTheDocument();
   });
 
+  it("단가순에서는 막대 열 제목이 단가 기준으로 바뀐다", () => {
+    renderList({ metric: "price" });
+
+    const nav = within(screen.getByRole("navigation", { name: "산림조합" }));
+    expect(nav.getByText("단가 (목록 최저~최고)")).toBeInTheDocument();
+    expect(nav.queryByText("공판량 비중")).not.toBeInTheDocument();
+  });
+
   it("showRegion 을 켜면 지역명을 함께 노출한다", () => {
     renderList({ showRegion: true });
 

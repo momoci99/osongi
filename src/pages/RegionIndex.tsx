@@ -4,8 +4,12 @@ import useRegionManifest from "../hooks/useRegionManifest";
 import usePageMeta from "../hooks/usePageMeta";
 import { PAGE_META } from "../const/Seo";
 import { ALL_REGIONS_FILTER, unionPath } from "../const/Regions";
+import { SCOPE_HERO } from "../const/RegionLayout";
 import { KILOGRAMS_PER_TON } from "../const/Units";
-import ScopeKpiCard from "../components/Region/ScopeKpiCard";
+import ScopeHero from "../components/Region/ScopeHero";
+import ScopeStatPanel, {
+  type ScopeStat,
+} from "../components/Region/ScopeStatPanel";
 import ScopeSectionHeading from "../components/Region/ScopeSectionHeading";
 import ScopeRankList from "../components/Region/ScopeRankList";
 import RegionSummaryCard from "../components/Region/RegionSummaryCard";
@@ -18,6 +22,16 @@ import type {
   ScopeStats,
   UnionSortKey,
 } from "../types/region";
+
+/** 상단 설명 문단. 14px 본문이 넓게 흐르면 줄이 길어 다음 줄을 놓친다 */
+const HERO_TEXT_SX = {
+  color: "text.secondary",
+  fontSize: "0.9375rem",
+  lineHeight: 1.8,
+  maxWidth: SCOPE_HERO.TEXT_MAX_WIDTH,
+  /** 마지막 줄에 글자 한둘만 남는 고아 줄을 막는다 */
+  textWrap: "pretty",
+} as const;
 
 /** 물량 많은 지역이 먼저 */
 const sortedRegions = (manifest: RegionManifest): RegionScopeStats[] =>
@@ -83,45 +97,36 @@ const totalQuantityTon = (manifest: RegionManifest): number =>
     0
   ) / KILOGRAMS_PER_TON;
 
-type SummaryKpiRowProps = { manifest: RegionManifest };
-
 /**
  * 허브 상단 지표.
  * 이전에는 최고 단가가 칩 한 줄로 떠 있어 다른 요소와 연결되지 않았다.
  */
-const SummaryKpiRow = ({ manifest }: SummaryKpiRowProps) => {
+const summaryStats = (manifest: RegionManifest): ScopeStat[] => {
   const top = topPricedUnion(manifest);
   const season = `${manifest.latestSeasonYear} 시즌`;
 
-  return (
-    <Grid container spacing={{ xs: 1, sm: 2 }} sx={{ alignItems: "stretch" }}>
-      <Grid size={{ xs: 6, sm: 4 }}>
-        <ScopeKpiCard
-          title="최신 시즌 최고 단가"
-          value={
-            top?.season ? top.season.avgPricePerKg.toLocaleString("ko-KR") : "집계 없음"
-          }
-          unit={top?.season ? "원" : undefined}
-          caption={top ? `${top.region} ${top.name} · kg당` : season}
-        />
-      </Grid>
-      <Grid size={{ xs: 6, sm: 4 }}>
-        <ScopeKpiCard
-          title="전체 공판량"
-          value={totalQuantityTon(manifest).toFixed(1)}
-          unit="톤"
-          caption={season}
-        />
-      </Grid>
-      <Grid size={{ xs: 12, sm: 4 }}>
-        <ScopeKpiCard
-          title="최신 공판일"
-          value={manifest.latestDate}
-          caption="산림조합중앙회 공판 실적 기준"
-        />
-      </Grid>
-    </Grid>
-  );
+  return [
+    {
+      label: "최고 단가 조합",
+      value: top?.season
+        ? top.season.avgPricePerKg.toLocaleString("ko-KR")
+        : "집계 없음",
+      unit: top?.season ? "원/kg" : undefined,
+      caption: top ? `${top.region} ${top.name} · ${season}` : season,
+    },
+    {
+      label: "전체 공판량",
+      value: totalQuantityTon(manifest).toFixed(1),
+      unit: "톤",
+      caption: season,
+    },
+    {
+      label: "최신 공판일",
+      value: manifest.latestDate,
+      /** 출처는 페이지 푸터에 있다. 여기서는 값과 붙지 않을 길이로 줄인다 */
+      caption: "공판 실적 기준",
+    },
+  ];
 };
 
 /** /region — 지역·조합 페이지 허브 */
@@ -157,35 +162,30 @@ const RegionIndex = () => {
 
   return (
     <Container maxWidth="lg" sx={{ pt: 2, pb: 6 }}>
-      <Box component="header" sx={{ mb: 3 }}>
-        <Typography
-          component="h1"
-          variant="h4"
-          sx={{
-            fontWeight: 700,
-            fontSize: { xs: "1.5rem", sm: "1.875rem" },
-            mb: 1,
-          }}
-        >
-          지역별 송이 시세
-        </Typography>
-        <Typography
-          variant="body2"
-          sx={{
-            color: "text.secondary",
-            lineHeight: 1.75,
-            maxWidth: "68ch",
-            /** 마지막 줄에 글자 한둘만 남는 고아 줄을 막는다 */
-            textWrap: "pretty",
-          }}
-        >
-          강원·경북·경남 {regions.length}개 지역과 {totalUnions}개 산림조합의 송이버섯
-          공판 시세입니다. 각 페이지에서 {manifest.latestSeasonYear} 시즌 등급별 단가와
-          공판량, 연도별 추이를 볼 수 있습니다.
-        </Typography>
-      </Box>
-
-      <SummaryKpiRow manifest={manifest} />
+      <ScopeHero stats={<ScopeStatPanel stats={summaryStats(manifest)} />}>
+        <Box component="header">
+          <Typography
+            component="h1"
+            variant="h4"
+            sx={{
+              fontWeight: 700,
+              fontSize: { xs: "1.5rem", sm: "1.875rem" },
+              mb: 1,
+            }}
+          >
+            지역별 송이 시세
+          </Typography>
+          <Typography sx={HERO_TEXT_SX}>
+            강원·경북·경남 {regions.length}개 지역과 {totalUnions}개 산림조합의 송이버섯
+            공판 시세입니다. 각 페이지에서 {manifest.latestSeasonYear} 시즌 등급별 단가와
+            공판량, 연도별 추이를 볼 수 있습니다.
+          </Typography>
+          <Typography sx={{ ...HERO_TEXT_SX, mt: 1 }}>
+            산림조합중앙회가 공개한 공판 실적을 시즌(9~11월) 중 약 1시간 주기로
+            수집해 정리합니다. 표시 가격은 실제 거래가가 아닌 참고 정보입니다.
+          </Typography>
+        </Box>
+      </ScopeHero>
 
       <ScopeSectionHeading title="지역" caption="최신 시즌 물량순" />
       <Grid container spacing={{ xs: 1, sm: 2 }} sx={{ alignItems: "stretch" }}>
@@ -202,13 +202,26 @@ const RegionIndex = () => {
         items={unionItems}
         emptyMessage="조합 데이터가 없습니다."
         showRegion
-        action={<UnionSortToggle value={sortKey} onChange={setSortKey} />}
+        metric={sortKey}
         toolbar={
-          <RegionFilterChips
-            regions={regions.map((region) => region.name)}
-            value={regionFilter}
-            onChange={setRegionFilter}
-          />
+          /** 필터와 정렬은 같은 성격의 컨트롤이라 한 줄에서 좌우로 맞물린다 */
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              flexWrap: "wrap",
+              gap: 1,
+              mb: 1.5,
+            }}
+          >
+            <RegionFilterChips
+              regions={regions.map((region) => region.name)}
+              value={regionFilter}
+              onChange={setRegionFilter}
+            />
+            <UnionSortToggle value={sortKey} onChange={setSortKey} />
+          </Box>
         }
       />
     </Container>

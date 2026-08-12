@@ -1,6 +1,7 @@
 import { Box, Breadcrumbs, Chip, Link, Typography, useTheme } from "@mui/material";
 import { Link as RouterLink } from "react-router";
 import { regionPath } from "../../const/Regions";
+import { SCOPE_HERO } from "../../const/RegionLayout";
 import { buildScopeNarrative, scopeLabel } from "../../utils/regionNarrative";
 import type { ScopeStats } from "../../types/region";
 
@@ -9,11 +10,17 @@ type ScopeHeaderProps = {
   latestDate: string;
 };
 
+/**
+ * 요약 문단.
+ * 14px 본문이 68ch로 흐르면 줄이 길어 눈이 다음 줄을 놓친다.
+ * 글자를 한 단계 키우고 폭을 좁혀 읽는 리듬을 맞춘다.
+ */
 const NARRATIVE_SX = {
   color: "text.secondary",
-  lineHeight: 1.75,
-  mb: 0.75,
-  maxWidth: "68ch",
+  fontSize: "0.9375rem",
+  lineHeight: 1.8,
+  mb: 1,
+  maxWidth: SCOPE_HERO.TEXT_MAX_WIDTH,
 } as const;
 
 const DETAILS_SX = {
@@ -46,7 +53,7 @@ const ScopeHeader = ({ stats, latestDate }: ScopeHeaderProps) => {
   const [leadParagraph, ...restParagraphs] = buildScopeNarrative(stats);
 
   return (
-    <Box component="header" sx={{ mb: 3 }}>
+    <Box component="header">
       <Breadcrumbs
         aria-label="현재 위치"
         sx={{ mb: 1.5, fontSize: "0.8125rem" }}

@@ -7,14 +7,14 @@ import type { ScopeLinkItem } from "../../types/region";
 
 const NO_SEASON = "집계 없음";
 
-type QuantityBarProps = { percent: number; region: string };
+type MetricBarProps = { percent: number; region: string };
 
 /**
- * 공판량 막대.
- * 목록의 정렬 기준이 물량인데 이전에는 톤 수가 12px 회색 글자뿐이라
- * 제목을 읽어야만 정렬 기준을 알 수 있었다. 막대가 그 역할을 대신한다.
+ * 정렬 기준 막대.
+ * 이전에는 정렬 키인 물량이 12px 회색 글자뿐이라 제목을 읽어야만
+ * 무엇으로 줄 세워졌는지 알 수 있었다. 막대가 그 역할을 대신한다.
  */
-const QuantityBar = ({ percent, region }: QuantityBarProps) => (
+const MetricBar = ({ percent, region }: MetricBarProps) => (
   <Box
     sx={{
       height: SCOPE_RANK_LIST.BAR_HEIGHT,
@@ -36,6 +36,11 @@ const QuantityBar = ({ percent, region }: QuantityBarProps) => (
 
 type DeltaBadgeProps = { delta: number };
 
+/**
+ * 기준 대비 단가 차이.
+ * 방향을 화살표와 색 양쪽으로 표시한다. 색만으로 구분하면
+ * 색각 이상에서 오름·내림이 같은 회색으로 읽힌다.
+ */
 const DeltaBadge = ({ delta }: DeltaBadgeProps) => (
   <Typography
     component="span"
@@ -43,7 +48,8 @@ const DeltaBadge = ({ delta }: DeltaBadgeProps) => (
     sx={{
       fontWeight: 600,
       whiteSpace: "nowrap",
-      color: delta > 0 ? "chart.price.main" : "text.secondary",
+      fontVariantNumeric: "tabular-nums",
+      color: delta > 0 ? "chart.up" : "chart.down",
     }}
   >
     {delta > 0 ? "▲" : "▼"}
@@ -55,7 +61,7 @@ export type ScopeRankRowProps = {
   item: ScopeLinkItem;
   /** 물량 순위. 집계가 없으면 null */
   rank: number | null;
-  /** 목록 최대 물량 대비 비율 (%) */
+  /** 현재 정렬 기준 지표를 나타내는 막대 폭 (%) */
   percent: number;
   /** 기준 단가 대비 차이 (%). 없으면 배지를 숨긴다 */
   delta: number | null;
@@ -66,7 +72,7 @@ export type ScopeRankRowProps = {
 /**
  * 조합 한 줄.
  *
- * 좁은 화면에서는 막대 열을 접고 행 배경 틴트로 물량을 표현한다.
+ * 좁은 화면에서는 막대 열을 접고 행 아래 얇은 띠로 값을 표현한다.
  * 같은 DOM을 CSS로만 바꿔 프리렌더 HTML과 하이드레이션 결과가 어긋나지 않게 한다.
  */
 const ScopeRankRow = ({
@@ -77,13 +83,13 @@ const ScopeRankRow = ({
   showRegion,
 }: ScopeRankRowProps) => {
   const muted = item.avgPricePerKg === null;
-  const tint = regionColorAlpha(item.region, SCOPE_RANK_LIST.ROW_TINT_OPACITY);
 
   return (
     <Box
       component={RouterLink}
       to={item.path}
       sx={{
+        position: "relative",
         display: "grid",
         gridTemplateColumns: {
           xs: SCOPE_RANK_LIST.COLUMNS.xs,
@@ -98,10 +104,6 @@ const ScopeRankRow = ({
         textDecoration: "none",
         color: "inherit",
         opacity: muted ? SCOPE_RANK_LIST.MUTED_OPACITY : 1,
-        backgroundImage: {
-          xs: `linear-gradient(to right, ${tint} ${percent}%, transparent ${percent}%)`,
-          sm: "none",
-        },
         transition: "background-color 0.15s ease",
         "&:hover": { bgcolor: "action.hover" },
         "&:focus-visible": {
@@ -109,6 +111,21 @@ const ScopeRankRow = ({
           outlineColor: "primary.main",
           outlineOffset: "-2px",
           borderRadius: "0.25rem",
+        },
+        "&::after": {
+          content: '""',
+          display: { xs: "block", sm: "none" },
+          position: "absolute",
+          left: 0,
+          /** 행 구분선 바로 위에 얹어 위쪽 행에 속한 게이지로 읽히게 한다 */
+          bottom: "1px",
+          width: `${percent}%`,
+          height: SCOPE_RANK_LIST.MOBILE_STRIP_HEIGHT,
+          borderRadius: "0 2px 2px 0",
+          bgcolor: regionColorAlpha(
+            item.region,
+            SCOPE_RANK_LIST.MOBILE_STRIP_OPACITY
+          ),
         },
       }}
     >
@@ -151,11 +168,7 @@ const ScopeRankRow = ({
         {showRegion ? (
           <Typography
             variant="caption"
-            sx={{
-              color: "text.secondary",
-              flexShrink: 0,
-              display: { xs: "none", sm: "block" },
-            }}
+            sx={{ color: "text.secondary", flexShrink: 0 }}
           >
             {item.region}
           </Typography>
@@ -163,13 +176,13 @@ const ScopeRankRow = ({
       </Box>
 
       <Box sx={{ display: { xs: "none", sm: "block" } }}>
-        <QuantityBar percent={percent} region={item.region} />
+        <MetricBar percent={percent} region={item.region} />
       </Box>
 
       <Typography
-        variant="caption"
         sx={{
-          color: "text.secondary",
+          fontSize: "0.875rem",
+          fontWeight: 500,
           textAlign: "right",
           fontVariantNumeric: "tabular-nums",
           whiteSpace: "nowrap",
