@@ -98,7 +98,7 @@ const ScopeRankRow = ({
         alignItems: "center",
         columnGap: { xs: 1, sm: 2 },
         minHeight: SCOPE_RANK_LIST.ROW_MIN_HEIGHT,
-        px: { xs: 1, sm: 1.5 },
+        px: SCOPE_RANK_LIST.PANEL_PX,
         borderBottom: "1px solid",
         borderColor: "divider",
         textDecoration: "none",

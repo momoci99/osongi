@@ -37,6 +37,17 @@
 | 2 | [`region-page-redesign-2026-08.md`](./region-page-redesign-2026-08.md) | 허브 정보구조 재설계 — 카드 그리드 → 랭크 리스트, 지역 요약 카드, 필터·정렬 |
 | 3 | [`region-page-polish-2026-08.md`](./region-page-polish-2026-08.md) | 시각 인코딩·2단 hero·지표 패널·모바일 마감 |
 
+### 2-0. 곁가지 — 디자인 시스템 (2026-08-13)
+
+3패스를 끝낸 뒤 다크 테마가 밋밋하다는 지적에서 별도로 진행.
+로드맵 항목은 아니지만 전 페이지에 영향이 있어 여기에 기록한다.
+→ [`../design/design-system-2026-08.md`](../design/design-system-2026-08.md)
+
+배경·카드·테두리 명암비가 모두 1.1대라 계층이 0이던 문제를 표면 3단 토큰
+(`surface.base/raised/overlay/border/borderStrong`)으로 재설계.
+border/raised **1.10 → 1.60**. 초록을 형광 민트(H142 S71%)에서
+침엽수(H150 S46%)로 낮추고, 라이트에서 바닥이 카드보다 밝던 계단 역전을 수정.
+
 **다음은 3장 P1 SEO 마무리.** 색인 리드타임 때문에 S1이 가장 급하다.
 
 <details>

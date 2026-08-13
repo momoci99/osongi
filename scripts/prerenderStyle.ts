@@ -5,8 +5,8 @@
  * 사용자에게도 첫 페인트로 노출되므로 Modern Forest 토큰을 그대로 따른다.
  */
 export const PRERENDER_STYLE = `
-:root{--pr-bg:#FAFAF9;--pr-paper:#F7F6F4;--pr-border:#E7E5E4;--pr-fg:#1C1917;--pr-muted:#78716C;--pr-primary:#166534}
-@media (prefers-color-scheme:dark){:root{--pr-bg:#171412;--pr-paper:#211E1A;--pr-border:#2C2520;--pr-fg:#FAF9F7;--pr-muted:#8C7E73;--pr-primary:#22C55E}}
+:root{--pr-bg:#F8F7F6;--pr-paper:#FFFFFF;--pr-border:#E6E3E0;--pr-fg:#1D1916;--pr-muted:#746B63;--pr-primary:#196B42}
+@media (prefers-color-scheme:dark){:root{--pr-bg:#110E0C;--pr-paper:#211B18;--pr-border:#453D35;--pr-fg:#F9F8F5;--pr-muted:#A6988C;--pr-primary:#4CBD85}}
 body{margin:0;background:var(--pr-bg);color:var(--pr-fg);font-family:"Pretendard","Noto Sans KR",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
 .prerender{max-width:1152px;margin:0 auto;padding:24px 16px 48px}
 .prerender h1{font-size:1.75rem;font-weight:700;letter-spacing:-0.01em;margin:0 0 4px}

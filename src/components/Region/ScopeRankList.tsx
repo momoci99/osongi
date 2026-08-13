@@ -94,8 +94,10 @@ const ColumnHeader = ({ showRegion, metric }: ColumnHeaderProps) => {
         },
         alignItems: "center",
         columnGap: { xs: 1, sm: 2 },
-        px: { xs: 1, sm: 1.5 },
-        pb: 0.75,
+        px: SCOPE_RANK_LIST.PANEL_PX,
+        py: 1,
+        /** 머리글은 값 행보다 한 단 낮은 표면에 두어 표의 지붕처럼 읽히게 한다 */
+        bgcolor: "surface.base",
         borderBottom: "1px solid",
         borderColor: "divider",
       }}
@@ -158,7 +160,19 @@ const ScopeRankList = ({
           {emptyMessage}
         </Typography>
       ) : (
-        <Box component="nav" aria-label={title}>
+        <Box
+          component="nav"
+          aria-label={title}
+          sx={{
+            borderRadius: SCOPE_RANK_LIST.PANEL_RADIUS,
+            border: "1px solid",
+            borderColor: "divider",
+            bgcolor: "background.paper",
+            overflow: "hidden",
+            /** 마지막 행의 구분선이 패널 테두리와 겹쳐 두 줄로 보인다 */
+            "& > a:last-of-type": { borderBottom: "none" },
+          }}
+        >
           <ColumnHeader showRegion={showRegion} metric={metric} />
           {items.map((item) => {
             /** 집계가 없는 조합은 순위를 매기지 않는다 */

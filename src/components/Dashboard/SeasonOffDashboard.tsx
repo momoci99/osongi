@@ -6,6 +6,7 @@ import {
   Skeleton,
   Typography,
 } from "@mui/material";
+import { alpha } from "@mui/material/styles";
 import useSeasonOffData from "../../hooks/useSeasonOffData";
 import { daysUntilNextSeason } from "../../utils/isInSeason";
 import SeasonSummaryCards from "./SeasonOff/SeasonSummaryCards";
@@ -26,14 +27,15 @@ const CountdownCard = ({ daysLeft }: CountdownCardProps) => {
 
   return (
     <Card
-      sx={{
+      sx={(theme) => ({
         mb: 3,
         borderRadius: "0.75rem",
-        color: "#FFFFFF",
-        backgroundColor: "#2E7D32",
-        backgroundImage: "linear-gradient(135deg, #2E7D32 0%, #1B5E20 100%)",
-        boxShadow: "0 12px 32px rgba(46, 125, 50, 0.24)",
-      }}
+        /** 카드가 팔레트 밖 초록(MUI 기본 green 800)을 쓰고 있어 로고 색과 어긋났다 */
+        color: theme.palette.primary.contrastText,
+        backgroundColor: theme.palette.primary.dark,
+        backgroundImage: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
+        boxShadow: `0 12px 32px ${alpha(theme.palette.primary.dark, 0.32)}`,
+      })}
     >
       <CardContent sx={{ p: 2.5, "&:last-child": { pb: 2.5 } }}>
         <Typography

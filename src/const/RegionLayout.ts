@@ -36,6 +36,14 @@ export const SCOPE_RANK_LIST = {
     xs: "24px minmax(0, 1fr) 44px 116px",
     sm: "32px minmax(120px, 1fr) minmax(160px, 2.2fr) 76px 132px",
   },
+  /**
+   * 목록을 감싸는 패널.
+   * 같은 페이지의 등급표는 카드 위에 있는데 목록만 맨바닥에 떠 있어
+   * 두 데이터 블록의 격이 어긋났다. 표면 계단을 목록에도 적용한다.
+   */
+  PANEL_RADIUS: "0.75rem",
+  /** 패널 안쪽 좌우 여백. 테두리가 생긴 만큼 바닥에 놓였을 때보다 넓힌다 */
+  PANEL_PX: { xs: 1.5, sm: 2 },
 } as const;
 
 /** 지역 카드의 연도별 단가 스파크라인 */
