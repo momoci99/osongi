@@ -112,3 +112,21 @@ export const formatAxisValue = (
       return `${dotDate(String(x))}${weekSuffix}`;
   }
 };
+
+/** 축 눈금용 짧은 숫자 (단위 포함) */
+export const formatAxisTick = (metric: AnalysisMetric, value: number): string => {
+  switch (metric) {
+    case "unitPrice":
+      return `${integer.format(value / KRW_TEN_THOUSAND_UNIT)}만`;
+    case "amount":
+      return value >= WON_PER_EOK
+        ? `${decimal1.format(value / WON_PER_EOK)}억`
+        : `${integer.format(value / KRW_TEN_THOUSAND_UNIT)}만`;
+    case "gradeShare":
+      return `${integer.format(value * PERCENT)}%`;
+    default:
+      return value >= KILOGRAMS_PER_TON
+        ? `${decimal1.format(value / KILOGRAMS_PER_TON)}t`
+        : `${integer.format(value)}kg`;
+  }
+};

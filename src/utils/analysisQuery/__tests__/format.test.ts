@@ -7,6 +7,7 @@ import {
   formatUnitPrice,
   describeTime,
   formatAxisValue,
+  formatAxisTick,
 } from "../format";
 
 describe("분석 수치 포맷", () => {
@@ -52,5 +53,15 @@ describe("formatAxisValue", () => {
     expect(formatAxisValue("monthDay", "09-05", "week")).toBe("9/5~");
     expect(formatAxisValue("seasonDay", 8, "day")).toBe("8일차");
     expect(formatAxisValue("year", 2024, "season")).toBe("2024");
+  });
+});
+
+describe("formatAxisTick", () => {
+  it("지표별 짧은 눈금", () => {
+    expect(formatAxisTick("unitPrice", 500_000)).toBe("50만");
+    expect(formatAxisTick("amount", 250_000_000)).toBe("2.5억");
+    expect(formatAxisTick("gradeShare", 0.25)).toBe("25%");
+    expect(formatAxisTick("cumQuantity", 12_500)).toBe("12.5t");
+    expect(formatAxisTick("quantity", 300)).toBe("300kg");
   });
 });

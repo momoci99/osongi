@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { ThemeProvider } from "@mui/material/styles";
 import { theme } from "../../../theme";
 import ExplorerSummary from "../Summary";
@@ -59,7 +59,7 @@ describe("ExplorerView", () => {
     expect(screen.getByText("역대급 흉작")).toBeInTheDocument();
   });
 
-  it("평년 비교면 피벗 표에 평년 열을 붙인다", () => {
+  it("차트 뷰는 표를 접어 두고, 펼치면 평년 열이 붙은 피벗 표를 보여준다", () => {
     const rows = [
       makeRow("2020-09-18"),
       makeRow("2021-09-06"),
@@ -75,6 +75,8 @@ describe("ExplorerView", () => {
     });
     withTheme(<ExplorerView query={query} result={runAnalysisQuery(rows, query)} />);
 
+    expect(screen.queryByRole("columnheader", { name: "평년 중앙값" })).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "표로 보기" }));
     expect(screen.getByRole("columnheader", { name: "평년 중앙값" })).toBeInTheDocument();
     expect(screen.getByText("1일차")).toBeInTheDocument();
     expect(screen.getByRole("columnheader", { name: "평년 범위 (P25–P75)" })).toBeInTheDocument();

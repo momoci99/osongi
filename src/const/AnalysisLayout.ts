@@ -59,3 +59,60 @@ export const EXPLORER_TABLE = {
   /** 피벗 표에서 한 번에 보여줄 최대 시리즈 열 수 */
   MAX_SERIES_COLUMNS: 14,
 } as const;
+
+/** 선 차트 (연도 겹침·추이) */
+export const LINE_CHART = {
+  HEIGHT: { MOBILE: 300, DESKTOP: 420 },
+  MARGIN: {
+    MOBILE: { top: 16, right: 44, bottom: 36, left: 44 },
+    DESKTOP: { top: 20, right: 72, bottom: 40, left: 60 },
+  },
+  /** 강조 시리즈 선 두께 (px) */
+  STROKE_EMPHASIS: 2.5,
+  /** 일반 시리즈 선 두께 (px) */
+  STROKE: 2,
+  /** 문맥(비강조) 시리즈 선 두께 (px) */
+  STROKE_CONTEXT: 1.5,
+  /** 이 일수보다 긴 공백은 선을 끊는다 (일 단위). 공판은 주말·우천으로 1~2일씩 자주 비어 짧은 공백까지 끊으면 선이 파편화된다 */
+  GAP_BREAK_DAYS: 3,
+  /** 주 단위에서 끊는 공백 (일) */
+  GAP_BREAK_DAYS_WEEK: 14,
+  /** 달력 기간 축에서 시즌 사이 접힌 간격 (일 환산) */
+  SEASON_GAP_DAYS: 8,
+  /** 포인트 마커를 항상 그리는 시리즈당 최대 포인트 수 */
+  MARKER_MAX_POINTS: 40,
+  MARKER_RADIUS: 3,
+  HOVER_MARKER_RADIUS: 4.5,
+  /** 표본 부족 포인트 불투명도 */
+  LOW_SAMPLE_OPACITY: 0.4,
+  /** 평년 밴드 채움 불투명도 */
+  BAND_OPACITY: 0.14,
+  /** 직접 라벨을 붙이는 최대 시리즈 수 */
+  DIRECT_LABEL_MAX_SERIES: 6,
+  /** 직접 라벨 사이 최소 세로 간격 (px) */
+  DIRECT_LABEL_MIN_GAP: 13,
+  /** 가격처럼 0 기준이 아닌 축의 위아래 여유 비율 */
+  Y_PADDING_RATIO: 0.08,
+  /** 월 눈금을 그리는 시즌 구간 최소 폭 (px) */
+  MONTH_TICK_MIN_SEGMENT_WIDTH: 140,
+  /** 문맥 시리즈 최소·최대 불투명도 (오래된 시즌일수록 흐리게) */
+  CONTEXT_OPACITY: { MIN: 0.35, MAX: 0.75 },
+  /** 시즌 일차 축 눈금 간격 (일) */
+  SEASON_DAY_TICK_STEP: 10,
+  /** 축 글자 크기 (px) */
+  AXIS_FONT_SIZE: 11,
+  /** y 눈금 개수 목표 */
+  Y_TICK_COUNT: 5,
+  /** x 눈금 라벨과 플롯 사이 간격 (px) */
+  X_LABEL_OFFSET: 18,
+  /** y 눈금 라벨과 플롯 사이 간격 (px) */
+  Y_LABEL_OFFSET: 10,
+  /** 직접 라벨과 선 끝 사이 간격 (px) */
+  DIRECT_LABEL_OFFSET: 8,
+  /** 툴팁과 커서 사이 간격 (px) */
+  TOOLTIP_OFFSET: 14,
+  /** x 눈금 라벨 사이 최소 간격 (px) */
+  MIN_TICK_GAP: 48,
+  /** 툴팁 최대 폭 (px) */
+  TOOLTIP_MAX_WIDTH: 320,
+} as const;
