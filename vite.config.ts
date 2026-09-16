@@ -40,7 +40,6 @@ export default defineConfig({
           if (id.includes("node_modules/react-router")) return "router";
           if (id.includes("node_modules/@mui")) return "ui";
           if (id.includes("node_modules/d3")) return "charts";
-          if (id.includes("node_modules/date-fns")) return "date";
         },
       },
     },

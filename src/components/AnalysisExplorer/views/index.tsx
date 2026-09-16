@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Box, Button, Collapse, Typography } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExplorerPanel from "../ExplorerPanel";
 import PivotTable from "./PivotTable";
+import ExportMenu from "./ExportMenu";
 import SeasonSummaryTable from "./SeasonSummaryTable";
 import LineChart from "../charts/LineChart";
 import Heatmap from "../charts/Heatmap";
@@ -136,6 +137,7 @@ const ChartWithTable = (props: ExplorerViewProps) => {
 /** 메인 뷰 영역 — 현재 뷰에 맞는 차트·표를 고른다 */
 const ExplorerView = (props: ExplorerViewProps) => {
   const { query, result } = props;
+  const chartAreaRef = useRef<HTMLDivElement | null>(null);
   const isEmpty = result.rows.length === 0;
   const hasChart = CHART_VIEWS.includes(query.view);
   const isChartPending = !hasChart && query.view !== "table";
@@ -160,8 +162,13 @@ const ExplorerView = (props: ExplorerViewProps) => {
   };
 
   return (
-    <ExplorerPanel title={VIEW_LABELS[query.view]} caption={describeView(query)} flush>
-      {renderBody()}
+    <ExplorerPanel
+      title={VIEW_LABELS[query.view]}
+      caption={describeView(query)}
+      action={<ExportMenu query={query} result={result} chartAreaRef={chartAreaRef} />}
+      flush
+    >
+      <div ref={chartAreaRef}>{renderBody()}</div>
     </ExplorerPanel>
   );
 };

@@ -65,13 +65,13 @@ const ExplorerContent = ({ rows, availableYears, latestDate }: ExplorerContentPr
           alignItems: "start",
         }}
       >
-        <Box sx={{ order: { xs: 2, [EXPLORER_LAYOUT.ASIDE_BREAKPOINT]: 1 }, minWidth: 0 }}>
+        {/** 좁은 화면에서도 차트가 먼저 — 요약이 위에 있으면 차트가 한 화면 넘게 밀린다 */}
+        <Box sx={{ minWidth: 0 }}>
           <ExplorerView query={query} result={result} comparison={comparison} onQueryChange={setQuery} />
         </Box>
         <Box
           component="aside"
           sx={{
-            order: { xs: 1, [EXPLORER_LAYOUT.ASIDE_BREAKPOINT]: 2 },
             position: { [EXPLORER_LAYOUT.ASIDE_BREAKPOINT]: "sticky" },
             top: EXPLORER_LAYOUT.STICKY_TOP,
           }}

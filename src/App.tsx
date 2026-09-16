@@ -5,7 +5,6 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { createAppTheme } from "./theme";
 import Dashboard from "./pages/Dashboard";
 import { Routes, Route, Navigate, Outlet, useLocation } from "react-router";
-import DataAnalysis from "./pages/DataAnalysis";
 import AnalysisExplorer from "./pages/AnalysisExplorer";
 import RegionIndex from "./pages/RegionIndex";
 import RegionDetail from "./pages/RegionDetail";
@@ -54,9 +53,7 @@ const App = () => {
           <Route element={<DatasetGatedLayout />}>
             <Route index element={<Dashboard />} />
             <Route path="dashboard" element={<Navigate to="/" replace />} />
-            <Route path="data-analysis" element={<DataAnalysis />} />
-            {/* 리워크 개발 중 — R5에서 /data-analysis와 교체 */}
-            <Route path="data-analysis/next" element={<AnalysisExplorer />} />
+            <Route path="data-analysis" element={<AnalysisExplorer />} />
           </Route>
           <Route path="region" element={<RegionIndex />} />
           <Route path="region/:region" element={<RegionDetail />} />
