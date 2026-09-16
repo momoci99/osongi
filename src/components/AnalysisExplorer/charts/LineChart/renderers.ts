@@ -149,12 +149,12 @@ export const renderBand = (g: Group, { x, y }: Scales, model: LineChartModel, th
 const strokeWidthOf = (series: ChartSeries): number =>
   series.role === "focus"
     ? LINE_CHART.STROKE_EMPHASIS
-    : series.role === "context"
+    : series.role === "context" || series.role === "comparison"
       ? LINE_CHART.STROKE_CONTEXT
       : LINE_CHART.STROKE;
 
-/** 그리는 순서 — 문맥 시리즈가 아래, 강조 시리즈가 위 */
-const ROLE_ORDER = { context: 0, entity: 1, focus: 2 } as const;
+/** 그리는 순서 — 문맥·전년 시리즈가 아래, 강조 시리즈가 위 */
+const ROLE_ORDER = { comparison: 0, context: 0, entity: 1, focus: 2 } as const;
 
 /**
  * 시리즈 선·마커.
@@ -184,13 +184,16 @@ export const renderSeries = (
       .attr("fill", "none")
       .attr("stroke", color)
       .attr("stroke-width", strokeWidthOf(series))
+      .attr("stroke-dasharray", series.role === "comparison" ? "5,4" : null)
       .attr("stroke-linejoin", "round")
       .attr("stroke-linecap", "round")
       .attr("d", line);
 
     /** 문맥 시리즈에 마커까지 찍으면 강조 시리즈보다 시끄러워진다 */
     const showAllMarkers =
-      series.role !== "context" && series.points.length <= LINE_CHART.MARKER_MAX_POINTS;
+      series.role !== "context" &&
+      series.role !== "comparison" &&
+      series.points.length <= LINE_CHART.MARKER_MAX_POINTS;
     const markerPoints = showAllMarkers
       ? series.points
       : series.segments.filter((segment) => segment.length === 1).flat();
@@ -236,7 +239,9 @@ export const renderDirectLabels = (
     .attr("font-size", AXIS_FONT_SIZE)
     .attr("font-weight", (series) => (series.role === "focus" ? 700 : 500))
     .attr("fill", (series) =>
-      series.role === "context" ? theme.palette.text.secondary : theme.palette.text.primary,
+      series.role === "context" || series.role === "comparison"
+        ? theme.palette.text.secondary
+        : theme.palette.text.primary,
     )
     .style("font-variant-numeric", "tabular-nums")
     .text((series) => series.label);

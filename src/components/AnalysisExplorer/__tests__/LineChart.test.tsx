@@ -56,9 +56,9 @@ describe("buildTooltipContent", () => {
 
 describe("resolveSeriesColor", () => {
   it("역할과 대상에 따라 색을 고른다", () => {
-    expect(resolveSeriesColor({ key: "2025", role: "focus" }, "year", theme)).toBe(theme.palette.primary.main);
-    expect(resolveSeriesColor({ key: "grade2", role: "entity" }, "grade", theme)).toBe(theme.palette.chart.grade2);
-    expect(resolveSeriesColor({ key: "봉화", role: "entity" }, "union", theme)).toMatch(/^#/);
+    expect(resolveSeriesColor({ colorKey: "2025", role: "focus" }, "year", theme)).toBe(theme.palette.primary.main);
+    expect(resolveSeriesColor({ colorKey: "grade2", role: "entity" }, "grade", theme)).toBe(theme.palette.chart.grade2);
+    expect(resolveSeriesColor({ colorKey: "봉화", role: "entity" }, "union", theme)).toMatch(/^#/);
   });
 });
 

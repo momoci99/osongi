@@ -1,12 +1,11 @@
 import * as d3 from "d3";
 import type { Theme } from "@mui/material/styles";
 import { REGION_UNION_MAP } from "../../../const/Common";
+import { UNION_LIGHTNESS_SPREAD } from "../../../const/AnalysisCharts";
 import { findRegionOfUnion, regionColor } from "../../../const/Regions";
 import type { ChartSeries } from "../../../utils/analysisQuery/lineChartModel";
 import type { AnalysisGroupBy, GradeKey } from "../../../utils/analysisQuery/types";
 
-/** 같은 지역 조합끼리 밝기를 벌리는 단계 */
-const UNION_LIGHTNESS_STEP = 0.05;
 
 /**
  * 조합 색 — 지역 색조를 유지하고 지역 내 순번으로 밝기만 달리한다.
@@ -17,7 +16,8 @@ const unionColor = (union: string): string => {
   if (!region) return "gray";
   const unions = REGION_UNION_MAP[region];
   const color = d3.hsl(regionColor(region));
-  color.l += (unions.indexOf(union) - (unions.length - 1) / 2) * UNION_LIGHTNESS_STEP;
+  const step = unions.length > 1 ? UNION_LIGHTNESS_SPREAD / (unions.length - 1) : 0;
+  color.l += (unions.indexOf(union) - (unions.length - 1) / 2) * step;
   return color.formatHex();
 };
 
@@ -26,7 +26,7 @@ const unionColor = (union: string): string => {
  * 필터로 시리즈 수가 바뀌어도 남은 시리즈 색은 그대로다.
  */
 export const resolveSeriesColor = (
-  series: Pick<ChartSeries, "key" | "role">,
+  series: Pick<ChartSeries, "colorKey" | "role">,
   groupBy: AnalysisGroupBy,
   theme: Theme,
 ): string => {
@@ -34,11 +34,11 @@ export const resolveSeriesColor = (
   if (series.role === "context") return theme.palette.text.secondary;
   switch (groupBy) {
     case "region":
-      return regionColor(series.key);
+      return regionColor(series.colorKey);
     case "grade":
-      return theme.palette.chart[series.key as GradeKey];
+      return theme.palette.chart[series.colorKey as GradeKey];
     case "union":
-      return unionColor(series.key);
+      return unionColor(series.colorKey);
     default:
       return theme.palette.primary.main;
   }

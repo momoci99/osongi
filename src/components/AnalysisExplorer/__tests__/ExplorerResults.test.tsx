@@ -39,7 +39,7 @@ describe("ExplorerSummary", () => {
 describe("ExplorerView", () => {
   it("결과가 없으면 빈 상태를 안내한다", () => {
     const query = makeQuery({ view: "table" });
-    withTheme(<ExplorerView query={query} result={runAnalysisQuery([], query)} />);
+    withTheme(<ExplorerView query={query} result={runAnalysisQuery([], query)} comparison={null} onQueryChange={() => {}} />);
 
     expect(screen.getByText("조건에 맞는 공판 기록이 없습니다")).toBeInTheDocument();
   });
@@ -53,7 +53,7 @@ describe("ExplorerView", () => {
       granularity: "season",
       metric: "quantity",
     });
-    withTheme(<ExplorerView query={query} result={runAnalysisQuery(rows, query)} />);
+    withTheme(<ExplorerView query={query} result={runAnalysisQuery(rows, query)} comparison={null} onQueryChange={() => {}} />);
 
     expect(screen.getByRole("columnheader", { name: "피크일" })).toBeInTheDocument();
     expect(screen.getByText("역대급 흉작")).toBeInTheDocument();
@@ -73,7 +73,7 @@ describe("ExplorerView", () => {
       groupBy: "year",
       compare: "normal",
     });
-    withTheme(<ExplorerView query={query} result={runAnalysisQuery(rows, query)} />);
+    withTheme(<ExplorerView query={query} result={runAnalysisQuery(rows, query)} comparison={null} onQueryChange={() => {}} />);
 
     expect(screen.queryByRole("columnheader", { name: "평년 중앙값" })).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "표로 보기" }));

@@ -6,6 +6,7 @@ import { isMobileWidth } from "../../../../utils/d3/chartMargins";
 import { LINE_CHART } from "../../../../const/AnalysisLayout";
 import { renderAxes, renderBand, renderDirectLabels, renderSeries } from "./renderers";
 import { buildTooltipContent, renderTooltipHtml } from "../lineTooltip";
+import { hideTooltip, placeTooltip } from "../chartTooltip";
 import { nearestPosition, type ChartSeries, type LineChartModel } from "../../../../utils/analysisQuery/lineChartModel";
 import type { AnalysisQuery } from "../../../../utils/analysisQuery/types";
 
@@ -71,12 +72,10 @@ const useDrawLineChart = ({ model, query, axis, seasonStarts, colorOf, theme }: 
         .attr("pointer-events", "none")
         .style("display", "none");
       const hoverDots = g.append("g").attr("pointer-events", "none");
-      const tooltip = d3.select(tooltipEl);
-
       const hide = () => {
         crosshair.style("display", "none");
         hoverDots.selectAll("*").remove();
-        tooltip.style("opacity", "0");
+        hideTooltip(tooltipEl);
       };
 
       g.append("rect")
@@ -111,16 +110,7 @@ const useDrawLineChart = ({ model, query, axis, seasonStarts, colorOf, theme }: 
             .attr("stroke-width", 2);
 
           tooltipEl.innerHTML = renderTooltipHtml(content);
-          const tooltipWidth = tooltipEl.offsetWidth;
-          const anchorX = margin.left + px;
-          const left =
-            anchorX + LINE_CHART.TOOLTIP_OFFSET + tooltipWidth > width
-              ? anchorX - LINE_CHART.TOOLTIP_OFFSET - tooltipWidth
-              : anchorX + LINE_CHART.TOOLTIP_OFFSET;
-          tooltip
-            .style("left", `${Math.max(0, left)}px`)
-            .style("top", `${margin.top}px`)
-            .style("opacity", "1");
+          placeTooltip(tooltipEl, margin.left + px, margin.top, width);
         })
         .on("pointerleave", hide);
     },

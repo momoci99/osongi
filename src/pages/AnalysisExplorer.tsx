@@ -11,7 +11,7 @@ import usePageMeta from "../hooks/usePageMeta";
 import isInSeason from "../utils/isInSeason";
 import { PAGE_META } from "../const/Seo";
 import { EXPLORER_LAYOUT } from "../const/AnalysisLayout";
-import { runAnalysisQuery } from "../utils/analysisQuery/runQuery";
+import { runAnalysisQuery, shiftTimeByYears } from "../utils/analysisQuery/runQuery";
 import { selectByPlaceAndGrade } from "../utils/analysisQuery/rows";
 import { sumQuantityByDate } from "../utils/analysisQuery/seasonWindow";
 import type { GradeRow } from "../utils/analysisQuery/types";
@@ -31,6 +31,10 @@ const ExplorerContent = ({ rows, availableYears, latestDate }: ExplorerContentPr
   const { query, activeTemplateId, setQuery, updateQuery, applyTemplate } = useAnalysisQuery(context);
 
   const result = runAnalysisQuery(rows, query);
+  const comparison =
+    query.compare === "prevYear"
+      ? runAnalysisQuery(rows, { ...query, compare: "none", time: shiftTimeByYears(query.time, -1) })
+      : null;
   const scopedRows = selectByPlaceAndGrade(rows, query);
   const dailyQuantity = sumQuantityByDate(scopedRows);
   const recordCount = new Set(rows.map((row) => `${row.date}|${row.union}`)).size;
@@ -62,7 +66,7 @@ const ExplorerContent = ({ rows, availableYears, latestDate }: ExplorerContentPr
         }}
       >
         <Box sx={{ order: { xs: 2, [EXPLORER_LAYOUT.ASIDE_BREAKPOINT]: 1 }, minWidth: 0 }}>
-          <ExplorerView query={query} result={result} />
+          <ExplorerView query={query} result={result} comparison={comparison} onQueryChange={setQuery} />
         </Box>
         <Box
           component="aside"

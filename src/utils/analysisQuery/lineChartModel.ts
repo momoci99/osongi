@@ -17,12 +17,15 @@ export type ChartPoint = {
  * focus — 시즌 겹침에서 가장 최근 시즌 (강조색)
  * context — 시즌 겹침의 나머지 시즌 (중립색, 오래될수록 흐림)
  * entity — 지역·등급·조합처럼 대상 고유색을 쓰는 시리즈
+ * comparison — 전년 같은 기간 (같은 대상색, 점선)
  */
-export type SeriesRole = "focus" | "context" | "entity";
+export type SeriesRole = "focus" | "context" | "entity" | "comparison";
 
 /** 차트 시리즈 */
 export type ChartSeries = {
   key: string;
+  /** 색을 결정하는 대상 키 (전년 비교 시리즈는 원래 대상 키) */
+  colorKey: string;
   label: string;
   role: SeriesRole;
   /** context 시리즈 불투명도 */
@@ -71,10 +74,36 @@ const contextOpacity = (year: number, years: number[]): number => {
   return MIN + (MAX - MIN) * rank;
 };
 
+/** 전년 결과의 x를 1년 뒤로 옮겨 현재 기간 축에 겹친다 */
+const shiftXOneYear = (x: string | number, axis: AnalysisResult["axis"]): string | number => {
+  if (axis === "year") return Number(x) + 1;
+  if (axis === "date") return `${Number(String(x).slice(0, 4)) + 1}${String(x).slice(4)}`;
+  return x;
+};
+
+/** 전년 비교 시리즈를 현재 축으로 옮긴 결과 */
+const shiftComparison = (comparison: AnalysisResult): AnalysisResult["series"] =>
+  comparison.series.map((series) => ({
+    ...series,
+    key: `${series.key}__prev`,
+    label: `${series.label} (전년)`,
+    points: series.points.map((point) => ({
+      ...point,
+      x: shiftXOneYear(point.x, comparison.axis),
+      year: point.year + 1,
+    })),
+  }));
+
 /** 집계 결과를 선 차트 모델로 변환한다 */
-export const buildLineChartModel = (result: AnalysisResult, query: AnalysisQuery): LineChartModel => {
+export const buildLineChartModel = (
+  result: AnalysisResult,
+  query: AnalysisQuery,
+  comparison: AnalysisResult | null = null,
+): LineChartModel => {
+  const comparisonSeries = comparison ? shiftComparison(comparison) : [];
   const allX = [
     ...result.series.flatMap((series) => series.points.map((point) => point.x)),
+    ...comparisonSeries.flatMap((series) => series.points.map((point) => point.x)),
     ...(result.normalBand ?? []).map((point) => point.x),
   ];
   const mapping = buildXMapping(result.axis, allX, query.granularity);
@@ -85,7 +114,8 @@ export const buildLineChartModel = (result: AnalysisResult, query: AnalysisQuery
   const focusYear = byYear ? seriesYears[seriesYears.length - 1] : null;
   const contextYears = seriesYears.filter((year) => year !== focusYear);
 
-  const series: ChartSeries[] = result.series.map((source) => {
+  const comparisonKeys = new Set(comparisonSeries.map((series) => series.key));
+  const series: ChartSeries[] = [...comparisonSeries, ...result.series].map((source) => {
     const points = source.points
       .filter((point) => point.value !== null)
       .map((point) => ({
@@ -98,14 +128,27 @@ export const buildLineChartModel = (result: AnalysisResult, query: AnalysisQuery
       }))
       .sort((a, b) => a.position - b.position);
 
+    const isComparison = comparisonKeys.has(source.key);
     const year = Number(source.key);
-    const role: SeriesRole = !byYear ? "entity" : year === focusYear ? "focus" : "context";
+    const role: SeriesRole = isComparison
+      ? "comparison"
+      : !byYear
+        ? "entity"
+        : year === focusYear
+          ? "focus"
+          : "context";
 
     return {
       key: source.key,
-      label: byYear ? `${source.key}` : source.label,
+      colorKey: isComparison ? source.key.replace(/__prev$/, "") : source.key,
+      label: byYear && !isComparison ? `${source.key}` : source.label,
       role,
-      opacity: role === "context" ? contextOpacity(year, contextYears) : 1,
+      opacity:
+        role === "context"
+          ? contextOpacity(year, contextYears)
+          : role === "comparison"
+            ? LINE_CHART.CONTEXT_OPACITY.MAX
+            : 1,
       points,
       segments: splitByGap(points, gapBreak),
     };

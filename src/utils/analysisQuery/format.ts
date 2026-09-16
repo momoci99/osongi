@@ -18,6 +18,9 @@ const decimal1 = new Intl.NumberFormat("ko-KR", {
   maximumFractionDigits: 1,
 });
 
+/** 1 미만 눈금용 — 불필요한 0을 붙이지 않는다 */
+const compactDecimal = new Intl.NumberFormat("ko-KR", { maximumFractionDigits: 2 });
+
 /** 정수 한국어 숫자 */
 const integer = new Intl.NumberFormat("ko-KR", { maximumFractionDigits: 0 });
 
@@ -125,8 +128,7 @@ export const formatAxisTick = (metric: AnalysisMetric, value: number): string =>
     case "gradeShare":
       return `${integer.format(value * PERCENT)}%`;
     default:
-      return value >= KILOGRAMS_PER_TON
-        ? `${decimal1.format(value / KILOGRAMS_PER_TON)}t`
-        : `${integer.format(value)}kg`;
+      if (value >= KILOGRAMS_PER_TON) return `${decimal1.format(value / KILOGRAMS_PER_TON)}t`;
+      return value > 0 && value < 1 ? `${compactDecimal.format(value)}kg` : `${integer.format(value)}kg`;
   }
 };

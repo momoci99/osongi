@@ -116,3 +116,67 @@ export const LINE_CHART = {
   /** 툴팁 최대 폭 (px) */
   TOOLTIP_MAX_WIDTH: 320,
 } as const;
+
+/** 히트맵 (시즌 × 날짜) */
+export const HEATMAP = {
+  ROW_HEIGHT: { MOBILE: 18, DESKTOP: 24 },
+  /** 셀 사이 틈 (px) — 인접 채움 사이 표면 간격 */
+  CELL_GAP: 1.5,
+  CELL_RADIUS: 2,
+  /** 가로 스크롤 전환 기준 셀 최소 폭 (px) */
+  MIN_CELL_WIDTH: 5,
+  MARGIN: { top: 24, right: 12, bottom: 8, left: 64 },
+  /** 색 램프 시작점 — 표면색과 강조색 사이 위치 */
+  RAMP_START: 0.1,
+  /** 범례 그라데이션 폭·높이 (px) */
+  LEGEND_WIDTH: 160,
+  LEGEND_HEIGHT: 8,
+} as const;
+
+/** 관계 산점도 */
+export const RELATION_CHART = {
+  HEIGHT: { MOBILE: 300, DESKTOP: 420 },
+  MARGIN: {
+    MOBILE: { top: 16, right: 16, bottom: 48, left: 58 },
+    DESKTOP: { top: 20, right: 24, bottom: 52, left: 72 },
+  },
+  MIN_POINTS: 10,
+  /** 10의 거듭제곱 눈금만으로 충분하다고 보는 최소 개수 */
+  MIN_DECADE_TICKS: 3,
+  POINT_RADIUS: 3.5,
+  HOVER_POINT_RADIUS: 5.5,
+  POINT_OPACITY: 0.7,
+  CONTEXT_OPACITY: 0.42,
+  POINT_STROKE_WIDTH: 1,
+  Y_PADDING_RATIO: 0.08,
+  AXIS_TICK_COUNT: 5,
+  AXIS_FONT_SIZE: 11,
+  AXIS_TITLE_OFFSET: 38,
+  TOOLTIP_Y_OFFSET: 12,
+  EMPTY_DOMAIN_MIN: 1,
+  EMPTY_DOMAIN_MAX: 10,
+} as const;
+
+/** 조합 × 시즌 커버리지 행렬 */
+export const COVERAGE_MATRIX = {
+  ROW_HEIGHT: { MOBILE: 26, DESKTOP: 30 },
+  MARGIN: { top: 32, right: 12, bottom: 8, left: 84 },
+  MIN_CELL_WIDTH: 22,
+  CELL_GAP: 2,
+  CELL_RADIUS: 3,
+  CELL_TEXT_MIN_WIDTH: 26,
+  DARK_FILL_RATIO: 0.55,
+  RAMP_START: 0.1,
+  EMPTY_STROKE_WIDTH: 1,
+  AXIS_FONT_SIZE: 11,
+  REGION_DOT_RADIUS: 3,
+  REGION_DOT_X: -72,
+  LABEL_X: -62,
+  NOTE_DOT_RADIUS: 2.5,
+  NOTE_DOT_Y: -12,
+  /** 연도 라벨 오른쪽으로 비킨 이상 시즌 표식 위치 (px) */
+  NOTE_DOT_X_OFFSET: 19,
+  LEGEND_WIDTH: 112,
+  LEGEND_HEIGHT: 8,
+  TOOLTIP_Y_OFFSET: 12,
+} as const;

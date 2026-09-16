@@ -63,5 +63,6 @@ describe("formatAxisTick", () => {
     expect(formatAxisTick("gradeShare", 0.25)).toBe("25%");
     expect(formatAxisTick("cumQuantity", 12_500)).toBe("12.5t");
     expect(formatAxisTick("quantity", 300)).toBe("300kg");
+    expect(formatAxisTick("quantity", 0.1)).toBe("0.1kg");
   });
 });

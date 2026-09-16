@@ -53,6 +53,19 @@ describe("buildLineChartModel", () => {
   });
 });
 
+describe("전년 비교 시리즈", () => {
+  it("전년 날짜를 1년 뒤로 옮겨 같은 대상색 키로 겹친다", () => {
+    const rows = [makeRow("2023-09-20", { unitPrice: 1 }), makeRow("2024-09-20", { unitPrice: 2 })];
+    const query = makeQuery({ view: "timeline", time: { kind: "seasons", years: [2024] } });
+    const comparison = runAnalysisQuery(rows, { ...query, time: { kind: "seasons", years: [2023] } });
+    const model = buildLineChartModel(runAnalysisQuery(rows, query), query, comparison);
+    const previous = model.series.find((series) => series.role === "comparison");
+
+    expect(previous).toMatchObject({ colorKey: "all", label: "전체 (전년)" });
+    expect(previous?.points[0].position).toBe(model.series.find((series) => series.role === "entity")?.points[0].position);
+  });
+});
+
 describe("nearestPosition", () => {
   it("가장 가까운 위치를 이진 탐색으로 찾는다", () => {
     expect(nearestPosition([1, 5, 9], 6.9)).toBe(5);
