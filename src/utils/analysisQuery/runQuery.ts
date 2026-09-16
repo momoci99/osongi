@@ -76,6 +76,7 @@ export const runAnalysisQuery = (
       normalBand: null,
       normalYears: [],
       includedUnions,
+      rows: timed,
     };
   }
 
@@ -104,5 +105,6 @@ export const runAnalysisQuery = (
     ),
     normalYears,
     includedUnions,
+    rows: timed,
   };
 };

@@ -141,6 +141,8 @@ export type AnalysisResult = {
   normalBand: NormalBandPoint[] | null;
   /** 평년에 사용된 시즌 */
   normalYears: number[];
-  /** 공통 조합만 모드에서 실제 집계된 조합 */
+  /** 집계에 실제 포함된 조합 */
   includedUnions: string[];
+  /** 모든 필터를 적용한 등급 행 (표·시즌 요약용) */
+  rows: GradeRow[];
 };
