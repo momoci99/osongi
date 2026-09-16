@@ -1,46 +1,36 @@
 {
-  "generatedAt": "2026-04-07T14:19:17.035Z",
+  "generatedAt": "2026-09-16T13:31:52.590Z",
   "latestSeasonSummary": {
-    "year": 2025,
-    "startDate": "2025-09-22",
-    "endDate": "2025-11-12",
-    "totalQuantityKg": 121553.7,
-    "totalAmountWon": 24430492120.27,
-    "avgPricePerKg": 200985.18,
+    "year": 2026,
+    "startDate": "2026-09-15",
+    "endDate": "2026-09-16",
+    "totalQuantityKg": 100.05,
+    "totalAmountWon": 44922736,
+    "avgPricePerKg": 449002.86,
     "highestPrice": {
-      "date": "2025-10-03",
+      "date": "2026-09-16",
       "gradeKey": "grade1",
-      "price": 1611200
+      "price": 1300000
     },
     "lowestPrice": {
-      "date": "2025-10-15",
+      "date": "2026-09-16",
       "gradeKey": "mixedGrade",
-      "price": 41616
+      "price": 166900
     }
   },
   "regionSeasonSummaries": {
     "강원": {
-      "totalQuantityKg": 31659.53,
-      "totalAmountWon": 7452346073.92,
-      "avgPricePerKg": 235390.29
-    },
-    "경북": {
-      "totalQuantityKg": 80372.63,
-      "totalAmountWon": 15132248190.77,
-      "avgPricePerKg": 188276.14
-    },
-    "경남": {
-      "totalQuantityKg": 9521.54,
-      "totalAmountWon": 1845892078.26,
-      "avgPricePerKg": 193864.87
+      "totalQuantityKg": 100.05,
+      "totalAmountWon": 44922736,
+      "avgPricePerKg": 449002.86
     }
   },
   "monthlyPatterns": [
     {
       "month": 9,
-      "avgQuantityKg": 53851.27,
-      "avgPriceWon": 177514.63,
-      "yearCount": 13
+      "avgQuantityKg": 50011.9,
+      "avgPriceWon": 177553.42,
+      "yearCount": 14
     },
     {
       "month": 10,
@@ -58,18 +48,8 @@
   "regionRanking": [
     {
       "region": "강원",
-      "avgPriceWon": 235390.29,
-      "totalQuantityKg": 31659.53
-    },
-    {
-      "region": "경남",
-      "avgPriceWon": 193864.87,
-      "totalQuantityKg": 9521.54
-    },
-    {
-      "region": "경북",
-      "avgPriceWon": 188276.14,
-      "totalQuantityKg": 80372.63
+      "avgPriceWon": 449002.86,
+      "totalQuantityKg": 100.05
     }
   ]
 }

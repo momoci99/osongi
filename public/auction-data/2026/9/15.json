@@ -1,0 +1,42 @@
+[
+  {
+    "region": "강원",
+    "union": "삼척",
+    "date": "2026-9-15",
+    "lastUpdated": "2026-09-15 17:12:44.0",
+    "auctionQuantity": {
+      "untilYesterday": "0kg",
+      "today": "6.02kg",
+      "total": "6.02kg"
+    },
+    "auctionAmount": {
+      "untilYesterday": "0원",
+      "today": "2,871,120원",
+      "total": "2,871,120원"
+    },
+    "grade1": {
+      "quantity": "0.22kg",
+      "unitPrice": "1,226,000원"
+    },
+    "grade2": {
+      "quantity": "0.37kg",
+      "unitPrice": "926,000원"
+    },
+    "grade3Stopped": {
+      "quantity": "1.39kg",
+      "unitPrice": "516,000원"
+    },
+    "grade3Estimated": {
+      "quantity": "1.43kg",
+      "unitPrice": "556,000원"
+    },
+    "gradeBelow": {
+      "quantity": "2.61kg",
+      "unitPrice": "286,000원"
+    },
+    "mixedGrade": {
+      "quantity": "0kg",
+      "unitPrice": "0원"
+    }
+  }
+]
