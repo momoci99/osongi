@@ -17,7 +17,7 @@ const rows = [
 ];
 
 describe("Heatmap", () => {
-  it("시즌 수를 알리고 이상 시즌 범례를 붙인다", () => {
+  it("시즌 수를 알리고 빈칸 안내를 붙인다", () => {
     const query = makeQuery({
       view: "heatmap",
       groupBy: "year",
@@ -27,7 +27,7 @@ describe("Heatmap", () => {
     withTheme(<Heatmap query={query} result={runAnalysisQuery(rows, query)} onSelectSeason={vi.fn()} />);
 
     expect(screen.getByRole("img", { name: "시즌 2개 히트맵" })).toBeInTheDocument();
-    expect(screen.getByText(/• 이상 시즌/)).toBeInTheDocument();
+    expect(screen.getByText(/빈칸은 공판 없음/)).toBeInTheDocument();
   });
 });
 

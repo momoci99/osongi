@@ -4,7 +4,6 @@ import type { Theme } from "@mui/material/styles";
 import { useContainerWidth } from "../../../../utils/d3/useContainerSize";
 import { isMobileWidth } from "../../../../utils/d3/chartMargins";
 import { HEATMAP, LINE_CHART } from "../../../../const/AnalysisLayout";
-import { SEASON_NOTES } from "../../../../const/Analysis";
 import { hideTooltip, placeTooltip } from "../chartTooltip";
 import { renderTooltipHtml } from "../lineTooltip";
 import { formatAxisValue, formatMetricText } from "../../../../utils/analysisQuery/format";
@@ -68,7 +67,7 @@ const useDrawHeatmap = ({ model, query, axis, colorScale, theme, onCellClick }: 
         .attr("font-weight", 600)
         .attr("fill", theme.palette.text.secondary)
         .style("font-variant-numeric", "tabular-nums")
-        .text((row) => `${row.label}${SEASON_NOTES[row.year] && query.groupBy === "year" ? " •" : ""}`);
+        .text((row) => row.label);
 
       const ticks = model.mapping
         .ticks(innerWidth)

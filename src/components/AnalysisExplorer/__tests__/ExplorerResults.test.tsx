@@ -28,11 +28,10 @@ describe("ExplorerSummary", () => {
     expect(screen.getByText("23.09.11 · 양양 · 1등품")).toBeInTheDocument();
   });
 
-  it("공판일이 적으면 경고, 이상 시즌이면 메모를 보여준다", () => {
+  it("공판일이 적으면 경고를 보여준다", () => {
     renderSummary([makeRow("2024-09-19")], makeQuery({ time: { kind: "seasons", years: [2024] } }));
 
     expect(screen.getByRole("alert")).toHaveTextContent("공판일이 1일뿐");
-    expect(screen.getByText("2024 시즌 — 역대급 흉작")).toBeInTheDocument();
   });
 });
 
@@ -56,7 +55,7 @@ describe("ExplorerView", () => {
     withTheme(<ExplorerView query={query} result={runAnalysisQuery(rows, query)} comparison={null} onQueryChange={() => {}} />);
 
     expect(screen.getByRole("columnheader", { name: "피크일" })).toBeInTheDocument();
-    expect(screen.getByText("역대급 흉작")).toBeInTheDocument();
+    expect(screen.getByRole("cell", { name: "2024" })).toBeInTheDocument();
   });
 
   it("차트 뷰는 표를 접어 두고, 펼치면 평년 열이 붙은 피벗 표를 보여준다", () => {

@@ -1,4 +1,4 @@
-import { Box, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
+import { Box, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import { tableContainerSx, tableSx } from "./tableStyles";
 import {
   formatInteger,
@@ -42,7 +42,6 @@ const SeasonSummaryTable = ({ summaries }: SeasonSummaryTableProps) => (
           <TableCell className="numeric">총 물량</TableCell>
           <TableCell className="numeric">가중 단가</TableCell>
           <TableCell className="numeric">조합</TableCell>
-          <TableCell>메모</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
@@ -61,13 +60,6 @@ const SeasonSummaryTable = ({ summaries }: SeasonSummaryTableProps) => (
               {season.unitPrice === null ? "–" : withUnit(formatUnitPrice(season.unitPrice))}
             </TableCell>
             <TableCell className="numeric">{season.unions}</TableCell>
-            <TableCell>
-              {season.note ? (
-                <Typography component="span" sx={{ fontSize: "0.75rem", color: "secondary.main", fontWeight: 600 }}>
-                  {season.note}
-                </Typography>
-              ) : null}
-            </TableCell>
           </TableRow>
         ))}
       </TableBody>

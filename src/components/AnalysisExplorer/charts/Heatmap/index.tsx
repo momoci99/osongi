@@ -3,7 +3,6 @@ import { Box, Typography, useTheme } from "@mui/material";
 import useDrawHeatmap from "./useDrawHeatmap";
 import { chartTooltipSx } from "../chartTooltip";
 import { HEATMAP } from "../../../../const/AnalysisLayout";
-import { SEASON_NOTES } from "../../../../const/Analysis";
 import { buildHeatmapModel, type HeatmapCell } from "../../../../utils/analysisQuery/heatmapModel";
 import { formatAxisTick } from "../../../../utils/analysisQuery/format";
 import type { AnalysisQuery, AnalysisResult } from "../../../../utils/analysisQuery/types";
@@ -37,8 +36,6 @@ const Heatmap = ({ query, result, onSelectSeason }: HeatmapProps) => {
     theme,
     onCellClick: (cell: HeatmapCell) => onSelectSeason(cell.year),
   });
-
-  const hasNotes = query.groupBy === "year" && model.rows.some((row) => SEASON_NOTES[row.year]);
 
   return (
     <Box>
@@ -74,7 +71,6 @@ const Heatmap = ({ query, result, onSelectSeason }: HeatmapProps) => {
         </Box>
         <Typography sx={{ fontSize: "0.75rem", color: "text.disabled" }}>
           빈칸은 공판 없음 · 칸을 누르면 그 시즌 추이로 이동
-          {hasNotes ? " · • 이상 시즌" : ""}
         </Typography>
       </Box>
     </Box>

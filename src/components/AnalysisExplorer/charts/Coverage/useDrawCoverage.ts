@@ -2,7 +2,6 @@ import { useEffect, useRef } from "react";
 import * as d3 from "d3";
 import type { Theme } from "@mui/material/styles";
 import { COVERAGE_MATRIX } from "../../../../const/AnalysisLayout";
-import { SEASON_NOTES } from "../../../../const/Analysis";
 import { regionColor } from "../../../../const/Regions";
 import { useContainerWidth } from "../../../../utils/d3/useContainerSize";
 import { isMobileWidth } from "../../../../utils/d3/chartMargins";
@@ -59,14 +58,6 @@ const useDrawCoverage = ({ coverage, colorScale, theme }: UseDrawCoverageParams)
         .attr("fill", theme.palette.text.secondary)
         .style("font-variant-numeric", "tabular-nums")
         .text((year) => year);
-      g.append("g")
-        .selectAll("circle")
-        .data(coverage.years.filter((year) => SEASON_NOTES[year]))
-        .join("circle")
-        .attr("cx", (year) => coverage.years.indexOf(year) * cellWidth + cellWidth / 2 + COVERAGE_MATRIX.NOTE_DOT_X_OFFSET)
-        .attr("cy", COVERAGE_MATRIX.NOTE_DOT_Y)
-        .attr("r", COVERAGE_MATRIX.NOTE_DOT_RADIUS)
-        .attr("fill", theme.palette.secondary.main);
 
       const rows = g.append("g").selectAll("g").data(coverage.unions).join("g");
       rows

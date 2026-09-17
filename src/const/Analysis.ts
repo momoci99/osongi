@@ -1,13 +1,3 @@
-/**
- * 이상 시즌 메모.
- * 흉작·이상기후 등 평년 비교 해석에 주의가 필요한 시즌을 기록한다.
- * 시즌 스트립·연도 겹침 범례·히트맵 행 라벨에 표식으로 노출한다.
- */
-export const SEASON_NOTES: Readonly<Record<number, string>> = {
-  2024: "역대급 흉작",
-  2025: "역대급 흉작",
-};
-
 /** 평년 계산에 쓰는 직전 시즌 수 */
 export const NORMAL_BASELINE_SEASONS = 10;
 

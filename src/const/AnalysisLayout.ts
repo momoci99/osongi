@@ -30,16 +30,12 @@ export const SEASON_STRIP = {
   MUTED_OPACITY: 0.32,
   /** 선택 기간 배경 불투명도 */
   RANGE_FILL_OPACITY: 0.14,
-  /** 이상 시즌 표식 반지름 (px) */
-  NOTE_DOT_RADIUS: 2.5,
   /** 좁은 화면에서 연도 라벨을 두 자리로 줄이는 기준 폭 (px) */
   COMPACT_LABEL_WIDTH: 720,
   /** 연도 라벨 글자 크기 (px) */
   LABEL_FONT_SIZE: 11,
   /** 라벨 기준선 — 라벨 영역 상단에서의 거리 (px) */
   LABEL_BASELINE: 15,
-  /** 이상 시즌 표식과 라벨 사이 간격 (px) */
-  NOTE_DOT_GAP: 5,
   /** 막대 최소 폭 (px) */
   MIN_BAR_WIDTH: 0.8,
   /** 인접 막대 사이 틈 (px) */
@@ -172,10 +168,6 @@ export const COVERAGE_MATRIX = {
   REGION_DOT_RADIUS: 3,
   REGION_DOT_X: -72,
   LABEL_X: -62,
-  NOTE_DOT_RADIUS: 2.5,
-  NOTE_DOT_Y: -12,
-  /** 연도 라벨 오른쪽으로 비킨 이상 시즌 표식 위치 (px) */
-  NOTE_DOT_X_OFFSET: 19,
   LEGEND_WIDTH: 112,
   LEGEND_HEIGHT: 8,
   TOOLTIP_Y_OFFSET: 12,

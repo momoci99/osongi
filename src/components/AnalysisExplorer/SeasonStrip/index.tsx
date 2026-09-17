@@ -1,4 +1,3 @@
-import { useRef } from "react";
 import { Box, Button, Typography, useTheme } from "@mui/material";
 import ExplorerPanel from "../ExplorerPanel";
 import SeasonRangeInput from "./SeasonRangeInput";
@@ -20,14 +19,12 @@ type SeasonStripProps = {
 /** 전체 시즌 타임라인 — 날짜 조회의 본체 */
 const SeasonStrip = ({ years, dailyQuantity, time, latestDate, onTimeChange }: SeasonStripProps) => {
   const theme = useTheme();
-  const readoutRef = useRef<HTMLSpanElement | null>(null);
 
-  const { containerRef, svgRef } = useDrawSeasonStrip({
+  const { containerRef, svgRef, readoutRef } = useDrawSeasonStrip({
     years,
     dailyQuantity,
     time,
     theme,
-    readoutRef,
     onYearClick: (year, additive) => onTimeChange(toggleSeason(time, year, additive)),
     onRangeSelect: (start, end) => onTimeChange({ kind: "range", start, end }),
   });

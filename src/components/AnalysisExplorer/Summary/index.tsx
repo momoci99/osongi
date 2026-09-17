@@ -1,7 +1,6 @@
 import { Alert, Box, Typography } from "@mui/material";
 import ExplorerPanel from "../ExplorerPanel";
 import SummaryStatRow from "./SummaryStatRow";
-import { SEASON_NOTES } from "../../../const/Analysis";
 import { GradeKeyToKorean } from "../../../const/Common";
 import {
   formatAmount,
@@ -26,17 +25,6 @@ type ExplorerSummaryProps = {
 const describeExtreme = (extreme: PriceExtreme): string =>
   `${extreme.date.slice(2).replaceAll("-", ".")} · ${extreme.union} · ${GradeKeyToKorean[extreme.grade]}`;
 
-/** 선택 시즌 중 메모가 있는 시즌 */
-const findNotes = (query: AnalysisQuery): [number, string][] => {
-  const years =
-    query.time.kind === "seasons"
-      ? query.time.years
-      : [Number(query.time.start.slice(0, 4)), Number(query.time.end.slice(0, 4))];
-  return [...new Set(years)].flatMap((year) =>
-    SEASON_NOTES[year] ? [[year, SEASON_NOTES[year]] as [number, string]] : [],
-  );
-};
-
 /** 평년 기준 설명 */
 const describeNormalYears = (years: number[]): string =>
   years.length === 0 ? "비교할 과거 시즌 없음" : `${years[0]}–${years[years.length - 1]} · ${years.length}시즌 중앙값`;
@@ -47,7 +35,6 @@ const ExplorerSummary = ({ query, result, scopeUnionCount }: ExplorerSummaryProp
   const price = summary.unitPrice === null ? null : formatUnitPrice(summary.unitPrice);
   const quantity = formatQuantity(summary.quantity);
   const amount = formatAmount(summary.amount);
-  const notes = findNotes(query);
 
   return (
     <ExplorerPanel title="요약">
@@ -102,18 +89,6 @@ const ExplorerSummary = ({ query, result, scopeUnionCount }: ExplorerSummaryProp
         </Typography>
       ) : null}
 
-      {notes.length > 0 ? (
-        <Box sx={{ mt: 1.5, display: "flex", flexDirection: "column", gap: 0.5 }}>
-          {notes.map(([year, note]) => (
-            <Box key={year} sx={{ display: "flex", alignItems: "center", gap: 0.75 }}>
-              <Box sx={{ width: 6, height: 6, borderRadius: "50%", bgcolor: "secondary.main", flexShrink: 0 }} />
-              <Typography sx={{ fontSize: "0.75rem", color: "text.secondary" }}>
-                {year} 시즌 — {note}
-              </Typography>
-            </Box>
-          ))}
-        </Box>
-      ) : null}
     </ExplorerPanel>
   );
 };

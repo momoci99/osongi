@@ -47,7 +47,7 @@ describe("시즌 요약·커버리지", () => {
     makeRow("2023-09-11", { quantity: 3, unitPrice: 300, region: "경북", union: "울진" }),
   ];
 
-  it("시즌별 개시·종료·피크·가중 단가와 메모", () => {
+  it("시즌별 개시·종료·피크·가중 단가", () => {
     const summaries = buildSeasonSummaries(rows);
     expect(summaries.map((s) => s.year)).toEqual([2023, 2024]);
     expect(summaries[1]).toMatchObject({
@@ -58,10 +58,8 @@ describe("시즌 요약·커버리지", () => {
       peakQuantity: 7,
       quantity: 8,
       unions: 2,
-      note: "역대급 흉작",
     });
     expect(summaries[1].unitPrice).toBeCloseTo(1500 / 8);
-    expect(summaries[0].note).toBeNull();
   });
 
   it("조합 × 시즌 공판일 수", () => {

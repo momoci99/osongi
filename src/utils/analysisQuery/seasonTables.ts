@@ -1,4 +1,3 @@
-import { SEASON_NOTES } from "../../const/Analysis";
 import { listYears } from "./rows";
 import type { GradeRow } from "./types";
 
@@ -15,7 +14,6 @@ export type SeasonSummaryRow = {
   amount: number;
   unitPrice: number | null;
   unions: number;
-  note: string | null;
 };
 
 /** 커버리지 표의 한 칸 — 조합 × 시즌 공판일 수 */
@@ -65,7 +63,6 @@ export const buildSeasonSummaries = (rows: GradeRow[]): SeasonSummaryRow[] =>
       amount,
       unitPrice: quantity > 0 ? amount / quantity : null,
       unions: unions.size,
-      note: SEASON_NOTES[year] ?? null,
     };
   });
 

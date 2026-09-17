@@ -1,9 +1,8 @@
-import { useEffect, useRef, type RefObject } from "react";
+import { useEffect, useRef } from "react";
 import * as d3 from "d3";
 import type { Theme } from "@mui/material/styles";
 import { useContainerWidth } from "../../../utils/d3/useContainerSize";
 import { SEASON_STRIP } from "../../../const/AnalysisLayout";
-import { SEASON_NOTES } from "../../../const/Analysis";
 import {
   fromWindowOffset,
   toWindowOffset,
@@ -16,8 +15,6 @@ type UseDrawSeasonStripParams = {
   dailyQuantity: Map<string, number>;
   time: AnalysisTime;
   theme: Theme;
-  /** 호버 날짜·물량을 리렌더 없이 표시할 요소 */
-  readoutRef: RefObject<HTMLSpanElement | null>;
   onYearClick: (year: number, additive: boolean) => void;
   onRangeSelect: (start: string, end: string) => void;
 };
@@ -44,12 +41,13 @@ const useDrawSeasonStrip = ({
   dailyQuantity,
   time,
   theme,
-  readoutRef,
   onYearClick,
   onRangeSelect,
 }: UseDrawSeasonStripParams) => {
   const { containerRef, width } = useContainerWidth();
   const svgRef = useRef<SVGSVGElement | null>(null);
+  /** 호버 날짜·물량을 리렌더 없이 표시할 요소 */
+  const readoutRef = useRef<HTMLSpanElement | null>(null);
   /** 핸들러 교체만으로 전체를 다시 그리지 않도록 ref로 보관 */
   const handlersRef = useRef({ onYearClick, onRangeSelect });
 
@@ -134,7 +132,7 @@ const useDrawSeasonStrip = ({
           isSelectedDate(date, time) ? 1 : SEASON_STRIP.MUTED_OPACITY,
         );
 
-      const labels = svg
+      svg
         .append("g")
         .attr("transform", `translate(0, ${PLOT_HEIGHT + LABEL_BASELINE})`)
         .selectAll<SVGTextElement, number>("text")
@@ -152,19 +150,6 @@ const useDrawSeasonStrip = ({
         .style("font-variant-numeric", "tabular-nums")
         .text((year) => (compactLabel ? `'${String(year).slice(2)}` : String(year)));
 
-      labels.each(function drawNoteDot(year) {
-        const note = SEASON_NOTES[year];
-        if (!note) return;
-        const labelWidth = this.getComputedTextLength?.() ?? 0;
-        svg
-          .append("circle")
-          .attr("cx", bandX(year) + x.bandwidth() / 2 + labelWidth / 2 + SEASON_STRIP.NOTE_DOT_GAP)
-          .attr("cy", PLOT_HEIGHT + LABEL_BASELINE - LABEL_FONT_SIZE / 2 + 1)
-          .attr("r", SEASON_STRIP.NOTE_DOT_RADIUS)
-          .attr("fill", theme.palette.secondary.main)
-          .append("title")
-          .text(`${year}: ${note}`);
-      });
 
       const guide = svg
         .append("line")
@@ -218,10 +203,10 @@ const useDrawSeasonStrip = ({
           if (readoutRef.current) readoutRef.current.textContent = "";
         });
     },
-    [width, years, dailyQuantity, time, theme, readoutRef],
+    [width, years, dailyQuantity, time, theme],
   );
 
-  return { containerRef, svgRef };
+  return { containerRef, svgRef, readoutRef };
 };
 
 export default useDrawSeasonStrip;
