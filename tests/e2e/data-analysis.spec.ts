@@ -1,59 +1,60 @@
 import { test, expect } from "@playwright/test";
 import { setupCompletedOnboarding, waitForDataReady } from "./helpers";
-import { TEST_IDS } from "../../src/test-ids";
+
+/** 모든 조회 조건을 명시한 순위 뷰 링크 */
+const RANK_URL =
+  "/data-analysis?view=rank&years=2025&align=calendar&regions=&unions=&grades=grade1&metric=unitPrice&by=union&unit=season&compare=none&common=0";
 
 test.describe("데이터 분석", () => {
   test.beforeEach(async ({ page }) => {
     await setupCompletedOnboarding(page);
   });
 
-  test("페이지 헤더와 필터 영역이 렌더링된다", async ({ page }) => {
-    await page.goto("/data-analysis");
+  test("헤더·질문 템플릿·조회 기간·요약이 렌더링된다", async ({ page }) => {
+    await page.goto("/data-analysis?season=off");
     await waitForDataReady(page);
-    await expect(
-      page.getByRole("heading", { name: "데이터 분석" }),
-    ).toBeVisible();
-    await expect(
-      page.getByText("필터를 조합하여 송이버섯 공판 데이터를 다각도로 분석하세요."),
-    ).toBeVisible();
-    // 등급 셀렉터 레이블 존재 확인 (strict mode 피하기 위해 label role 사용)
-    await expect(page.locator(`[data-testid="${TEST_IDS.GRADE_SELECT}"]`)).toBeVisible();
+
+    await expect(page.getByRole("heading", { name: "데이터 분석", level: 1 })).toBeVisible();
+    await expect(page.getByRole("navigation", { name: "질문 템플릿" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "조회 기간" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "요약" })).toBeVisible();
+    /** 비시즌 기본 템플릿은 전 시즌 히트맵 */
+    await expect(page.getByRole("button", { name: /전 시즌 한눈에/ })).toHaveAttribute("aria-pressed", "true");
+    await expect(page.getByRole("img", { name: /히트맵/ })).toBeVisible();
   });
 
-  test("등급 셀렉터에서 항목을 선택 해제할 수 있다", async ({ page }) => {
+  test("템플릿을 누르면 조건이 URL에 기록되고 해당 뷰가 그려진다", async ({ page }) => {
     await page.goto("/data-analysis");
     await waitForDataReady(page);
-    // 등급 Multiple Select 열기 (해당 FormControl의 combobox)
-    const gradeSelect = page
-      .locator(`[data-testid="${TEST_IDS.GRADE_SELECT}"]`)
-      .locator('[role="combobox"]');
-    await gradeSelect.waitFor();
-    await gradeSelect.click();
-    const option = page.getByRole("option", { name: "1등품" });
-    await expect(option).toBeVisible();
-    await option.click();
-    await page.keyboard.press("Escape");
-    // 1등품 칩이 사라짐
-    await expect(
-      page.locator('[role="button"]').filter({ hasText: /^1등품$/ }),
-    ).toHaveCount(0);
+
+    await page.getByRole("button", { name: /시즌 요약/ }).click();
+
+    await expect(page).toHaveURL(/view=table/);
+    await expect(page.getByRole("columnheader", { name: "피크일" })).toBeVisible();
   });
 
-  test("비교 모드 토글을 활성화하면 비교 날짜 필드가 표시된다", async ({
-    page,
-  }) => {
-    await page.goto("/data-analysis");
+  test("링크로 연 조건이 그대로 복원되고 뷰 탭으로 전환할 수 있다", async ({ page }) => {
+    await page.goto(RANK_URL);
     await waitForDataReady(page);
-    // 고급 필터 다이얼로그 열기
-    const advancedBtn = page.locator(`[data-testid="${TEST_IDS.ADVANCED_FILTER_BUTTON}"]`);
-    await advancedBtn.waitFor();
-    await advancedBtn.click();
-    const comparisonToggle = page.locator(`[data-testid="${TEST_IDS.COMPARISON_TOGGLE}"]`);
-    await comparisonToggle.waitFor();
-    await expect(comparisonToggle).not.toBeChecked();
-    await comparisonToggle.click();
-    // label과 span 두 요소에 텍스트가 있으므로 first() 사용
-    await expect(page.getByText("비교 시작일").first()).toBeVisible();
-    await expect(page.getByText("비교 종료일").first()).toBeVisible();
+
+    await expect(page.getByRole("tab", { name: "순위" })).toHaveAttribute("aria-selected", "true");
+    await expect(page.getByRole("img", { name: /조합별 단가 순위/ })).toBeVisible();
+
+    await page.getByRole("tab", { name: "연도 겹침" }).click();
+
+    await expect(page).toHaveURL(/view=overlay/);
+    await expect(page.getByRole("img", { name: /선 차트/ })).toBeVisible();
+  });
+
+  test("집계 결과를 CSV로 내보낼 수 있다", async ({ page }) => {
+    await page.goto(RANK_URL);
+    await waitForDataReady(page);
+
+    await page.getByRole("button", { name: "내보내기" }).click();
+    const downloadPromise = page.waitForEvent("download");
+    await page.getByRole("menuitem", { name: /집계 결과 CSV/ }).click();
+    const download = await downloadPromise;
+
+    expect(download.suggestedFilename()).toBe("osongi_rank_2025.csv");
   });
 });

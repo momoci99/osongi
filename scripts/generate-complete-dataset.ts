@@ -8,6 +8,7 @@
 
 import { readdirSync, readFileSync, writeFileSync } from "fs";
 import { join } from "path";
+import { isValidCalendarDate } from "../src/utils/calendarDate";
 
 // Raw auction record type (matching existing data structure)
 interface AuctionRecordRaw {
@@ -201,6 +202,11 @@ function collectAllData(): AuctionRecordNormalized[] {
 
           for (const record of rawData) {
             const normalized = normalizeRecord(record, dayPath);
+            /** 11-31 같은 존재하지 않는 날짜는 조용히 다음 달로 넘어가므로 제외 */
+            if (!isValidCalendarDate(normalized.date)) {
+              console.warn(`⚠️  무효 날짜 제외: ${normalized.date} (${dayPath})`);
+              continue;
+            }
             allRecords.push(normalized);
           }
         } catch (error) {

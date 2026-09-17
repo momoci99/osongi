@@ -4,8 +4,8 @@ import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { createAppTheme } from "./theme";
 import Dashboard from "./pages/Dashboard";
-import { Routes, Route, Navigate, Outlet } from "react-router";
-import DataAnalysis from "./pages/DataAnalysis";
+import { Routes, Route, Navigate, Outlet, useLocation } from "react-router";
+import AnalysisExplorer from "./pages/AnalysisExplorer";
 import RegionIndex from "./pages/RegionIndex";
 import RegionDetail from "./pages/RegionDetail";
 import GlobalNavbar from "./components/GlobalNavbar";
@@ -21,12 +21,18 @@ import { useSettingsStore } from "./stores/useSettingsStore";
  * 지역·조합 페이지는 검색 유입 랜딩이라 첫 화면이 로딩 게이트에 막히면
  * 이탈로 직결된다. 그래서 매니페스트만으로 렌더되는 라우트는 이 게이트 밖에 둔다.
  */
-const DatasetGatedLayout = () => (
-  <DataInitializer>
-    <RegionOnboarding />
-    <Outlet />
-  </DataInitializer>
-);
+const DatasetGatedLayout = () => {
+  const { pathname } = useLocation();
+  /** 분석 페이지는 "내 지역" 설정을 쓰지 않으므로 온보딩으로 화면을 가리지 않는다 */
+  const showOnboarding = !pathname.startsWith("/data-analysis");
+
+  return (
+    <DataInitializer>
+      {showOnboarding ? <RegionOnboarding /> : null}
+      <Outlet />
+    </DataInitializer>
+  );
+};
 
 const App = () => {
   const themeMode = useSettingsStore((s) => s.themeMode);
@@ -47,7 +53,7 @@ const App = () => {
           <Route element={<DatasetGatedLayout />}>
             <Route index element={<Dashboard />} />
             <Route path="dashboard" element={<Navigate to="/" replace />} />
-            <Route path="data-analysis" element={<DataAnalysis />} />
+            <Route path="data-analysis" element={<AnalysisExplorer />} />
           </Route>
           <Route path="region" element={<RegionIndex />} />
           <Route path="region/:region" element={<RegionDetail />} />
