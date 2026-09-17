@@ -44,7 +44,9 @@ const ExplorerContent = ({ meta, version }: ExplorerContentProps) => {
    * 연속 클릭 중에는 중간 결과 렌더를 건너뛴다.
    */
   const resultQuery = useDeferredValue(query);
-  const { data, pending, error } = useExplorerData(resultQuery, version, true);
+  const { data, pending: computing, error } = useExplorerData(resultQuery, version, true);
+  /** 워커 계산 중이거나, 연속 조작으로 결과 렌더가 선택을 아직 못 따라온 상태 */
+  const pending = computing || query !== resultQuery;
   const prefetch = usePrefetchExplorerData(version);
 
   useEffect(
@@ -99,6 +101,7 @@ const ExplorerContent = ({ meta, version }: ExplorerContentProps) => {
               <ExplorerView
                 data={data}
                 pending={pending}
+                selectedQuery={query}
                 onQueryChange={setQuery}
                 requestRawCsv={() => requestRawCsv(data.query, version)}
               />
@@ -109,6 +112,7 @@ const ExplorerContent = ({ meta, version }: ExplorerContentProps) => {
                 result={data.result}
                 scopeUnionCount={data.scopeUnionCount}
                 pending={pending}
+                revision={data}
               />
             </Box>
           </>

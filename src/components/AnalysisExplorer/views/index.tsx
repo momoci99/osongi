@@ -21,6 +21,8 @@ type ExplorerViewProps = {
   /** 계산이 끝난 결과. 화면은 data.query 기준으로 그려 계산 중에도 결과와 어긋나지 않는다 */
   data: ExplorerData;
   pending: boolean;
+  /** 방금 고른 조건 — 제목은 결과를 기다리지 않고 이것으로 바로 바꾼다 */
+  selectedQuery: AnalysisQuery;
   /** 히트맵 셀 클릭 등 차트에서 쿼리를 바꿀 때 */
   onQueryChange: (next: AnalysisQuery) => void;
   requestRawCsv: () => Promise<string>;
@@ -115,7 +117,7 @@ const ChartWithTable = ({ data, onQueryChange }: ViewChartProps) => {
 };
 
 /** 메인 뷰 영역 — 현재 뷰에 맞는 차트·표를 고른다 */
-const ExplorerView = ({ data, pending, onQueryChange, requestRawCsv }: ExplorerViewProps) => {
+const ExplorerView = ({ data, pending, selectedQuery, onQueryChange, requestRawCsv }: ExplorerViewProps) => {
   const chartAreaRef = useRef<HTMLDivElement | null>(null);
   const { query, result } = data;
 
@@ -131,10 +133,11 @@ const ExplorerView = ({ data, pending, onQueryChange, requestRawCsv }: ExplorerV
 
   return (
     <ExplorerPanel
-      title={VIEW_LABELS[query.view]}
-      caption={describeView(query)}
+      title={VIEW_LABELS[selectedQuery.view]}
+      caption={describeView(selectedQuery)}
       action={<ExportMenu query={query} result={result} requestRawCsv={requestRawCsv} chartAreaRef={chartAreaRef} />}
       pending={pending}
+      revision={data}
       flush
     >
       <div ref={chartAreaRef}>{renderBody()}</div>

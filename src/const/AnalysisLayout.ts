@@ -173,14 +173,31 @@ export const COVERAGE_MATRIX = {
   TOOLTIP_Y_OFFSET: 12,
 } as const;
 
-/** 결과 계산 중 표시 */
+/** 결과 계산 중 표시와 결과 도착 전환 */
 export const EXPLORER_PENDING = {
-  /** 이보다 빨리 끝나면 표시하지 않는다 (ms) */
-  DELAY_MS: 120,
-  FADE_MS: 180,
-  /** 직전 결과 흐림 정도 */
-  CONTENT_OPACITY: 0.45,
+  /** 이보다 빨리 끝나면 대기 표시를 띄우지 않는다 (ms) */
+  DELAY_MS: 100,
+  /** 대기 표시가 들어오고 나가는 시간 (ms) */
+  FADE_MS: 160,
+  /** 대기 중 직전 결과 불투명도 */
+  CONTENT_OPACITY: 0.55,
+  /** 대기 중 직전 결과 흐림 (px) */
+  BLUR_PX: 1.5,
+  /** 대기 중 직전 결과 채도 */
+  SATURATION: 0.7,
+  /** 상단 진행 바 */
   BAR_HEIGHT: 2,
+  BAR_CYCLE_MS: 900,
+  /** 진행 바 조각 폭 (%) */
+  BAR_WIDTH_PERCENT: 40,
+  /** 빛줄기 한 번 훑는 시간 (ms) */
+  SWEEP_CYCLE_MS: 1100,
+  /** 빛줄기 폭 (%) */
+  SWEEP_WIDTH_PERCENT: 45,
+  /** 빛줄기 밝기 — 다크·라이트 */
+  SWEEP_ALPHA: { DARK: 0.08, LIGHT: 0.7 },
+  /** 새 결과가 흐림에서 선명해지는 시간 (ms) */
+  ARRIVE_MS: 140,
 } as const;
 
 /** 조회 결과 캐시 */
