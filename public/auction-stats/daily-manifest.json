@@ -1,124 +1,93 @@
 {
-  "generatedAt": "2026-09-16T13:31:52.590Z",
-  "latestDate": "2026-09-16",
+  "generatedAt": "2026-09-17T05:36:28.221Z",
+  "latestDate": "2026-09-17",
   "latestDaily": {
-    "totalQuantityTodayKg": 94.03,
+    "totalQuantityTodayKg": 0,
     "topRegion": {
       "region": "강원",
-      "quantityKg": 94.03
+      "quantityKg": 0
     },
     "topUnion": {
-      "union": "강릉",
-      "quantityKg": 53.31
+      "union": "고성",
+      "quantityKg": 0
     },
     "topGradeByQuantity": {
-      "gradeKey": "gradeBelow",
-      "quantityKg": 47.78
+      "gradeKey": "grade1",
+      "quantityKg": 0
     },
     "gradeBreakdown": [
       {
         "gradeKey": "grade1",
-        "quantityKg": 2.08,
-        "unitPriceWon": 1238447.12
+        "quantityKg": 0,
+        "unitPriceWon": 0
       },
       {
         "gradeKey": "grade2",
-        "quantityKg": 4.91,
-        "unitPriceWon": 927724.64
+        "quantityKg": 0,
+        "unitPriceWon": 0
       },
       {
         "gradeKey": "grade3Estimated",
-        "quantityKg": 20.63,
-        "unitPriceWon": 571479.3
+        "quantityKg": 0,
+        "unitPriceWon": 0
       },
       {
         "gradeKey": "grade3Stopped",
-        "quantityKg": 13.85,
-        "unitPriceWon": 571705.27
+        "quantityKg": 0,
+        "unitPriceWon": 0
       },
       {
         "gradeKey": "gradeBelow",
-        "quantityKg": 47.78,
-        "unitPriceWon": 301695.27
+        "quantityKg": 0,
+        "unitPriceWon": 0
       },
       {
         "gradeKey": "mixedGrade",
-        "quantityKg": 4.78,
-        "unitPriceWon": 166900
+        "quantityKg": 0,
+        "unitPriceWon": 0
       }
     ],
     "regionGradeBreakdown": {
-      "강원": [
-        {
-          "gradeKey": "grade1",
-          "quantityKg": 2.08,
-          "unitPriceWon": 1238447.12
-        },
-        {
-          "gradeKey": "grade2",
-          "quantityKg": 4.91,
-          "unitPriceWon": 927724.64
-        },
-        {
-          "gradeKey": "grade3Stopped",
-          "quantityKg": 13.85,
-          "unitPriceWon": 571705.27
-        },
-        {
-          "gradeKey": "grade3Estimated",
-          "quantityKg": 20.63,
-          "unitPriceWon": 571479.3
-        },
-        {
-          "gradeKey": "gradeBelow",
-          "quantityKg": 47.78,
-          "unitPriceWon": 301695.27
-        },
-        {
-          "gradeKey": "mixedGrade",
-          "quantityKg": 4.78,
-          "unitPriceWon": 166900
-        }
-      ]
+      "강원": []
     },
     "previousDayComparison": {
-      "previousDate": "2026-09-15",
+      "previousDate": "2026-09-16",
       "gradeChanges": [
         {
           "gradeKey": "grade1",
-          "currentPrice": 1238447.12,
-          "previousPrice": 1226000,
-          "changePercent": 1.02
+          "currentPrice": 0,
+          "previousPrice": 1238447.12,
+          "changePercent": -100
         },
         {
           "gradeKey": "grade2",
-          "currentPrice": 927724.64,
-          "previousPrice": 926000,
-          "changePercent": 0.19
+          "currentPrice": 0,
+          "previousPrice": 927724.64,
+          "changePercent": -100
         },
         {
           "gradeKey": "grade3Estimated",
-          "currentPrice": 571479.3,
-          "previousPrice": 556000,
-          "changePercent": 2.78
+          "currentPrice": 0,
+          "previousPrice": 571479.3,
+          "changePercent": -100
         },
         {
           "gradeKey": "grade3Stopped",
-          "currentPrice": 571705.27,
-          "previousPrice": 516000,
-          "changePercent": 10.8
+          "currentPrice": 0,
+          "previousPrice": 571705.27,
+          "changePercent": -100
         },
         {
           "gradeKey": "gradeBelow",
-          "currentPrice": 301695.27,
-          "previousPrice": 286000,
-          "changePercent": 5.49
+          "currentPrice": 0,
+          "previousPrice": 301695.27,
+          "changePercent": -100
         },
         {
           "gradeKey": "mixedGrade",
-          "currentPrice": 166900,
-          "previousPrice": 0,
-          "changePercent": 0
+          "currentPrice": 0,
+          "previousPrice": 166900,
+          "changePercent": -100
         }
       ]
     }
