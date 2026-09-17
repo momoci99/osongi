@@ -1,6 +1,6 @@
 import { compareX } from "./aggregate";
 import { GRADE_KEYS } from "./rows";
-import type { AnalysisResult, GradeKey } from "./types";
+import type { AnalysisResultCore, GradeKey } from "./types";
 
 /** 누적 막대 조각 */
 export type CompositionSegment = {
@@ -24,7 +24,7 @@ export type CompositionColumn = {
  * 등급별 시리즈를 구간(연도·주·일)별 100% 누적 막대로 바꾼다.
  * 조각 순서는 등급 고정 순서(1등품이 아래) — 필터가 바뀌어도 쌓는 순서는 같다.
  */
-export const buildCompositionModel = (result: AnalysisResult): CompositionColumn[] => {
+export const buildCompositionModel = (result: AnalysisResultCore): CompositionColumn[] => {
   const columns = new Map<string, CompositionColumn>();
 
   for (const series of result.series) {

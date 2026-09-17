@@ -5,55 +5,52 @@ import SeasonStrip from "../components/AnalysisExplorer/SeasonStrip";
 import ExplorerControls from "../components/AnalysisExplorer/Controls";
 import ExplorerView from "../components/AnalysisExplorer/views";
 import ExplorerSummary from "../components/AnalysisExplorer/Summary";
-import useAnalysisDataset from "../hooks/useAnalysisDataset";
+import { requestRawCsv, useExplorerData, useExplorerMeta } from "../hooks/useAnalysisEngine";
 import useAnalysisQuery from "../hooks/useAnalysisQuery";
 import usePageMeta from "../hooks/usePageMeta";
 import isInSeason from "../utils/isInSeason";
 import { PAGE_META } from "../const/Seo";
 import { EXPLORER_LAYOUT } from "../const/AnalysisLayout";
-import { runAnalysisQuery, shiftTimeByYears } from "../utils/analysisQuery/runQuery";
-import { selectByPlaceAndGrade } from "../utils/analysisQuery/rows";
-import { sumQuantityByDate } from "../utils/analysisQuery/seasonWindow";
-import type { GradeRow } from "../utils/analysisQuery/types";
+import type { ExplorerMeta } from "../utils/analysisQuery/explorerData";
+
+/** 첫 결과가 오기 전 시즌 스트립용 빈 값 */
+const EMPTY_DAILY_QUANTITY = new Map<string, number>();
 
 type ExplorerContentProps = {
-  rows: GradeRow[];
-  availableYears: number[];
-  latestDate: string | null;
+  meta: ExplorerMeta;
+  version: string;
 };
 
-/** 데이터가 준비된 뒤의 탐색기 본문 */
-const ExplorerContent = ({ rows, availableYears, latestDate }: ExplorerContentProps) => {
+/** 결과 영역 골격 */
+const ResultSkeleton = () => (
+  <>
+    <Skeleton variant="rounded" height={EXPLORER_LAYOUT.VIEW_MIN_HEIGHT} />
+    <Skeleton variant="rounded" height={EXPLORER_LAYOUT.VIEW_MIN_HEIGHT / 2} />
+  </>
+);
+
+/** 데이터셋 요약이 준비된 뒤의 탐색기 본문 */
+const ExplorerContent = ({ meta, version }: ExplorerContentProps) => {
   const context = {
-    availableYears,
-    inSeason: latestDate ? isInSeason(latestDate) : false,
+    availableYears: meta.availableYears,
+    inSeason: meta.latestDate ? isInSeason(meta.latestDate) : false,
   };
   const { query, activeTemplateId, setQuery, updateQuery, applyTemplate } = useAnalysisQuery(context);
-
-  const result = runAnalysisQuery(rows, query);
-  const comparison =
-    query.compare === "prevYear"
-      ? runAnalysisQuery(rows, { ...query, compare: "none", time: shiftTimeByYears(query.time, -1) })
-      : null;
-  const scopedRows = selectByPlaceAndGrade(rows, query);
-  const dailyQuantity = sumQuantityByDate(scopedRows);
-  const recordCount = new Set(rows.map((row) => `${row.date}|${row.union}`)).size;
-  const scopeUnionCount = new Set(
-    selectByPlaceAndGrade(rows, { ...query, grades: [] }).map((row) => row.union),
-  ).size;
+  const { data, pending, error } = useExplorerData(query, version, true);
 
   return (
     <Stack gap={EXPLORER_LAYOUT.SECTION_GAP}>
-      <ExplorerHeader availableYears={availableYears} recordCount={recordCount} latestDate={latestDate} />
+      <ExplorerHeader availableYears={meta.availableYears} recordCount={meta.recordCount} latestDate={meta.latestDate} />
       <TemplateBar activeId={activeTemplateId} onSelect={applyTemplate} />
       <SeasonStrip
-        years={availableYears}
-        dailyQuantity={dailyQuantity}
+        years={meta.availableYears}
+        dailyQuantity={data?.dailyQuantity ?? EMPTY_DAILY_QUANTITY}
         time={query.time}
-        latestDate={latestDate}
+        latestDate={meta.latestDate}
         onTimeChange={(time) => updateQuery({ time })}
       />
       <ExplorerControls query={query} onQueryChange={setQuery} />
+      {error ? <Typography color="error">결과를 계산하지 못했습니다: {error}</Typography> : null}
       <Box
         sx={{
           display: "grid",
@@ -65,19 +62,29 @@ const ExplorerContent = ({ rows, availableYears, latestDate }: ExplorerContentPr
           alignItems: "start",
         }}
       >
-        {/** 좁은 화면에서도 차트가 먼저 — 요약이 위에 있으면 차트가 한 화면 넘게 밀린다 */}
-        <Box sx={{ minWidth: 0 }}>
-          <ExplorerView query={query} result={result} comparison={comparison} onQueryChange={setQuery} />
-        </Box>
-        <Box
-          component="aside"
-          sx={{
-            position: { [EXPLORER_LAYOUT.ASIDE_BREAKPOINT]: "sticky" },
-            top: EXPLORER_LAYOUT.STICKY_TOP,
-          }}
-        >
-          <ExplorerSummary query={query} result={result} scopeUnionCount={scopeUnionCount} />
-        </Box>
+        {data ? (
+          <>
+            {/** 좁은 화면에서도 차트가 먼저 — 요약이 위에 있으면 차트가 한 화면 넘게 밀린다 */}
+            <Box sx={{ minWidth: 0 }}>
+              <ExplorerView
+                data={data}
+                pending={pending}
+                onQueryChange={setQuery}
+                requestRawCsv={() => requestRawCsv(data.query, version)}
+              />
+            </Box>
+            <Box component="aside" sx={{ position: { [EXPLORER_LAYOUT.ASIDE_BREAKPOINT]: "sticky" }, top: EXPLORER_LAYOUT.STICKY_TOP }}>
+              <ExplorerSummary
+                query={data.query}
+                result={data.result}
+                scopeUnionCount={data.scopeUnionCount}
+                pending={pending}
+              />
+            </Box>
+          </>
+        ) : (
+          <ResultSkeleton />
+        )}
       </Box>
     </Stack>
   );
@@ -97,17 +104,17 @@ const ExplorerSkeleton = () => (
 /** 데이터 분석 탐색기 페이지 */
 const AnalysisExplorer = () => {
   usePageMeta(PAGE_META.dataAnalysis);
-  const { rows, availableYears, latestDate, loading, error } = useAnalysisDataset();
+  const { meta, version, loading, error } = useExplorerMeta();
 
   return (
     <Box component="main" sx={{ minWidth: 0, bgcolor: "surface.base" }}>
       <Container maxWidth="xl" sx={{ py: { xs: 2, md: 3 } }}>
         {error ? (
           <Typography color="error">데이터를 불러오지 못했습니다: {error}</Typography>
-        ) : loading ? (
+        ) : loading || !meta ? (
           <ExplorerSkeleton />
         ) : (
-          <ExplorerContent rows={rows} availableYears={availableYears} latestDate={latestDate} />
+          <ExplorerContent meta={meta} version={version} />
         )}
       </Container>
     </Box>

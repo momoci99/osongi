@@ -146,3 +146,6 @@ export type AnalysisResult = {
   /** 모든 필터를 적용한 등급 행 (표·시즌 요약용) */
   rows: GradeRow[];
 };
+
+/** 원본 행을 뺀 결과 — 워커가 메인 스레드로 넘기는 형태 */
+export type AnalysisResultCore = Omit<AnalysisResult, "rows">;

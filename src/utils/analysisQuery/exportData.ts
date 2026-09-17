@@ -1,7 +1,7 @@
 import { GradeKeyToKorean } from "../../const/Common";
 import { formatAxisValue } from "./format";
 import { METRIC_LABELS } from "./labels";
-import type { AnalysisQuery, AnalysisResult, GradeRow } from "./types";
+import type { AnalysisQuery, AnalysisResultCore, GradeRow } from "./types";
 
 /** CSV 셀 이스케이프 — 모든 셀을 따옴표로 감싼다 */
 const escapeCell = (cell: string | number): string => `"${String(cell).replace(/"/g, '""')}"`;
@@ -37,7 +37,7 @@ const RAW_UNITS: Record<AnalysisQuery["metric"], string> = {
 };
 
 /** 현재 뷰의 집계 결과 CSV — 시리즈 × 구간 롱 포맷 */
-export const buildSeriesCsv = (query: AnalysisQuery, result: AnalysisResult): string =>
+export const buildSeriesCsv = (query: AnalysisQuery, result: AnalysisResultCore): string =>
   toCsvString([
     ["시리즈", "시즌", "구간", `${METRIC_LABELS[query.metric]}(${RAW_UNITS[query.metric]})`, "공판 건수", "공판일"],
     ...result.series.flatMap((series) =>

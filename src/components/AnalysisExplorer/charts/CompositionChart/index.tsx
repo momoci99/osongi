@@ -3,11 +3,11 @@ import useDrawCompositionChart from "./useDrawCompositionChart";
 import { chartTooltipSx } from "../chartTooltip";
 import { GRADE_OPTIONS } from "../../../../const/Common";
 import { buildCompositionModel } from "../../../../utils/analysisQuery/compositionModel";
-import type { AnalysisQuery, AnalysisResult } from "../../../../utils/analysisQuery/types";
+import type { AnalysisQuery, AnalysisResultCore } from "../../../../utils/analysisQuery/types";
 
 type CompositionChartProps = {
   query: AnalysisQuery;
-  result: AnalysisResult;
+  result: AnalysisResultCore;
 };
 
 /** 등급 구성 뷰 — 구간별 등급 물량 비중 */

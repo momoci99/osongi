@@ -1,19 +1,17 @@
 import * as d3 from "d3";
 import { Box, Typography, useTheme } from "@mui/material";
 import { COVERAGE_MATRIX } from "../../../../const/AnalysisLayout";
-import { buildCoverage } from "../../../../utils/analysisQuery/seasonTables";
-import type { AnalysisResult } from "../../../../utils/analysisQuery/types";
+import type { Coverage as CoverageData } from "../../../../utils/analysisQuery/seasonTables";
 import { chartTooltipSx } from "../chartTooltip";
 import useDrawCoverage from "./useDrawCoverage";
 
 type CoverageProps = {
-  result: AnalysisResult;
+  coverage: CoverageData;
 };
 
 /** 조합별 시즌 공판일 커버리지 행렬 */
-const Coverage = ({ result }: CoverageProps) => {
+const Coverage = ({ coverage }: CoverageProps) => {
   const theme = useTheme();
-  const coverage = buildCoverage(result.rows);
   const maxValue = Math.max(...coverage.cells.map((cell) => cell.tradingDays), 0);
   const rampStart = d3.interpolateRgb(theme.palette.surface.raised, theme.palette.primary.main)(COVERAGE_MATRIX.RAMP_START);
   const interpolate = d3.interpolateRgb(rampStart, theme.palette.primary.main);

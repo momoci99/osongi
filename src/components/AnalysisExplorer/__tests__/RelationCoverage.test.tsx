@@ -5,6 +5,8 @@ import { theme } from "../../../theme";
 import Coverage from "../charts/Coverage";
 import Relation from "../charts/Relation";
 import { runAnalysisQuery } from "../../../utils/analysisQuery/runQuery";
+import { buildRelationModel } from "../../../utils/analysisQuery/relationModel";
+import { buildCoverage } from "../../../utils/analysisQuery/seasonTables";
 import { makeQuery, makeRow } from "../../../utils/analysisQuery/__tests__/fixtures";
 
 const rows = [
@@ -22,7 +24,7 @@ describe("Relation과 Coverage", () => {
 
     render(
       <ThemeProvider theme={theme}>
-        <Relation query={query} result={runAnalysisQuery(rows, query)} />
+        <Relation query={query} model={buildRelationModel(runAnalysisQuery(rows, query), query)} />
       </ThemeProvider>,
     );
 
@@ -37,7 +39,7 @@ describe("Relation과 Coverage", () => {
 
     render(
       <ThemeProvider theme={theme}>
-        <Coverage result={runAnalysisQuery(rows, query)} />
+        <Coverage coverage={buildCoverage(runAnalysisQuery(rows, query).rows)} />
       </ThemeProvider>,
     );
 

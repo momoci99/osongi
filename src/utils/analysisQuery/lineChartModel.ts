@@ -1,6 +1,6 @@
 import { LINE_CHART } from "../../const/AnalysisLayout";
 import { buildXMapping, splitByGap, type ChartXMapping } from "./chartScale";
-import type { AnalysisQuery, AnalysisResult } from "./types";
+import type { AnalysisQuery, AnalysisResultCore } from "./types";
 
 /** 차트 포인트 */
 export type ChartPoint = {
@@ -75,14 +75,14 @@ const contextOpacity = (year: number, years: number[]): number => {
 };
 
 /** 전년 결과의 x를 1년 뒤로 옮겨 현재 기간 축에 겹친다 */
-const shiftXOneYear = (x: string | number, axis: AnalysisResult["axis"]): string | number => {
+const shiftXOneYear = (x: string | number, axis: AnalysisResultCore["axis"]): string | number => {
   if (axis === "year") return Number(x) + 1;
   if (axis === "date") return `${Number(String(x).slice(0, 4)) + 1}${String(x).slice(4)}`;
   return x;
 };
 
 /** 전년 비교 시리즈를 현재 축으로 옮긴 결과 */
-const shiftComparison = (comparison: AnalysisResult): AnalysisResult["series"] =>
+const shiftComparison = (comparison: AnalysisResultCore): AnalysisResultCore["series"] =>
   comparison.series.map((series) => ({
     ...series,
     key: `${series.key}__prev`,
@@ -96,9 +96,9 @@ const shiftComparison = (comparison: AnalysisResult): AnalysisResult["series"] =
 
 /** 집계 결과를 선 차트 모델로 변환한다 */
 export const buildLineChartModel = (
-  result: AnalysisResult,
+  result: AnalysisResultCore,
   query: AnalysisQuery,
-  comparison: AnalysisResult | null = null,
+  comparison: AnalysisResultCore | null = null,
 ): LineChartModel => {
   const comparisonSeries = comparison ? shiftComparison(comparison) : [];
   const allX = [

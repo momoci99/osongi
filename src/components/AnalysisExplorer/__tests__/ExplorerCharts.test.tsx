@@ -6,6 +6,7 @@ import Heatmap from "../charts/Heatmap";
 import RankChart from "../charts/RankChart";
 import CompositionChart from "../charts/CompositionChart";
 import { runAnalysisQuery, shiftTimeByYears } from "../../../utils/analysisQuery/runQuery";
+import { buildRankModel } from "../../../utils/analysisQuery/rankModel";
 import { makeQuery, makeRow } from "../../../utils/analysisQuery/__tests__/fixtures";
 
 const withTheme = (node: React.ReactNode) => render(<ThemeProvider theme={theme}>{node}</ThemeProvider>);
@@ -41,7 +42,9 @@ describe("RankChart", () => {
       time: { kind: "seasons", years: [2024] },
     });
     const comparison = runAnalysisQuery(rows, { ...query, time: shiftTimeByYears(query.time, -1) });
-    withTheme(<RankChart query={query} result={runAnalysisQuery(rows, query)} comparison={comparison} />);
+    withTheme(
+      <RankChart query={query} items={buildRankModel(runAnalysisQuery(rows, query), query, comparison)} showChange />,
+    );
 
     expect(screen.getByRole("img", { name: "조합별 단가 순위, 2개" })).toBeInTheDocument();
     expect(screen.getByText(/전년 같은 기간 값/)).toBeInTheDocument();

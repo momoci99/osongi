@@ -1,20 +1,19 @@
 import { Box, Typography, useTheme } from "@mui/material";
 import { RELATION_CHART } from "../../../../const/AnalysisLayout";
 import { regionColor } from "../../../../const/Regions";
-import { buildRelationModel } from "../../../../utils/analysisQuery/relationModel";
-import type { AnalysisQuery, AnalysisResult } from "../../../../utils/analysisQuery/types";
+import type { RelationModel } from "../../../../utils/analysisQuery/relationModel";
+import type { AnalysisQuery } from "../../../../utils/analysisQuery/types";
 import { chartTooltipSx } from "../chartTooltip";
 import useDrawRelation from "./useDrawRelation";
 
 type RelationProps = {
   query: AnalysisQuery;
-  result: AnalysisResult;
+  model: RelationModel;
 };
 
 /** 공판량과 단가의 관계 산점도 */
-const Relation = ({ query, result }: RelationProps) => {
+const Relation = ({ query, model }: RelationProps) => {
   const theme = useTheme();
-  const model = buildRelationModel(result, query);
   const latestYear = Math.max(...model.points.map((point) => point.year));
   const seriesKeys = [...new Set(model.points.map((point) => point.seriesKey))].sort((a, b) => b.localeCompare(a));
   const colorOf = (key: string) => {

@@ -5,13 +5,13 @@ import { compareX } from "../../../utils/analysisQuery/aggregate";
 import { formatAxisValue, formatMetricText } from "../../../utils/analysisQuery/format";
 import type {
   AnalysisQuery,
-  AnalysisResult,
+  AnalysisResultCore,
   NormalBandPoint,
 } from "../../../utils/analysisQuery/types";
 
 type PivotTableProps = {
   query: AnalysisQuery;
-  result: AnalysisResult;
+  result: AnalysisResultCore;
 };
 
 type PivotRow = {
@@ -26,11 +26,11 @@ type PivotRow = {
  * 시즌 겹침 축(월일·시즌일차)에서 시즌으로 묶지 않으면
  * 서로 다른 해의 같은 x가 한 행으로 섞이므로 행 키에 연도를 붙인다.
  */
-const needsYearInRow = (result: AnalysisResult, query: AnalysisQuery): boolean =>
+const needsYearInRow = (result: AnalysisResultCore, query: AnalysisQuery): boolean =>
   (result.axis === "monthDay" || result.axis === "seasonDay") && query.groupBy !== "year";
 
 /** 집계 결과를 행 = x, 열 = 시리즈 표로 펼친다 */
-const buildPivotRows = (result: AnalysisResult, query: AnalysisQuery, seriesKeys: string[]): PivotRow[] => {
+const buildPivotRows = (result: AnalysisResultCore, query: AnalysisQuery, seriesKeys: string[]): PivotRow[] => {
   const withYear = needsYearInRow(result, query);
   const rows = new Map<string, PivotRow>();
 

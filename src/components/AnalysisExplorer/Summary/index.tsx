@@ -10,15 +10,17 @@ import {
 } from "../../../utils/analysisQuery/format";
 import type {
   AnalysisQuery,
-  AnalysisResult,
+  AnalysisResultCore,
   PriceExtreme,
 } from "../../../utils/analysisQuery/types";
 
 type ExplorerSummaryProps = {
   query: AnalysisQuery;
-  result: AnalysisResult;
+  result: AnalysisResultCore;
   /** 현재 지역·조합 범위에 존재하는 전체 조합 수 (참여 조합 분모) */
   scopeUnionCount: number;
+  /** 새 결과 계산 중 */
+  pending?: boolean;
 };
 
 /** 가격 극값 캡션 — 날짜 · 조합 · 등급 */
@@ -30,14 +32,14 @@ const describeNormalYears = (years: number[]): string =>
   years.length === 0 ? "비교할 과거 시즌 없음" : `${years[0]}–${years[years.length - 1]} · ${years.length}시즌 중앙값`;
 
 /** 요약 패널 — 현재 조회 결과의 핵심 수치와 표본 정보 */
-const ExplorerSummary = ({ query, result, scopeUnionCount }: ExplorerSummaryProps) => {
+const ExplorerSummary = ({ query, result, scopeUnionCount, pending = false }: ExplorerSummaryProps) => {
   const { summary } = result;
   const price = summary.unitPrice === null ? null : formatUnitPrice(summary.unitPrice);
   const quantity = formatQuantity(summary.quantity);
   const amount = formatAmount(summary.amount);
 
   return (
-    <ExplorerPanel title="요약">
+    <ExplorerPanel title="요약" pending={pending}>
       {summary.lowSample ? (
         <Alert severity="warning" variant="outlined" sx={{ mb: 1.5, py: 0, fontSize: "0.8125rem" }}>
           공판일이 {summary.tradingDays}일뿐이라 수치가 크게 흔들릴 수 있습니다.

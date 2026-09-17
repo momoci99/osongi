@@ -1,21 +1,20 @@
 import { Box, Typography, useTheme } from "@mui/material";
 import useDrawRankChart from "./useDrawRankChart";
 import { resolveSeriesColor } from "../seriesColor";
-import { buildRankModel, type RankItem } from "../../../../utils/analysisQuery/rankModel";
+import type { RankItem } from "../../../../utils/analysisQuery/rankModel";
 import { GROUP_BY_LABELS, METRIC_LABELS } from "../../../../utils/analysisQuery/labels";
-import type { AnalysisQuery, AnalysisResult } from "../../../../utils/analysisQuery/types";
+import type { AnalysisQuery } from "../../../../utils/analysisQuery/types";
 
 type RankChartProps = {
   query: AnalysisQuery;
-  result: AnalysisResult;
-  comparison: AnalysisResult | null;
+  items: RankItem[];
+  /** 전년 비교 여부 */
+  showChange: boolean;
 };
 
 /** 순위 뷰 — 묶기 기준별 기간 전체 값 */
-const RankChart = ({ query, result, comparison }: RankChartProps) => {
+const RankChart = ({ query, items, showChange }: RankChartProps) => {
   const theme = useTheme();
-  const items = buildRankModel(result, query, comparison);
-  const showChange = comparison !== null;
   const colorOf = (item: RankItem) =>
     resolveSeriesColor({ colorKey: item.key, role: "entity" }, query.groupBy, theme);
 

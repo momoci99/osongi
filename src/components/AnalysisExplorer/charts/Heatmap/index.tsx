@@ -5,11 +5,11 @@ import { chartTooltipSx } from "../chartTooltip";
 import { HEATMAP } from "../../../../const/AnalysisLayout";
 import { buildHeatmapModel, type HeatmapCell } from "../../../../utils/analysisQuery/heatmapModel";
 import { formatAxisTick } from "../../../../utils/analysisQuery/format";
-import type { AnalysisQuery, AnalysisResult } from "../../../../utils/analysisQuery/types";
+import type { AnalysisQuery, AnalysisResultCore } from "../../../../utils/analysisQuery/types";
 
 type HeatmapProps = {
   query: AnalysisQuery;
-  result: AnalysisResult;
+  result: AnalysisResultCore;
   onSelectSeason: (year: number) => void;
 };
 

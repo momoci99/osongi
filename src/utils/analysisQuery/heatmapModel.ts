@@ -1,6 +1,6 @@
 import { SEASON_WEEK_DAYS } from "../../const/Analysis";
 import { buildXMapping, type ChartXMapping } from "./chartScale";
-import type { AnalysisQuery, AnalysisResult } from "./types";
+import type { AnalysisQuery, AnalysisResultCore } from "./types";
 
 /** 히트맵 셀 */
 export type HeatmapCell = {
@@ -32,7 +32,7 @@ export type HeatmapModel = {
  * 집계 결과를 행 = 시리즈(최근 시즌이 위), 열 = 연속 날짜 칸으로 펼친다.
  * 공판이 없는 칸은 셀을 만들지 않아 빈칸으로 남는다.
  */
-export const buildHeatmapModel = (result: AnalysisResult, query: AnalysisQuery): HeatmapModel => {
+export const buildHeatmapModel = (result: AnalysisResultCore, query: AnalysisQuery): HeatmapModel => {
   const allX = result.series.flatMap((series) => series.points.map((point) => point.x));
   const mapping = buildXMapping(result.axis, allX, query.granularity);
   const step = query.granularity === "week" ? SEASON_WEEK_DAYS : 1;

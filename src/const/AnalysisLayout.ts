@@ -172,3 +172,13 @@ export const COVERAGE_MATRIX = {
   LEGEND_HEIGHT: 8,
   TOOLTIP_Y_OFFSET: 12,
 } as const;
+
+/** 결과 계산 중 표시 */
+export const EXPLORER_PENDING = {
+  /** 이보다 빨리 끝나면 표시하지 않는다 (ms) */
+  DELAY_MS: 120,
+  FADE_MS: 180,
+  /** 직전 결과 흐림 정도 */
+  CONTENT_OPACITY: 0.45,
+  BAR_HEIGHT: 2,
+} as const;

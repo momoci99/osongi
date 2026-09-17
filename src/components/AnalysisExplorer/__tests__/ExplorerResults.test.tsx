@@ -5,6 +5,7 @@ import { theme } from "../../../theme";
 import ExplorerSummary from "../Summary";
 import ExplorerView from "../views";
 import { runAnalysisQuery } from "../../../utils/analysisQuery/runQuery";
+import { computeExplorerData } from "../../../utils/analysisQuery/explorerData";
 import { makeQuery, makeRow } from "../../../utils/analysisQuery/__tests__/fixtures";
 import type { AnalysisQuery, GradeRow } from "../../../utils/analysisQuery/types";
 
@@ -38,7 +39,7 @@ describe("ExplorerSummary", () => {
 describe("ExplorerView", () => {
   it("결과가 없으면 빈 상태를 안내한다", () => {
     const query = makeQuery({ view: "table" });
-    withTheme(<ExplorerView query={query} result={runAnalysisQuery([], query)} comparison={null} onQueryChange={() => {}} />);
+    withTheme(<ExplorerView data={computeExplorerData([], query)} pending={false} onQueryChange={() => {}} requestRawCsv={async () => ""} />);
 
     expect(screen.getByText("조건에 맞는 공판 기록이 없습니다")).toBeInTheDocument();
   });
@@ -52,7 +53,7 @@ describe("ExplorerView", () => {
       granularity: "season",
       metric: "quantity",
     });
-    withTheme(<ExplorerView query={query} result={runAnalysisQuery(rows, query)} comparison={null} onQueryChange={() => {}} />);
+    withTheme(<ExplorerView data={computeExplorerData(rows, query)} pending={false} onQueryChange={() => {}} requestRawCsv={async () => ""} />);
 
     expect(screen.getByRole("columnheader", { name: "피크일" })).toBeInTheDocument();
     expect(screen.getByRole("cell", { name: "2024" })).toBeInTheDocument();
@@ -72,12 +73,22 @@ describe("ExplorerView", () => {
       groupBy: "year",
       compare: "normal",
     });
-    withTheme(<ExplorerView query={query} result={runAnalysisQuery(rows, query)} comparison={null} onQueryChange={() => {}} />);
+    withTheme(<ExplorerView data={computeExplorerData(rows, query)} pending={false} onQueryChange={() => {}} requestRawCsv={async () => ""} />);
 
     expect(screen.queryByRole("columnheader", { name: "평년 중앙값" })).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "표로 보기" }));
     expect(screen.getByRole("columnheader", { name: "평년 중앙값" })).toBeInTheDocument();
     expect(screen.getByText("1일차")).toBeInTheDocument();
     expect(screen.getByRole("columnheader", { name: "평년 범위 (P25–P75)" })).toBeInTheDocument();
+  });
+
+  it("계산 중이면 패널이 aria-busy와 진행 바를 가진다", () => {
+    const query = makeQuery({ view: "table" });
+    withTheme(
+      <ExplorerView data={computeExplorerData([makeRow("2024-09-19")], query)} pending onQueryChange={() => {}} requestRawCsv={async () => ""} />,
+    );
+
+    expect(screen.getByRole("progressbar", { name: "결과 계산 중" })).toBeInTheDocument();
+    expect(screen.getByRole("progressbar").closest("section")).toHaveAttribute("aria-busy", "true");
   });
 });

@@ -4,13 +4,13 @@ import { chartTooltipSx } from "../chartTooltip";
 import { resolveSeriesColor } from "../seriesColor";
 import { buildLineChartModel, type ChartSeries } from "../../../../utils/analysisQuery/lineChartModel";
 import { METRIC_LABELS } from "../../../../utils/analysisQuery/labels";
-import type { AnalysisQuery, AnalysisResult } from "../../../../utils/analysisQuery/types";
+import type { AnalysisQuery, AnalysisResultCore } from "../../../../utils/analysisQuery/types";
 
 type LineChartProps = {
   query: AnalysisQuery;
-  result: AnalysisResult;
+  result: AnalysisResultCore;
   /** 전년 비교 결과 (점선으로 겹침) */
-  comparison?: AnalysisResult | null;
+  comparison?: AnalysisResultCore | null;
 };
 
 type LegendItemProps = {
