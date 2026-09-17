@@ -30,7 +30,6 @@ const ChipButton = styled(ButtonBase, { shouldForwardProp: (prop) => prop !== "s
   fontSize: "0.8125rem",
   fontWeight: selected ? 700 : 500,
   whiteSpace: "nowrap",
-  transition: "background-color 0.15s ease, border-color 0.15s ease",
   "&:hover": { borderColor: theme.palette.surface.borderStrong },
   "&.Mui-focusVisible": { outline: `2px solid ${theme.palette.primary.main}`, outlineOffset: 1 },
 }));

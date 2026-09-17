@@ -17,6 +17,8 @@ import type { AnalysisQuery } from "../../../utils/analysisQuery/types";
 type ExplorerControlsProps = {
   query: AnalysisQuery;
   onQueryChange: (next: AnalysisQuery) => void;
+  /** 뷰 탭 호버 시 결과 미리 계산 */
+  onPrefetch?: (query: AnalysisQuery) => void;
 };
 
 const ALIGNS = Object.keys(ALIGN_LABELS) as AnalysisQuery["align"][];
@@ -25,14 +27,18 @@ const ALIGNS = Object.keys(ALIGN_LABELS) as AnalysisQuery["align"][];
  * 뷰 탭 + 뷰별 컨트롤 + 범위 필터.
  * 현재 뷰에서 선택지가 하나뿐인 컨트롤은 숨겨 조작 가능한 것만 보이게 한다.
  */
-const ExplorerControls = ({ query, onQueryChange }: ExplorerControlsProps) => {
+const ExplorerControls = ({ query, onQueryChange, onPrefetch }: ExplorerControlsProps) => {
   const rule = VIEW_RULES[query.view];
   const update = (patch: Partial<AnalysisQuery>) => onQueryChange({ ...query, ...patch });
 
   return (
     <ExplorerPanel flush>
       <Box sx={{ borderBottom: "1px solid", borderColor: "surface.border", px: { xs: 0.5, sm: 1 } }}>
-        <ViewTabs view={query.view} onChange={(view) => onQueryChange(coerceQueryToView(query, view))} />
+        <ViewTabs
+          view={query.view}
+          onChange={(view) => onQueryChange(coerceQueryToView(query, view))}
+          onPrefetch={(view) => onPrefetch?.(coerceQueryToView(query, view))}
+        />
       </Box>
 
       <Box

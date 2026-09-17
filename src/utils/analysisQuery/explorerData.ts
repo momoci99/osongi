@@ -28,7 +28,11 @@ export type ExplorerData = {
   query: AnalysisQuery;
   result: ExplorerResult;
   comparison: ExplorerResult | null;
-  /** 시즌 스트립 막대 — 지역·조합·등급 필터 적용, 전체 기간 */
+  /**
+   * 시즌 스트립 막대 — 지역·조합 범위의 전 등급 물량, 전체 기간.
+   * 등급을 빼는 이유: 템플릿마다 등급이 달라 막대 900여 개를 매번 다시 그리게 된다.
+   * 스트립은 "언제 물량이 있었나"를 고르는 지도라 등급별 구분이 필요 없다.
+   */
   dailyQuantity: Map<string, number>;
   /** 스트립 막대를 결정하는 필터 키 — 같으면 이전 막대를 재사용한다 */
   dailyKey: string;
@@ -41,8 +45,8 @@ export type ExplorerData = {
 };
 
 /** 스트립 막대 필터 키 */
-export const toDailyKey = (query: Pick<AnalysisQuery, "regions" | "unions" | "grades">): string =>
-  [query.regions.join(","), query.unions.join(","), query.grades.join(",")].join("|");
+export const toDailyKey = (query: Pick<AnalysisQuery, "regions" | "unions">): string =>
+  [query.regions.join(","), query.unions.join(",")].join("|");
 
 /** 원본 행을 떼어낸다 */
 const stripRows = ({ rows, ...core }: AnalysisResult): ExplorerResult => ({ ...core, rowCount: rows.length });
@@ -74,7 +78,7 @@ export const computeExplorerData = (rows: GradeRow[], query: AnalysisQuery): Exp
     query,
     result: stripRows(result),
     comparison: comparison ? stripRows(comparison) : null,
-    dailyQuantity: sumQuantityByDate(selectByPlaceAndGrade(rows, query)),
+    dailyQuantity: sumQuantityByDate(selectByPlaceAndGrade(rows, { ...query, grades: [] })),
     dailyKey: toDailyKey(query),
     scopeUnionCount: new Set(selectByPlaceAndGrade(rows, { ...query, grades: [] }).map((row) => row.union)).size,
     seasonSummaries: isSeasonSummaryQuery(query) ? buildSeasonSummaries(result.rows) : null,

@@ -9,9 +9,14 @@ import {
 type TemplateBarProps = {
   activeId: AnalysisTemplateId | null;
   onSelect: (id: AnalysisTemplateId) => void;
+  /** 호버·포커스 시 결과를 미리 계산 */
+  onPrefetch?: (id: AnalysisTemplateId) => void;
 };
 
-/** 카드 본체 — styled로 스타일을 한 번만 직렬화 */
+/**
+ * 카드 본체 — styled로 스타일을 한 번만 직렬화.
+ * 선택 표시에는 전환 효과를 두지 않는다 — 누른 즉시 바뀌어야 반응이 빠르게 느껴진다.
+ */
 const TemplateCard = styled(ButtonBase, { shouldForwardProp: (prop) => prop !== "active" })<{ active: boolean }>(
   ({ theme, active }) => ({
     display: "flex",
@@ -28,7 +33,6 @@ const TemplateCard = styled(ButtonBase, { shouldForwardProp: (prop) => prop !== 
       ? alpha(theme.palette.primary.main, theme.palette.mode === "dark" ? 0.12 : 0.06)
       : theme.palette.surface.raised,
     scrollSnapAlign: "start",
-    transition: "border-color 0.15s ease, background-color 0.15s ease",
     "&:hover": { borderColor: active ? theme.palette.primary.main : theme.palette.surface.borderStrong },
     "&.Mui-focusVisible": { outline: `2px solid ${theme.palette.primary.main}`, outlineOffset: 2 },
   }),
@@ -53,7 +57,7 @@ const CardQuestion = styled("span")(({ theme }) => ({
  * 질문 템플릿 — 탐색기 상태를 한 번에 세팅하는 단축키.
  * 카드에 "질문"을 함께 보여 무엇을 답해 주는지 누르기 전에 알 수 있게 한다.
  */
-const TemplateBar = ({ activeId, onSelect }: TemplateBarProps) => (
+const TemplateBar = ({ activeId, onSelect, onPrefetch }: TemplateBarProps) => (
   <Box
     component="nav"
     aria-label="질문 템플릿"
@@ -71,7 +75,14 @@ const TemplateBar = ({ activeId, onSelect }: TemplateBarProps) => (
     {ANALYSIS_TEMPLATES.map((template) => {
       const active = template.id === activeId;
       return (
-        <TemplateCard key={template.id} active={active} onClick={() => onSelect(template.id)} aria-pressed={active}>
+        <TemplateCard
+          key={template.id}
+          active={active}
+          onClick={() => onSelect(template.id)}
+          onPointerEnter={() => onPrefetch?.(template.id)}
+          onFocus={() => onPrefetch?.(template.id)}
+          aria-pressed={active}
+        >
           <CardLabel active={active}>{template.label}</CardLabel>
           <CardQuestion>{template.question}</CardQuestion>
         </TemplateCard>

@@ -182,3 +182,11 @@ export const EXPLORER_PENDING = {
   CONTENT_OPACITY: 0.45,
   BAR_HEIGHT: 2,
 } as const;
+
+/** 조회 결과 캐시 */
+export const EXPLORER_DATA_CACHE = {
+  /** 보관할 결과 수 — 템플릿 6개 + 최근 조작 */
+  LIMIT: 24,
+  /** 유휴 콜백이 없을 때 템플릿 미리 계산 대기 (ms) */
+  IDLE_FALLBACK_MS: 300,
+} as const;

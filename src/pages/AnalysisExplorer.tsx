@@ -1,3 +1,4 @@
+import { useDeferredValue, useEffect } from "react";
 import { Box, Container, Skeleton, Stack, Typography } from "@mui/material";
 import ExplorerHeader from "../components/AnalysisExplorer/ExplorerHeader";
 import TemplateBar from "../components/AnalysisExplorer/TemplateBar";
@@ -5,12 +6,14 @@ import SeasonStrip from "../components/AnalysisExplorer/SeasonStrip";
 import ExplorerControls from "../components/AnalysisExplorer/Controls";
 import ExplorerView from "../components/AnalysisExplorer/views";
 import ExplorerSummary from "../components/AnalysisExplorer/Summary";
-import { requestRawCsv, useExplorerData, useExplorerMeta } from "../hooks/useAnalysisEngine";
+import { requestRawCsv, useExplorerData, useExplorerMeta, usePrefetchExplorerData } from "../hooks/useAnalysisEngine";
+import { ANALYSIS_TEMPLATES, buildTemplateQuery } from "../utils/analysisQuery/templates";
+import { prefetchExplorerData } from "../workers/explorerDataCache";
 import useAnalysisQuery from "../hooks/useAnalysisQuery";
 import usePageMeta from "../hooks/usePageMeta";
 import isInSeason from "../utils/isInSeason";
 import { PAGE_META } from "../const/Seo";
-import { EXPLORER_LAYOUT } from "../const/AnalysisLayout";
+import { EXPLORER_DATA_CACHE, EXPLORER_LAYOUT } from "../const/AnalysisLayout";
 import type { ExplorerMeta } from "../utils/analysisQuery/explorerData";
 
 /** 첫 결과가 오기 전 시즌 스트립용 빈 값 */
@@ -36,20 +39,47 @@ const ExplorerContent = ({ meta, version }: ExplorerContentProps) => {
     inSeason: meta.latestDate ? isInSeason(meta.latestDate) : false,
   };
   const { query, activeTemplateId, setQuery, updateQuery, applyTemplate } = useAnalysisQuery(context);
-  const { data, pending, error } = useExplorerData(query, version, true);
+  /**
+   * 선택 표시(템플릿·탭·칩)는 누른 프레임에, 결과(스트립·차트·요약)는 다음 프레임에 그린다.
+   * 연속 클릭 중에는 중간 결과 렌더를 건너뛴다.
+   */
+  const resultQuery = useDeferredValue(query);
+  const { data, pending, error } = useExplorerData(resultQuery, version, true);
+  const prefetch = usePrefetchExplorerData(version);
+
+  useEffect(
+    function prefetchTemplatesWhenIdle() {
+      /** 첫 클릭부터 즉시 반영되도록 템플릿 결과를 유휴 시간에 미리 계산한다 */
+      const templateContext = { availableYears: meta.availableYears, inSeason: context.inSeason };
+      const run = () => {
+        for (const template of ANALYSIS_TEMPLATES) prefetchExplorerData(template.build(templateContext), version);
+      };
+      if (typeof requestIdleCallback === "function") {
+        const handle = requestIdleCallback(run);
+        return () => cancelIdleCallback(handle);
+      }
+      const timer = setTimeout(run, EXPLORER_DATA_CACHE.IDLE_FALLBACK_MS);
+      return () => clearTimeout(timer);
+    },
+    [meta.availableYears, context.inSeason, version],
+  );
 
   return (
     <Stack gap={EXPLORER_LAYOUT.SECTION_GAP}>
       <ExplorerHeader availableYears={meta.availableYears} recordCount={meta.recordCount} latestDate={meta.latestDate} />
-      <TemplateBar activeId={activeTemplateId} onSelect={applyTemplate} />
+      <TemplateBar
+        activeId={activeTemplateId}
+        onSelect={applyTemplate}
+        onPrefetch={(id) => prefetch(buildTemplateQuery(id, context))}
+      />
       <SeasonStrip
         years={meta.availableYears}
         dailyQuantity={data?.dailyQuantity ?? EMPTY_DAILY_QUANTITY}
-        time={query.time}
+        time={resultQuery.time}
         latestDate={meta.latestDate}
         onTimeChange={(time) => updateQuery({ time })}
       />
-      <ExplorerControls query={query} onQueryChange={setQuery} />
+      <ExplorerControls query={query} onQueryChange={setQuery} onPrefetch={prefetch} />
       {error ? <Typography color="error">결과를 계산하지 못했습니다: {error}</Typography> : null}
       <Box
         sx={{

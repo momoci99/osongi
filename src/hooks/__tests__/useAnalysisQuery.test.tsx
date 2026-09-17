@@ -66,3 +66,17 @@ describe("useAnalysisQuery", () => {
     expect(result.current.query.view).toBe("table");
   });
 });
+
+describe("useAnalysisQuery 즉시 반영", () => {
+  it("URL 반영을 기다리지 않고 같은 렌더에서 새 쿼리를 돌려준다", () => {
+    const { result } = renderHook(useQueryWithLocation, {
+      wrapper: withRouter("/data-analysis"),
+    });
+
+    act(() => result.current.applyTemplate("unionRank"));
+
+    expect(result.current.query.view).toBe("rank");
+    expect(result.current.activeTemplateId).toBe("unionRank");
+    expect(new URLSearchParams(result.current.location.search).get("view")).toBe("rank");
+  });
+});
