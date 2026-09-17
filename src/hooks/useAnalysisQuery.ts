@@ -1,3 +1,4 @@
+import { startTransition } from "react";
 import { useSearchParams } from "react-router";
 import {
   buildTemplateQuery,
@@ -27,8 +28,14 @@ const useAnalysisQuery = (context: TemplateContext) => {
   const query = parseAnalysisQuery(searchParams, fallback);
   const activeTemplateId = findMatchingTemplateId(query, context);
 
+  /**
+   * 조회 조건 변경은 전환(transition)으로 처리한다 —
+   * 무거운 재렌더 중에도 클릭·호버가 먼저 반영되고, 연속 조작 시 중간 렌더는 버려진다.
+   */
   const setQuery = (next: AnalysisQuery, options: UpdateOptions = {}) => {
-    setSearchParams(serializeAnalysisQuery(next), { replace: options.replace });
+    startTransition(() => {
+      setSearchParams(serializeAnalysisQuery(next), { replace: options.replace });
+    });
   };
 
   const updateQuery = (patch: Partial<AnalysisQuery>, options?: UpdateOptions) => {

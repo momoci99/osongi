@@ -1,5 +1,5 @@
-import { Box, ButtonBase, Typography } from "@mui/material";
-import { alpha } from "@mui/material/styles";
+import { Box, ButtonBase } from "@mui/material";
+import { alpha, styled } from "@mui/material/styles";
 import { TEMPLATE_BAR } from "../../const/AnalysisLayout";
 import {
   ANALYSIS_TEMPLATES,
@@ -10,6 +10,44 @@ type TemplateBarProps = {
   activeId: AnalysisTemplateId | null;
   onSelect: (id: AnalysisTemplateId) => void;
 };
+
+/** 카드 본체 — styled로 스타일을 한 번만 직렬화 */
+const TemplateCard = styled(ButtonBase, { shouldForwardProp: (prop) => prop !== "active" })<{ active: boolean }>(
+  ({ theme, active }) => ({
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "flex-start",
+    justifyContent: "flex-start",
+    textAlign: "left",
+    gap: theme.spacing(0.375),
+    padding: theme.spacing(1.25, 1.5),
+    borderRadius: 10,
+    border: "1px solid",
+    borderColor: active ? theme.palette.primary.main : theme.palette.surface.border,
+    backgroundColor: active
+      ? alpha(theme.palette.primary.main, theme.palette.mode === "dark" ? 0.12 : 0.06)
+      : theme.palette.surface.raised,
+    scrollSnapAlign: "start",
+    transition: "border-color 0.15s ease, background-color 0.15s ease",
+    "&:hover": { borderColor: active ? theme.palette.primary.main : theme.palette.surface.borderStrong },
+    "&.Mui-focusVisible": { outline: `2px solid ${theme.palette.primary.main}`, outlineOffset: 2 },
+  }),
+);
+
+const CardLabel = styled("span", { shouldForwardProp: (prop) => prop !== "active" })<{ active: boolean }>(
+  ({ theme, active }) => ({
+    fontSize: "0.875rem",
+    fontWeight: 700,
+    letterSpacing: "-0.01em",
+    color: active ? theme.palette.primary.main : theme.palette.text.primary,
+  }),
+);
+
+const CardQuestion = styled("span")(({ theme }) => ({
+  fontSize: "0.75rem",
+  lineHeight: 1.45,
+  color: theme.palette.text.secondary,
+}));
 
 /**
  * 질문 템플릿 — 탐색기 상태를 한 번에 세팅하는 단축키.
@@ -23,9 +61,7 @@ const TemplateBar = ({ activeId, onSelect }: TemplateBarProps) => (
       display: "grid",
       gridAutoFlow: { xs: "column", md: "row" },
       gridAutoColumns: { xs: `minmax(${TEMPLATE_BAR.CARD_MIN_WIDTH}px, 1fr)`, md: "unset" },
-      gridTemplateColumns: {
-        md: `repeat(${ANALYSIS_TEMPLATES.length}, minmax(0, 1fr))`,
-      },
+      gridTemplateColumns: { md: `repeat(${ANALYSIS_TEMPLATES.length}, minmax(0, 1fr))` },
       gap: 1,
       overflowX: { xs: "auto", md: "visible" },
       pb: { xs: 0.5, md: 0 },
@@ -35,54 +71,10 @@ const TemplateBar = ({ activeId, onSelect }: TemplateBarProps) => (
     {ANALYSIS_TEMPLATES.map((template) => {
       const active = template.id === activeId;
       return (
-        <ButtonBase
-          key={template.id}
-          onClick={() => onSelect(template.id)}
-          aria-pressed={active}
-          sx={(theme) => ({
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "flex-start",
-            justifyContent: "flex-start",
-            textAlign: "left",
-            gap: 0.375,
-            px: 1.5,
-            py: 1.25,
-            borderRadius: "10px",
-            border: "1px solid",
-            borderColor: active ? "primary.main" : "surface.border",
-            bgcolor: active
-              ? alpha(theme.palette.primary.main, theme.palette.mode === "dark" ? 0.12 : 0.06)
-              : "surface.raised",
-            scrollSnapAlign: "start",
-            transition: "border-color 0.15s ease, background-color 0.15s ease",
-            "&:hover": {
-              borderColor: active ? "primary.main" : "surface.borderStrong",
-            },
-            "&.Mui-focusVisible": {
-              outline: `2px solid ${theme.palette.primary.main}`,
-              outlineOffset: 2,
-            },
-          })}
-        >
-          <Typography
-            component="span"
-            sx={{
-              fontSize: "0.875rem",
-              fontWeight: 700,
-              color: active ? "primary.main" : "text.primary",
-              letterSpacing: "-0.01em",
-            }}
-          >
-            {template.label}
-          </Typography>
-          <Typography
-            component="span"
-            sx={{ fontSize: "0.75rem", color: "text.secondary", lineHeight: 1.45 }}
-          >
-            {template.question}
-          </Typography>
-        </ButtonBase>
+        <TemplateCard key={template.id} active={active} onClick={() => onSelect(template.id)} aria-pressed={active}>
+          <CardLabel active={active}>{template.label}</CardLabel>
+          <CardQuestion>{template.question}</CardQuestion>
+        </TemplateCard>
       );
     })}
   </Box>

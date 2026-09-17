@@ -96,11 +96,49 @@ const parseGrades = (value: string | null, fallback: GradeKey[]): GradeKey[] => 
 const parseList = (value: string | null, fallback: string[]): string[] =>
   value === null ? fallback : splitList(value);
 
+/** 파싱 결과 캐시 상한 — URL 조합이 계속 바뀌어도 메모리가 늘지 않게 */
+const PARSE_CACHE_LIMIT = 64;
+
+/** 같은 내용이면 같은 참조를 돌려주는 캐시 */
+const parseCache = new Map<string, AnalysisQuery>();
+
+/** 배열·시간 조각을 내용 기준으로 공유하기 위한 캐시 */
+const partCache = new Map<string, unknown>();
+
+/** 내용이 같은 조각은 같은 참조로 — 자식 컴포넌트 메모가 동작하게 한다 */
+const intern = <T>(value: T): T => {
+  const key = JSON.stringify(value);
+  const cached = partCache.get(key);
+  if (cached !== undefined) return cached as T;
+  if (partCache.size > PARSE_CACHE_LIMIT * 4) partCache.clear();
+  partCache.set(key, value);
+  return value;
+};
+
 /**
  * URL 파라미터를 분석 쿼리로 변환한다.
  * 파라미터마다 독립적으로 검증하고, 없거나 잘못된 값은 폴백 쿼리 값을 쓴다.
  */
-export const parseAnalysisQuery = (
+export const parseAnalysisQuery = (params: URLSearchParams, fallback: AnalysisQuery): AnalysisQuery => {
+  const cacheKey = `${params.toString()}#${serializeAnalysisQuery(fallback).toString()}`;
+  const cached = parseCache.get(cacheKey);
+  if (cached) return cached;
+
+  const parsed = parseAnalysisQueryUncached(params, fallback);
+  const query: AnalysisQuery = {
+    ...parsed,
+    time: intern(parsed.time),
+    regions: intern(parsed.regions),
+    unions: intern(parsed.unions),
+    grades: intern(parsed.grades),
+  };
+  if (parseCache.size >= PARSE_CACHE_LIMIT) parseCache.clear();
+  parseCache.set(cacheKey, query);
+  return query;
+};
+
+/** 캐시 없는 파싱 */
+const parseAnalysisQueryUncached = (
   params: URLSearchParams,
   fallback: AnalysisQuery,
 ): AnalysisQuery => ({

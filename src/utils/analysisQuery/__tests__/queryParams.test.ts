@@ -49,3 +49,17 @@ describe("URL 쿼리 직렬화", () => {
     expect(parseAnalysisQuery(new URLSearchParams(), fallback)).toEqual(fallback);
   });
 });
+
+describe("파싱 결과 참조 공유", () => {
+  it("같은 URL은 같은 객체, 다른 URL이라도 같은 조각은 같은 참조", () => {
+    const fallback = makeQuery();
+    const a = parseAnalysisQuery(new URLSearchParams("view=rank&regions=경북&years=2024"), fallback);
+    const b = parseAnalysisQuery(new URLSearchParams("view=rank&regions=경북&years=2024"), fallback);
+    const c = parseAnalysisQuery(new URLSearchParams("view=table&regions=경북&years=2024"), fallback);
+
+    expect(b).toBe(a);
+    expect(c).not.toBe(a);
+    expect(c.regions).toBe(a.regions);
+    expect(c.time).toBe(a.time);
+  });
+});

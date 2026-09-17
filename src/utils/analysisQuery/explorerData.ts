@@ -30,6 +30,8 @@ export type ExplorerData = {
   comparison: ExplorerResult | null;
   /** 시즌 스트립 막대 — 지역·조합·등급 필터 적용, 전체 기간 */
   dailyQuantity: Map<string, number>;
+  /** 스트립 막대를 결정하는 필터 키 — 같으면 이전 막대를 재사용한다 */
+  dailyKey: string;
   /** 참여 조합 분모 — 지역·조합 범위의 전체 조합 수 */
   scopeUnionCount: number;
   seasonSummaries: SeasonSummaryRow[] | null;
@@ -37,6 +39,10 @@ export type ExplorerData = {
   relation: RelationModel | null;
   coverage: Coverage | null;
 };
+
+/** 스트립 막대 필터 키 */
+export const toDailyKey = (query: Pick<AnalysisQuery, "regions" | "unions" | "grades">): string =>
+  [query.regions.join(","), query.unions.join(","), query.grades.join(",")].join("|");
 
 /** 원본 행을 떼어낸다 */
 const stripRows = ({ rows, ...core }: AnalysisResult): ExplorerResult => ({ ...core, rowCount: rows.length });
@@ -69,6 +75,7 @@ export const computeExplorerData = (rows: GradeRow[], query: AnalysisQuery): Exp
     result: stripRows(result),
     comparison: comparison ? stripRows(comparison) : null,
     dailyQuantity: sumQuantityByDate(selectByPlaceAndGrade(rows, query)),
+    dailyKey: toDailyKey(query),
     scopeUnionCount: new Set(selectByPlaceAndGrade(rows, { ...query, grades: [] }).map((row) => row.union)).size,
     seasonSummaries: isSeasonSummaryQuery(query) ? buildSeasonSummaries(result.rows) : null,
     rankItems: query.view === "rank" ? buildRankModel(result, query, comparison) : null,

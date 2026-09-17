@@ -1,4 +1,5 @@
-import { Box, Divider, FormControlLabel, Switch, Tab, Tabs } from "@mui/material";
+import { Box, Divider, FormControlLabel, Switch } from "@mui/material";
+import ViewTabs from "./ViewTabs";
 import ControlSegment from "./ControlSegment";
 import ControlSelect from "./ControlSelect";
 import ScopeFilter from "./ScopeFilter";
@@ -9,17 +10,15 @@ import {
   GRANULARITY_LABELS,
   GROUP_BY_LABELS,
   METRIC_LABELS,
-  VIEW_LABELS,
 } from "../../../utils/analysisQuery/labels";
 import { coerceQueryToView, VIEW_RULES } from "../../../utils/analysisQuery/viewRules";
-import type { AnalysisQuery, AnalysisView } from "../../../utils/analysisQuery/types";
+import type { AnalysisQuery } from "../../../utils/analysisQuery/types";
 
 type ExplorerControlsProps = {
   query: AnalysisQuery;
   onQueryChange: (next: AnalysisQuery) => void;
 };
 
-const VIEWS = Object.keys(VIEW_LABELS) as AnalysisView[];
 const ALIGNS = Object.keys(ALIGN_LABELS) as AnalysisQuery["align"][];
 
 /**
@@ -33,29 +32,7 @@ const ExplorerControls = ({ query, onQueryChange }: ExplorerControlsProps) => {
   return (
     <ExplorerPanel flush>
       <Box sx={{ borderBottom: "1px solid", borderColor: "surface.border", px: { xs: 0.5, sm: 1 } }}>
-        <Tabs
-          value={query.view}
-          onChange={(_, view: AnalysisView) => onQueryChange(coerceQueryToView(query, view))}
-          variant="scrollable"
-          scrollButtons={false}
-          aria-label="분석 뷰"
-          sx={{
-            minHeight: 44,
-            "& .MuiTab-root": {
-              minHeight: 44,
-              minWidth: 0,
-              px: 1.75,
-              fontSize: "0.875rem",
-              fontWeight: 600,
-              color: "text.secondary",
-            },
-            "& .MuiTab-root.Mui-selected": { color: "text.primary", fontWeight: 700 },
-          }}
-        >
-          {VIEWS.map((view) => (
-            <Tab key={view} value={view} label={VIEW_LABELS[view]} />
-          ))}
-        </Tabs>
+        <ViewTabs view={query.view} onChange={(view) => onQueryChange(coerceQueryToView(query, view))} />
       </Box>
 
       <Box
