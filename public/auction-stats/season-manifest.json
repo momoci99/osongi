@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-09-19T05:17:26.986Z",
+  "generatedAt": "2026-09-19T09:56:06.654Z",
   "latestSeasonSummary": {
     "year": 2026,
     "startDate": "2026-09-15",
     "endDate": "2026-09-19",
-    "totalQuantityKg": 730.23,
-    "totalAmountWon": 350458586.5,
-    "avgPricePerKg": 479929.04,
+    "totalQuantityKg": 1257.04,
+    "totalAmountWon": 591964106.82,
+    "avgPricePerKg": 470919.07,
     "highestPrice": {
       "date": "2026-09-18",
       "gradeKey": "grade1",
@@ -20,16 +20,16 @@
   },
   "regionSeasonSummaries": {
     "강원": {
-      "totalQuantityKg": 730.23,
-      "totalAmountWon": 350458586.5,
-      "avgPricePerKg": 479929.04
+      "totalQuantityKg": 1257.04,
+      "totalAmountWon": 591964106.82,
+      "avgPricePerKg": 470919.07
     }
   },
   "monthlyPatterns": [
     {
       "month": 9,
-      "avgQuantityKg": 50056.91,
-      "avgPriceWon": 177829.75,
+      "avgQuantityKg": 50094.54,
+      "avgPriceWon": 178040.52,
       "yearCount": 14
     },
     {
@@ -48,8 +48,8 @@
   "regionRanking": [
     {
       "region": "강원",
-      "avgPriceWon": 479929.04,
-      "totalQuantityKg": 730.23
+      "avgPriceWon": 470919.07,
+      "totalQuantityKg": 1257.04
     }
   ]
 }

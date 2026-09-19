@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-19T05:17:26.986Z",
+  "generatedAt": "2026-09-19T09:56:06.655Z",
   "yearly": {
     "2013": {
       "totalQuantityKg": 60764.76,
@@ -158,15 +158,15 @@
       }
     },
     "2026": {
-      "totalQuantityKg": 730.23,
-      "totalAmountWon": 350458586.5,
+      "totalQuantityKg": 1257.04,
+      "totalAmountWon": 591964106.82,
       "topRegion": {
         "region": "강원",
-        "quantityKg": 730.23
+        "quantityKg": 1257.04
       },
       "topUnion": {
         "union": "강릉",
-        "quantityKg": 256.4
+        "quantityKg": 406.33
       }
     }
   },
@@ -225,8 +225,8 @@
         "totalAmountWon": 7452348106.29
       },
       "2026": {
-        "totalQuantityKg": 730.23,
-        "totalAmountWon": 350458586.5
+        "totalQuantityKg": 1257.04,
+        "totalAmountWon": 591964106.82
       }
     },
     "경북": {
