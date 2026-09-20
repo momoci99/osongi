@@ -3,36 +3,36 @@
     "region": "강원",
     "union": "인제",
     "date": "2026-9-19",
-    "lastUpdated": "2026-09-18 17:09:58.0",
+    "lastUpdated": "2026-09-20 10:45:56.0",
     "auctionQuantity": {
       "untilYesterday": "26.56kg",
-      "today": "0kg",
-      "total": "26.56kg"
+      "today": "23.1kg",
+      "total": "49.66kg"
     },
     "auctionAmount": {
       "untilYesterday": "11,823,359원",
-      "today": "0원",
-      "total": "11,823,359원"
+      "today": "9,254,905원",
+      "total": "21,078,264원"
     },
     "grade1": {
-      "quantity": "0kg",
-      "unitPrice": "0원"
+      "quantity": "0.25kg",
+      "unitPrice": "1,055,900원"
     },
     "grade2": {
-      "quantity": "0kg",
-      "unitPrice": "0원"
+      "quantity": "1.41kg",
+      "unitPrice": "901,500원"
     },
     "grade3Stopped": {
-      "quantity": "0kg",
-      "unitPrice": "0원"
+      "quantity": "2.93kg",
+      "unitPrice": "551,900원"
     },
     "grade3Estimated": {
-      "quantity": "0kg",
-      "unitPrice": "0원"
+      "quantity": "3.92kg",
+      "unitPrice": "551,900원"
     },
     "gradeBelow": {
-      "quantity": "0kg",
-      "unitPrice": "0원"
+      "quantity": "14.59kg",
+      "unitPrice": "270,000원"
     },
     "mixedGrade": {
       "quantity": "0kg",
