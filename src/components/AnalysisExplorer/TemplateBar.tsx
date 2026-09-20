@@ -1,4 +1,5 @@
-import { Box, ButtonBase } from "@mui/material";
+import { ButtonBase } from "@mui/material";
+import ScrollFade from "../common/ScrollFade";
 import { alpha, styled } from "@mui/material/styles";
 import { TEMPLATE_BAR } from "../../const/AnalysisLayout";
 import {
@@ -58,9 +59,10 @@ const CardQuestion = styled("span")(({ theme }) => ({
  * 카드에 "질문"을 함께 보여 무엇을 답해 주는지 누르기 전에 알 수 있게 한다.
  */
 const TemplateBar = ({ activeId, onSelect, onPrefetch }: TemplateBarProps) => (
-  <Box
+  <ScrollFade
     component="nav"
     aria-label="질문 템플릿"
+    surface="base"
     sx={{
       display: "grid",
       gridAutoFlow: { xs: "column", md: "row" },
@@ -88,7 +90,7 @@ const TemplateBar = ({ activeId, onSelect, onPrefetch }: TemplateBarProps) => (
         </TemplateCard>
       );
     })}
-  </Box>
+  </ScrollFade>
 );
 
 export default TemplateBar;

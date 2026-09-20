@@ -26,9 +26,24 @@ describe("URL 쿼리 직렬화", () => {
     expect(parseAnalysisQuery(serializeAnalysisQuery(query), makeQuery())).toEqual(query);
   });
 
-  it("전체 등급은 all 토큰으로 표현한다", () => {
-    const params = serializeAnalysisQuery(makeQuery({ grades: [] }));
-    expect(params.get("grades")).toBe("all");
+  it("기본값과 같은 파라미터는 생략한다", () => {
+    const params = serializeAnalysisQuery(makeQuery({ view: "rank" }));
+    expect(params.toString()).toBe("view=rank&years=2024");
+  });
+
+  it("생략된 파라미터는 폴백이 달라도 기본값으로 읽는다", () => {
+    const shortLink = new URLSearchParams("view=rank&years=2024");
+    const parsed = parseAnalysisQuery(
+      shortLink,
+      makeQuery({ regions: ["강원"], compare: "normal", grades: ["grade1"] }),
+    );
+    expect(parsed.regions).toEqual([]);
+    expect(parsed.compare).toBe("none");
+    expect(parsed.grades).toEqual([]);
+  });
+
+  it("예전 링크의 all 토큰도 전체 등급으로 읽는다", () => {
+    const params = new URLSearchParams("view=timeline&years=2024&grades=all");
     expect(parseAnalysisQuery(params, makeQuery({ grades: ["grade1"] })).grades).toEqual([]);
   });
 

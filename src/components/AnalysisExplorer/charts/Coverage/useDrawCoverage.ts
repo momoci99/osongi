@@ -4,11 +4,12 @@ import type { Theme } from "@mui/material/styles";
 import { COVERAGE_MATRIX } from "../../../../const/AnalysisLayout";
 import { regionColor } from "../../../../const/Regions";
 import { useContainerWidth } from "../../../../utils/d3/useContainerSize";
-import { isMobileWidth } from "../../../../utils/d3/chartMargins";
+import { isMobileWidth, scaleFont, scaleMargin } from "../../../../utils/d3/chartMargins";
 import { formatInteger } from "../../../../utils/analysisQuery/format";
 import type { Coverage, CoverageCell } from "../../../../utils/analysisQuery/seasonTables";
 import { hideTooltip, placeTooltip } from "../chartTooltip";
 import { renderTooltipHtml } from "../lineTooltip";
+import { useSettingsStore } from "../../../../stores/useSettingsStore";
 
 type UseDrawCoverageParams = {
   coverage: Coverage;
@@ -20,6 +21,8 @@ type MatrixCell = CoverageCell & { empty: boolean };
 
 /** 조합 × 시즌 커버리지 행렬 렌더링 */
 const useDrawCoverage = ({ coverage, colorScale, theme }: UseDrawCoverageParams) => {
+  /** 큰글씨 모드를 켜고 끄면 글자 크기가 달라져 다시 그려야 한다 */
+  const displayMode = useSettingsStore((state) => state.displayMode);
   const { containerRef, width } = useContainerWidth();
   const svgRef = useRef<SVGSVGElement | null>(null);
   const tooltipRef = useRef<HTMLDivElement | null>(null);
@@ -30,7 +33,7 @@ const useDrawCoverage = ({ coverage, colorScale, theme }: UseDrawCoverageParams)
       const tooltipEl = tooltipRef.current;
       if (!svgEl || !tooltipEl || width === 0 || coverage.years.length === 0) return;
 
-      const margin = COVERAGE_MATRIX.MARGIN;
+      const margin = scaleMargin(COVERAGE_MATRIX.MARGIN);
       const rowHeight = isMobileWidth(width) ? COVERAGE_MATRIX.ROW_HEIGHT.MOBILE : COVERAGE_MATRIX.ROW_HEIGHT.DESKTOP;
       const availableWidth = width - margin.left - margin.right;
       const cellWidth = Math.max(COVERAGE_MATRIX.MIN_CELL_WIDTH, availableWidth / coverage.years.length);
@@ -54,7 +57,7 @@ const useDrawCoverage = ({ coverage, colorScale, theme }: UseDrawCoverageParams)
         .attr("x", (_, index) => index * cellWidth + cellWidth / 2)
         .attr("y", -8)
         .attr("text-anchor", "middle")
-        .attr("font-size", COVERAGE_MATRIX.AXIS_FONT_SIZE)
+        .attr("font-size", scaleFont(COVERAGE_MATRIX.AXIS_FONT_SIZE))
         .attr("fill", theme.palette.text.secondary)
         .style("font-variant-numeric", "tabular-nums")
         .text((year) => year);
@@ -71,7 +74,7 @@ const useDrawCoverage = ({ coverage, colorScale, theme }: UseDrawCoverageParams)
         .attr("x", COVERAGE_MATRIX.LABEL_X)
         .attr("y", (_, index) => index * rowHeight + rowHeight / 2)
         .attr("dy", "0.32em")
-        .attr("font-size", COVERAGE_MATRIX.AXIS_FONT_SIZE)
+        .attr("font-size", scaleFont(COVERAGE_MATRIX.AXIS_FONT_SIZE))
         .attr("fill", theme.palette.text.secondary)
         .text((row) => row.union);
 
@@ -109,14 +112,14 @@ const useDrawCoverage = ({ coverage, colorScale, theme }: UseDrawCoverageParams)
           .attr("y", (cell) => coverage.unions.findIndex((row) => row.union === cell.union) * rowHeight + rowHeight / 2)
           .attr("dy", "0.32em")
           .attr("text-anchor", "middle")
-          .attr("font-size", COVERAGE_MATRIX.AXIS_FONT_SIZE)
+          .attr("font-size", scaleFont(COVERAGE_MATRIX.AXIS_FONT_SIZE))
           .attr("fill", (cell) => cell.tradingDays > maxValue * COVERAGE_MATRIX.DARK_FILL_RATIO ? theme.palette.text.primary : theme.palette.text.secondary)
           .attr("pointer-events", "none")
           .style("font-variant-numeric", "tabular-nums")
           .text((cell) => formatInteger(cell.tradingDays));
       }
     },
-    [coverage, colorScale, theme, width, containerRef],
+    [coverage, colorScale, theme, width, containerRef, displayMode],
   );
 
   return { containerRef, svgRef, tooltipRef };

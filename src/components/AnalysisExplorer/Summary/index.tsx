@@ -2,17 +2,8 @@ import { Alert, Box, Typography } from "@mui/material";
 import ExplorerPanel from "../ExplorerPanel";
 import SummaryStatRow from "./SummaryStatRow";
 import { GradeKeyToKorean } from "../../../const/Common";
-import {
-  formatAmount,
-  formatInteger,
-  formatQuantity,
-  formatUnitPrice,
-} from "../../../utils/analysisQuery/format";
-import type {
-  AnalysisQuery,
-  AnalysisResultCore,
-  PriceExtreme,
-} from "../../../utils/analysisQuery/types";
+import { formatAmount, formatInteger, formatQuantity, formatUnitPrice } from "../../../utils/analysisQuery/format";
+import type { AnalysisQuery, AnalysisResultCore, PriceExtreme } from "../../../utils/analysisQuery/types";
 
 type ExplorerSummaryProps = {
   query: AnalysisQuery;
@@ -27,7 +18,10 @@ type ExplorerSummaryProps = {
 
 /** 가격 극값 캡션 — 날짜 · 조합 · 등급 */
 const describeExtreme = (extreme: PriceExtreme): string =>
-  `${extreme.date.slice(2).replaceAll("-", ".")} · ${extreme.union} · ${GradeKeyToKorean[extreme.grade]}`;
+  `${extreme.date.replaceAll("-", ".")} · ${extreme.union} · ${GradeKeyToKorean[extreme.grade]}`;
+
+/** 공판이 없을 때 0 대신 쓰는 표시 */
+const EMPTY_VALUE = { value: "–", unit: "" };
 
 /** 평년 기준 설명 */
 const describeNormalYears = (years: number[]): string =>
@@ -36,9 +30,10 @@ const describeNormalYears = (years: number[]): string =>
 /** 요약 패널 — 현재 조회 결과의 핵심 수치와 표본 정보 */
 const ExplorerSummary = ({ query, result, scopeUnionCount, pending = false, revision }: ExplorerSummaryProps) => {
   const { summary } = result;
-  const price = summary.unitPrice === null ? null : formatUnitPrice(summary.unitPrice);
-  const quantity = formatQuantity(summary.quantity);
-  const amount = formatAmount(summary.amount);
+  const empty = summary.tradingDays === 0;
+  const price = summary.unitPrice === null ? EMPTY_VALUE : formatUnitPrice(summary.unitPrice);
+  const quantity = empty ? EMPTY_VALUE : formatQuantity(summary.quantity);
+  const amount = empty ? EMPTY_VALUE : formatAmount(summary.amount);
 
   return (
     <ExplorerPanel title="요약" pending={pending} revision={revision}>
@@ -49,19 +44,14 @@ const ExplorerSummary = ({ query, result, scopeUnionCount, pending = false, revi
       ) : null}
 
       <Box>
-        <SummaryStatRow
-          label="가중 평균 단가"
-          value={price?.value ?? "–"}
-          unit={price?.unit}
-          emphasis
-        />
+        <SummaryStatRow label="가중 평균 단가" value={price.value} unit={price.unit} emphasis />
         <SummaryStatRow label="공판량" value={quantity.value} unit={quantity.unit} />
         <SummaryStatRow label="공판 금액" value={amount.value} unit={amount.unit} />
         <SummaryStatRow
           label="공판일"
           value={formatInteger(summary.tradingDays)}
           unit="일"
-          caption={`공판 ${formatInteger(summary.records)}건`}
+          caption={empty ? undefined : `공판 ${formatInteger(summary.records)}건`}
         />
         <SummaryStatRow
           label="참여 조합"
@@ -92,7 +82,6 @@ const ExplorerSummary = ({ query, result, scopeUnionCount, pending = false, revi
           평년 기준 · {describeNormalYears(result.normalYears)}
         </Typography>
       ) : null}
-
     </ExplorerPanel>
   );
 };

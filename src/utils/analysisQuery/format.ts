@@ -21,6 +21,12 @@ const decimal1 = new Intl.NumberFormat("ko-KR", {
 /** 1 미만 눈금용 — 불필요한 0을 붙이지 않는다 */
 const compactDecimal = new Intl.NumberFormat("ko-KR", { maximumFractionDigits: 2 });
 
+/** 톤 단위 눈금에서 표시할 수 있는 최소값 */
+const MIN_TICK_TONS = 0.1;
+
+/** 축 눈금용 — 소수 한 자리까지, 끝의 .0은 뺀다 */
+const tickDecimal = new Intl.NumberFormat("ko-KR", { maximumFractionDigits: 1 });
+
 /** 정수 한국어 숫자 */
 const integer = new Intl.NumberFormat("ko-KR", { maximumFractionDigits: 0 });
 
@@ -30,9 +36,12 @@ export const formatUnitPrice = (won: number): FormattedValue => ({
   unit: "만원/kg",
 });
 
-/** 수량(kg) → 1톤 미만은 kg, 이상은 톤 */
-export const formatQuantity = (kg: number): FormattedValue =>
-  kg < KILOGRAMS_PER_TON
+/**
+ * 수량(kg) → 1톤 미만은 kg, 이상은 톤.
+ * 표의 한 열처럼 나란히 비교하는 값은 `scaleKg`(열 최댓값)로 단위를 통일한다.
+ */
+export const formatQuantity = (kg: number, scaleKg = kg): FormattedValue =>
+  scaleKg < KILOGRAMS_PER_TON
     ? { value: decimal1.format(kg), unit: "kg" }
     : { value: decimal1.format(kg / KILOGRAMS_PER_TON), unit: "톤" };
 
@@ -116,8 +125,11 @@ export const formatAxisValue = (
   }
 };
 
-/** 축 눈금용 짧은 숫자 (단위 포함) */
-export const formatAxisTick = (metric: AnalysisMetric, value: number): string => {
+/**
+ * 축 눈금용 짧은 숫자 (단위 포함).
+ * 수량은 `scaleMax`(축 최댓값) 기준으로 한 축 안의 단위를 통일한다 — 0kg·50t가 섞이지 않게.
+ */
+export const formatAxisTick = (metric: AnalysisMetric, value: number, scaleMax = value): string => {
   switch (metric) {
     case "unitPrice":
       return `${integer.format(value / KRW_TEN_THOUSAND_UNIT)}만`;
@@ -128,7 +140,12 @@ export const formatAxisTick = (metric: AnalysisMetric, value: number): string =>
     case "gradeShare":
       return `${integer.format(value * PERCENT)}%`;
     default:
-      if (value >= KILOGRAMS_PER_TON) return `${decimal1.format(value / KILOGRAMS_PER_TON)}t`;
-      return value > 0 && value < 1 ? `${compactDecimal.format(value)}kg` : `${integer.format(value)}kg`;
+      if (value === 0) return "0";
+      if (scaleMax >= KILOGRAMS_PER_TON) {
+        const tons = value / KILOGRAMS_PER_TON;
+        /** 반올림하면 0t가 되는 작은 값(범례 최솟값 등)은 0과 구분한다 */
+        return tons < MIN_TICK_TONS ? `<${MIN_TICK_TONS}t` : `${tickDecimal.format(tons)}t`;
+      }
+      return value < 1 ? `${compactDecimal.format(value)}kg` : `${integer.format(value)}kg`;
   }
 };

@@ -12,6 +12,10 @@ export type TooltipRow = {
   /** 시즌 일차 축에서 실제 날짜 등 보조 정보 */
   detail: string;
   lowSample: boolean;
+  /** 색 표본 불투명도 — 차트의 선과 같은 진하기로 */
+  opacity?: number;
+  /** 차트에서 강조 중인 시리즈 */
+  active?: boolean;
 };
 
 /** 툴팁 내용 */
@@ -27,13 +31,17 @@ type BuildTooltipParams = {
   hits: { series: ChartSeries; point: ChartPoint; color: string }[];
   band: ChartBandPoint | undefined;
   seasonStarts: Record<number, string>;
+  /** 강조 중인 시리즈 키 */
+  activeKey?: string | null;
 };
 
 /** 시즌 일차 → 실제 날짜 (M/D) */
 const seasonDayDate = (point: ChartPoint, seasonStarts: Record<number, string>): string => {
   const start = seasonStarts[point.year];
   if (!start) return "";
-  const [, month, day] = addDays(start, Number(point.x) - 1).split("-").map(Number);
+  const [, month, day] = addDays(start, Number(point.x) - 1)
+    .split("-")
+    .map(Number);
   return `${month}/${day}`;
 };
 
@@ -51,6 +59,7 @@ export const buildTooltipContent = ({
   hits,
   band,
   seasonStarts,
+  activeKey = null,
 }: BuildTooltipParams): TooltipContent | null => {
   const sample = hits[0]?.point ?? band;
   if (!sample) return null;
@@ -62,13 +71,12 @@ export const buildTooltipContent = ({
       label: series.label,
       color,
       value: formatMetricText(query.metric, point.value),
-      detail: [
-        axis === "seasonDay" ? seasonDayDate(point, seasonStarts) : "",
-        `${point.records}건`,
-      ]
+      detail: [axis === "seasonDay" ? seasonDayDate(point, seasonStarts) : "", `${point.records}건`]
         .filter(Boolean)
         .join(" · "),
       lowSample: point.lowSample,
+      opacity: series.opacity,
+      active: series.key === activeKey,
     }));
 
   return {
@@ -79,16 +87,15 @@ export const buildTooltipContent = ({
 };
 
 /** HTML 특수문자 이스케이프 */
-const escapeHtml = (text: string): string =>
-  text.replace(/[&<>"']/g, (char) => `&#${char.charCodeAt(0)};`);
+const escapeHtml = (text: string): string => text.replace(/[&<>"']/g, (char) => `&#${char.charCodeAt(0)};`);
 
 /** 툴팁 HTML — D3 호버 루프에서 리렌더 없이 갱신하기 위해 문자열로 만든다 */
 export const renderTooltipHtml = (content: TooltipContent): string => {
   const rows = content.rows
     .map(
       (row) => `
-      <div class="tt-row${row.lowSample ? " tt-low" : ""}">
-        <span class="tt-swatch" style="background:${row.color}"></span>
+      <div class="tt-row${row.lowSample ? " tt-low" : ""}${row.active ? " tt-active" : ""}">
+        <span class="tt-swatch" style="background:${row.color};opacity:${row.opacity ?? 1}"></span>
         <span class="tt-label">${escapeHtml(row.label)}</span>
         <span class="tt-value">${escapeHtml(row.value)}</span>
         <span class="tt-detail">${escapeHtml(row.detail)}</span>

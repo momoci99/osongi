@@ -4,12 +4,13 @@ import type { Theme } from "@mui/material/styles";
 import { RELATION_CHART } from "../../../../const/AnalysisLayout";
 import { regionColor } from "../../../../const/Regions";
 import { useContainerWidth } from "../../../../utils/d3/useContainerSize";
-import { isMobileWidth } from "../../../../utils/d3/chartMargins";
+import { isMobileWidth, scaleFont, scaleMargin } from "../../../../utils/d3/chartMargins";
 import { formatAxisTick, formatInteger, formatMetricText } from "../../../../utils/analysisQuery/format";
 import type { RelationModel, RelationPoint } from "../../../../utils/analysisQuery/relationModel";
 import type { AnalysisQuery } from "../../../../utils/analysisQuery/types";
 import { hideTooltip, placeTooltip } from "../chartTooltip";
 import { renderTooltipHtml } from "../lineTooltip";
+import { useSettingsStore } from "../../../../stores/useSettingsStore";
 
 type UseDrawRelationParams = {
   model: RelationModel;
@@ -35,6 +36,8 @@ export const relationPointStyle = (
 
 /** 공판량과 단가 관계 산점도 렌더링 */
 const useDrawRelation = ({ model, query, theme }: UseDrawRelationParams) => {
+  /** 큰글씨 모드를 켜고 끄면 글자 크기가 달라져 다시 그려야 한다 */
+  const displayMode = useSettingsStore((state) => state.displayMode);
   const { containerRef, width } = useContainerWidth();
   const svgRef = useRef<SVGSVGElement | null>(null);
   const tooltipRef = useRef<HTMLDivElement | null>(null);
@@ -47,7 +50,7 @@ const useDrawRelation = ({ model, query, theme }: UseDrawRelationParams) => {
       const tooltipEl = tooltipRef.current;
       if (!svgEl || !tooltipEl || width === 0 || !model.enoughPoints) return;
 
-      const margin = isMobile ? RELATION_CHART.MARGIN.MOBILE : RELATION_CHART.MARGIN.DESKTOP;
+      const margin = scaleMargin(isMobile ? RELATION_CHART.MARGIN.MOBILE : RELATION_CHART.MARGIN.DESKTOP);
       const innerWidth = Math.max(0, width - margin.left - margin.right);
       const innerHeight = Math.max(0, height - margin.top - margin.bottom);
       const latestYear = Math.max(...model.points.map((point) => point.year));
@@ -72,12 +75,13 @@ const useDrawRelation = ({ model, query, theme }: UseDrawRelationParams) => {
       const xAxis = d3
         .axisBottom(x)
         .tickValues(xTickValues)
-        .tickFormat((value) => formatAxisTick("quantity", Number(value)));
+        /** 축 최댓값 기준으로 kg·톤을 한 축 안에서 통일한다 */
+        .tickFormat((value) => formatAxisTick("quantity", Number(value), model.xDomain[1]));
       const yAxis = d3.axisLeft(y).ticks(RELATION_CHART.AXIS_TICK_COUNT).tickFormat((value) => formatAxisTick("unitPrice", Number(value)));
 
       const styleAxis = (axis: d3.Selection<SVGGElement, unknown, null, undefined>) => {
         axis.selectAll(".domain, .tick line").attr("stroke", theme.palette.surface.border);
-        axis.selectAll("text").attr("fill", theme.palette.text.secondary).attr("font-size", RELATION_CHART.AXIS_FONT_SIZE).style("font-variant-numeric", "tabular-nums");
+        axis.selectAll("text").attr("fill", theme.palette.text.secondary).attr("font-size", scaleFont(RELATION_CHART.AXIS_FONT_SIZE)).style("font-variant-numeric", "tabular-nums");
       };
       const xGroup = g.append("g").attr("transform", `translate(0,${innerHeight})`).call(xAxis);
       const yGroup = g.append("g").call(yAxis.tickSize(-innerWidth));
@@ -89,16 +93,16 @@ const useDrawRelation = ({ model, query, theme }: UseDrawRelationParams) => {
         .attr("y", innerHeight + RELATION_CHART.AXIS_TITLE_OFFSET)
         .attr("text-anchor", "middle")
         .attr("fill", theme.palette.text.secondary)
-        .attr("font-size", RELATION_CHART.AXIS_FONT_SIZE)
+        .attr("font-size", scaleFont(RELATION_CHART.AXIS_FONT_SIZE))
         .text("공판량 (로그)");
+      /** 세로로 세운 제목은 눈에 띄지 않는다 — 단위까지 붙여 플롯 위 왼쪽에 가로로 둔다 */
       g.append("text")
-        .attr("transform", "rotate(-90)")
-        .attr("x", -innerHeight / 2)
-        .attr("y", -RELATION_CHART.AXIS_TITLE_OFFSET)
-        .attr("text-anchor", "middle")
+        .attr("x", -margin.left + RELATION_CHART.Y_TITLE_OFFSET / 2)
+        .attr("y", -RELATION_CHART.Y_TITLE_OFFSET)
+        .attr("text-anchor", "start")
         .attr("fill", theme.palette.text.secondary)
-        .attr("font-size", RELATION_CHART.AXIS_FONT_SIZE)
-        .text("단가");
+        .attr("font-size", scaleFont(RELATION_CHART.AXIS_FONT_SIZE))
+        .text("단가 (만원/kg)");
 
       g.append("g")
         .selectAll("circle")
@@ -132,7 +136,7 @@ const useDrawRelation = ({ model, query, theme }: UseDrawRelationParams) => {
           hideTooltip(tooltipEl);
         });
     },
-    [model, query, theme, width, height, isMobile, containerRef],
+    [model, query, theme, width, height, isMobile, containerRef, displayMode],
   );
 
   return { containerRef, svgRef, tooltipRef, height };

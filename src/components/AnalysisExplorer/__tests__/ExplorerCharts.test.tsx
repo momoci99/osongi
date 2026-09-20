@@ -49,6 +49,22 @@ describe("RankChart", () => {
     expect(screen.getByRole("img", { name: "조합별 단가 순위, 2개" })).toBeInTheDocument();
     expect(screen.getByText(/전년 같은 기간 값/)).toBeInTheDocument();
   });
+
+  it("흐린 행 안내는 흐린 행과 선명한 행이 섞였을 때만 보여준다", () => {
+    const query = makeQuery({ view: "rank", groupBy: "union", granularity: "season" });
+    const item = { key: "양양", label: "양양", region: "강원", value: 1, previous: null, change: null, tradingDays: 1 };
+    const { rerender } = withTheme(
+      <RankChart query={query} items={[{ ...item, lowSample: true }, { ...item, key: "봉화", lowSample: true }]} showChange={false} />,
+    );
+    expect(screen.queryByText(/흐린 행/)).not.toBeInTheDocument();
+
+    rerender(
+      <ThemeProvider theme={theme}>
+        <RankChart query={query} items={[{ ...item, lowSample: true }, { ...item, key: "봉화", lowSample: false }]} showChange={false} />
+      </ThemeProvider>,
+    );
+    expect(screen.getByText(/흐린 행/)).toBeInTheDocument();
+  });
 });
 
 describe("CompositionChart", () => {
@@ -60,7 +76,7 @@ describe("CompositionChart", () => {
       granularity: "season",
       time: { kind: "seasons", years: [2024] },
     });
-    withTheme(<CompositionChart query={query} result={runAnalysisQuery(rows, query)} />);
+    withTheme(<CompositionChart query={query} result={runAnalysisQuery(rows, query)} ongoingYear={null} />);
 
     expect(screen.getByText("1등품")).toBeInTheDocument();
     expect(screen.getByText("등외품")).toBeInTheDocument();

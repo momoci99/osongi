@@ -38,6 +38,8 @@ const ExplorerContent = ({ meta, version }: ExplorerContentProps) => {
     availableYears: meta.availableYears,
     inSeason: meta.latestDate ? isInSeason(meta.latestDate) : false,
   };
+  /** 시즌 중이면 최신 공판 연도의 시즌은 아직 진행 중이다 */
+  const ongoingYear = context.inSeason && meta.latestDate ? Number(meta.latestDate.slice(0, 4)) : null;
   const { query, activeTemplateId, setQuery, updateQuery, applyTemplate } = useAnalysisQuery(context);
   /**
    * 선택 표시(템플릿·탭·칩)는 누른 프레임에, 결과(스트립·차트·요약)는 다음 프레임에 그린다.
@@ -67,7 +69,8 @@ const ExplorerContent = ({ meta, version }: ExplorerContentProps) => {
   );
 
   return (
-    <Stack gap={EXPLORER_LAYOUT.SECTION_GAP}>
+    /** 한글이 음절 중간에서 끊기지 않게 어절 단위로 줄바꿈한다 */
+    <Stack gap={EXPLORER_LAYOUT.SECTION_GAP} sx={{ wordBreak: "keep-all" }}>
       <ExplorerHeader availableYears={meta.availableYears} recordCount={meta.recordCount} latestDate={meta.latestDate} />
       <TemplateBar
         activeId={activeTemplateId}
@@ -104,6 +107,7 @@ const ExplorerContent = ({ meta, version }: ExplorerContentProps) => {
                 selectedQuery={query}
                 onQueryChange={setQuery}
                 requestRawCsv={() => requestRawCsv(data.query, version)}
+                ongoingYear={ongoingYear}
               />
             </Box>
             <Box component="aside" sx={{ position: { [EXPLORER_LAYOUT.ASIDE_BREAKPOINT]: "sticky" }, top: EXPLORER_LAYOUT.STICKY_TOP }}>

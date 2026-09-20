@@ -15,13 +15,21 @@ type RankChartProps = {
 /** 순위 뷰 — 묶기 기준별 기간 전체 값 */
 const RankChart = ({ query, items, showChange }: RankChartProps) => {
   const theme = useTheme();
-  const colorOf = (item: RankItem) =>
-    resolveSeriesColor({ colorKey: item.key, role: "entity" }, query.groupBy, theme);
+  const colorOf = (item: RankItem) => resolveSeriesColor({ colorKey: item.key, role: "entity" }, query.groupBy, theme);
+
+  /** 흐린 행과 선명한 행이 섞여 있을 때만 흐림이 의미가 있다 */
+  const lowSampleCount = items.filter((item) => item.lowSample).length;
+  const fadeLowSample = lowSampleCount > 0 && lowSampleCount < items.length;
+  const notes = [
+    showChange ? "○ 전년 같은 기간 값" : "",
+    fadeLowSample ? "흐린 행은 공판일이 적어 수치가 불안정합니다" : "",
+  ].filter(Boolean);
 
   const { containerRef, svgRef, height } = useDrawRankChart({
     items,
     metric: query.metric,
     showChange,
+    fadeLowSample,
     colorOf,
     theme,
   });
@@ -36,9 +44,9 @@ const RankChart = ({ query, items, showChange }: RankChartProps) => {
           style={{ display: "block", height }}
         />
       </Box>
-      <Typography sx={{ fontSize: "0.75rem", color: "text.disabled", pt: 1 }}>
-        {showChange ? "○ 전년 같은 기간 값 · " : ""}흐린 행은 공판일이 적어 수치가 불안정합니다
-      </Typography>
+      {notes.length > 0 ? (
+        <Typography sx={{ fontSize: "0.75rem", color: "text.disabled", pt: 1 }}>{notes.join(" · ")}</Typography>
+      ) : null}
     </Box>
   );
 };

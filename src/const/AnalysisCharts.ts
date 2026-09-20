@@ -39,7 +39,14 @@ export const COMPOSITION_CHART = {
   MIN_LABEL_WIDTH: 34,
   FONT_SIZE: 11,
   Y_TICKS: [0, 0.25, 0.5, 0.75, 1],
+  /** x 라벨 기준선 (px, 플롯 아래 끝 기준) */
+  X_LABEL_OFFSET: 20,
+  /** 진행 중 시즌 표기 줄 간격 (px) */
+  ONGOING_LABEL_LINE_HEIGHT: 14,
 } as const;
+
+/** 진행 중 시즌 표기 */
+export const ONGOING_SEASON_LABEL = "진행 중";
 
 /** 조합 식별색 — 같은 지역 조합끼리 밝기를 벌리는 전체 폭 (HSL L) */
 export const UNION_LIGHTNESS_SPREAD = 0.3;

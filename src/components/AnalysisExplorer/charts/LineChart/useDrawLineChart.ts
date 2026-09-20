@@ -2,13 +2,14 @@ import { useEffect, useRef } from "react";
 import * as d3 from "d3";
 import type { Theme } from "@mui/material/styles";
 import { useContainerWidth } from "../../../../utils/d3/useContainerSize";
-import { isMobileWidth } from "../../../../utils/d3/chartMargins";
+import { isMobileWidth, scaleMargin } from "../../../../utils/d3/chartMargins";
 import { LINE_CHART } from "../../../../const/AnalysisLayout";
-import { renderAxes, renderBand, renderDirectLabels, renderSeries } from "./renderers";
+import { highlightSeries, renderAxes, renderBand, renderDirectLabels, renderSeries } from "./renderers";
 import { buildTooltipContent, renderTooltipHtml } from "../lineTooltip";
 import { hideTooltip, placeTooltip } from "../chartTooltip";
 import { nearestPosition, type ChartSeries, type LineChartModel } from "../../../../utils/analysisQuery/lineChartModel";
 import type { AnalysisQuery } from "../../../../utils/analysisQuery/types";
+import { useSettingsStore } from "../../../../stores/useSettingsStore";
 
 type UseDrawLineChartParams = {
   model: LineChartModel;
@@ -24,6 +25,8 @@ type UseDrawLineChartParams = {
  * 호버는 가장 가까운 x로 스냅하고, 툴팁은 리렌더 없이 DOM을 직접 갱신한다.
  */
 const useDrawLineChart = ({ model, query, axis, seasonStarts, colorOf, theme }: UseDrawLineChartParams) => {
+  /** 큰글씨 모드를 켜고 끄면 글자 크기가 달라져 다시 그려야 한다 */
+  const displayMode = useSettingsStore((state) => state.displayMode);
   const { containerRef, width } = useContainerWidth();
   const svgRef = useRef<SVGSVGElement | null>(null);
   const tooltipRef = useRef<HTMLDivElement | null>(null);
@@ -42,7 +45,7 @@ const useDrawLineChart = ({ model, query, axis, seasonStarts, colorOf, theme }: 
       const tooltipEl = tooltipRef.current;
       if (!svgEl || !tooltipEl || width === 0) return;
 
-      const margin = isMobile ? LINE_CHART.MARGIN.MOBILE : LINE_CHART.MARGIN.DESKTOP;
+      const margin = scaleMargin(isMobile ? LINE_CHART.MARGIN.MOBILE : LINE_CHART.MARGIN.DESKTOP);
       const innerWidth = Math.max(0, width - margin.left - margin.right);
       const innerHeight = Math.max(0, height - margin.top - margin.bottom);
 
@@ -61,7 +64,7 @@ const useDrawLineChart = ({ model, query, axis, seasonStarts, colorOf, theme }: 
 
       renderAxes(g, scales, model, query.metric, theme);
       renderBand(g, scales, model, theme);
-      renderSeries(g, scales, model, resolveColor, theme);
+      const seriesGroups = renderSeries(g, scales, model, resolveColor, theme);
       renderDirectLabels(g, scales, model, theme);
 
       const crosshair = g
@@ -75,6 +78,7 @@ const useDrawLineChart = ({ model, query, axis, seasonStarts, colorOf, theme }: 
       const hide = () => {
         crosshair.style("display", "none");
         hoverDots.selectAll("*").remove();
+        highlightSeries(seriesGroups, model, null);
         hideTooltip(tooltipEl);
       };
 
@@ -84,7 +88,7 @@ const useDrawLineChart = ({ model, query, axis, seasonStarts, colorOf, theme }: 
         .attr("fill", "transparent")
         .style("touch-action", "pan-y")
         .on("pointermove", function handlePointerMove(event: PointerEvent) {
-          const [mx] = d3.pointer(event, this);
+          const [mx, my] = d3.pointer(event, this);
           const position = nearestPosition(model.positions, x.invert(mx));
           if (position === null) return hide();
 
@@ -93,7 +97,11 @@ const useDrawLineChart = ({ model, query, axis, seasonStarts, colorOf, theme }: 
             return point ? [{ series, point, color: resolveColor(series) }] : [];
           });
           const band = model.band?.find((point) => point.position === position);
-          const content = buildTooltipContent({ axis, query, hits, band, seasonStarts });
+          /** 포인터와 세로로 가장 가까운 선 — 지난 시즌 회색 선이면 강조한다 */
+          const nearest = d3.least(hits, (hit) => Math.abs(y(hit.point.value) - my));
+          const activeKey = nearest?.series.role === "context" ? nearest.series.key : null;
+          highlightSeries(seriesGroups, model, activeKey);
+          const content = buildTooltipContent({ axis, query, hits, band, seasonStarts, activeKey });
           if (!content) return hide();
 
           const px = x(position);
@@ -114,7 +122,7 @@ const useDrawLineChart = ({ model, query, axis, seasonStarts, colorOf, theme }: 
         })
         .on("pointerleave", hide);
     },
-    [model, query, axis, seasonStarts, theme, width, height, isMobile],
+    [model, query, axis, seasonStarts, theme, width, height, isMobile, displayMode],
   );
 
   return { containerRef, svgRef, tooltipRef, height };

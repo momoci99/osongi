@@ -1,3 +1,6 @@
+/** 큰글씨 모드에서 차트 SVG 글자에 거는 배율 */
+export const LARGE_DISPLAY_FONT_SCALE = 1.2;
+
 /** 연도별 추이 차트(지역·조합 페이지) 레이아웃 상수 */
 export const YEARLY_TREND_CHART = {
   MARGIN: {

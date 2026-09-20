@@ -30,6 +30,14 @@ const ALIGNS = Object.keys(ALIGN_LABELS) as AnalysisQuery["align"][];
 const ExplorerControls = ({ query, onQueryChange, onPrefetch }: ExplorerControlsProps) => {
   const rule = VIEW_RULES[query.view];
   const update = (patch: Partial<AnalysisQuery>) => onQueryChange({ ...query, ...patch });
+  /** 조절할 옵션이 하나도 없는 뷰(커버리지)는 빈 줄을 남기지 않는다 */
+  const hasOptions =
+    rule.metrics.length > 1 ||
+    rule.groupBy.length > 1 ||
+    rule.granularity.length > 1 ||
+    rule.align ||
+    rule.compare.length > 1 ||
+    rule.commonUnits;
 
   return (
     <ExplorerPanel flush>
@@ -41,85 +49,89 @@ const ExplorerControls = ({ query, onQueryChange, onPrefetch }: ExplorerControls
         />
       </Box>
 
-      <Box
-        sx={{
-          display: "flex",
-          flexWrap: "wrap",
-          alignItems: "center",
-          columnGap: 2.5,
-          rowGap: 1.25,
-          px: { xs: 1.75, sm: 2.25 },
-          py: 1.5,
-        }}
-      >
-        {rule.metrics.length > 1 ? (
-          <ControlSelect
-            label="지표"
-            value={query.metric}
-            options={rule.metrics}
-            labels={METRIC_LABELS}
-            onChange={(metric) => update({ metric })}
-          />
-        ) : null}
-        {rule.groupBy.length > 1 ? (
-          <ControlSelect
-            label="묶기"
-            value={query.groupBy}
-            options={rule.groupBy}
-            labels={GROUP_BY_LABELS}
-            onChange={(groupBy) => update({ groupBy })}
-          />
-        ) : null}
-        {rule.granularity.length > 1 ? (
-          <ControlSegment
-            label="단위"
-            value={query.granularity}
-            options={rule.granularity}
-            labels={GRANULARITY_LABELS}
-            onChange={(granularity) => update({ granularity })}
-          />
-        ) : null}
-        {rule.align ? (
-          <ControlSegment
-            label="정렬"
-            value={query.align}
-            options={ALIGNS}
-            labels={ALIGN_LABELS}
-            onChange={(align) => update({ align })}
-          />
-        ) : null}
-        {rule.compare.length > 1 ? (
-          <ControlSegment
-            label="비교"
-            value={query.compare}
-            options={rule.compare}
-            labels={COMPARE_LABELS}
-            onChange={(compare) => update({ compare })}
-          />
-        ) : null}
-        {rule.commonUnits ? (
-          <FormControlLabel
-            control={
-              <Switch
-                size="small"
-                checked={query.commonUnitsOnly}
-                onChange={(event) => update({ commonUnitsOnly: event.target.checked })}
-              />
-            }
-            label="공통 조합만"
+      {hasOptions ? (
+        <>
+          <Box
             sx={{
-              ml: 0,
-              "& .MuiFormControlLabel-label": {
-                fontSize: "0.8125rem",
-                fontWeight: 600,
-                color: "text.secondary",
-              },
+              display: "flex",
+              flexWrap: "wrap",
+              alignItems: "center",
+              columnGap: 2.5,
+              rowGap: 1.25,
+              px: { xs: 1.75, sm: 2.25 },
+              py: 1.5,
             }}
-          />
-        ) : null}
-      </Box>
+          >
+            {rule.metrics.length > 1 ? (
+              <ControlSelect
+                label="지표"
+                value={query.metric}
+                options={rule.metrics}
+                labels={METRIC_LABELS}
+                onChange={(metric) => update({ metric })}
+              />
+            ) : null}
+            {rule.groupBy.length > 1 ? (
+              <ControlSelect
+                label="묶기"
+                value={query.groupBy}
+                options={rule.groupBy}
+                labels={GROUP_BY_LABELS}
+                onChange={(groupBy) => update({ groupBy })}
+              />
+            ) : null}
+            {rule.granularity.length > 1 ? (
+              <ControlSegment
+                label="단위"
+                value={query.granularity}
+                options={rule.granularity}
+                labels={GRANULARITY_LABELS}
+                onChange={(granularity) => update({ granularity })}
+              />
+            ) : null}
+            {rule.align ? (
+              <ControlSegment
+                label="정렬"
+                value={query.align}
+                options={ALIGNS}
+                labels={ALIGN_LABELS}
+                onChange={(align) => update({ align })}
+              />
+            ) : null}
+            {rule.compare.length > 1 ? (
+              <ControlSegment
+                label="비교"
+                value={query.compare}
+                options={rule.compare}
+                labels={COMPARE_LABELS}
+                onChange={(compare) => update({ compare })}
+              />
+            ) : null}
+            {rule.commonUnits ? (
+              <FormControlLabel
+                control={
+                  <Switch
+                    size="small"
+                    checked={query.commonUnitsOnly}
+                    onChange={(event) => update({ commonUnitsOnly: event.target.checked })}
+                  />
+                }
+                label="공통 조합만"
+                sx={{
+                  ml: 0,
+                  "& .MuiFormControlLabel-label": {
+                    fontSize: "0.8125rem",
+                    fontWeight: 600,
+                    color: "text.secondary",
+                  },
+                }}
+              />
+            ) : null}
+          </Box>
 
-      <Divider />
+          <Divider />
+        </>
+      ) : null}
 
       <Box sx={{ px: { xs: 1.75, sm: 2.25 }, py: 1.5 }}>
         <ScopeFilter query={query} onChange={update} />

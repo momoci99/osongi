@@ -38,6 +38,7 @@ export const summarizeRows = (rows: GradeRow[]): AnalysisSummary => {
     unitPrice: quantity > 0 ? amount / quantity : null,
     max: max ? toExtreme(max) : null,
     min: min ? toExtreme(min) : null,
-    lowSample: dates.size < LOW_SAMPLE_THRESHOLD.TRADING_DAYS,
+    /** 공판이 아예 없으면 흔들릴 수치도 없다 — 빈 결과는 경고가 아니라 빈 상태로 보여준다 */
+    lowSample: dates.size > 0 && dates.size < LOW_SAMPLE_THRESHOLD.TRADING_DAYS,
   };
 };

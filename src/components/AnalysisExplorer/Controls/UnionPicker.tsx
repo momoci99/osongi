@@ -10,6 +10,14 @@ type UnionPickerProps = {
   onChange: (unions: string[]) => void;
 };
 
+/**
+ * 지역별 조합을 가나다순으로 정렬한 목록.
+ * 색 배정은 `REGION_UNION_MAP` 순서를 쓰므로 목록만 따로 정렬한다.
+ */
+const SORTED_REGION_UNIONS = Object.fromEntries(
+  AVAILABLE_REGIONS.map((region) => [region, [...REGION_UNION_MAP[region]].sort((a, b) => a.localeCompare(b, "ko"))]),
+) as Record<(typeof AVAILABLE_REGIONS)[number], string[]>;
+
 /** 선택 요약 라벨 */
 const describeUnions = (unions: string[]): string =>
   unions.length === 0 ? "전체 조합" : unions.length === 1 ? unions[0] : `조합 ${unions.length}곳`;
@@ -58,7 +66,7 @@ const UnionPicker = ({ unions, onChange }: UnionPickerProps) => {
               </Typography>
             </Box>
             <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.625 }}>
-              {REGION_UNION_MAP[region].map((union) => (
+              {SORTED_REGION_UNIONS[region].map((union) => (
                 <FilterChip key={union} selected={unions.includes(union)} onClick={() => toggle(union)}>
                   {union}
                 </FilterChip>

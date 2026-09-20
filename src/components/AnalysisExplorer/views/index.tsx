@@ -26,10 +26,15 @@ type ExplorerViewProps = {
   /** 히트맵 셀 클릭 등 차트에서 쿼리를 바꿀 때 */
   onQueryChange: (next: AnalysisQuery) => void;
   requestRawCsv: () => Promise<string>;
+  /** 아직 끝나지 않은 시즌 연도 (없으면 null) */
+  ongoingYear: number | null;
 };
 
 /** 차트가 있는 뷰 */
 const CHART_VIEWS: AnalysisView[] = ["overlay", "timeline", "heatmap", "rank", "composition", "relation", "coverage"];
+
+/** 선 차트 뷰 */
+const LINE_VIEWS: AnalysisView[] = ["overlay", "timeline"];
 
 /** 뷰 제목 옆 설명 */
 const describeView = (query: AnalysisQuery): string => {
@@ -37,14 +42,26 @@ const describeView = (query: AnalysisQuery): string => {
   if (query.view === "coverage") return "조합별 시즌 공판일";
   if (query.view === "relation") {
     /** 등급이 섞이면 등급 구성 차이가 가격 차이로 보이므로 한 등급을 권한다 */
-    return query.grades.length === 1 ? "공판량 × 단가 · 점 = 조합 하루" : "공판량 × 단가 · 한 등급만 고르면 더 정확합니다";
+    return query.grades.length === 1
+      ? "공판량 × 단가 · 점 = 조합 하루"
+      : "공판량 × 단가 · 한 등급만 고르면 더 정확합니다";
   }
-  return `${METRIC_LABELS[query.metric]} · ${GROUP_BY_LABELS[query.groupBy]}`;
+  /** 단가 선 차트 눈금은 "140만"처럼 짧게 쓰므로 단위를 제목에서 한 번 알려준다 */
+  const unit = query.metric === "unitPrice" && LINE_VIEWS.includes(query.view) ? " (만원/kg)" : "";
+  return `${METRIC_LABELS[query.metric]}${unit} · ${GROUP_BY_LABELS[query.groupBy]}`;
 };
 
 /** 결과가 비었을 때 */
 const EmptyResult = () => (
-  <Box sx={{ minHeight: EXPLORER_LAYOUT.VIEW_MIN_HEIGHT / 2, display: "grid", placeItems: "center", textAlign: "center", px: 3 }}>
+  <Box
+    sx={{
+      minHeight: EXPLORER_LAYOUT.VIEW_MIN_HEIGHT / 2,
+      display: "grid",
+      placeItems: "center",
+      textAlign: "center",
+      px: 3,
+    }}
+  >
     <Box>
       <Typography sx={{ fontWeight: 700, mb: 0.5 }}>조건에 맞는 공판 기록이 없습니다</Typography>
       <Typography sx={{ fontSize: "0.8125rem", color: "text.secondary" }}>
@@ -54,10 +71,10 @@ const EmptyResult = () => (
   </Box>
 );
 
-type ViewChartProps = Pick<ExplorerViewProps, "data" | "onQueryChange">;
+type ViewChartProps = Pick<ExplorerViewProps, "data" | "onQueryChange" | "ongoingYear">;
 
 /** 현재 뷰의 차트 */
-const ViewChart = ({ data, onQueryChange }: ViewChartProps) => {
+const ViewChart = ({ data, onQueryChange, ongoingYear }: ViewChartProps) => {
   const { query, result, comparison } = data;
   switch (query.view) {
     case "heatmap":
@@ -73,7 +90,7 @@ const ViewChart = ({ data, onQueryChange }: ViewChartProps) => {
     case "rank":
       return <RankChart query={query} items={data.rankItems ?? []} showChange={comparison !== null} />;
     case "composition":
-      return <CompositionChart query={query} result={result} />;
+      return <CompositionChart query={query} result={result} ongoingYear={ongoingYear} />;
     case "relation":
       return data.relation ? <Relation query={query} model={data.relation} /> : null;
     case "coverage":
@@ -84,12 +101,12 @@ const ViewChart = ({ data, onQueryChange }: ViewChartProps) => {
 };
 
 /** 차트 + 접히는 상세 표 */
-const ChartWithTable = ({ data, onQueryChange }: ViewChartProps) => {
+const ChartWithTable = ({ data, onQueryChange, ongoingYear }: ViewChartProps) => {
   const [tableOpen, setTableOpen] = useState(false);
 
   return (
     <>
-      <ViewChart data={data} onQueryChange={onQueryChange} />
+      <ViewChart data={data} onQueryChange={onQueryChange} ongoingYear={ongoingYear} />
       <Box sx={{ px: { xs: 1, sm: 1.5 }, pt: 1.5, pb: tableOpen ? 0 : 1 }}>
         <Button
           size="small"
@@ -117,15 +134,23 @@ const ChartWithTable = ({ data, onQueryChange }: ViewChartProps) => {
 };
 
 /** 메인 뷰 영역 — 현재 뷰에 맞는 차트·표를 고른다 */
-const ExplorerView = ({ data, pending, selectedQuery, onQueryChange, requestRawCsv }: ExplorerViewProps) => {
+const ExplorerView = ({
+  data,
+  pending,
+  selectedQuery,
+  onQueryChange,
+  requestRawCsv,
+  ongoingYear,
+}: ExplorerViewProps) => {
   const chartAreaRef = useRef<HTMLDivElement | null>(null);
   const { query, result } = data;
 
   const renderBody = () => {
     if (result.rowCount === 0) return <EmptyResult />;
-    if (CHART_VIEWS.includes(query.view)) return <ChartWithTable data={data} onQueryChange={onQueryChange} />;
+    if (CHART_VIEWS.includes(query.view))
+      return <ChartWithTable data={data} onQueryChange={onQueryChange} ongoingYear={ongoingYear} />;
     return data.seasonSummaries ? (
-      <SeasonSummaryTable summaries={data.seasonSummaries} />
+      <SeasonSummaryTable summaries={data.seasonSummaries} ongoingYear={ongoingYear} />
     ) : (
       <PivotTable query={query} result={result} />
     );

@@ -35,6 +35,17 @@ describe("ExplorerControls", () => {
     expect(screen.getByRole("group", { name: "비교" })).toBeInTheDocument();
   });
 
+  it("조절할 옵션이 없는 뷰는 빈 옵션 줄을 남기지 않는다", () => {
+    const { container } = render(
+      <ThemeProvider theme={theme}>
+        <ExplorerControls query={makeQuery({ view: "coverage" })} onQueryChange={vi.fn()} />
+      </ThemeProvider>,
+    );
+
+    expect(container.querySelector("hr")).toBeNull();
+    expect(screen.queryByRole("group", { name: "단위" })).not.toBeInTheDocument();
+  });
+
   it("등급 칩은 토글, 전 등급은 선택을 비운다", () => {
     const onChange = renderControls(makeQuery({ grades: ["grade1"] }));
 

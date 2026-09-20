@@ -52,6 +52,23 @@ describe("buildTooltipContent", () => {
     expect(html).toContain("a&#38;b");
     expect(html).toContain("tt-low");
   });
+
+  it("강조 중인 시리즈 행을 표시하고 색 표본에 선 진하기를 입힌다", () => {
+    const result = runAnalysisQuery(rows, overlayQuery);
+    const model = buildLineChartModel(result, overlayQuery);
+    const series = model.series[0];
+    const content = buildTooltipContent({
+      axis: result.axis,
+      query: overlayQuery,
+      hits: [{ series, point: series.points[0], color: "#000" }],
+      band: undefined,
+      seasonStarts: result.seasonStarts,
+      activeKey: series.key,
+    });
+
+    expect(content?.rows[0]).toMatchObject({ active: true, opacity: series.opacity });
+    expect(renderTooltipHtml(content!)).toContain("tt-active");
+  });
 });
 
 describe("resolveSeriesColor", () => {

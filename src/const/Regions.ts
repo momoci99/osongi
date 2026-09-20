@@ -1,4 +1,4 @@
-import { AVAILABLE_REGIONS, REGION_BASE_HUES, REGION_UNION_MAP } from "./Common";
+import { AVAILABLE_REGIONS, REGION_BASE_HUES, REGION_LIGHTNESS_OFFSET, REGION_UNION_MAP } from "./Common";
 
 /** 지역 필터에서 "필터 없음"을 뜻하는 값 */
 export const ALL_REGIONS_FILTER = "전체";
@@ -47,6 +47,10 @@ export const encodeRoute = (path: string): string =>
     .map((segment) => encodeURIComponent(segment))
     .join("/");
 
+/** 지역 색 명도 — 색조별 체감 밝기 차이를 보정한다 */
+const regionLightness = (region: string): number =>
+  REGION_DOT_LIGHTNESS + (REGION_LIGHTNESS_OFFSET[region] ?? 0);
+
 /**
  * 지역 식별 색.
  * 조합 목록이 지역 구분 없이 나열되면 어디 조합인지 매번 이름을 읽어야 한다.
@@ -56,7 +60,7 @@ export const regionColor = (region: string): string => {
   const hue = REGION_BASE_HUES[region];
   return hue === undefined
     ? "transparent"
-    : `hsl(${hue}, ${REGION_DOT_SATURATION}%, ${REGION_DOT_LIGHTNESS}%)`;
+    : `hsl(${hue}, ${REGION_DOT_SATURATION}%, ${regionLightness(region)}%)`;
 };
 
 /**
@@ -67,7 +71,7 @@ export const regionColorAlpha = (region: string, alpha: number): string => {
   const hue = REGION_BASE_HUES[region];
   return hue === undefined
     ? "transparent"
-    : `hsla(${hue}, ${REGION_DOT_SATURATION}%, ${REGION_DOT_LIGHTNESS}%, ${alpha})`;
+    : `hsla(${hue}, ${REGION_DOT_SATURATION}%, ${regionLightness(region)}%, ${alpha})`;
 };
 
 /** 유효한 지역명인지 검사 */
