@@ -29,6 +29,7 @@ export const chartTooltipSx = {
     py: "2px",
   },
   "& .tt-low": { opacity: 0.55 },
+  "& .tt-active .tt-label": { color: "text.primary", fontWeight: 700 },
   "& .tt-swatch": { width: 10, height: 3, borderRadius: "2px" },
   "& .tt-label": { color: "text.secondary", whiteSpace: "nowrap" },
   "& .tt-value": { fontWeight: 700, textAlign: "right", fontVariantNumeric: "tabular-nums", whiteSpace: "nowrap" },

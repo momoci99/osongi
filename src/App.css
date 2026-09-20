@@ -4,38 +4,20 @@
   --font-legend: 12px;
 }
 
+/**
+ * 큰글씨 모드는 루트 글자 크기만 키운다.
+ * variant마다 크기를 고정하면 sx로 직접 지정한 제목이 본문보다 작아지는 등 위계가 뒤집힌다.
+ * rem 기반 크기는 여기에 비례해 함께 커진다.
+ */
 html[data-display="large"] {
-  font-size: 17px;
+  font-size: 19px;
   --font-axis: 12px;
   --font-legend: 14px;
 }
 
-html[data-display="large"] .MuiTypography-h3,
-html[data-display="large"] .kpi-value {
-  font-size: 2.25rem !important;
-  line-height: 1.15 !important;
-}
-
-html[data-display="large"] .MuiTypography-h4,
-html[data-display="large"] .MuiTypography-h5 {
-  font-size: 2.5rem !important;
-}
-
-html[data-display="large"] .MuiTypography-body1 {
-  font-size: 1.0625rem !important;
-}
-
-html[data-display="large"] .MuiTypography-body2 {
-  font-size: 1rem !important;
-}
-
-html[data-display="large"] .MuiTypography-caption {
-  font-size: 0.9375rem !important;
-}
-
+/* 손가락으로 누르는 요소는 글자와 별개로 최소 크기를 보장한다 */
 html[data-display="large"] .MuiButton-root {
   min-height: 52px;
-  font-size: 1rem !important;
 }
 
 html[data-display="large"] .MuiIconButton-root {
@@ -44,8 +26,7 @@ html[data-display="large"] .MuiIconButton-root {
 }
 
 html[data-display="large"] .MuiTableCell-root {
-  font-size: 1rem !important;
-  padding: 12px 16px !important;
+  padding: 12px 16px;
 }
 
 /* 페이지 전환 fade */

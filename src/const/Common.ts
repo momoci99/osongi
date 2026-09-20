@@ -16,6 +16,14 @@ export const GRADE_OPTIONS = [
   { value: "mixedGrade", label: "혼합품" },
 ] as const;
 
+/** 가로 스크롤 끝 페이드 */
+export const SCROLL_FADE = {
+  /** 페이드 폭 (px) */
+  WIDTH: 28,
+  /** 고정 머리글·첫 열(zIndex 3)보다 위 */
+  Z_INDEX: 4,
+} as const;
+
 /**
  * 사용 가능한 지역 목록
  */
@@ -26,6 +34,14 @@ export const REGION_BASE_HUES: Record<string, number> = {
   강원: 210,
   경북: 28,
   경남: 270,
+};
+
+/**
+ * 지역별 HSL 명도 보정 (단위: %p).
+ * 보라(270°)는 같은 명도에서도 눈에 훨씬 어두워 다크 배경에 묻히므로 밝게 끌어올린다.
+ */
+export const REGION_LIGHTNESS_OFFSET: Record<string, number> = {
+  경남: 12,
 };
 
 /**

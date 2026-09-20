@@ -18,6 +18,8 @@ describe("분석 수치 포맷", () => {
   it("수량은 1톤 기준으로 kg·톤 전환", () => {
     expect(formatQuantity(7.58)).toEqual({ value: "7.6", unit: "kg" });
     expect(formatQuantity(69_420)).toEqual({ value: "69.4", unit: "톤" });
+    expect(formatQuantity(356.2, 265_700)).toEqual({ value: "0.4", unit: "톤" });
+    expect(formatQuantity(2_000, 800)).toEqual({ value: "2,000.0", unit: "kg" });
   });
 
   it("금액은 1억 기준으로 만원·억원 전환", () => {
@@ -64,5 +66,16 @@ describe("formatAxisTick", () => {
     expect(formatAxisTick("cumQuantity", 12_500)).toBe("12.5t");
     expect(formatAxisTick("quantity", 300)).toBe("300kg");
     expect(formatAxisTick("quantity", 0.1)).toBe("0.1kg");
+  });
+
+  it("수량 축은 축 최댓값 기준으로 단위를 통일하고 .0을 뺀다", () => {
+    expect(formatAxisTick("cumQuantity", 0, 150_000)).toBe("0");
+    expect(formatAxisTick("cumQuantity", 500, 150_000)).toBe("0.5t");
+    expect(formatAxisTick("cumQuantity", 50_000, 150_000)).toBe("50t");
+    expect(formatAxisTick("quantity", 960, 800)).toBe("960kg");
+  });
+
+  it("톤 축에서 0.1t 미만은 0과 구분해 표시한다", () => {
+    expect(formatAxisTick("quantity", 0.96, 24_200)).toBe("<0.1t");
   });
 });

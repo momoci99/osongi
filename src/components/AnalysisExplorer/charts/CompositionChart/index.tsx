@@ -8,16 +8,19 @@ import type { AnalysisQuery, AnalysisResultCore } from "../../../../utils/analys
 type CompositionChartProps = {
   query: AnalysisQuery;
   result: AnalysisResultCore;
+  /** 아직 끝나지 않은 시즌 연도 (없으면 null) */
+  ongoingYear: number | null;
 };
 
 /** 등급 구성 뷰 — 구간별 등급 물량 비중 */
-const CompositionChart = ({ query, result }: CompositionChartProps) => {
+const CompositionChart = ({ query, result, ongoingYear }: CompositionChartProps) => {
   const theme = useTheme();
   const columns = buildCompositionModel(result);
   const { containerRef, svgRef, tooltipRef, height } = useDrawCompositionChart({
     columns,
     axis: result.axis,
     granularity: query.granularity,
+    ongoingYear,
     theme,
   });
   const presentGrades = new Set(columns.flatMap((column) => column.segments.map((segment) => segment.grade)));

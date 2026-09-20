@@ -1,5 +1,6 @@
 import { Box, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
 import { tableContainerSx, tableSx } from "./tableStyles";
+import ScrollFade from "../../common/ScrollFade";
 import { EXPLORER_TABLE } from "../../../const/AnalysisLayout";
 import { compareX } from "../../../utils/analysisQuery/aggregate";
 import { formatAxisValue, formatMetricText } from "../../../utils/analysisQuery/format";
@@ -81,7 +82,7 @@ const PivotTable = ({ query, result }: PivotTableProps) => {
 
   return (
     <Box>
-      <Box sx={tableContainerSx}>
+      <ScrollFade sx={tableContainerSx} fadeStart={false} revision={result}>
         <Table stickyHeader size="small" sx={tableSx}>
           <TableHead>
             <TableRow>
@@ -122,7 +123,7 @@ const PivotTable = ({ query, result }: PivotTableProps) => {
             ))}
           </TableBody>
         </Table>
-      </Box>
+      </ScrollFade>
       <Typography variant="caption" sx={{ display: "block", px: 2, py: 1, color: "text.disabled" }}>
         흐린 값은 공판 건수가 적은 구간입니다
         {hiddenCount > 0 ? ` · 시리즈 ${hiddenCount}개는 열이 많아 생략했습니다` : ""}

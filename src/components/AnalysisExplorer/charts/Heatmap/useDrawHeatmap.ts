@@ -2,13 +2,14 @@ import { useEffect, useRef } from "react";
 import * as d3 from "d3";
 import type { Theme } from "@mui/material/styles";
 import { useContainerWidth } from "../../../../utils/d3/useContainerSize";
-import { isMobileWidth } from "../../../../utils/d3/chartMargins";
+import { isMobileWidth, scaleFont, scaleMargin } from "../../../../utils/d3/chartMargins";
 import { HEATMAP, LINE_CHART } from "../../../../const/AnalysisLayout";
 import { hideTooltip, placeTooltip } from "../chartTooltip";
 import { renderTooltipHtml } from "../lineTooltip";
 import { formatAxisValue, formatMetricText } from "../../../../utils/analysisQuery/format";
 import type { HeatmapCell, HeatmapModel } from "../../../../utils/analysisQuery/heatmapModel";
 import type { AnalysisAxis, AnalysisQuery } from "../../../../utils/analysisQuery/types";
+import { useSettingsStore } from "../../../../stores/useSettingsStore";
 
 type UseDrawHeatmapParams = {
   model: HeatmapModel;
@@ -21,6 +22,8 @@ type UseDrawHeatmapParams = {
 
 /** 시즌 × 날짜 히트맵 렌더링 */
 const useDrawHeatmap = ({ model, query, axis, colorScale, theme, onCellClick }: UseDrawHeatmapParams) => {
+  /** 큰글씨 모드를 켜고 끄면 글자 크기가 달라져 다시 그려야 한다 */
+  const displayMode = useSettingsStore((state) => state.displayMode);
   const { containerRef, width } = useContainerWidth();
   const svgRef = useRef<SVGSVGElement | null>(null);
   const tooltipRef = useRef<HTMLDivElement | null>(null);
@@ -36,7 +39,7 @@ const useDrawHeatmap = ({ model, query, axis, colorScale, theme, onCellClick }: 
       const tooltipEl = tooltipRef.current;
       if (!svgEl || !tooltipEl || width === 0 || model.columnCount === 0) return;
 
-      const margin = HEATMAP.MARGIN;
+      const margin = scaleMargin(HEATMAP.MARGIN);
       const rowHeight = isMobileWidth(width) ? HEATMAP.ROW_HEIGHT.MOBILE : HEATMAP.ROW_HEIGHT.DESKTOP;
       const availableWidth = width - margin.left - margin.right;
       const cellWidth = Math.max(HEATMAP.MIN_CELL_WIDTH, availableWidth / model.columnCount);
@@ -63,7 +66,7 @@ const useDrawHeatmap = ({ model, query, axis, colorScale, theme, onCellClick }: 
         .attr("y", (_, index) => index * rowHeight + rowHeight / 2)
         .attr("dy", "0.32em")
         .attr("text-anchor", "end")
-        .attr("font-size", LINE_CHART.AXIS_FONT_SIZE)
+        .attr("font-size", scaleFont(LINE_CHART.AXIS_FONT_SIZE))
         .attr("font-weight", 600)
         .attr("fill", theme.palette.text.secondary)
         .style("font-variant-numeric", "tabular-nums")
@@ -79,7 +82,7 @@ const useDrawHeatmap = ({ model, query, axis, colorScale, theme, onCellClick }: 
         .attr("x", (tick) => columnX(tick.position) + cellWidth / 2)
         .attr("y", -8)
         .attr("text-anchor", "middle")
-        .attr("font-size", LINE_CHART.AXIS_FONT_SIZE)
+        .attr("font-size", scaleFont(LINE_CHART.AXIS_FONT_SIZE))
         .attr("fill", theme.palette.text.secondary)
         .style("font-variant-numeric", "tabular-nums")
         .text((tick) => tick.label);
@@ -120,7 +123,7 @@ const useDrawHeatmap = ({ model, query, axis, colorScale, theme, onCellClick }: 
         })
         .on("click", (_, cell) => clickRef.current(cell));
     },
-    [model, query, axis, colorScale, theme, width, containerRef],
+    [model, query, axis, colorScale, theme, width, containerRef, displayMode],
   );
 
   return { containerRef, svgRef, tooltipRef };

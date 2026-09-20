@@ -2,16 +2,19 @@ import { useEffect, useRef } from "react";
 import * as d3 from "d3";
 import type { Theme } from "@mui/material/styles";
 import { useContainerWidth } from "../../../../utils/d3/useContainerSize";
-import { isMobileWidth } from "../../../../utils/d3/chartMargins";
+import { isMobileWidth, scaleFont, scaleLength } from "../../../../utils/d3/chartMargins";
 import { RANK_CHART } from "../../../../const/AnalysisCharts";
 import { formatMetricText } from "../../../../utils/analysisQuery/format";
 import type { RankItem } from "../../../../utils/analysisQuery/rankModel";
 import type { AnalysisMetric } from "../../../../utils/analysisQuery/types";
+import { useSettingsStore } from "../../../../stores/useSettingsStore";
 
 type UseDrawRankChartParams = {
   items: RankItem[];
   metric: AnalysisMetric;
   showChange: boolean;
+  /** 표본 부족 행을 흐리게 할지 — 모든 행이 부족하면 흐려도 대비가 없다 */
+  fadeLowSample: boolean;
   colorOf: (item: RankItem) => string;
   theme: Theme;
 };
@@ -24,7 +27,9 @@ const formatChange = (change: number | null): string =>
  * 순위 가로 막대.
  * 막대 = 현재 값, 속 빈 원 = 전년 값. 순위는 위치로 이미 읽히므로 번호는 붙이지 않는다.
  */
-const useDrawRankChart = ({ items, metric, showChange, colorOf, theme }: UseDrawRankChartParams) => {
+const useDrawRankChart = ({ items, metric, showChange, fadeLowSample, colorOf, theme }: UseDrawRankChartParams) => {
+  /** 큰글씨 모드를 켜고 끄면 글자 크기가 달라져 다시 그려야 한다 */
+  const displayMode = useSettingsStore((state) => state.displayMode);
   const { containerRef, width } = useContainerWidth();
   const svgRef = useRef<SVGSVGElement | null>(null);
   const height = RANK_CHART.MARGIN_TOP * 2 + items.length * RANK_CHART.ROW_HEIGHT;
@@ -35,9 +40,10 @@ const useDrawRankChart = ({ items, metric, showChange, colorOf, theme }: UseDraw
       if (!svgEl || width === 0) return;
 
       const mobile = isMobileWidth(width);
-      const labelWidth = mobile ? RANK_CHART.LABEL_WIDTH.MOBILE : RANK_CHART.LABEL_WIDTH.DESKTOP;
-      const valueWidth = mobile ? RANK_CHART.VALUE_WIDTH.MOBILE : RANK_CHART.VALUE_WIDTH.DESKTOP;
-      const changeWidth = showChange ? RANK_CHART.CHANGE_WIDTH : 0;
+      /** 큰글씨 모드에서는 라벨·값이 길어져 열 폭도 함께 넓힌다 */
+      const labelWidth = scaleLength(mobile ? RANK_CHART.LABEL_WIDTH.MOBILE : RANK_CHART.LABEL_WIDTH.DESKTOP);
+      const valueWidth = scaleLength(mobile ? RANK_CHART.VALUE_WIDTH.MOBILE : RANK_CHART.VALUE_WIDTH.DESKTOP);
+      const changeWidth = showChange ? scaleLength(RANK_CHART.CHANGE_WIDTH) : 0;
       const barWidth = Math.max(0, width - labelWidth - valueWidth - changeWidth);
 
       const svg = d3.select(svgEl).attr("width", width).attr("height", height);
@@ -51,7 +57,7 @@ const useDrawRankChart = ({ items, metric, showChange, colorOf, theme }: UseDraw
         .data(items)
         .join("g")
         .attr("transform", (_, index) => `translate(0, ${RANK_CHART.MARGIN_TOP + index * RANK_CHART.ROW_HEIGHT})`)
-        .attr("opacity", (item) => (item.lowSample ? RANK_CHART.LOW_SAMPLE_OPACITY : 1));
+        .attr("opacity", (item) => (fadeLowSample && item.lowSample ? RANK_CHART.LOW_SAMPLE_OPACITY : 1));
 
       const center = RANK_CHART.ROW_HEIGHT / 2;
 
@@ -68,7 +74,7 @@ const useDrawRankChart = ({ items, metric, showChange, colorOf, theme }: UseDraw
         .attr("x", (item) => (item.region !== null ? RANK_CHART.DOT_RADIUS * 2 + 10 : 0))
         .attr("y", center)
         .attr("dy", "0.32em")
-        .attr("font-size", RANK_CHART.FONT_SIZE)
+        .attr("font-size", scaleFont(RANK_CHART.FONT_SIZE))
         .attr("font-weight", 600)
         .attr("fill", theme.palette.text.primary)
         .text((item) => item.label);
@@ -111,7 +117,7 @@ const useDrawRankChart = ({ items, metric, showChange, colorOf, theme }: UseDraw
         .attr("y", center)
         .attr("dy", "0.32em")
         .attr("text-anchor", "end")
-        .attr("font-size", RANK_CHART.FONT_SIZE)
+        .attr("font-size", scaleFont(RANK_CHART.FONT_SIZE))
         .attr("font-weight", 700)
         .attr("fill", theme.palette.text.primary)
         .style("font-variant-numeric", "tabular-nums")
@@ -125,7 +131,7 @@ const useDrawRankChart = ({ items, metric, showChange, colorOf, theme }: UseDraw
         .attr("y", center)
         .attr("dy", "0.32em")
         .attr("text-anchor", "end")
-        .attr("font-size", RANK_CHART.FONT_SIZE - 1)
+        .attr("font-size", scaleFont(RANK_CHART.FONT_SIZE - 1))
         .attr("font-weight", 600)
         .attr("fill", (item) =>
           item.change === null
@@ -137,7 +143,7 @@ const useDrawRankChart = ({ items, metric, showChange, colorOf, theme }: UseDraw
         .style("font-variant-numeric", "tabular-nums")
         .text((item) => formatChange(item.change));
     },
-    [items, metric, showChange, colorOf, theme, width, height],
+    [items, metric, showChange, fadeLowSample, colorOf, theme, width, height, displayMode],
   );
 
   return { containerRef, svgRef, height };

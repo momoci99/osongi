@@ -27,6 +27,29 @@ const ALL_GRADES_TOKEN = "all";
 /** 목록 구분자 */
 const LIST_SEPARATOR = ",";
 
+/**
+ * 링크에서 생략할 수 있는 값 — 공유 링크가 기본 템플릿 변경에 흔들리지 않도록 고정한다.
+ * 분석 파라미터가 하나라도 있는 URL이면 빠진 키는 여기 값으로 읽는다.
+ */
+const STATIC_QUERY_DEFAULTS = {
+  align: "calendar",
+  regions: [] as string[],
+  unions: [] as string[],
+  grades: [] as GradeKey[],
+  metric: "unitPrice",
+  groupBy: "none",
+  granularity: "day",
+  compare: "none",
+  commonUnitsOnly: false,
+} as const satisfies Omit<AnalysisQuery, "view" | "time">;
+
+/** 분석 파라미터 이름 전체 */
+const ALL_QUERY_PARAMS = Object.values(QUERY_PARAM);
+
+/** 두 문자열 목록이 같은 내용인지 */
+const isSameList = (a: readonly string[], b: readonly string[]): boolean =>
+  a.length === b.length && a.every((item, index) => item === b[index]);
+
 const viewSchema = z.enum([
   "timeline",
   "overlay",
@@ -137,34 +160,46 @@ export const parseAnalysisQuery = (params: URLSearchParams, fallback: AnalysisQu
   return query;
 };
 
+/**
+ * 빠진 파라미터를 채울 기준값.
+ * 분석 파라미터가 하나라도 있으면 "생략 = 기본값"인 링크로 보고 정적 기본값을 쓴다.
+ * 파라미터가 전혀 없을 때만(첫 방문) 기본 템플릿 쿼리를 따른다.
+ */
+const selectBase = (params: URLSearchParams, fallback: AnalysisQuery): AnalysisQuery =>
+  ALL_QUERY_PARAMS.some((name) => params.has(name)) ? { ...fallback, ...STATIC_QUERY_DEFAULTS } : fallback;
+
 /** 캐시 없는 파싱 */
 const parseAnalysisQueryUncached = (
   params: URLSearchParams,
   fallback: AnalysisQuery,
-): AnalysisQuery => ({
-  view: parseEnum(viewSchema, params.get(QUERY_PARAM.VIEW), fallback.view),
-  time: parseTime(params, fallback.time),
-  align: parseEnum(alignSchema, params.get(QUERY_PARAM.ALIGN), fallback.align),
-  regions: parseList(params.get(QUERY_PARAM.REGIONS), fallback.regions),
-  unions: parseList(params.get(QUERY_PARAM.UNIONS), fallback.unions),
-  grades: parseGrades(params.get(QUERY_PARAM.GRADES), fallback.grades),
-  metric: parseEnum(metricSchema, params.get(QUERY_PARAM.METRIC), fallback.metric),
-  groupBy: parseEnum(groupBySchema, params.get(QUERY_PARAM.GROUP_BY), fallback.groupBy),
-  granularity: parseEnum(
-    granularitySchema,
-    params.get(QUERY_PARAM.GRANULARITY),
-    fallback.granularity,
-  ),
-  compare: parseEnum(compareSchema, params.get(QUERY_PARAM.COMPARE), fallback.compare),
-  commonUnitsOnly:
-    params.has(QUERY_PARAM.COMMON_UNITS)
-      ? params.get(QUERY_PARAM.COMMON_UNITS) === "1"
-      : fallback.commonUnitsOnly,
-});
+): AnalysisQuery => {
+  const base = selectBase(params, fallback);
+  return {
+    view: parseEnum(viewSchema, params.get(QUERY_PARAM.VIEW), base.view),
+    /** 연도 목록은 데이터에 따라 달라져 정적 기본값을 둘 수 없다 — 항상 폴백 시간 */
+    time: parseTime(params, fallback.time),
+    align: parseEnum(alignSchema, params.get(QUERY_PARAM.ALIGN), base.align),
+    regions: parseList(params.get(QUERY_PARAM.REGIONS), base.regions),
+    unions: parseList(params.get(QUERY_PARAM.UNIONS), base.unions),
+    grades: parseGrades(params.get(QUERY_PARAM.GRADES), base.grades),
+    metric: parseEnum(metricSchema, params.get(QUERY_PARAM.METRIC), base.metric),
+    groupBy: parseEnum(groupBySchema, params.get(QUERY_PARAM.GROUP_BY), base.groupBy),
+    granularity: parseEnum(
+      granularitySchema,
+      params.get(QUERY_PARAM.GRANULARITY),
+      base.granularity,
+    ),
+    compare: parseEnum(compareSchema, params.get(QUERY_PARAM.COMPARE), base.compare),
+    commonUnitsOnly:
+      params.has(QUERY_PARAM.COMMON_UNITS)
+        ? params.get(QUERY_PARAM.COMMON_UNITS) === "1"
+        : base.commonUnitsOnly,
+  };
+};
 
 /**
  * 분석 쿼리를 URL 파라미터로 변환한다.
- * 링크만으로 화면이 재현되도록 모든 키를 명시한다.
+ * 기본값과 같은 키는 생략해 공유 링크를 짧게 유지한다. (view·기간은 항상 명시)
  */
 export const serializeAnalysisQuery = (query: AnalysisQuery): URLSearchParams => {
   const params = new URLSearchParams();
@@ -177,17 +212,24 @@ export const serializeAnalysisQuery = (query: AnalysisQuery): URLSearchParams =>
     params.set(QUERY_PARAM.YEARS, query.time.years.join(LIST_SEPARATOR));
   }
 
-  params.set(QUERY_PARAM.ALIGN, query.align);
-  params.set(QUERY_PARAM.REGIONS, query.regions.join(LIST_SEPARATOR));
-  params.set(QUERY_PARAM.UNIONS, query.unions.join(LIST_SEPARATOR));
-  params.set(
-    QUERY_PARAM.GRADES,
-    query.grades.length === 0 ? ALL_GRADES_TOKEN : query.grades.join(LIST_SEPARATOR),
-  );
-  params.set(QUERY_PARAM.METRIC, query.metric);
-  params.set(QUERY_PARAM.GROUP_BY, query.groupBy);
-  params.set(QUERY_PARAM.GRANULARITY, query.granularity);
-  params.set(QUERY_PARAM.COMPARE, query.compare);
-  params.set(QUERY_PARAM.COMMON_UNITS, query.commonUnitsOnly ? "1" : "0");
+  if (query.align !== STATIC_QUERY_DEFAULTS.align) params.set(QUERY_PARAM.ALIGN, query.align);
+  if (!isSameList(query.regions, STATIC_QUERY_DEFAULTS.regions)) {
+    params.set(QUERY_PARAM.REGIONS, query.regions.join(LIST_SEPARATOR));
+  }
+  if (!isSameList(query.unions, STATIC_QUERY_DEFAULTS.unions)) {
+    params.set(QUERY_PARAM.UNIONS, query.unions.join(LIST_SEPARATOR));
+  }
+  if (!isSameList(query.grades, STATIC_QUERY_DEFAULTS.grades)) {
+    params.set(QUERY_PARAM.GRADES, query.grades.join(LIST_SEPARATOR));
+  }
+  if (query.metric !== STATIC_QUERY_DEFAULTS.metric) params.set(QUERY_PARAM.METRIC, query.metric);
+  if (query.groupBy !== STATIC_QUERY_DEFAULTS.groupBy) params.set(QUERY_PARAM.GROUP_BY, query.groupBy);
+  if (query.granularity !== STATIC_QUERY_DEFAULTS.granularity) {
+    params.set(QUERY_PARAM.GRANULARITY, query.granularity);
+  }
+  if (query.compare !== STATIC_QUERY_DEFAULTS.compare) params.set(QUERY_PARAM.COMPARE, query.compare);
+  if (query.commonUnitsOnly !== STATIC_QUERY_DEFAULTS.commonUnitsOnly) {
+    params.set(QUERY_PARAM.COMMON_UNITS, query.commonUnitsOnly ? "1" : "0");
+  }
   return params;
 };

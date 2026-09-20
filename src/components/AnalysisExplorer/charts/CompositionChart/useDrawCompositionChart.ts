@@ -2,19 +2,22 @@ import { useEffect, useRef } from "react";
 import * as d3 from "d3";
 import type { Theme } from "@mui/material/styles";
 import { useContainerWidth } from "../../../../utils/d3/useContainerSize";
-import { isMobileWidth } from "../../../../utils/d3/chartMargins";
-import { COMPOSITION_CHART, RANK_CHART } from "../../../../const/AnalysisCharts";
+import { isMobileWidth, scaleFont, scaleMargin } from "../../../../utils/d3/chartMargins";
+import { COMPOSITION_CHART, ONGOING_SEASON_LABEL, RANK_CHART } from "../../../../const/AnalysisCharts";
 import { GradeKeyToKorean } from "../../../../const/Common";
 import { hideTooltip, placeTooltip } from "../chartTooltip";
 import { renderTooltipHtml } from "../lineTooltip";
 import { formatAxisValue, formatQuantity, formatShare } from "../../../../utils/analysisQuery/format";
 import type { CompositionColumn } from "../../../../utils/analysisQuery/compositionModel";
 import type { AnalysisAxis, AnalysisGranularity } from "../../../../utils/analysisQuery/types";
+import { useSettingsStore } from "../../../../stores/useSettingsStore";
 
 type UseDrawCompositionChartParams = {
   columns: CompositionColumn[];
   axis: AnalysisAxis;
   granularity: AnalysisGranularity;
+  /** 아직 끝나지 않은 시즌 연도 (없으면 null) */
+  ongoingYear: number | null;
   theme: Theme;
 };
 
@@ -22,15 +25,24 @@ type UseDrawCompositionChartParams = {
 const columnLabel = (column: CompositionColumn, axis: AnalysisAxis, granularity: AnalysisGranularity) =>
   axis === "year" ? String(column.year) : formatAxisValue(axis, column.x, granularity);
 
+/** 시즌 단위 막대에서만 진행 중 시즌을 따로 표시한다 — 주·일 막대는 그 자체로 확정값이다 */
+const isOngoingColumn = (column: CompositionColumn, axis: AnalysisAxis, ongoingYear: number | null) =>
+  axis === "year" && column.year === ongoingYear;
+
 /**
  * 등급 구성 100% 누적 막대.
  * 조각 사이에 표면색 간격을 둬 인접 등급 색이 맞닿아 뭉개지지 않게 한다.
  */
-const useDrawCompositionChart = ({ columns, axis, granularity, theme }: UseDrawCompositionChartParams) => {
+const useDrawCompositionChart = ({ columns, axis, granularity, ongoingYear, theme }: UseDrawCompositionChartParams) => {
+  /** 큰글씨 모드를 켜고 끄면 글자 크기가 달라져 다시 그려야 한다 */
+  const displayMode = useSettingsStore((state) => state.displayMode);
   const { containerRef, width } = useContainerWidth();
   const svgRef = useRef<SVGSVGElement | null>(null);
   const tooltipRef = useRef<HTMLDivElement | null>(null);
-  const height = isMobileWidth(width) ? COMPOSITION_CHART.HEIGHT.MOBILE : COMPOSITION_CHART.HEIGHT.DESKTOP;
+  const hasOngoing = columns.some((column) => isOngoingColumn(column, axis, ongoingYear));
+  const extraBottom = hasOngoing ? COMPOSITION_CHART.ONGOING_LABEL_LINE_HEIGHT : 0;
+  const height =
+    (isMobileWidth(width) ? COMPOSITION_CHART.HEIGHT.MOBILE : COMPOSITION_CHART.HEIGHT.DESKTOP) + extraBottom;
 
   useEffect(
     function drawCompositionChart() {
@@ -38,7 +50,8 @@ const useDrawCompositionChart = ({ columns, axis, granularity, theme }: UseDrawC
       const tooltipEl = tooltipRef.current;
       if (!svgEl || !tooltipEl || width === 0 || columns.length === 0) return;
 
-      const margin = COMPOSITION_CHART.MARGIN;
+      const isOngoing = (column: CompositionColumn) => isOngoingColumn(column, axis, ongoingYear);
+      const margin = scaleMargin({ ...COMPOSITION_CHART.MARGIN, bottom: COMPOSITION_CHART.MARGIN.bottom + extraBottom });
       const innerWidth = width - margin.left - margin.right;
       const innerHeight = height - margin.top - margin.bottom;
 
@@ -61,22 +74,32 @@ const useDrawCompositionChart = ({ columns, axis, granularity, theme }: UseDrawC
         .attr("y", (tick) => y(tick))
         .attr("dy", "0.32em")
         .attr("text-anchor", "end")
-        .attr("font-size", COMPOSITION_CHART.FONT_SIZE)
+        .attr("font-size", scaleFont(COMPOSITION_CHART.FONT_SIZE))
         .attr("fill", theme.palette.text.secondary)
         .text((tick) => `${tick * RANK_CHART.PERCENT}%`);
 
       const labelEvery = Math.ceil((COMPOSITION_CHART.MIN_LABEL_WIDTH * 1.2) / x.step());
-      g.append("g")
+      const xLabels = g
+        .append("g")
         .selectAll("text")
         .data(columns.filter((_, index) => index % labelEvery === 0))
         .join("text")
         .attr("x", (column) => (x(column.key) ?? 0) + x.bandwidth() / 2)
-        .attr("y", innerHeight + 20)
+        .attr("y", innerHeight + COMPOSITION_CHART.X_LABEL_OFFSET)
         .attr("text-anchor", "middle")
-        .attr("font-size", COMPOSITION_CHART.FONT_SIZE)
+        .attr("font-size", scaleFont(COMPOSITION_CHART.FONT_SIZE))
         .attr("fill", theme.palette.text.secondary)
         .style("font-variant-numeric", "tabular-nums")
         .text((column) => columnLabel(column, axis, granularity));
+
+      xLabels
+        .filter(isOngoing)
+        .append("tspan")
+        .attr("x", (column) => (x(column.key) ?? 0) + x.bandwidth() / 2)
+        .attr("dy", COMPOSITION_CHART.ONGOING_LABEL_LINE_HEIGHT)
+        .attr("font-size", scaleFont(COMPOSITION_CHART.FONT_SIZE - 1))
+        .attr("fill", theme.palette.primary.main)
+        .text(ONGOING_SEASON_LABEL);
 
       const bars = g
         .append("g")
@@ -95,7 +118,9 @@ const useDrawCompositionChart = ({ columns, axis, granularity, theme }: UseDrawC
         .attr("x", 0)
         .attr("width", x.bandwidth())
         .attr("y", (segment) => y(segment.offset + segment.share) + COMPOSITION_CHART.SEGMENT_GAP / 2)
-        .attr("height", (segment) => Math.max(0, y(segment.offset) - y(segment.offset + segment.share) - COMPOSITION_CHART.SEGMENT_GAP))
+        .attr("height", (segment) =>
+          Math.max(0, y(segment.offset) - y(segment.offset + segment.share) - COMPOSITION_CHART.SEGMENT_GAP),
+        )
         .attr("rx", COMPOSITION_CHART.BAR_RADIUS)
         .attr("fill", (segment) => theme.palette.chart[segment.grade]);
 
@@ -110,7 +135,7 @@ const useDrawCompositionChart = ({ columns, axis, granularity, theme }: UseDrawC
         .attr("y", (segment) => y(segment.offset + segment.share / 2))
         .attr("dy", "0.32em")
         .attr("text-anchor", "middle")
-        .attr("font-size", COMPOSITION_CHART.FONT_SIZE - 1)
+        .attr("font-size", scaleFont(COMPOSITION_CHART.FONT_SIZE - 1))
         .attr("font-weight", 700)
         .attr("fill", theme.palette.surface.base)
         .attr("pointer-events", "none")
@@ -125,7 +150,7 @@ const useDrawCompositionChart = ({ columns, axis, granularity, theme }: UseDrawC
         .on("pointerenter", function showColumn(event: PointerEvent, column) {
           const total = formatQuantity(column.total);
           tooltipEl.innerHTML = renderTooltipHtml({
-            title: `${columnLabel(column, axis, granularity)} · 총 ${total.value}${total.unit}`,
+            title: `${columnLabel(column, axis, granularity)}${isOngoing(column) ? ` (${ONGOING_SEASON_LABEL})` : ""} · 총 ${total.value}${total.unit}`,
             rows: [...column.segments].reverse().map((segment) => {
               const share = formatShare(segment.share);
               const quantity = formatQuantity(segment.quantity);
@@ -145,7 +170,7 @@ const useDrawCompositionChart = ({ columns, axis, granularity, theme }: UseDrawC
         })
         .on("pointerleave", () => hideTooltip(tooltipEl));
     },
-    [columns, axis, granularity, theme, width, height, containerRef],
+    [columns, axis, granularity, ongoingYear, extraBottom, theme, width, height, containerRef, displayMode],
   );
 
   return { containerRef, svgRef, tooltipRef, height };

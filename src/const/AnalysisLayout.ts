@@ -86,7 +86,9 @@ export const LINE_CHART = {
   /** 직접 라벨을 붙이는 최대 시리즈 수 */
   DIRECT_LABEL_MAX_SERIES: 6,
   /** 직접 라벨 사이 최소 세로 간격 (px) */
-  DIRECT_LABEL_MIN_GAP: 13,
+  DIRECT_LABEL_MIN_GAP: 15,
+  /** 직접 라벨 뒤 표면색 후광 두께 (px) — 선 위에 겹쳐도 읽히게 */
+  LABEL_HALO_WIDTH: 3,
   /** 가격처럼 0 기준이 아닌 축의 위아래 여유 비율 */
   Y_PADDING_RATIO: 0.08,
   /** 월 눈금을 그리는 시즌 구간 최소 폭 (px) */
@@ -122,8 +124,11 @@ export const HEATMAP = {
   /** 가로 스크롤 전환 기준 셀 최소 폭 (px) */
   MIN_CELL_WIDTH: 5,
   MARGIN: { top: 24, right: 12, bottom: 8, left: 64 },
-  /** 색 램프 시작점 — 표면색과 강조색 사이 위치 */
-  RAMP_START: 0.1,
+  /**
+   * 색 램프 시작점 — 표면색과 강조색 사이 위치.
+   * 다크 표면은 어두운 초록과 거의 구분되지 않아 더 앞에서 시작한다.
+   */
+  RAMP_START: { LIGHT: 0.1, DARK: 0.3 },
   /** 범례 그라데이션 폭·높이 (px) */
   LEGEND_WIDTH: 160,
   LEGEND_HEIGHT: 8,
@@ -133,8 +138,9 @@ export const HEATMAP = {
 export const RELATION_CHART = {
   HEIGHT: { MOBILE: 300, DESKTOP: 420 },
   MARGIN: {
-    MOBILE: { top: 16, right: 16, bottom: 48, left: 58 },
-    DESKTOP: { top: 20, right: 24, bottom: 52, left: 72 },
+    /** top은 가로로 놓은 y축 제목 자리까지 포함한다 */
+    MOBILE: { top: 28, right: 16, bottom: 48, left: 58 },
+    DESKTOP: { top: 32, right: 24, bottom: 52, left: 72 },
   },
   MIN_POINTS: 10,
   /** 10의 거듭제곱 눈금만으로 충분하다고 보는 최소 개수 */
@@ -148,6 +154,8 @@ export const RELATION_CHART = {
   AXIS_TICK_COUNT: 5,
   AXIS_FONT_SIZE: 11,
   AXIS_TITLE_OFFSET: 38,
+  /** 플롯 위에 놓는 y축 제목 기준선 (px, 플롯 위 끝 기준) */
+  Y_TITLE_OFFSET: 12,
   TOOLTIP_Y_OFFSET: 12,
   EMPTY_DOMAIN_MIN: 1,
   EMPTY_DOMAIN_MAX: 10,

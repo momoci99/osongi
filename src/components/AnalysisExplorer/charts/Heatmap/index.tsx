@@ -21,7 +21,10 @@ const Heatmap = ({ query, result, onSelectSeason }: HeatmapProps) => {
   const theme = useTheme();
   const model = buildHeatmapModel(result, query);
   const accent = query.metric === "unitPrice" ? theme.palette.chart.price.main : theme.palette.primary.main;
-  const rampStart = d3.interpolateRgb(theme.palette.surface.raised, accent)(HEATMAP.RAMP_START);
+  const rampStart = d3.interpolateRgb(
+    theme.palette.surface.raised,
+    accent,
+  )(theme.palette.mode === "dark" ? HEATMAP.RAMP_START.DARK : HEATMAP.RAMP_START.LIGHT);
   const interpolate = d3.interpolateRgb(rampStart, accent);
   const colorScale =
     query.metric === "unitPrice"
@@ -55,7 +58,7 @@ const Heatmap = ({ query, result, onSelectSeason }: HeatmapProps) => {
       >
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
           <Typography sx={{ fontSize: "0.75rem", color: "text.secondary", fontVariantNumeric: "tabular-nums" }}>
-            {formatAxisTick(query.metric, model.valueDomain[0])}
+            {formatAxisTick(query.metric, model.valueDomain[0], model.valueDomain[1])}
           </Typography>
           <Box
             sx={{
