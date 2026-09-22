@@ -84,3 +84,32 @@ export const auctionQuantitySeries = (union: string, year: number): Series => {
     return quantity > 0 ? quantity : null;
   });
 };
+
+type GradeRecord = AuctionRecord & { grade1Quantity: number; grade2Quantity: number };
+
+let upperGradeIndex: Map<string, { upper: number; total: number }> | null = null;
+
+/** 조합·날짜 → 상위 등급(1·2등급) 수량과 총 수량 */
+const loadUpperGradeIndex = () => {
+  if (upperGradeIndex) return upperGradeIndex;
+  const { data } = JSON.parse(readFileSync(AUCTION_DATASET, "utf-8")) as { data: GradeRecord[] };
+  upperGradeIndex = new Map();
+  for (const record of data) {
+    const key = `${record.union}|${record.date}`;
+    const prev = upperGradeIndex.get(key) ?? { upper: 0, total: 0 };
+    upperGradeIndex.set(key, {
+      upper: prev.upper + record.grade1Quantity + record.grade2Quantity,
+      total: prev.total + record.auctionQuantityToday,
+    });
+  }
+  return upperGradeIndex;
+};
+
+/** 날짜축에 맞춘 상위 등급 비율. 일 공판량이 minQuantityKg 미만이면 결측 */
+export const upperGradeShareSeries = (union: string, year: number, minQuantityKg: number): Series => {
+  const index = loadUpperGradeIndex();
+  return windowDates(year).map((date) => {
+    const day = index.get(`${union}|${date}`);
+    return day && day.total >= minQuantityKg ? day.upper / day.total : null;
+  });
+};
