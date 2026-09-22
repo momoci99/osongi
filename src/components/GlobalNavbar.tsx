@@ -86,7 +86,7 @@ const GlobalNavbar = () => {
           <Typography
             variant="h6"
             component="div"
-            sx={{ fontWeight: 700, cursor: "pointer", mr: 1.5 }}
+            sx={{ fontWeight: 700, cursor: "pointer", mr: 1.5, whiteSpace: "nowrap" }}
             onClick={() => navigate("/")}
           >
             <Box component="span" sx={{ color: theme.palette.primary.main }}>

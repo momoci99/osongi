@@ -69,3 +69,13 @@ export const REGION_UNION_MAP: Record<
   ],
   경남: ["거창"],
 };
+
+/** 대시보드 지역 등급표 */
+export const REGION_BREAKDOWN_TABLE = {
+  /** 수량 표시 소수 자릿수 (kg) */
+  QUANTITY_FRACTION_DIGITS: 2,
+  /** 전일 대비 배지 배경 투명도 */
+  CHANGE_BADGE_BG_ALPHA: 0.14,
+  /** 전일 대비 배지 최소 폭 (px). 행마다 폭이 달라 들쭉날쭉해지는 것을 막는다 */
+  CHANGE_BADGE_MIN_WIDTH: 64,
+} as const;

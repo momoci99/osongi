@@ -3,12 +3,14 @@ import { Card, CardContent, Typography, Box, useTheme } from "@mui/material";
 type DashboardKpiCardProps = {
   title: string;
   content: string;
+  /** 값 뒤에 작게 붙는 단위·보조 표기 (예: "kg", "생장정지품") */
+  suffix?: string;
   caption?: string;
   icon?: React.ReactNode;
 };
 
 const DashboardKpiCard = (props: DashboardKpiCardProps) => {
-  const { title, content, caption, icon } = props;
+  const { title, content, suffix, caption, icon } = props;
   const theme = useTheme();
 
   return (
@@ -29,7 +31,12 @@ const DashboardKpiCard = (props: DashboardKpiCardProps) => {
         },
       }}
     >
-      <CardContent sx={{ p: 2.5, "&:last-child": { pb: 2.5 } }}>
+      <CardContent
+        sx={{
+          p: { xs: 1.75, sm: 2.5 },
+          "&:last-child": { pb: { xs: 1.75, sm: 2.5 } },
+        }}
+      >
         <Box
           sx={{
             display: "flex",
@@ -59,11 +66,29 @@ const DashboardKpiCard = (props: DashboardKpiCardProps) => {
           className="kpi-value"
           sx={{
             fontWeight: 700,
-            fontSize: "1.75rem",
+            fontSize: { xs: "1.25rem", sm: "1.5rem", md: "1.75rem" },
             lineHeight: 1.2,
+            wordBreak: "keep-all",
+            overflowWrap: "anywhere",
+            fontVariantNumeric: "tabular-nums",
           }}
         >
           {content}
+          {suffix && (
+            <Typography
+              component="span"
+              sx={{
+                display: "inline-block",
+                ml: 0.5,
+                fontSize: { xs: "0.75rem", sm: "0.8125rem" },
+                fontWeight: 500,
+                color: theme.palette.text.secondary,
+                whiteSpace: "nowrap",
+              }}
+            >
+              {suffix}
+            </Typography>
+          )}
         </Typography>
         {caption && (
           <Typography

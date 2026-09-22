@@ -14,7 +14,7 @@ const DashboardCard = (props: DashboardCardProps) => {
       variant="outlined"
       sx={{
         borderRadius: "0.75rem",
-        p: 2.5,
+        p: { xs: 2, sm: 2.5 },
         width: "100%",
         backgroundImage: "none",
         bgcolor: theme.palette.background.paper,
