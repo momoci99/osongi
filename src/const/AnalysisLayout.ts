@@ -252,3 +252,44 @@ export const WEATHER_CHART = {
   /** 호버 안내선 불투명도 */
   GUIDE_OPACITY: 0.6,
 } as const;
+
+/** 평년 비교 (날씨 뷰 V2) — 월별 점 분포 */
+export const NORMAL_STRIP_CHART = {
+  /** 한 달 줄 높이 (px) */
+  ROW_HEIGHT: 30,
+  /** 지표 제목 높이 (px) */
+  GROUP_TITLE_HEIGHT: 26,
+  /** 지표 묶음 사이 간격 (px) */
+  GROUP_GAP: 14,
+  /** 왼쪽 월 라벨 폭 (px) */
+  MONTH_LABEL_WIDTH: 36,
+  /** 오른쪽 값·순위 글 폭 (px) */
+  RANK_WIDTH: { MOBILE: 118, DESKTOP: 176 },
+  /** 점 좌우 여백 (px) — 끝 점이 잘리지 않게 */
+  DOT_PAD: 8,
+  /** 역대 점 반지름·불투명도 */
+  YEAR_DOT_RADIUS: 4,
+  YEAR_DOT_OPACITY: 0.32,
+  /** 선택 시즌 점 반지름 · 표면색 테 두께 */
+  SELECTED_DOT_RADIUS: 6,
+  SELECTED_RING_WIDTH: 2,
+  /** 중앙값 눈금 높이 (px) */
+  MEDIAN_TICK_HEIGHT: 14,
+} as const;
+
+/** 평년 비교 (날씨 뷰 V2) — 누적 강수 곡선 */
+export const CUMULATIVE_RAIN_CHART = {
+  HEIGHT: { MOBILE: 200, DESKTOP: 240 },
+  MARGIN: {
+    MOBILE: { top: 12, right: 12, bottom: 28, left: 52 },
+    DESKTOP: { top: 12, right: 20, bottom: 30, left: 64 },
+  },
+  /** 역대 범위 띠 불투명도 */
+  BAND_OPACITY: { light: 0.14, dark: 0.2 },
+  LINE_STROKE: 2,
+  /** 중앙값 점선 */
+  MEDIAN_DASH: "4,4",
+  Y_TICK_COUNT: 4,
+  /** 호버 점 반지름 */
+  FOCUS_RADIUS: 4,
+} as const;

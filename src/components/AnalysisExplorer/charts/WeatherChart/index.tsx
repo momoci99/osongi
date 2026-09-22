@@ -3,6 +3,8 @@ import { Box, Skeleton, Typography, useTheme } from "@mui/material";
 import FilterChip from "../../Controls/FilterChip";
 import { chartTooltipSx } from "../chartTooltip";
 import useDrawWeatherChart from "./useDrawWeatherChart";
+import LegendSwatch from "./LegendSwatch";
+import WeatherNormals from "../WeatherNormals";
 import useStationWeather from "../../../../hooks/useStationWeather";
 import {
   EXPLORER_LAYOUT,
@@ -19,48 +21,6 @@ import type { AnalysisResultCore } from "../../../../utils/analysisQuery/types";
 
 type WeatherChartProps = {
   result: AnalysisResultCore;
-};
-
-type LegendSwatchProps = {
-  color: string;
-  label: string;
-  variant: "bar" | "band" | "line";
-  opacity?: number;
-};
-
-/** 범례 항목 — 색 표본은 마크 모양을 따르고 글자는 텍스트 색 */
-const LegendSwatch = ({
-  color,
-  label,
-  variant,
-  opacity = 1,
-}: LegendSwatchProps) => {
-  const theme = useTheme();
-  return (
-    <Box sx={{ display: "inline-flex", alignItems: "center", gap: 0.75 }}>
-      <Box
-        component="span"
-        sx={{
-          width: variant === "bar" ? 8 : 16,
-          height: variant === "line" ? 0 : 10,
-          borderTop: variant === "line" ? `2px solid ${color}` : "none",
-          bgcolor: variant === "line" ? "transparent" : color,
-          /** 범례 표본은 작아 차트 밴드와 같은 불투명도면 거의 안 보인다 — 두 배로 */
-          opacity:
-            variant === "band"
-              ? WEATHER_CHART.TEMPERATURE_BAND_OPACITY[theme.palette.mode] * 2
-              : opacity,
-          borderRadius: "2px",
-        }}
-      />
-      <Typography
-        component="span"
-        sx={{ fontSize: "0.75rem", fontWeight: 500, color: "text.secondary" }}
-      >
-        {label}
-      </Typography>
-    </Box>
-  );
 };
 
 /** 관측소 출처 문구 — 대체 지점은 어느 조합 대신인지 밝힌다 */
@@ -218,6 +178,8 @@ const WeatherChartBody = ({ result, stations }: WeatherChartBodyProps) => {
           </Note>
         ) : null}
       </Box>
+
+      {files && model ? <WeatherNormals files={files} years={model.panels.map((p) => p.year)} /> : null}
     </Box>
   );
 };

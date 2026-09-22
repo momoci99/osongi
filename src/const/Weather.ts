@@ -151,3 +151,13 @@ export const RAIN_LAG_HINT = {
   WINDOW_DAYS: 7,
   LAG_DAYS: 22,
 } as const;
+
+/** 평년 비교 (V2, 기획서 7-1) */
+export const WEATHER_NORMAL = {
+  /** 월별 점 분포에 그리는 달 — 7·8월은 시즌 전, 9·10월은 시즌 */
+  MONTHS: [7, 8, 9, 10],
+  /** 한 해를 평년 계산에 넣는 최소 관측일 비율 */
+  MIN_COVERAGE: 0.9,
+  /** 누적 강수 곡선 끝 (MMDD) */
+  CUMULATIVE_END_MMDD: "1031",
+} as const;
