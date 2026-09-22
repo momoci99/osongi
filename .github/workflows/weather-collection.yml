@@ -1,0 +1,55 @@
+name: 기상 일자료 수집
+
+on:
+  schedule:
+    # ASOS D-1 자료는 KST 11시 이후 공개 → KST 12:30(UTC 03:30) 하루 1회
+    # 공판 수집(매시 정각)과 겹치지 않도록 30분에 실행
+    - cron: "30 3 * 7-11 *" # 7~11월 수집 창
+    - cron: "30 3 1 12 *" # 12/1 — 11/30 자료로 해당 연도 파일 완결
+  workflow_dispatch: # 수동 실행도 가능
+
+jobs:
+  collect-weather:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: 저장소 체크아웃
+        uses: actions/checkout@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Node.js 설정
+        uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          cache: "npm"
+
+      - name: 의존성 설치
+        run: npm ci
+
+      - name: 기상 일자료 수집 (올해만)
+        env:
+          KMA_SERVICE_KEY: ${{ secrets.KMA_SERVICE_KEY }}
+        run: npm run collect-weather -- --from "$(TZ=Asia/Seoul date +%Y)"
+
+      - name: 기상 공개 파일 생성
+        run: npm run generate-weather-stats
+
+      - name: 변경사항 커밋
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add data/weather/raw/ public/weather/
+          if git diff --cached --quiet; then
+            echo "새 기상 자료가 없습니다."
+            exit 0
+          fi
+          git commit -m "🌦️ 기상 일자료 자동 수집 $(TZ=Asia/Seoul date +'%Y-%m-%d %H:%M KST')"
+          # 공판 수집 커밋과 경합하면 재시도
+          for attempt in 1 2 3; do
+            git pull --rebase && git push && exit 0
+            sleep $((attempt * 10))
+          done
+          exit 1
