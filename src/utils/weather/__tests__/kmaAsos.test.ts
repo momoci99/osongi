@@ -10,6 +10,8 @@ import {
   maskServiceKey,
   needsFetch,
   parseDailyResponse,
+  rainfallMm,
+  type KmaDailyRow,
   type KmaRawYearFile,
 } from "../kmaAsos";
 
@@ -156,5 +158,19 @@ describe("needsFetch", () => {
 
   it("완료된 파일은 건너뛴다", () => {
     expect(needsFetch(file(true))).toBe(false);
+  });
+});
+
+describe("rainfallMm", () => {
+  const row = (sumRn: string) => ({ sumRn }) as KmaDailyRow;
+
+  it("빈 값은 무강수 0, 흔적 강수 0.0 도 0", () => {
+    expect(rainfallMm(row(""))).toBe(0);
+    expect(rainfallMm(row("0.0"))).toBe(0);
+    expect(rainfallMm(row("23.4"))).toBe(23.4);
+  });
+
+  it("행이 없으면 결측", () => {
+    expect(rainfallMm(undefined)).toBeNull();
   });
 });

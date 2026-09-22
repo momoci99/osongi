@@ -2,6 +2,8 @@ import { describe, expect, it } from "vitest";
 import {
   anomaly,
   climatology,
+  correlationPValue,
+  laggedWindowSum,
   firstIndexAtOrBelow,
   meanDifference,
   median,
@@ -79,5 +81,37 @@ describe("median", () => {
     expect(median([3, 1, 2])).toBe(2);
     expect(median([4, 1, 3, 2])).toBe(2.5);
     expect(median([])).toBeNull();
+  });
+});
+
+describe("climatology 최소 연도", () => {
+  it("관측 연도가 minYears 미만인 일자는 결측", () => {
+    expect(climatology([[1, 2], [3, null], [5, null]], 3)).toEqual([3, null]);
+  });
+});
+
+describe("laggedWindowSum", () => {
+  it("시차만큼 앞선 창의 합", () => {
+    // i=3, lag=1, window=2 → series[1..2]
+    expect(laggedWindowSum([1, 2, 3, 4], 2, 1)).toEqual([null, null, 3, 5]);
+  });
+
+  it("시차 0 은 당일 포함 후행 합", () => {
+    expect(laggedWindowSum([1, 2, 3], 2, 0)).toEqual([null, 3, 5]);
+  });
+
+  it("창 안 결측이 있으면 결측", () => {
+    expect(laggedWindowSum([1, null, 3, 4], 2, 0)).toEqual([null, null, null, 7]);
+  });
+});
+
+describe("correlationPValue", () => {
+  it("r=0 이면 1, 강한 상관·대표본이면 0 에 가깝다", () => {
+    expect(correlationPValue(0, 100)).toBeCloseTo(1, 5);
+    expect(correlationPValue(0.3, 1000)).toBeLessThan(1e-10);
+  });
+
+  it("알려진 값 근사 (r=0.2, n=100 → 약 0.046)", () => {
+    expect(correlationPValue(0.2, 100)).toBeCloseTo(0.046, 2);
   });
 });

@@ -172,3 +172,14 @@ export const parseDailyResponse = (
 /** 원본 파일을 다시 받아야 하는지 — 없거나 미완료면 true */
 export const needsFetch = (existing: KmaRawYearFile | null): boolean =>
   existing === null || !existing.complete;
+
+/**
+ * 일강수량(mm). 빈 값은 무강수(0) — ASOS 는 강수가 없으면 비워서 준다.
+ * 행 자체가 없는 날만 결측(null).
+ */
+export const rainfallMm = (row: KmaDailyRow | undefined): number | null => {
+  if (!row) return null;
+  if (row.sumRn.trim() === "") return 0;
+  const value = Number(row.sumRn);
+  return Number.isFinite(value) ? value : null;
+};

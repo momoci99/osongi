@@ -8,10 +8,7 @@
   실행: npx tsx scripts/analysis/validate-soil-proxy.ts
   입력: data/weather/raw (npm run collect-weather)
 */
-import { existsSync, readFileSync } from "fs";
-import { join } from "path";
-import { SOIL_TEMP_STATION_IDS, WEATHER_COLLECTION_WINDOW, WEATHER_FIRST_YEAR } from "../../src/const/Weather";
-import type { KmaDailyRow, KmaRawYearFile } from "../../src/utils/weather/kmaAsos";
+import { SOIL_TEMP_STATION_IDS, WEATHER_FIRST_YEAR } from "../../src/const/Weather";
 import {
   anomaly,
   climatology,
@@ -20,14 +17,11 @@ import {
   median,
   movingAverage,
   pearson,
-  toNumberOrNull,
   type Series,
 } from "../../src/utils/weather/seriesStats";
+import { LAST_COMPLETE_YEAR, weatherSeries, windowIndexOf, yearRange } from "./lib/analysisData";
 
-const RAW_ROOT = join(process.cwd(), "data", "weather", "raw");
-/** 진행 중인 시즌은 창이 잘려 있어 제외 */
-const LAST_COMPLETE_YEAR = 2025;
-/** 분석 구간: 08-01 ~ 10-31 (수집 창 07-01 기준 인덱스) */
+/** 분석 구간: 08-01 ~ 10-31 */
 const ANALYSIS_FROM = "0801";
 const ANALYSIS_TO = "1031";
 const TARGET_FIELD = "avgCm5Te";
@@ -38,29 +32,10 @@ const CRITERIA = { rawR: 0.9, anomalyR: 0.7, medianDeltaDays: 3, within7Share: 0
 
 type Field = typeof TARGET_FIELD | (typeof PROXY_FIELDS)[number];
 
-const years = Array.from({ length: LAST_COMPLETE_YEAR - WEATHER_FIRST_YEAR + 1 }, (_, i) => WEATHER_FIRST_YEAR + i);
-
-/** 수집 창 첫날부터의 일수 → 날짜 문자열(YYYY-MM-DD) */
-const windowDates = (year: number): string[] => {
-  const start = new Date(Date.UTC(year, Number(WEATHER_COLLECTION_WINDOW.START_MMDD.slice(0, 2)) - 1, Number(WEATHER_COLLECTION_WINDOW.START_MMDD.slice(2))));
-  const end = new Date(Date.UTC(year, Number(WEATHER_COLLECTION_WINDOW.END_MMDD.slice(0, 2)) - 1, Number(WEATHER_COLLECTION_WINDOW.END_MMDD.slice(2))));
-  const dates: string[] = [];
-  for (let d = start; d <= end; d = new Date(d.getTime() + 86_400_000)) dates.push(d.toISOString().slice(0, 10));
-  return dates;
-};
-
-const indexOfMmdd = (mmdd: string) => windowDates(2001).findIndex((d) => d.slice(5).replace("-", "") === mmdd);
-const FROM_INDEX = indexOfMmdd(ANALYSIS_FROM);
-const TO_INDEX = indexOfMmdd(ANALYSIS_TO);
-
-/** 날짜 축에 맞춘 필드 시계열 (행이 빠진 날도 결측으로 자리 유지) */
-const loadSeries = (stationId: number, year: number, field: Field): Series => {
-  const path = join(RAW_ROOT, String(stationId), `${year}.json`);
-  if (!existsSync(path)) return windowDates(year).map(() => null);
-  const file = JSON.parse(readFileSync(path, "utf-8")) as KmaRawYearFile;
-  const byDate = new Map<string, KmaDailyRow>(file.rows.map((row) => [row.tm, row]));
-  return windowDates(year).map((date) => toNumberOrNull(byDate.get(date)?.[field]));
-};
+const years = yearRange(WEATHER_FIRST_YEAR, LAST_COMPLETE_YEAR);
+const FROM_INDEX = windowIndexOf(ANALYSIS_FROM);
+const TO_INDEX = windowIndexOf(ANALYSIS_TO);
+const loadSeries = (stationId: number, year: number, field: Field): Series => weatherSeries(stationId, year, field);
 
 const inWindow = (series: Series): Series => series.map((v, i) => (i >= FROM_INDEX && i <= TO_INDEX ? v : null));
 
