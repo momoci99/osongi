@@ -37,3 +37,11 @@ storybook-static
 
 # Playwright
 /playwright/.auth/
+
+# 환경 변수 (API 키 등)
+.env
+.env.*
+!.env.example
+
+# 외부 API 활용가이드 원본 (로컬 참고용)
+*.docx
