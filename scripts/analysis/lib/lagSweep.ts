@@ -19,9 +19,18 @@ export const MAX_LAG = 30;
 export type LagCombo = { window: number; lag: number };
 export type Correlation = { r: number; n: number; p: number };
 
-export const ALL_LAG_COMBOS: LagCombo[] = LAG_WINDOWS.flatMap((window) =>
-  Array.from({ length: MAX_LAG + 1 }, (_, lag) => ({ window, lag })),
-);
+/** 창 × 시차 0~maxLag 조합 */
+export const lagCombos = (maxLag: number = MAX_LAG): LagCombo[] =>
+  LAG_WINDOWS.flatMap((window) => Array.from({ length: maxLag + 1 }, (_, lag) => ({ window, lag })));
+
+export const ALL_LAG_COMBOS: LagCombo[] = lagCombos();
+
+/** 상관 계산 옵션 */
+export type LagOptions = {
+  unions?: string[];
+  /** 이 인덱스(수집 창 기준) 이전 날은 평가하지 않는다 — 시차별 표본을 고정할 때 */
+  fromIndex?: number;
+};
 
 /** 지점 일별 시계열과 창 요약 방식 */
 export type LagFeature = {
@@ -44,14 +53,20 @@ const windowed = ({ source, aggregate }: LagFeature, stationId: number, year: nu
 
 type Pooled = { xs: Series; ys: Series; zs: Series };
 
+/** 편상관 통제 변수 — 지점 시차 변수 또는 같은 날 조합 변수 */
+export type LagControl = { feature: LagFeature; combo: LagCombo } | { target: LagTarget };
+
+const maskBefore = (series: Series, fromIndex: number): Series =>
+  fromIndex > 0 ? series.map((v, i) => (i < fromIndex ? null : v)) : series;
+
 const pool = (
   feature: LagFeature,
   target: LagTarget,
   trainYears: number[],
   years: number[],
   combo: LagCombo,
-  unions: string[],
-  control?: { feature: LagFeature; combo: LagCombo },
+  { unions = Object.keys(UNION_WEATHER_STATION), fromIndex = 0 }: LagOptions,
+  control?: LagControl,
 ): Pooled => {
   const xs: Series = [];
   const ys: Series = [];
@@ -60,13 +75,20 @@ const pool = (
     const { stationId } = UNION_WEATHER_STATION[union];
     const targetNormal = climatology(trainYears.map((y) => target.series(union, y)), target.minYears);
     const featureNormal = climatology(trainYears.map((y) => windowed(feature, stationId, y, combo)));
+    const controlSeries = (y: number): Series | null => {
+      if (!control) return null;
+      return "target" in control
+        ? control.target.series(union, y)
+        : windowed(control.feature, stationId, y, control.combo);
+    };
     const controlNormal = control
-      ? climatology(trainYears.map((y) => windowed(control.feature, stationId, y, control.combo)))
+      ? climatology(trainYears.map((y) => controlSeries(y) ?? []), "target" in control ? control.target.minYears : 1)
       : null;
     for (const y of years) {
       xs.push(...anomaly(windowed(feature, stationId, y, combo), featureNormal));
-      ys.push(...anomaly(target.series(union, y), targetNormal));
-      if (control && controlNormal) zs.push(...anomaly(windowed(control.feature, stationId, y, control.combo), controlNormal));
+      ys.push(...maskBefore(anomaly(target.series(union, y), targetNormal), fromIndex));
+      const z = controlSeries(y);
+      if (z && controlNormal) zs.push(...anomaly(z, controlNormal));
     }
   }
   return { xs, ys, zs };
@@ -83,9 +105,9 @@ export const lagCorrelation = (
   trainYears: number[],
   years: number[],
   combo: LagCombo,
-  unions: string[] = Object.keys(UNION_WEATHER_STATION),
+  options: LagOptions = {},
 ): Correlation | null => {
-  const { xs, ys } = pool(feature, target, trainYears, years, combo, unions);
+  const { xs, ys } = pool(feature, target, trainYears, years, combo, options);
   const result = pearson(xs, ys);
   return result ? { ...result, p: correlationPValue(result.r, result.n) } : null;
 };
@@ -97,9 +119,10 @@ export const lagPartialCorrelation = (
   trainYears: number[],
   years: number[],
   combo: LagCombo,
-  control: { feature: LagFeature; combo: LagCombo },
+  control: LagControl,
+  options: LagOptions = {},
 ): { r: number; n: number } | null => {
-  const { xs, ys, zs } = pool(feature, target, trainYears, years, combo, Object.keys(UNION_WEATHER_STATION), control);
+  const { xs, ys, zs } = pool(feature, target, trainYears, years, combo, options, control);
   return partialCorrelation(xs, ys, zs);
 };
 
@@ -109,7 +132,9 @@ export const sweepLagCombos = (
   target: LagTarget,
   trainYears: number[],
   rankBy: (r: number) => number = (r) => r,
+  combos: LagCombo[] = ALL_LAG_COMBOS,
+  options: LagOptions = {},
 ) =>
-  ALL_LAG_COMBOS.map((combo) => ({ ...combo, train: lagCorrelation(feature, target, trainYears, trainYears, combo) })).sort(
+  combos.map((combo) => ({ ...combo, train: lagCorrelation(feature, target, trainYears, trainYears, combo, options) })).sort(
     (a, b) => rankBy(b.train?.r ?? -Infinity) - rankBy(a.train?.r ?? -Infinity),
   );

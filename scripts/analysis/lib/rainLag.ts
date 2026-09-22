@@ -27,7 +27,7 @@ export const LOG_QUANTITY_TARGET: LagTarget = {
 };
 
 export const rainLagCorrelation = (trainYears: number[], years: number[], combo: LagCombo, unions?: string[]) =>
-  lagCorrelation(RAIN_FEATURE, LOG_QUANTITY_TARGET, trainYears, years, combo, unions);
+  lagCorrelation(RAIN_FEATURE, LOG_QUANTITY_TARGET, trainYears, years, combo, { unions });
 
 /** 학습 연도에서 r 이 가장 큰 (창, 시차) */
 export const bestRainLagCombo = (trainYears: number[]) => sweepLagCombos(RAIN_FEATURE, LOG_QUANTITY_TARGET, trainYears);
