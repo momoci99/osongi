@@ -142,3 +142,24 @@ export const median = (values: number[]): number | null => {
   const mid = Math.floor(sorted.length / 2);
   return sorted.length % 2 === 0 ? (sorted[mid - 1] + sorted[mid]) / 2 : sorted[mid];
 };
+
+/**
+ * 편상관 r(x, y | z): z 의 영향을 뺀 x·y 상관.
+ * 세 값이 모두 관측된 지점만 쓴다.
+ */
+export const partialCorrelation = (
+  xs: Series,
+  ys: Series,
+  zs: Series,
+): { r: number; n: number } | null => {
+  const keep = xs.map((x, i) => x !== null && ys[i] !== null && ys[i] !== undefined && zs[i] !== null && zs[i] !== undefined);
+  const pick = (s: Series) => s.filter((_, i) => keep[i]);
+  const [x, y, z] = [pick(xs), pick(ys), pick(zs)];
+  const rxy = pearson(x, y);
+  const rxz = pearson(x, z);
+  const ryz = pearson(y, z);
+  if (!rxy || !rxz || !ryz) return null;
+  const denominator = Math.sqrt((1 - rxz.r ** 2) * (1 - ryz.r ** 2));
+  if (denominator === 0) return null;
+  return { r: (rxy.r - rxz.r * ryz.r) / denominator, n: rxy.n };
+};

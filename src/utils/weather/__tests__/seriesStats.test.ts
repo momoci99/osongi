@@ -8,6 +8,7 @@ import {
   meanDifference,
   median,
   movingAverage,
+  partialCorrelation,
   pearson,
   toNumberOrNull,
 } from "../seriesStats";
@@ -113,5 +114,28 @@ describe("correlationPValue", () => {
 
   it("알려진 값 근사 (r=0.2, n=100 → 약 0.046)", () => {
     expect(correlationPValue(0.2, 100)).toBeCloseTo(0.046, 2);
+  });
+});
+
+describe("partialCorrelation", () => {
+  it("x·y 가 모두 z 의 그림자면 편상관은 0 에 가깝다", () => {
+    const z = [1, 2, 3, 4, 5, 6, 7, 8];
+    const noiseX = [0.1, -0.1, 0.2, -0.2, 0.1, -0.1, 0.2, -0.2];
+    const noiseY = [0.2, 0.1, -0.2, -0.1, -0.2, 0.2, 0.1, -0.1];
+    const x = z.map((v, i) => v + noiseX[i]);
+    const y = z.map((v, i) => v * 2 + noiseY[i]);
+    expect(pearson(x, y)!.r).toBeGreaterThan(0.99);
+    expect(Math.abs(partialCorrelation(x, y, z)!.r)).toBeLessThan(0.5);
+  });
+
+  it("z 와 무관한 상관은 유지된다", () => {
+    const x = [1, 2, 3, 4, 5, 6];
+    const y = [2, 4, 6, 8, 10, 12.5];
+    const z = [3, 1, 3, 1, 3, 1];
+    expect(partialCorrelation(x, y, z)!.r).toBeGreaterThan(0.99);
+  });
+
+  it("결측이 있는 지점은 제외", () => {
+    expect(partialCorrelation([1, 2, 3, null], [1, 2, 3, 4], [3, 1, 2, 5])!.n).toBe(3);
   });
 });
