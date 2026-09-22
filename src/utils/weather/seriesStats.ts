@@ -163,3 +163,33 @@ export const partialCorrelation = (
   if (denominator === 0) return null;
   return { r: (rxy.r - rxz.r * ryz.r) / denominator, n: rxy.n };
 };
+
+/** 선형 보간 분위수 (q: 0~1). 빈 배열이면 null */
+export const quantile = (values: number[], q: number): number | null => {
+  if (values.length === 0) return null;
+  const sorted = [...values].sort((a, b) => a - b);
+  const position = (sorted.length - 1) * q;
+  const lower = Math.floor(position);
+  const upper = Math.ceil(position);
+  return sorted[lower] + (sorted[upper] - sorted[lower]) * (position - lower);
+};
+
+/**
+ * 두 집단 평균 차이 Welch 검정 (a − b).
+ * p 는 정규 근사 — 집단당 수십 이상일 때 용도.
+ */
+export const welchTest = (
+  a: number[],
+  b: number[],
+): { diff: number; p: number; nA: number; nB: number } | null => {
+  if (a.length < 2 || b.length < 2) return null;
+  const mean = (xs: number[]) => xs.reduce((s, x) => s + x, 0) / xs.length;
+  const variance = (xs: number[], m: number) => xs.reduce((s, x) => s + (x - m) ** 2, 0) / (xs.length - 1);
+  const meanA = mean(a);
+  const meanB = mean(b);
+  const standardError = Math.sqrt(variance(a, meanA) / a.length + variance(b, meanB) / b.length);
+  const diff = meanA - meanB;
+  if (standardError === 0) return { diff, p: diff === 0 ? 1 : 0, nA: a.length, nB: b.length };
+  const z = diff / standardError;
+  return { diff, p: 2 * normalTailProbability(z), nA: a.length, nB: b.length };
+};

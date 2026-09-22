@@ -10,6 +10,8 @@ import {
   movingAverage,
   partialCorrelation,
   pearson,
+  quantile,
+  welchTest,
   toNumberOrNull,
 } from "../seriesStats";
 
@@ -137,5 +139,29 @@ describe("partialCorrelation", () => {
 
   it("결측이 있는 지점은 제외", () => {
     expect(partialCorrelation([1, 2, 3, null], [1, 2, 3, 4], [3, 1, 2, 5])!.n).toBe(3);
+  });
+});
+
+describe("quantile", () => {
+  it("선형 보간 분위수", () => {
+    expect(quantile([1, 2, 3, 4, 5], 0.5)).toBe(3);
+    expect(quantile([1, 2, 3, 4], 0.5)).toBe(2.5);
+    expect(quantile([10, 0], 0.9)).toBe(9);
+    expect(quantile([], 0.5)).toBeNull();
+  });
+});
+
+describe("welchTest", () => {
+  it("같은 분포면 p 가 크고, 평균이 크게 다르면 p 가 작다", () => {
+    const base = [1, 2, 3, 4, 5, 6, 7, 8];
+    expect(welchTest(base, base)!.p).toBeCloseTo(1, 5);
+    const shifted = base.map((x) => x + 20);
+    const result = welchTest(shifted, base)!;
+    expect(result.diff).toBe(20);
+    expect(result.p).toBeLessThan(1e-6);
+  });
+
+  it("표본이 2 미만이면 null", () => {
+    expect(welchTest([1], [1, 2])).toBeNull();
   });
 });
