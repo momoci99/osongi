@@ -11,6 +11,7 @@ import {
   GITHUB_REPO_URL,
   NON_COMMERCIAL_NOTICE,
   UPDATE_CYCLE_NOTICE,
+  WEATHER_DATA_SOURCE,
 } from "../../const/Site";
 
 /**
@@ -53,6 +54,31 @@ const AppFooter = () => {
             </Typography>
             <Typography variant="caption" sx={{ color: "text.secondary" }}>
               {UPDATE_CYCLE_NOTICE}
+            </Typography>
+            <Typography variant="body2" sx={{ color: "text.secondary", pt: 0.5 }}>
+              {"기상: "}
+              <Link
+                href={WEATHER_DATA_SOURCE.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                underline="hover"
+                sx={{ color: "text.primary", fontWeight: 600 }}
+              >
+                {WEATHER_DATA_SOURCE.name}
+              </Link>
+              {" · "}
+              <Link
+                href={WEATHER_DATA_SOURCE.licenseUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                underline="hover"
+                sx={{ color: "text.secondary" }}
+              >
+                {WEATHER_DATA_SOURCE.license}
+              </Link>
+            </Typography>
+            <Typography variant="caption" sx={{ color: "text.secondary" }}>
+              {WEATHER_DATA_SOURCE.notice}
             </Typography>
           </Stack>
 

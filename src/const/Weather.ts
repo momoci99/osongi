@@ -125,3 +125,29 @@ export const WEATHER_ANALYSIS = {
   /** 상관계수를 낼 최소 표본 */
   MIN_CORRELATION_SAMPLES: 3,
 } as const;
+
+/** 클라이언트용 공개 파일에 담는 필드 (public/weather/{stationId}.json) */
+export const WEATHER_PUBLIC_FIELDS = [
+  "avgTa",
+  "minTa",
+  "maxTa",
+  "sumRn",
+  "avgRhm",
+  "avgTs",
+  "avgCm5Te",
+] as const;
+
+/** 공개 파일 경로 */
+export const WEATHER_PUBLIC_PATH = "/weather";
+
+/** 공개 파일 수치 소수 자릿수 */
+export const WEATHER_PUBLIC_DECIMALS = 1;
+
+/**
+ * "약 3주 전 비" 참고 레이어 — H1 탐색 최적 조합 (기획서 9-1).
+ * 날짜 d 에 d−(LAG+WINDOW−1) ~ d−LAG 의 누적 강수를 붙인다. 게이트 미통과라 참고용.
+ */
+export const RAIN_LAG_HINT = {
+  WINDOW_DAYS: 7,
+  LAG_DAYS: 22,
+} as const;

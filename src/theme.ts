@@ -33,6 +33,8 @@ declare module "@mui/material/styles" {
 
 type ChartPalette = {
   weight: { main: string; light: string; dark: string };
+  /** 날씨 뷰 — 기온 밴드·지면온도 선은 한 영역에 겹치므로 서로 구분되게 검증했다 (dataviz validate_palette) */
+  weather: { rain: string; temperature: string; ground: string };
   price: { main: string; light: string; dark: string };
   up: string;
   down: string;
@@ -145,6 +147,9 @@ const chartPalette = (
   price: isLight
     ? { main: "#1450D2", light: "#93B4F5", dark: "#0E3A9B" }
     : { main: "#63A1EE", light: "#A6C7F5", dark: "#3F79C4" },
+  weather: isLight
+    ? { rain: "#0B7FB0", temperature: "#BA7308", ground: "#1450D2" }
+    : { rain: "#1C97C4", temperature: "#C08419", ground: "#6A8FE8" },
   up: tokens.up,
   down: tokens.down,
   grade1: tokens.grade1,

@@ -12,6 +12,7 @@ export type AnalysisView =
   | "rank"
   | "composition"
   | "relation"
+  | "weather"
   | "table";
 
 /** 측정 지표 */

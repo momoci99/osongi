@@ -1,3 +1,4 @@
+import { coerceQueryToView } from "./viewRules";
 import * as z from "zod";
 import { QUERY_YEAR_RANGE } from "../../const/Analysis";
 import { isValidCalendarDate } from "../calendarDate";
@@ -58,6 +59,7 @@ const viewSchema = z.enum([
   "rank",
   "composition",
   "relation",
+  "weather",
   "table",
 ]);
 const alignSchema = z.enum(["calendar", "seasonDay"]);
@@ -147,7 +149,12 @@ export const parseAnalysisQuery = (params: URLSearchParams, fallback: AnalysisQu
   const cached = parseCache.get(cacheKey);
   if (cached) return cached;
 
-  const parsed = parseAnalysisQueryUncached(params, fallback);
+  /**
+   * 파라미터를 따로따로 검증하면 뷰에 맞지 않는 조합(날씨 뷰 + 단가 등)이 나올 수 있다.
+   * 직접 입력하거나 일부만 복사한 링크도 탭 전환과 같은 규칙으로 보정한다.
+   */
+  const unchecked = parseAnalysisQueryUncached(params, fallback);
+  const parsed = coerceQueryToView(unchecked, unchecked.view);
   const query: AnalysisQuery = {
     ...parsed,
     time: intern(parsed.time),

@@ -26,6 +26,7 @@
     "generate-sitemap": "tsx scripts/generate-sitemap.ts",
     "generate-region-stats": "tsx scripts/generate-region-stats.ts",
     "collect-weather": "tsx scripts/collect-weather.ts",
+    "generate-weather-stats": "tsx scripts/generate-weather-stats.ts",
     "prerender": "tsx scripts/prerender-scope-pages.ts"
   },
   "dependencies": {
