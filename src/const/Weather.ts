@@ -115,3 +115,13 @@ export const UNION_WEATHER_STATION: Record<string, WeatherStation> = {
  * 지면온도(avgTs)를 지온 대리 지표로 쓸 수 있는지 검증하는 데 사용한다.
  */
 export const SOIL_TEMP_STATION_IDS = [101, 104, 105, 138, 276] as const;
+
+/** 기상 시계열 분석 공통 설정 */
+export const WEATHER_ANALYSIS = {
+  /** 이동평균 창 (일) */
+  MOVING_AVERAGE_DAYS: 7,
+  /** 이동평균 창 안에 필요한 최소 관측일 — 미만이면 결측 */
+  MOVING_AVERAGE_MIN_COUNT: 5,
+  /** 상관계수를 낼 최소 표본 */
+  MIN_CORRELATION_SAMPLES: 3,
+} as const;
