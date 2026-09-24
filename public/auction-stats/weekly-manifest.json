@@ -1,42 +1,6 @@
 {
-  "generatedAt": "2026-09-23T15:16:06.629Z",
+  "generatedAt": "2026-09-24T05:39:34.055Z",
   "weeklyData": [
-    {
-      "date": "2026-09-17",
-      "gradeKey": "grade1",
-      "quantityKg": 10.39,
-      "unitPriceWon": 1222127.53
-    },
-    {
-      "date": "2026-09-17",
-      "gradeKey": "grade2",
-      "quantityKg": 13.79,
-      "unitPriceWon": 907710.44
-    },
-    {
-      "date": "2026-09-17",
-      "gradeKey": "grade3Stopped",
-      "quantityKg": 43.49,
-      "unitPriceWon": 638353.81
-    },
-    {
-      "date": "2026-09-17",
-      "gradeKey": "grade3Estimated",
-      "quantityKg": 40.94,
-      "unitPriceWon": 587750.05
-    },
-    {
-      "date": "2026-09-17",
-      "gradeKey": "gradeBelow",
-      "quantityKg": 138.95,
-      "unitPriceWon": 344705.37
-    },
-    {
-      "date": "2026-09-17",
-      "gradeKey": "mixedGrade",
-      "quantityKg": 8.61,
-      "unitPriceWon": 223300
-    },
     {
       "date": "2026-09-18",
       "gradeKey": "grade1",
@@ -220,38 +184,38 @@
     {
       "date": "2026-09-23",
       "gradeKey": "grade3Stopped",
-      "quantityKg": 98.37,
-      "unitPriceWon": 504725.55
+      "quantityKg": 107.84,
+      "unitPriceWon": 509184.33
     },
     {
       "date": "2026-09-23",
       "gradeKey": "grade3Estimated",
-      "quantityKg": 208.12,
-      "unitPriceWon": 433154.2
+      "quantityKg": 248.87,
+      "unitPriceWon": 443772.06
     },
     {
       "date": "2026-09-23",
       "gradeKey": "gradeBelow",
-      "quantityKg": 516.95,
-      "unitPriceWon": 310785.14
+      "quantityKg": 657.92,
+      "unitPriceWon": 311688.25
     },
     {
       "date": "2026-09-23",
       "gradeKey": "grade1",
-      "quantityKg": 15.46,
-      "unitPriceWon": 976985.06
+      "quantityKg": 17.17,
+      "unitPriceWon": 954349.21
     },
     {
       "date": "2026-09-23",
       "gradeKey": "grade2",
-      "quantityKg": 28.27,
-      "unitPriceWon": 759386.23
+      "quantityKg": 32.09,
+      "unitPriceWon": 746329.16
     },
     {
       "date": "2026-09-23",
       "gradeKey": "mixedGrade",
-      "quantityKg": 13.83,
-      "unitPriceWon": 234000
+      "quantityKg": 49.89,
+      "unitPriceWon": 266525.56
     }
   ]
 }

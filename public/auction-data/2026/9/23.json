@@ -163,40 +163,40 @@
     "region": "강원",
     "union": "강릉",
     "date": "2026-9-23",
-    "lastUpdated": "2026-09-22 20:43:54.0",
+    "lastUpdated": "2026-09-23 19:45:55.0",
     "auctionQuantity": {
       "untilYesterday": "994.46kg",
-      "today": "0kg",
-      "total": "994.46kg"
+      "today": "232.78kg",
+      "total": "1,227.24kg"
     },
     "auctionAmount": {
       "untilYesterday": "422,202,473.4원",
-      "today": "0원",
-      "total": "422,202,473.4원"
+      "today": "83,784,216원",
+      "total": "505,986,689.4원"
     },
     "grade1": {
-      "quantity": "0kg",
-      "unitPrice": "0원"
+      "quantity": "1.71kg",
+      "unitPrice": "749,700원"
     },
     "grade2": {
-      "quantity": "0kg",
-      "unitPrice": "0원"
+      "quantity": "3.82kg",
+      "unitPrice": "649,700원"
     },
     "grade3Stopped": {
-      "quantity": "0kg",
-      "unitPrice": "0원"
+      "quantity": "9.47kg",
+      "unitPrice": "555,500원"
     },
     "grade3Estimated": {
-      "quantity": "0kg",
-      "unitPrice": "0원"
+      "quantity": "40.75kg",
+      "unitPrice": "498,000원"
     },
     "gradeBelow": {
-      "quantity": "0kg",
-      "unitPrice": "0원"
+      "quantity": "140.97kg",
+      "unitPrice": "315,000원"
     },
     "mixedGrade": {
-      "quantity": "0kg",
-      "unitPrice": "0원"
+      "quantity": "36.06kg",
+      "unitPrice": "279,000원"
     }
   },
   {
