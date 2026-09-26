@@ -1,42 +1,6 @@
 {
-  "generatedAt": "2026-09-26T12:00:32.301Z",
+  "generatedAt": "2026-09-26T14:49:37.804Z",
   "weeklyData": [
-    {
-      "date": "2026-09-19",
-      "gradeKey": "grade1",
-      "quantityKg": 18.81,
-      "unitPriceWon": 1214921.85
-    },
-    {
-      "date": "2026-09-19",
-      "gradeKey": "grade2",
-      "quantityKg": 21.08,
-      "unitPriceWon": 981013.24
-    },
-    {
-      "date": "2026-09-19",
-      "gradeKey": "grade3Stopped",
-      "quantityKg": 77.71,
-      "unitPriceWon": 602164.15
-    },
-    {
-      "date": "2026-09-19",
-      "gradeKey": "grade3Estimated",
-      "quantityKg": 96.63,
-      "unitPriceWon": 542749.65
-    },
-    {
-      "date": "2026-09-19",
-      "gradeKey": "gradeBelow",
-      "quantityKg": 307.28,
-      "unitPriceWon": 327406.18
-    },
-    {
-      "date": "2026-09-19",
-      "gradeKey": "mixedGrade",
-      "quantityKg": 28.4,
-      "unitPriceWon": 259948.59
-    },
     {
       "date": "2026-09-20",
       "gradeKey": "grade1",
@@ -246,6 +210,42 @@
       "gradeKey": "gradeBelow",
       "quantityKg": 89.53,
       "unitPriceWon": 333322.76
+    },
+    {
+      "date": "2026-09-26",
+      "gradeKey": "grade1",
+      "quantityKg": 14.13,
+      "unitPriceWon": 738106.51
+    },
+    {
+      "date": "2026-09-26",
+      "gradeKey": "grade2",
+      "quantityKg": 37.28,
+      "unitPriceWon": 599183.37
+    },
+    {
+      "date": "2026-09-26",
+      "gradeKey": "grade3Stopped",
+      "quantityKg": 123.92,
+      "unitPriceWon": 444389.98
+    },
+    {
+      "date": "2026-09-26",
+      "gradeKey": "grade3Estimated",
+      "quantityKg": 421.74,
+      "unitPriceWon": 388508.62
+    },
+    {
+      "date": "2026-09-26",
+      "gradeKey": "gradeBelow",
+      "quantityKg": 1233.99,
+      "unitPriceWon": 278767.29
+    },
+    {
+      "date": "2026-09-26",
+      "gradeKey": "mixedGrade",
+      "quantityKg": 177.79,
+      "unitPriceWon": 246999.06
     }
   ]
 }
