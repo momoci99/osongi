@@ -17,7 +17,7 @@ test.describe("데이터 분석", () => {
     await expect(page.getByRole("heading", { name: "데이터 분석", level: 1 })).toBeVisible();
     await expect(page.getByRole("navigation", { name: "질문 템플릿" })).toBeVisible();
     await expect(page.getByRole("heading", { name: "조회 기간" })).toBeVisible();
-    await expect(page.getByRole("heading", { name: "요약" })).toBeVisible();
+    await expect(page.getByRole("region", { name: "요약" })).toBeVisible();
     /** 비시즌 기본 템플릿은 전 시즌 히트맵 */
     await expect(page.getByRole("button", { name: /전 시즌 한눈에/ })).toHaveAttribute("aria-pressed", "true");
     await expect(page.getByRole("img", { name: /히트맵/ })).toBeVisible();
