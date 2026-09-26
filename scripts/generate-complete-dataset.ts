@@ -225,6 +225,12 @@ function generateMetadata(
   records: AuctionRecordNormalized[]
 ): Omit<CompleteDataset, "data"> {
   const dates = records.map((r) => r.date).sort();
+  /** 경매 전에 수집된 거래 0건 날짜는 데이터 기준일로 치지 않는다 */
+  const tradedDates = records
+    .filter((r) => r.auctionQuantityToday > 0)
+    .map((r) => r.date)
+    .sort();
+  const latestDates = tradedDates.length > 0 ? tradedDates : dates;
   const regions = [...new Set(records.map((r) => r.region))].sort();
   const unions = [...new Set(records.map((r) => r.union))].sort();
 
@@ -233,7 +239,7 @@ function generateMetadata(
     totalRecords: records.length,
     dateRange: {
       earliest: dates[0] || "",
-      latest: dates[dates.length - 1] || "",
+      latest: latestDates[latestDates.length - 1] || "",
     },
     regions,
     unions,

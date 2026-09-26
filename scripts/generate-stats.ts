@@ -116,6 +116,8 @@ interface YearUnionMax {
   union: string;
 }
 const yearUnionMax: Record<string, Record<string, YearUnionMax>> = {};
+/** 거래가 1건이라도 있었던 날짜. 최신일·전일 비교는 이 날짜들만 대상으로 한다 */
+const tradedDates: string[] = [];
 
 // Re-run with proper logic
 for (const year of listYears()) {
@@ -126,7 +128,6 @@ for (const year of listYears()) {
     for (const dayFile of listDays(monthPath)) {
       if (!dayFile.endsWith(".json")) continue;
       const day = parseInt(dayFile.replace(".json", ""), 10);
-      updateLatestDate(parseInt(year, 10), monthNum, day);
       const dayPath = join(monthPath, dayFile);
       let raw: AuctionRecordRaw[] = [];
       try {
@@ -134,6 +135,13 @@ for (const year of listYears()) {
       } catch (e) {
         console.error("Failed parsing", dayPath, e);
         continue;
+      }
+      /** 경매 전에 수집된 거래 0건 날짜는 최신 공판일로 치지 않는다 */
+      if (raw.some((rec) => parseNumber(rec.auctionQuantity.today) > 0)) {
+        updateLatestDate(parseInt(year, 10), monthNum, day);
+        tradedDates.push(
+          `${year.padStart(4, "0")}-${month.padStart(2, "0")}-${String(day).padStart(2, "0")}`
+        );
       }
       const yearMap = yearUnionMax[year] || (yearUnionMax[year] = {});
       for (const rec of raw) {
@@ -396,30 +404,13 @@ interface ExtendedDailyOutput {
   } | null;
 }
 
-// Find second-latest date for comparison
+/** 전일 비교 대상. 거래 0건 날짜(휴장·경매 전 수집분)를 건너뛴 직전 거래일 */
 let secondLatestDateStr: string | null = null;
 {
-  const allDates: string[] = [];
-  for (const year of listYears()) {
-    const yearPath = join(DATA_ROOT, year);
-    for (const month of listMonths(yearPath)) {
-      const monthPath = join(yearPath, month);
-      for (const dayFile of listDays(monthPath)) {
-        const d = parseInt(dayFile.replace(".json", ""), 10);
-        const m = parseInt(month, 10);
-        const y = parseInt(year, 10);
-        allDates.push(
-          `${y.toString().padStart(4, "0")}-${m.toString().padStart(2, "0")}-${d.toString().padStart(2, "0")}`
-        );
-      }
-    }
-  }
-  allDates.sort();
-  if (allDates.length >= 2 && latestDateStr) {
-    const latestIdx = allDates.lastIndexOf(latestDateStr);
-    if (latestIdx > 0) {
-      secondLatestDateStr = allDates[latestIdx - 1];
-    }
+  const sortedTradedDates = [...tradedDates].sort();
+  const latestIdx = latestDateStr ? sortedTradedDates.lastIndexOf(latestDateStr) : -1;
+  if (latestIdx > 0) {
+    secondLatestDateStr = sortedTradedDates[latestIdx - 1];
   }
 }
 
