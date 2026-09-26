@@ -7,9 +7,13 @@ import { createD3Tooltip, removeD3Tooltip } from "../../../utils/d3Tooltip";
 import { KILOGRAMS_PER_TON, KRW_TEN_THOUSAND_UNIT } from "../../../const/Units";
 import { YEARLY_TREND_CHART } from "../../../const/Charts";
 import type { YearStat } from "../../../types/region";
+import type { FireEvent } from "../../../utils/wildfire/unionFires";
+import drawFireMarkers, { groupBySeason } from "./drawFireMarkers";
 
 type UseDrawYearlyTrendParams = {
   yearly: YearStat[];
+  /** 대형 산불 (없으면 빈 배열) */
+  fires: FireEvent[];
   height: number;
   theme: Theme;
 };
@@ -42,7 +46,7 @@ const formatYearTick = (year: number, first: number, last: number): string =>
  * 물량이 많은 해가 곧 고가인 해는 아니라는 점이 이 페이지의 핵심 정보라
  * 두 계열을 같은 x축에 묶어야 비교가 성립한다.
  */
-const useDrawYearlyTrend = ({ yearly, height, theme }: UseDrawYearlyTrendParams) => {
+const useDrawYearlyTrend = ({ yearly, fires, height, theme }: UseDrawYearlyTrendParams) => {
   const { containerRef, width } = useContainerSize();
   const svgRef = useRef<SVGSVGElement | null>(null);
 
@@ -64,9 +68,13 @@ const useDrawYearlyTrend = ({ yearly, height, theme }: UseDrawYearlyTrendParams)
        * 가격 축 라벨을 접고(값은 툴팁으로) 그 폭을 막대에 돌려준다.
        */
       const showPriceAxis = !isMobile;
-      const margin = showPriceAxis
-        ? baseMargin
-        : { ...baseMargin, right: YEARLY_TREND_CHART.MOBILE_RIGHT_MARGIN };
+      /** 산불 표식 머리 점이 들어갈 자리를 위에 더 둔다 */
+      const hasFires = groupBySeason(fires, slots.map((slot) => slot.year)).size > 0;
+      const margin = {
+        ...baseMargin,
+        top: baseMargin.top + (hasFires ? YEARLY_TREND_CHART.FIRE_MARKER.TOP_SPACE : 0),
+        right: showPriceAxis ? baseMargin.right : YEARLY_TREND_CHART.MOBILE_RIGHT_MARGIN,
+      };
 
       /** 막대가 최소 폭을 못 지키면 가로 스크롤로 확보한다 */
       const minPlotWidth =
@@ -246,11 +254,13 @@ const useDrawYearlyTrend = ({ yearly, height, theme }: UseDrawYearlyTrendParams)
         .attr("stroke", theme.palette.chart.price.main)
         .attr("stroke-width", YEARLY_TREND_CHART.LINE_WIDTH);
 
+      drawFireMarkers({ root, x, innerHeight, events: fires, theme, tooltip });
+
       return () => {
         removeD3Tooltip();
       };
     },
-    [yearly, height, theme, width]
+    [yearly, fires, height, theme, width]
   );
 
   return { containerRef, svgRef };

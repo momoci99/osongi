@@ -25,6 +25,19 @@ export const YEARLY_TREND_CHART = {
   MIN_BAR_WIDTH: 14,
   /** 모바일에서 오른쪽 가격 축 라벨을 생략해 확보하는 여백 (px) */
   MOBILE_RIGHT_MARGIN: 12,
+  /** 대형 산불 표식 — 불난 뒤 첫 시즌 막대 왼쪽 경계에 세로선 + 머리 점 */
+  FIRE_MARKER: {
+    /** 머리 점이 들어갈 위쪽 여백 추가분 (px) */
+    TOP_SPACE: 18,
+    /** 머리 점 반지름 — 피해 규모를 로그 눈금으로 (100ha → 최소, 10배마다 한 단계) */
+    RADIUS_MIN: 3,
+    RADIUS_MAX: 7,
+    RADIUS_PER_DECADE: 1.4,
+    LINE_WIDTH: 1.5,
+    DASH: "3,3",
+    /** 가는 선도 쉽게 짚도록 넓힌 투명 영역 폭 (px) */
+    HIT_WIDTH: 14,
+  },
 } as const;
 
 /** 등급별 비중 막대 */
