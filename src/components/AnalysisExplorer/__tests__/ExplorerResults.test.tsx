@@ -26,7 +26,14 @@ describe("ExplorerSummary", () => {
 
     expect(screen.getByText("40.0")).toBeInTheDocument();
     expect(screen.getByText("/ 21곳")).toBeInTheDocument();
-    expect(screen.getByText("2023.09.11 · 양양 · 1등품")).toBeInTheDocument();
+    expect(screen.getByText("09.11 · 양양 · 1등품")).toBeInTheDocument();
+  });
+
+  it("여러 시즌을 보면 극값 날짜에 연도를 붙인다", () => {
+    const rows = [makeRow("2023-09-11", { union: "양양" }), makeRow("2024-09-19", { union: "봉화" })];
+    renderSummary(rows, makeQuery({ time: { kind: "seasons", years: [2023, 2024] } }));
+
+    expect(screen.getAllByText(/^20\d\d\.09\.\d\d · /).length).toBeGreaterThan(0);
   });
 
   it("공판일이 적으면 경고를 보여준다", () => {

@@ -11,6 +11,7 @@ type ControlSegmentProps<T extends string> = {
 /**
  * 라벨이 붙은 세그먼트 컨트롤.
  * 선택지가 2~4개인 컨트롤은 드롭다운보다 한눈에 현재 상태가 보이는 세그먼트로 둔다.
+ * 사이드바 폭에 맞춰 라벨을 위에, 버튼을 전폭으로 둔다.
  */
 const ControlSegment = <T extends string>({
   label,
@@ -19,7 +20,7 @@ const ControlSegment = <T extends string>({
   labels,
   onChange,
 }: ControlSegmentProps<T>) => (
-  <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+  <Box sx={{ display: "grid", gap: 0.75 }}>
     <Typography
       component="span"
       sx={{ fontSize: "0.75rem", fontWeight: 600, color: "text.secondary", whiteSpace: "nowrap" }}
@@ -28,6 +29,7 @@ const ControlSegment = <T extends string>({
     </Typography>
     <ToggleButtonGroup
       exclusive
+      fullWidth
       size="small"
       value={value}
       onChange={(_, next: T | null) => {

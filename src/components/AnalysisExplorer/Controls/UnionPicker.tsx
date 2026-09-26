@@ -54,8 +54,10 @@ const UnionPicker = ({ unions, onChange }: UnionPickerProps) => {
         open={anchor !== null}
         anchorEl={anchor}
         onClose={() => setAnchor(null)}
-        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-        slotProps={{ paper: { sx: { p: 2, width: 360, maxWidth: "calc(100vw - 32px)" } } }}
+        /** 사이드바 오른쪽으로 펼쳐 차트를 덜 가린다 */
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        transformOrigin={{ vertical: "top", horizontal: "left" }}
+        slotProps={{ paper: { sx: { p: 2, ml: 1, width: 360, maxWidth: "calc(100vw - 32px)" } } }}
       >
         {AVAILABLE_REGIONS.map((region) => (
           <Box key={region} sx={{ mb: 1.5 }}>

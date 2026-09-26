@@ -4,6 +4,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import { theme } from "../../../theme";
 import ExplorerControls from "../Controls";
 import TemplateBar from "../TemplateBar";
+import ViewTabs from "../Controls/ViewTabs";
 import { makeQuery } from "../../../utils/analysisQuery/__tests__/fixtures";
 import type { AnalysisQuery } from "../../../utils/analysisQuery/types";
 
@@ -16,15 +17,31 @@ const renderControls = (query: AnalysisQuery, onQueryChange = vi.fn()) => {
   return onQueryChange;
 };
 
-describe("ExplorerControls", () => {
-  it("뷰 전환 시 새 뷰 규칙으로 쿼리를 보정한다", () => {
-    const onChange = renderControls(makeQuery({ view: "timeline", groupBy: "union" }));
+describe("ViewTabs", () => {
+  it("탭 클릭·좌우 화살표로 뷰를 바꾼다", () => {
+    const onChange = vi.fn();
+    render(
+      <ThemeProvider theme={theme}>
+        <ViewTabs view="timeline" onChange={onChange} />
+      </ThemeProvider>,
+    );
 
     fireEvent.click(screen.getByRole("tab", { name: "연도 겹침" }));
+    expect(onChange).toHaveBeenLastCalledWith("overlay");
 
-    expect(onChange).toHaveBeenCalledWith(
-      expect.objectContaining({ view: "overlay", groupBy: "year" }),
-    );
+    fireEvent.keyDown(screen.getByRole("tablist"), { key: "ArrowRight" });
+    expect(onChange).toHaveBeenLastCalledWith("heatmap");
+  });
+});
+
+describe("ExplorerControls", () => {
+  it("사이드바에는 뷰 탭 없이 보기 설정과 범위 필터만 둔다", () => {
+    renderControls(makeQuery({ view: "overlay" }));
+
+    expect(screen.queryByRole("tab")).not.toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "보기 설정" })).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "지역" })).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "등급" })).toBeInTheDocument();
   });
 
   it("선택지가 하나뿐인 컨트롤은 숨긴다", () => {

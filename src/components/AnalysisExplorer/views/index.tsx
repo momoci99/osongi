@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, type ReactNode } from "react";
 import { Box, Button, Collapse, Typography } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExplorerPanel from "../ExplorerPanel";
@@ -29,10 +29,23 @@ type ExplorerViewProps = {
   requestRawCsv: () => Promise<string>;
   /** 아직 끝나지 않은 시즌 연도 (없으면 null) */
   ongoingYear: number | null;
+  /** 머리글 아래 요약 띠 — 내보내기 이미지에는 넣지 않는다 */
+  summary?: ReactNode;
+  /** 머리글 자리의 뷰 탭 */
+  tabs?: ReactNode;
 };
 
 /** 차트가 있는 뷰 */
-const CHART_VIEWS: AnalysisView[] = ["overlay", "timeline", "heatmap", "rank", "composition", "relation", "coverage", "weather"];
+const CHART_VIEWS: AnalysisView[] = [
+  "overlay",
+  "timeline",
+  "heatmap",
+  "rank",
+  "composition",
+  "relation",
+  "coverage",
+  "weather",
+];
 
 /** 선 차트 뷰 */
 const LINE_VIEWS: AnalysisView[] = ["overlay", "timeline"];
@@ -52,6 +65,43 @@ const describeView = (query: AnalysisQuery): string => {
   const unit = query.metric === "unitPrice" && LINE_VIEWS.includes(query.view) ? " (만원/kg)" : "";
   return `${METRIC_LABELS[query.metric]}${unit} · ${GROUP_BY_LABELS[query.groupBy]}`;
 };
+
+/** 평년 기준 설명 */
+const describeNormalYears = (years: number[]): string =>
+  years.length === 0
+    ? "비교할 과거 시즌 없음"
+    : `평년 ${years[0]}–${years[years.length - 1]} · ${years.length}시즌 중앙값`;
+
+type ViewCaptionProps = {
+  query: AnalysisQuery;
+  /** 평년 비교 중일 때 기준 시즌 */
+  normalYears: number[] | null;
+  /** 요약 띠가 없으면 머리글과 띄운다 */
+  spaced: boolean;
+};
+
+/** 탭이 제목을 대신할 때 차트 위에 두는 뷰 설명 — 단위·묶기 기준 */
+const ViewCaption = ({ query, normalYears, spaced }: ViewCaptionProps) => (
+  <Typography
+    sx={{
+      px: { xs: 1.75, sm: 2.25 },
+      pt: spaced ? 1.5 : 0,
+      pb: 1,
+      fontSize: "0.8125rem",
+      fontWeight: 600,
+      color: "text.secondary",
+      fontVariantNumeric: "tabular-nums",
+    }}
+  >
+    {describeView(query)}
+    {normalYears ? (
+      <Box component="span" sx={{ fontWeight: 500, color: "text.disabled" }}>
+        {"  ·  "}
+        {describeNormalYears(normalYears)}
+      </Box>
+    ) : null}
+  </Typography>
+);
 
 /** 결과가 비었을 때 */
 const EmptyResult = () => (
@@ -145,6 +195,8 @@ const ExplorerView = ({
   onQueryChange,
   requestRawCsv,
   ongoingYear,
+  summary,
+  tabs,
 }: ExplorerViewProps) => {
   const chartAreaRef = useRef<HTMLDivElement | null>(null);
   const { query, result } = data;
@@ -162,13 +214,22 @@ const ExplorerView = ({
 
   return (
     <ExplorerPanel
-      title={VIEW_LABELS[selectedQuery.view]}
-      caption={describeView(selectedQuery)}
+      title={tabs ? undefined : VIEW_LABELS[selectedQuery.view]}
+      caption={tabs ? undefined : describeView(selectedQuery)}
+      header={tabs}
       action={<ExportMenu query={query} result={result} requestRawCsv={requestRawCsv} chartAreaRef={chartAreaRef} />}
       pending={pending}
       revision={data}
       flush
     >
+      {result.rowCount > 0 ? summary : null}
+      {tabs && query.view !== "weather" ? (
+        <ViewCaption
+          query={selectedQuery}
+          normalYears={query.compare === "normal" && result.rowCount > 0 ? result.normalYears : null}
+          spaced={!summary || result.rowCount === 0}
+        />
+      ) : null}
       <div ref={chartAreaRef}>{renderBody()}</div>
     </ExplorerPanel>
   );

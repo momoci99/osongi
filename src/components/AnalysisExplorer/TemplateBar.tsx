@@ -1,11 +1,8 @@
-import { ButtonBase } from "@mui/material";
+import { ButtonBase, Tooltip } from "@mui/material";
 import ScrollFade from "../common/ScrollFade";
 import { alpha, styled } from "@mui/material/styles";
 import { TEMPLATE_BAR } from "../../const/AnalysisLayout";
-import {
-  ANALYSIS_TEMPLATES,
-  type AnalysisTemplateId,
-} from "../../utils/analysisQuery/templates";
+import { ANALYSIS_TEMPLATES, type AnalysisTemplateId } from "../../utils/analysisQuery/templates";
 
 type TemplateBarProps = {
   activeId: AnalysisTemplateId | null;
@@ -27,6 +24,7 @@ const TemplateCard = styled(ButtonBase, { shouldForwardProp: (prop) => prop !== 
     textAlign: "left",
     gap: theme.spacing(0.375),
     padding: theme.spacing(1.25, 1.5),
+    [theme.breakpoints.up("lg")]: { padding: theme.spacing(0.875, 1.5) },
     borderRadius: 10,
     border: "1px solid",
     borderColor: active ? theme.palette.primary.main : theme.palette.surface.border,
@@ -48,10 +46,12 @@ const CardLabel = styled("span", { shouldForwardProp: (prop) => prop !== "active
   }),
 );
 
+/** 큰 화면에서는 카드를 한 줄로 줄여 차트를 끌어올린다 — 질문은 툴팁으로 */
 const CardQuestion = styled("span")(({ theme }) => ({
   fontSize: "0.75rem",
   lineHeight: 1.45,
   color: theme.palette.text.secondary,
+  [theme.breakpoints.up("lg")]: { display: "none" },
 }));
 
 /**
@@ -77,17 +77,24 @@ const TemplateBar = ({ activeId, onSelect, onPrefetch }: TemplateBarProps) => (
     {ANALYSIS_TEMPLATES.map((template) => {
       const active = template.id === activeId;
       return (
-        <TemplateCard
+        <Tooltip
           key={template.id}
-          active={active}
-          onClick={() => onSelect(template.id)}
-          onPointerEnter={() => onPrefetch?.(template.id)}
-          onFocus={() => onPrefetch?.(template.id)}
-          aria-pressed={active}
+          title={template.question}
+          placement="bottom"
+          enterDelay={TEMPLATE_BAR.TOOLTIP_DELAY_MS}
+          describeChild
         >
-          <CardLabel active={active}>{template.label}</CardLabel>
-          <CardQuestion>{template.question}</CardQuestion>
-        </TemplateCard>
+          <TemplateCard
+            active={active}
+            onClick={() => onSelect(template.id)}
+            onPointerEnter={() => onPrefetch?.(template.id)}
+            onFocus={() => onPrefetch?.(template.id)}
+            aria-pressed={active}
+          >
+            <CardLabel active={active}>{template.label}</CardLabel>
+            <CardQuestion>{template.question}</CardQuestion>
+          </TemplateCard>
+        </Tooltip>
       );
     })}
   </ScrollFade>
