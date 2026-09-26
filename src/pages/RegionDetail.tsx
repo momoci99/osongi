@@ -1,6 +1,8 @@
 import { Container, Skeleton, Typography } from "@mui/material";
 import { Navigate, useParams } from "react-router";
 import useRegionManifest from "../hooks/useRegionManifest";
+import useUnionFires from "../hooks/useUnionFires";
+import { groupFireEvents } from "../utils/wildfire/unionFires";
 import usePageMeta from "../hooks/usePageMeta";
 import { regionPageMeta, unionPageMeta } from "../const/Seo";
 import {
@@ -64,6 +66,10 @@ const ScopeBody = ({ stats, manifest, union }: ScopeBodyProps) => {
   const isUnion = union !== undefined;
   const linkItems = buildLinkItems(manifest, stats.region, union);
   const latestDaily = stats.latestDaily;
+  const fireFile = useUnionFires();
+  /** 조합 페이지는 그 조합, 지역 페이지는 소속 조합 전체의 산불 */
+  const scopeUnions = isUnion ? [union] : (manifest.regions[stats.region]?.unions ?? []);
+  const fires = fireFile ? groupFireEvents(fireFile.unions, scopeUnions) : undefined;
 
   return (
     <>
@@ -97,7 +103,7 @@ const ScopeBody = ({ stats, manifest, union }: ScopeBodyProps) => {
       )}
 
       {stats.yearly.length > 0 && (
-        <ScopeYearlyChart yearly={stats.yearly} scopeName={stats.name} />
+        <ScopeYearlyChart yearly={stats.yearly} scopeName={stats.name} fires={fires} />
       )}
 
       <ScopeRankList

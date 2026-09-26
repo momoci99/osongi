@@ -29,7 +29,9 @@
     "generate-weather-stats": "tsx scripts/generate-weather-stats.ts",
     "prerender": "tsx scripts/prerender-scope-pages.ts",
     "collect-legacy-auction": "tsx scripts/collect-legacy-auction.ts",
-    "refine-legacy-auction": "tsx scripts/refine-legacy-auction.ts"
+    "refine-legacy-auction": "tsx scripts/refine-legacy-auction.ts",
+    "collect-wildfire": "tsx scripts/collect-wildfire.ts",
+    "generate-wildfire-stats": "tsx scripts/generate-wildfire-stats.ts"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",

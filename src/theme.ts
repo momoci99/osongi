@@ -36,6 +36,8 @@ type ChartPalette = {
   /** 날씨 뷰 — 기온 밴드·지면온도 선은 한 영역에 겹치므로 서로 구분되게 검증했다 (dataviz validate_palette) */
   weather: { rain: string; temperature: string; ground: string };
   price: { main: string; light: string; dark: string };
+  /** 대형 산불 표식 — 공판량(초록)·단가(파랑)와 겹치지 않는 주홍 */
+  fire: string;
   up: string;
   down: string;
   grade1: string;
@@ -150,6 +152,7 @@ const chartPalette = (
   weather: isLight
     ? { rain: "#0B7FB0", temperature: "#BA7308", ground: "#1450D2" }
     : { rain: "#1C97C4", temperature: "#C08419", ground: "#6A8FE8" },
+  fire: isLight ? "#C2410C" : "#F07A4A",
   up: tokens.up,
   down: tokens.down,
   grade1: tokens.grade1,

@@ -1,0 +1,50 @@
+[
+  {
+    "id": "2025-gyeongbuk",
+    "label": "경북 산불 (의성 발화)",
+    "startDate": "2025-03-22",
+    "replacesApi": [{ "startDate": "2025-03-22", "province": "경북", "county": "의성" }],
+    "areas": [
+      { "province": "경북", "county": "의성", "damageHa": 28853 },
+      { "province": "경북", "county": "안동", "damageHa": 26709 },
+      { "province": "경북", "county": "청송", "damageHa": 20655 },
+      { "province": "경북", "county": "영양", "damageHa": 6864 },
+      { "province": "경북", "county": "영덕", "damageHa": 16208 }
+    ],
+    "totalHa": 99289,
+    "source": "산림청 보도자료 2025-04-18",
+    "sourceUrl": "https://m.korea.kr/briefing/pressReleaseView.do?newsId=156685003",
+    "note": "API 는 발화지 의성 두 건(52,707·46,575ha, 초기 집계)만 기록"
+  },
+  {
+    "id": "2022-uljin-samcheok",
+    "label": "울진·삼척 산불",
+    "startDate": "2022-03-04",
+    "replacesApi": [{ "startDate": "2022-03-04", "province": "경북", "county": "울진" }],
+    "areas": [
+      { "province": "경북", "county": "울진", "damageHa": null },
+      { "province": "강원", "county": "삼척", "damageHa": null }
+    ],
+    "totalHa": 16302,
+    "source": "산림청 우리나라의 대형산불",
+    "sourceUrl": "https://www.forest.go.kr/kfsweb/kfi/kfs/cms/cmsView.do?cmsId=FC_001157&mn=AR04_01_04_04",
+    "note": "시군별 면적은 공식 출처 미확인 — 두 시군 합계만 표시"
+  },
+  {
+    "id": "2017-gangneung-samcheok",
+    "label": "강릉·삼척 산불",
+    "startDate": "2017-05-06",
+    "replacesApi": [
+      { "startDate": "2017-05-06", "province": "강원", "county": "강릉" },
+      { "startDate": "2017-05-06", "province": "강원", "county": "삼척" }
+    ],
+    "areas": [
+      { "province": "강원", "county": "강릉", "damageHa": null },
+      { "province": "강원", "county": "삼척", "damageHa": null }
+    ],
+    "totalHa": 1017,
+    "source": "산림청 우리나라의 대형산불",
+    "sourceUrl": "https://www.forest.go.kr/kfsweb/kfi/kfs/cms/cmsView.do?cmsId=FC_001157&mn=AR04_01_04_04",
+    "note": "API 는 강릉 57·삼척 270ha(초기 집계)"
+  }
+]
