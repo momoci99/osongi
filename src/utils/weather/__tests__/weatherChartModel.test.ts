@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildWeatherChartModel, offsetOfDate, selectPanelYears } from "../weatherChartModel";
+import { buildWeatherChartModel, findWeatherEnd, offsetOfDate, selectPanelYears } from "../weatherChartModel";
 import type { AggregatePoint, AggregateSeries } from "../../analysisQuery/types";
 import type { WeatherDay } from "../seasonWeather";
 
@@ -90,5 +90,27 @@ describe("buildWeatherChartModel", () => {
 
   it("기온 범위는 최저·최고·지면온도를 감싸고 여유를 둔다", () => {
     expect(buildWeatherChartModel(series, weatherOf, false).temperatureDomain).toEqual([9, 21]);
+  });
+});
+
+describe("findWeatherEnd", () => {
+  /** 9/15~9/25 공판, 날씨는 cutoff 일까지만 */
+  const model = (cutoff: string) =>
+    buildWeatherChartModel(
+      [season(2026, [["09-15", 100], ["09-25", 200]])],
+      (dates) => weatherOf(dates).map((day) => (day.date <= cutoff ? day : { ...day, maxTa: null, minTa: null, rain: null, groundTemp: null })),
+      false,
+    );
+
+  it("기상 자료가 마지막 공판일보다 먼저 끝나면 마지막 관측일을 준다", () => {
+    expect(model("2026-09-21").panels[0].weatherEnd).toEqual({ offset: offsetOfDate("2026-09-21"), date: "2026-09-21" });
+  });
+
+  it("공판 끝까지 자료가 있으면 표시하지 않는다", () => {
+    expect(model("2026-09-30").panels[0].weatherEnd).toBeNull();
+  });
+
+  it("공판이 없으면 표시하지 않는다", () => {
+    expect(findWeatherEnd([])).toBeNull();
   });
 });

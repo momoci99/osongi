@@ -12,6 +12,10 @@ export const EXPLORER_LAYOUT = {
   SECTION_GAP: 2,
   /** 메인 뷰 최소 높이 (px) */
   VIEW_MIN_HEIGHT: 520,
+  /** 분석 도구를 바로 여는 최소 화면 폭 (px) — 미만이면 큰 화면 안내 (가로 태블릿은 허용) */
+  MIN_VIEWPORT_WIDTH: 1024,
+  /** "그래도 보기" 선택을 세션 동안 기억하는 sessionStorage 키 */
+  NARROW_BYPASS_KEY: "osongi-analysis-narrow-bypass",
 } as const;
 
 /** 시즌 스트립 — 비시즌을 접고 연도별 시즌 창만 이어 붙인 타임라인 */
@@ -111,6 +115,8 @@ export const LINE_CHART = {
   TOOLTIP_OFFSET: 14,
   /** x 눈금 라벨 사이 최소 간격 (px) */
   MIN_TICK_GAP: 48,
+  /** 이보다 굵은 x 눈금이 적으면 보충 눈금을 섞는다 */
+  MIN_X_TICKS: 3,
   /** 툴팁 최대 폭 (px) */
   TOOLTIP_MAX_WIDTH: 320,
 } as const;
@@ -156,6 +162,8 @@ export const RELATION_CHART = {
   AXIS_TITLE_OFFSET: 38,
   /** 플롯 위에 놓는 y축 제목 기준선 (px, 플롯 위 끝 기준) */
   Y_TITLE_OFFSET: 12,
+  /** 플롯 좌우 안쪽 여백 (px) — 축 끝에 놓인 점이 반쯤 잘리지 않게 */
+  X_PLOT_PAD: 8,
   TOOLTIP_Y_OFFSET: 12,
   EMPTY_DOMAIN_MIN: 1,
   EMPTY_DOMAIN_MAX: 10,
@@ -216,6 +224,9 @@ export const EXPLORER_DATA_CACHE = {
   IDLE_FALLBACK_MS: 300,
 } as const;
 
+/** 카드 폭 가득 그리는 SVG 안 제목의 왼쪽 들여쓰기 (px) — 카드 머리글 가로 여백(MUI spacing 1.75 / 2.25)과 맞춘다 */
+export const CHART_TITLE_INSET = { MOBILE: 14, DESKTOP: 18 } as const;
+
 /** 날씨 뷰 (시즌별 공판량·강수·기온 세로 나열) */
 export const WEATHER_CHART = {
   /** 한 번에 그리는 최대 시즌 수 — 넘으면 최근 시즌부터 */
@@ -224,15 +235,17 @@ export const WEATHER_CHART = {
   DOMAIN_PAD_DAYS: 10,
   /** 줄 높이 (px) */
   ROW_HEIGHT: {
-    MOBILE: { quantity: 72, rain: 44, temperature: 64 },
-    DESKTOP: { quantity: 96, rain: 52, temperature: 80 },
+    MOBILE: { quantity: 72, rain: 44, temperature: 72 },
+    DESKTOP: { quantity: 96, rain: 52, temperature: 96 },
   },
+  /** 줄 이름이 놓이는 줄 위 띠 높이 (px) — 이름이 막대·선과 겹치지 않게 플롯 밖에 둔다 */
+  ROW_LABEL_HEIGHT: 18,
   /** 한 시즌 안 줄 사이 간격 (px) */
-  ROW_GAP: 14,
+  ROW_GAP: 10,
   /** 시즌 패널 사이 간격 (px) — 연도 제목 포함 */
   PANEL_GAP: 36,
-  /** 연도 제목 높이 (px) — 첫 줄 최대 눈금 라벨과 겹치지 않을 만큼 */
-  PANEL_TITLE_HEIGHT: 34,
+  /** 연도 제목 높이 (px) */
+  PANEL_TITLE_HEIGHT: 28,
   MARGIN: {
     MOBILE: { top: 8, right: 12, bottom: 28, left: 52 },
     DESKTOP: { top: 8, right: 20, bottom: 30, left: 64 },
@@ -241,16 +254,28 @@ export const WEATHER_CHART = {
   BAR_GAP: 1,
   /** 옮긴 강수 참고 막대 불투명도 */
   SHIFTED_RAIN_OPACITY: 0.28,
-  /** 기온 밴드 불투명도 — 다크 표면에서는 같은 값이 탁한 갈색으로 가라앉아 따로 둔다 */
-  TEMPERATURE_BAND_OPACITY: { light: 0.22, dark: 0.26 },
+  /** 기온 밴드 채움 불투명도 — 면은 옅게 깔고 윤곽선으로 범위를 읽게 한다 */
+  TEMPERATURE_BAND_OPACITY: { light: 0.14, dark: 0.1 },
+  /** 기온 밴드 위아래 윤곽선 불투명도 */
+  TEMPERATURE_EDGE_OPACITY: 0.6,
   /** 지면온도 선 두께 (px) */
   GROUND_STROKE: 2,
-  /** 각 줄 y 눈금 개수 */
-  Y_TICK_COUNT: 3,
+  /** 지면온도 선 뒤 표면색 후광 두께 (px) — 밴드 윤곽과 겹쳐도 선이 떠 보이게 */
+  GROUND_HALO_WIDTH: 5,
+  /** 줄별 y 눈금 개수 — 낮은 강수 줄은 2개면 충분하다 */
+  Y_TICK_COUNT: { quantity: 3, rain: 2, temperature: 3 },
   /** 기온 축 위아래 여유 (°C) */
   TEMPERATURE_PAD: 1,
   /** 호버 안내선 불투명도 */
   GUIDE_OPACITY: 0.6,
+  /** 라벨 눈금 날짜 (일) */
+  LABEL_TICK_DAYS: ["01", "15"],
+  /** 라벨 없는 보조 눈금 날짜 (일) */
+  MINOR_TICK_DAYS: ["05", "10", "20", "25"],
+  /** 보조 눈금 길이 (px) */
+  MINOR_TICK_LENGTH: 4,
+  /** 기상 자료 끝 표시 라벨과 선 사이 간격 (px) */
+  WEATHER_END_LABEL_GAP: 6,
 } as const;
 
 /** 평년 비교 (날씨 뷰 V2) — 월별 점 분포 */
@@ -263,6 +288,8 @@ export const NORMAL_STRIP_CHART = {
   GROUP_GAP: 14,
   /** 왼쪽 월 라벨 폭 (px) */
   MONTH_LABEL_WIDTH: 36,
+  /** 줄 양 끝 역대 최소·최대 값 라벨 폭 (px) — 줄마다 눈금이 달라 값 범위를 직접 적는다 */
+  EXTENT_LABEL_WIDTH: 52,
   /** 오른쪽 값·순위 글 폭 (px) */
   RANK_WIDTH: { MOBILE: 118, DESKTOP: 176 },
   /** 점 좌우 여백 (px) — 끝 점이 잘리지 않게 */

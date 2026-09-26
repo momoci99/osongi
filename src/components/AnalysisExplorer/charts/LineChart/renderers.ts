@@ -1,7 +1,7 @@
 import * as d3 from "d3";
 import type { Theme } from "@mui/material/styles";
 import { LINE_CHART } from "../../../../const/AnalysisLayout";
-import { spreadLabels, type AxisTick } from "../../../../utils/analysisQuery/chartScale";
+import { spreadLabels, ticksInDomain, type AxisTick } from "../../../../utils/analysisQuery/chartScale";
 import { formatAxisTick } from "../../../../utils/analysisQuery/format";
 import { scaleFont } from "../../../../utils/d3/chartMargins";
 import type {
@@ -32,7 +32,8 @@ const dropCollidingTicks = (
   minGap: number,
 ): AxisTick[] => {
   const kept: AxisTick[] = [];
-  const byPriority = [...ticks].sort((a, b) => Number(b.major) - Number(a.major));
+  const rank = (tick: AxisTick) => (tick.major ? 2 : tick.fine ? 0 : 1);
+  const byPriority = [...ticks].sort((a, b) => rank(b) - rank(a));
   for (const tick of byPriority) {
     const px = x(tick.position);
     if (kept.every((other) => Math.abs(x(other.position) - px) >= minGap)) kept.push(tick);
@@ -90,14 +91,8 @@ export const renderAxes = (
   const [domainStart, domainEnd] = x.domain();
   const seasonCount = model.mapping.boundaries.length + 1;
   const segmentWidth = innerWidth / seasonCount;
-  /** 시즌 라벨(major)은 데이터 시작이 창 시작보다 늦어도 잘리지 않게 도메인 안으로 당긴다 */
-  const xTicks = model.mapping
-    .ticks(segmentWidth)
-    .map((tick) =>
-      tick.major ? { ...tick, position: Math.min(Math.max(tick.position, domainStart), domainEnd) } : tick,
-    )
-    .filter((tick) => tick.position >= domainStart && tick.position <= domainEnd);
-  const visibleTicks = dropCollidingTicks(xTicks, x, LINE_CHART.MIN_TICK_GAP);
+  const candidates = ticksInDomain(model.mapping.ticks(segmentWidth), [domainStart, domainEnd]);
+  const visibleTicks = dropCollidingTicks(candidates, x, LINE_CHART.MIN_TICK_GAP);
 
   g.append("g")
     .selectAll("text")

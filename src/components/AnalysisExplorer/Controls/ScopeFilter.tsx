@@ -38,6 +38,7 @@ const ScopeFilter = ({ query, onChange }: ScopeFilterProps) => {
         <FilterChip
           key={region}
           dotColor={regionColor(region)}
+          dotActive={query.regions.length === 0 || query.regions.includes(region)}
           selected={query.regions.includes(region)}
           onClick={() => onChange({ regions: toggleItem(query.regions, region) })}
         >
@@ -55,6 +56,7 @@ const ScopeFilter = ({ query, onChange }: ScopeFilterProps) => {
         <FilterChip
           key={option.value}
           dotColor={theme.palette.chart[option.value]}
+          dotActive={query.grades.length === 0 || query.grades.includes(option.value)}
           selected={query.grades.includes(option.value)}
           onClick={() => onChange({ grades: toggleItem<GradeKey>(query.grades, option.value) })}
         >
