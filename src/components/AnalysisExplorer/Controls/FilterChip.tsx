@@ -8,6 +8,8 @@ type FilterChipProps = {
   children: ReactNode;
   /** 앞에 붙는 색 점 (등급·지역 식별색) */
   dotColor?: string;
+  /** 색 점을 진하게 — 생략하면 selected. '전 등급'처럼 전체가 포함된 상태면 칩이 꺼져 있어도 결과에 들어 있다 */
+  dotActive?: boolean;
 };
 
 /**
@@ -35,14 +37,14 @@ const ChipButton = styled(ButtonBase, { shouldForwardProp: (prop) => prop !== "s
 }));
 
 /** 색 점 */
-const Dot = styled("span", { shouldForwardProp: (prop) => prop !== "selected" })<{ selected: boolean }>(
-  ({ selected }) => ({ width: 8, height: 8, borderRadius: "50%", flexShrink: 0, opacity: selected ? 1 : 0.5 }),
+const Dot = styled("span", { shouldForwardProp: (prop) => prop !== "active" })<{ active: boolean }>(
+  ({ active }) => ({ width: 8, height: 8, borderRadius: "50%", flexShrink: 0, opacity: active ? 1 : 0.5 }),
 );
 
 /** 필터 토글 칩 — MUI Chip보다 낮고 조밀하게, 선택 상태는 테두리+표면 단계로 표현 */
-const FilterChip = ({ selected, onClick, children, dotColor }: FilterChipProps) => (
+const FilterChip = ({ selected, onClick, children, dotColor, dotActive = selected }: FilterChipProps) => (
   <ChipButton selected={selected} onClick={onClick} aria-pressed={selected}>
-    {dotColor ? <Dot selected={selected} style={{ backgroundColor: dotColor }} /> : null}
+    {dotColor ? <Dot active={dotActive} style={{ backgroundColor: dotColor }} /> : null}
     {children}
   </ChipButton>
 );

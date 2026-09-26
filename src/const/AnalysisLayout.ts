@@ -162,6 +162,8 @@ export const RELATION_CHART = {
   AXIS_TITLE_OFFSET: 38,
   /** 플롯 위에 놓는 y축 제목 기준선 (px, 플롯 위 끝 기준) */
   Y_TITLE_OFFSET: 12,
+  /** 플롯 좌우 안쪽 여백 (px) — 축 끝에 놓인 점이 반쯤 잘리지 않게 */
+  X_PLOT_PAD: 8,
   TOOLTIP_Y_OFFSET: 12,
   EMPTY_DOMAIN_MIN: 1,
   EMPTY_DOMAIN_MAX: 10,
@@ -222,6 +224,9 @@ export const EXPLORER_DATA_CACHE = {
   IDLE_FALLBACK_MS: 300,
 } as const;
 
+/** 카드 폭 가득 그리는 SVG 안 제목의 왼쪽 들여쓰기 (px) — 카드 머리글 가로 여백(MUI spacing 1.75 / 2.25)과 맞춘다 */
+export const CHART_TITLE_INSET = { MOBILE: 14, DESKTOP: 18 } as const;
+
 /** 날씨 뷰 (시즌별 공판량·강수·기온 세로 나열) */
 export const WEATHER_CHART = {
   /** 한 번에 그리는 최대 시즌 수 — 넘으면 최근 시즌부터 */
@@ -241,8 +246,6 @@ export const WEATHER_CHART = {
   PANEL_GAP: 36,
   /** 연도 제목 높이 (px) */
   PANEL_TITLE_HEIGHT: 28,
-  /** 연도 제목 왼쪽 들여쓰기 (px) — 카드 머리글 가로 여백(MUI spacing 1.75 / 2.25)과 맞춘다 */
-  TITLE_INSET: { MOBILE: 14, DESKTOP: 18 },
   MARGIN: {
     MOBILE: { top: 8, right: 12, bottom: 28, left: 52 },
     DESKTOP: { top: 8, right: 20, bottom: 30, left: 64 },

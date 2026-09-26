@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import * as d3 from "d3";
 import type { Theme } from "@mui/material/styles";
-import { LINE_CHART, WEATHER_CHART } from "../../../../const/AnalysisLayout";
+import { CHART_TITLE_INSET, LINE_CHART, WEATHER_CHART } from "../../../../const/AnalysisLayout";
 import { useContainerWidth } from "../../../../utils/d3/useContainerSize";
 import { isMobileWidth, scaleFont, scaleLength, scaleMargin } from "../../../../utils/d3/chartMargins";
 import { formatInteger } from "../../../../utils/analysisQuery/format";
@@ -96,7 +96,7 @@ const useDrawWeatherChart = ({ model, showShiftedRain, theme }: UseDrawWeatherCh
       const svg = d3.select(svgEl).attr("width", width).attr("height", height);
       svg.selectAll("*").remove();
       const root = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
-      const titleInset = mobile ? WEATHER_CHART.TITLE_INSET.MOBILE : WEATHER_CHART.TITLE_INSET.DESKTOP;
+      const titleInset = mobile ? CHART_TITLE_INSET.MOBILE : CHART_TITLE_INSET.DESKTOP;
 
       const drawPanel = (panel: WeatherPanel, index: number) => {
         const top = index * (onePanel + WEATHER_CHART.PANEL_GAP);

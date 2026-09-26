@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import * as d3 from "d3";
 import type { Theme } from "@mui/material/styles";
-import { RELATION_CHART } from "../../../../const/AnalysisLayout";
+import { CHART_TITLE_INSET, RELATION_CHART } from "../../../../const/AnalysisLayout";
 import { regionColor } from "../../../../const/Regions";
 import { useContainerWidth } from "../../../../utils/d3/useContainerSize";
 import { isMobileWidth, scaleFont, scaleMargin } from "../../../../utils/d3/chartMargins";
@@ -56,7 +56,11 @@ const useDrawRelation = ({ model, query, theme }: UseDrawRelationParams) => {
       const latestYear = Math.max(...model.points.map((point) => point.year));
       const ySpan = model.yDomain[1] - model.yDomain[0];
       const yPadding = ySpan * RELATION_CHART.Y_PADDING_RATIO;
-      const x = d3.scaleLog().domain(model.xDomain).range([0, innerWidth]).clamp(true);
+      const x = d3
+        .scaleLog()
+        .domain(model.xDomain)
+        .range([RELATION_CHART.X_PLOT_PAD, innerWidth - RELATION_CHART.X_PLOT_PAD])
+        .clamp(true);
       const y = d3
         .scaleLinear()
         .domain([Math.max(0, model.yDomain[0] - yPadding), model.yDomain[1] + yPadding])
@@ -97,7 +101,7 @@ const useDrawRelation = ({ model, query, theme }: UseDrawRelationParams) => {
         .text("공판량 (로그)");
       /** 세로로 세운 제목은 눈에 띄지 않는다 — 단위까지 붙여 플롯 위 왼쪽에 가로로 둔다 */
       g.append("text")
-        .attr("x", -margin.left + RELATION_CHART.Y_TITLE_OFFSET / 2)
+        .attr("x", -margin.left + (isMobile ? CHART_TITLE_INSET.MOBILE : CHART_TITLE_INSET.DESKTOP))
         .attr("y", -RELATION_CHART.Y_TITLE_OFFSET)
         .attr("text-anchor", "start")
         .attr("fill", theme.palette.text.secondary)
