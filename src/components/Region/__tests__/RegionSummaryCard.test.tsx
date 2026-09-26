@@ -39,6 +39,18 @@ describe("RegionSummaryCard", () => {
     expect(screen.queryByText("원/kg")).not.toBeInTheDocument();
   });
 
+  it("최신 시즌 집계가 없으면 보조 줄을 직전 시즌 단가로 채운다", () => {
+    renderCard({ season: null });
+
+    expect(screen.getByText("직전 2025 시즌 300,000원/kg")).toBeInTheDocument();
+  });
+
+  it("기록이 전혀 없으면 보조 줄에 시즌 공판 전을 밝힌다", () => {
+    renderCard({ season: null, yearly: [] });
+
+    expect(screen.getByText("2025 시즌 공판 전")).toBeInTheDocument();
+  });
+
   it("연도 범위 라벨을 붙인다", () => {
     renderCard();
 

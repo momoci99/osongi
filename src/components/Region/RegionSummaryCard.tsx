@@ -10,6 +10,23 @@ type RegionSummaryCardProps = { region: RegionScopeStats };
 
 const NO_SEASON = "집계 없음";
 
+/** 가격 숫자 줄 높이. 시즌 집계가 없어도 같은 높이를 지켜 카드끼리 행이 어긋나지 않는다 */
+const VALUE_LINE_HEIGHT = "1.725rem";
+
+/**
+ * 가격 아래 보조 줄.
+ * 시즌 집계가 없으면 줄을 비우지 않고 직전 기록 연도 단가로 채워 카드 구조를 맞춘다.
+ */
+const subLabel = (region: RegionScopeStats): string => {
+  if (region.season) {
+    return `공판량 ${(region.season.totalQuantityKg / KILOGRAMS_PER_TON).toFixed(1)}톤`;
+  }
+  const lastYear = region.yearly.at(-1);
+  return lastYear
+    ? `직전 ${lastYear.year} 시즌 ${lastYear.avgPricePerKg.toLocaleString("ko-KR")}원/kg`
+    : `${region.latestSeasonYear} 시즌 공판 전`;
+};
+
 /** 스파크라인 옆 기간 라벨. 데이터가 한 해뿐이면 연도 하나만 */
 const yearRangeLabel = (years: number[]): string => {
   if (years.length === 0) return "";
@@ -87,19 +104,35 @@ const RegionSummaryCard = ({ region }: RegionSummaryCardProps) => {
         <Box
           sx={{ display: "flex", alignItems: "baseline", gap: 0.5, mt: { xs: 0.5, sm: 1.5 } }}
         >
-          <Typography
-            component="span"
-            sx={{
-              fontWeight: 700,
-              fontSize: "1.5rem",
-              lineHeight: 1.15,
-              letterSpacing: "-0.02em",
-              fontVariantNumeric: "tabular-nums",
-              whiteSpace: "nowrap",
-            }}
-          >
-            {season ? season.avgPricePerKg.toLocaleString("ko-KR") : NO_SEASON}
-          </Typography>
+          {season ? (
+            <Typography
+              component="span"
+              sx={{
+                fontWeight: 700,
+                fontSize: "1.5rem",
+                lineHeight: VALUE_LINE_HEIGHT,
+                letterSpacing: "-0.02em",
+                fontVariantNumeric: "tabular-nums",
+                whiteSpace: "nowrap",
+              }}
+            >
+              {season.avgPricePerKg.toLocaleString("ko-KR")}
+            </Typography>
+          ) : (
+            /** 값이 없다는 상태는 숫자보다 한 단계 낮춰 다른 카드 가격과 경쟁하지 않게 한다 */
+            <Typography
+              component="span"
+              sx={{
+                fontWeight: 600,
+                fontSize: "1.0625rem",
+                lineHeight: VALUE_LINE_HEIGHT,
+                color: "text.secondary",
+                whiteSpace: "nowrap",
+              }}
+            >
+              {NO_SEASON}
+            </Typography>
+          )}
           {season ? (
             <Typography
               component="span"
@@ -111,14 +144,12 @@ const RegionSummaryCard = ({ region }: RegionSummaryCardProps) => {
           ) : null}
         </Box>
 
-        {season ? (
-          <Typography
-            variant="caption"
-            sx={{ color: "text.secondary", display: "block", mt: 0.25 }}
-          >
-            공판량 {(season.totalQuantityKg / KILOGRAMS_PER_TON).toFixed(1)}톤
-          </Typography>
-        ) : null}
+        <Typography
+          variant="caption"
+          sx={{ color: "text.secondary", display: "block", mt: 0.25 }}
+        >
+          {subLabel(region)}
+        </Typography>
       </Box>
 
       <Box
