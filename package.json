@@ -27,7 +27,9 @@
     "generate-region-stats": "tsx scripts/generate-region-stats.ts",
     "collect-weather": "tsx scripts/collect-weather.ts",
     "generate-weather-stats": "tsx scripts/generate-weather-stats.ts",
-    "prerender": "tsx scripts/prerender-scope-pages.ts"
+    "prerender": "tsx scripts/prerender-scope-pages.ts",
+    "collect-legacy-auction": "tsx scripts/collect-legacy-auction.ts",
+    "refine-legacy-auction": "tsx scripts/refine-legacy-auction.ts"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -82,6 +84,7 @@
     "typescript-eslint": "^8.59.2",
     "vite": "^8.0.0",
     "vite-plugin-compression2": "^2.2.1",
-    "vitest": "^4.1.5"
+    "vitest": "^4.1.5",
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
   }
 }

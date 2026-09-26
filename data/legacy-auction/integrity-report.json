@@ -1,0 +1,2059 @@
+{
+ "summary": {
+  "days": 311,
+  "byYear": {
+   "2007": {
+    "days": 61,
+    "first": "2007-09-02",
+    "last": "2007-11-01",
+    "sources": [
+     "comparison"
+    ],
+    "priceBasis": {
+     "max:declared": 61
+    }
+   },
+   "2008": {
+    "days": 61,
+    "first": "2008-09-02",
+    "last": "2008-11-01",
+    "sources": [
+     "original"
+    ],
+    "priceBasis": {
+     "max:declared": 61
+    }
+   },
+   "2009": {
+    "days": 53,
+    "first": "2009-09-11",
+    "last": "2009-11-02",
+    "sources": [
+     "original"
+    ],
+    "priceBasis": {
+     "max:declared": 53
+    }
+   },
+   "2010": {
+    "days": 46,
+    "first": "2010-09-13",
+    "last": "2010-10-28",
+    "sources": [
+     "original"
+    ],
+    "priceBasis": {
+     "avg:inferred": 23,
+     "avg:declared": 23
+    }
+   },
+   "2011": {
+    "days": 50,
+    "first": "2011-09-05",
+    "last": "2011-10-24",
+    "sources": [
+     "original"
+    ],
+    "priceBasis": {
+     "avg:declared": 50
+    }
+   },
+   "2012": {
+    "days": 40,
+    "first": "2012-09-10",
+    "last": "2012-10-19",
+    "sources": [
+     "original"
+    ],
+    "priceBasis": {
+     "avg:declared": 40
+    }
+   }
+  },
+  "issueCounts": {
+   "comparison-mismatch": 1,
+   "triple-sum": 6,
+   "chain-break": 316,
+   "header-mismatch": 6,
+   "missing-price": 1,
+   "total-sum": 2,
+   "subtotal-sum": 5
+  },
+  "skipped": [
+   {
+    "seq": 51,
+    "title": "2008-10-17",
+    "reason": "엑셀 읽기 실패"
+   },
+   {
+    "seq": 122,
+    "title": "2009년 산림조합 송이공판 종료(내용없음)",
+    "reason": "엑셀 첨부 없음"
+   },
+   {
+    "seq": 221,
+    "title": "2011-10-25(2011년 산림조합 송이공판 종료 - 내용없음)",
+    "reason": "엑셀 첨부 없음"
+   },
+   {
+    "seq": 262,
+    "title": "2012-10-20(2012년도 산림조합 송이버섯 공판 종료-내용없음)",
+    "reason": "엑셀 첨부 없음"
+   }
+  ]
+ },
+ "reports": [
+  {
+   "date": "2008-09-19",
+   "sourceSeq": 76,
+   "source": "comparison",
+   "issues": [
+    {
+     "code": "comparison-mismatch",
+     "target": "강원/고성",
+     "detail": "비교 시트(seq 76) 누계 711.33kg/89234142원 ≠ 원본 701.59kg/88404772원"
+    }
+   ]
+  },
+  {
+   "date": "2007-09-06",
+   "sourceSeq": 5,
+   "source": "comparison",
+   "issues": [
+    {
+     "code": "triple-sum",
+     "target": "경북/문경",
+     "detail": "공판량 365.7 + 0 ≠ null"
+    },
+    {
+     "code": "triple-sum",
+     "target": "경북/영덕",
+     "detail": "공판량 10.36 + 0 ≠ null"
+    },
+    {
+     "code": "triple-sum",
+     "target": "경남/함양",
+     "detail": "공판량 8.9 + 0 ≠ null"
+    },
+    {
+     "code": "triple-sum",
+     "target": "경북/소계",
+     "detail": "공판량 376.06 + 0 ≠ 0"
+    },
+    {
+     "code": "triple-sum",
+     "target": "경남/소계",
+     "detail": "공판량 8.9 + 0 ≠ 0"
+    },
+    {
+     "code": "triple-sum",
+     "target": "계/계",
+     "detail": "공판량 384.96 + 0 ≠ 0"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/문경",
+     "detail": "공판량 전날 누계 0 → 전일까지 365.7"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/영덕",
+     "detail": "공판량 전날 누계 0 → 전일까지 10.36"
+    },
+    {
+     "code": "chain-break",
+     "target": "경남/함양",
+     "detail": "공판량 전날 누계 0 → 전일까지 8.9"
+    }
+   ]
+  },
+  {
+   "date": "2007-09-08",
+   "sourceSeq": 7,
+   "source": "comparison",
+   "issues": [
+    {
+     "code": "chain-break",
+     "target": "강원/홍천",
+     "detail": "공판량 전날 누계 null → 전일까지 987.35"
+    },
+    {
+     "code": "chain-break",
+     "target": "강원/홍천",
+     "detail": "공판금액 전날 누계 null → 전일까지 102525014"
+    },
+    {
+     "code": "chain-break",
+     "target": "강원/인제",
+     "detail": "공판량 전날 누계 0 → 전일까지 460.86"
+    },
+    {
+     "code": "chain-break",
+     "target": "강원/인제",
+     "detail": "공판금액 전날 누계 0 → 전일까지 57114074"
+    },
+    {
+     "code": "chain-break",
+     "target": "강원/삼척",
+     "detail": "공판량 전날 누계 0 → 전일까지 44.04"
+    },
+    {
+     "code": "chain-break",
+     "target": "강원/삼척",
+     "detail": "공판금액 전날 누계 0 → 전일까지 6085026"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/포항",
+     "detail": "공판량 전날 누계 null → 전일까지 39.42"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/포항",
+     "detail": "공판금액 전날 누계 null → 전일까지 6403600"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/안동",
+     "detail": "공판량 전날 누계 null → 전일까지 76.95"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/안동",
+     "detail": "공판금액 전날 누계 null → 전일까지 12858670"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/상주",
+     "detail": "공판량 전날 누계 0 → 전일까지 203"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/상주",
+     "detail": "공판금액 전날 누계 0 → 전일까지 25561745"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/문경",
+     "detail": "공판량 전날 누계 null → 전일까지 1378.7"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/문경",
+     "detail": "공판금액 전날 누계 null → 전일까지 190908820"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/청송",
+     "detail": "공판량 전날 누계 0 → 전일까지 129.7"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/청송",
+     "detail": "공판금액 전날 누계 0 → 전일까지 19285090"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/영덕",
+     "detail": "공판량 전날 누계 null → 전일까지 147.31"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/영덕",
+     "detail": "공판금액 전날 누계 0 → 전일까지 28930710"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/예천",
+     "detail": "공판량 전날 누계 null → 전일까지 411.3"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/예천",
+     "detail": "공판금액 전날 누계 0 → 전일까지 67641610"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/봉화",
+     "detail": "공판량 전날 누계 0 → 전일까지 276.7"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/봉화",
+     "detail": "공판금액 전날 누계 0 → 전일까지 45675620"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/울진",
+     "detail": "공판량 전날 누계 0 → 전일까지 13.65"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/울진",
+     "detail": "공판금액 전날 누계 0 → 전일까지 1925050"
+    },
+    {
+     "code": "chain-break",
+     "target": "경남/함양",
+     "detail": "공판량 전날 누계 null → 전일까지 97.35"
+    },
+    {
+     "code": "chain-break",
+     "target": "경남/함양",
+     "detail": "공판금액 전날 누계 0 → 전일까지 15979960"
+    },
+    {
+     "code": "chain-break",
+     "target": "경남/거창",
+     "detail": "공판량 전날 누계 null → 전일까지 618.7"
+    },
+    {
+     "code": "chain-break",
+     "target": "경남/거창",
+     "detail": "공판금액 전날 누계 0 → 전일까지 89409840"
+    }
+   ]
+  },
+  {
+   "date": "2007-09-09",
+   "sourceSeq": 8,
+   "source": "comparison",
+   "issues": [
+    {
+     "code": "chain-break",
+     "target": "강원/홍천",
+     "detail": "공판량 전날 누계 987.35 → 전일까지 null"
+    },
+    {
+     "code": "chain-break",
+     "target": "강원/홍천",
+     "detail": "공판금액 전날 누계 102525014 → 전일까지 null"
+    },
+    {
+     "code": "chain-break",
+     "target": "강원/인제",
+     "detail": "공판량 전날 누계 460.86 → 전일까지 null"
+    },
+    {
+     "code": "chain-break",
+     "target": "강원/인제",
+     "detail": "공판금액 전날 누계 57114074 → 전일까지 null"
+    },
+    {
+     "code": "chain-break",
+     "target": "강원/삼척",
+     "detail": "공판량 전날 누계 44.04 → 전일까지 null"
+    },
+    {
+     "code": "chain-break",
+     "target": "강원/삼척",
+     "detail": "공판금액 전날 누계 6085026 → 전일까지 null"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/포항",
+     "detail": "공판량 전날 누계 39.42 → 전일까지 null"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/포항",
+     "detail": "공판금액 전날 누계 6403600 → 전일까지 null"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/안동",
+     "detail": "공판량 전날 누계 76.95 → 전일까지 null"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/안동",
+     "detail": "공판금액 전날 누계 12858670 → 전일까지 null"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/상주",
+     "detail": "공판량 전날 누계 203 → 전일까지 null"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/상주",
+     "detail": "공판금액 전날 누계 25561745 → 전일까지 null"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/문경",
+     "detail": "공판량 전날 누계 1378.7 → 전일까지 null"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/문경",
+     "detail": "공판금액 전날 누계 190908820 → 전일까지 null"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/청송",
+     "detail": "공판량 전날 누계 129.7 → 전일까지 null"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/청송",
+     "detail": "공판금액 전날 누계 19285090 → 전일까지 null"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/영덕",
+     "detail": "공판량 전날 누계 147.31 → 전일까지 null"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/영덕",
+     "detail": "공판금액 전날 누계 28930710 → 전일까지 null"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/예천",
+     "detail": "공판량 전날 누계 411.3 → 전일까지 null"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/예천",
+     "detail": "공판금액 전날 누계 67641610 → 전일까지 null"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/봉화",
+     "detail": "공판량 전날 누계 276.7 → 전일까지 null"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/봉화",
+     "detail": "공판금액 전날 누계 45675620 → 전일까지 null"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/울진",
+     "detail": "공판량 전날 누계 13.65 → 전일까지 null"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/울진",
+     "detail": "공판금액 전날 누계 1925050 → 전일까지 null"
+    },
+    {
+     "code": "chain-break",
+     "target": "경남/함양",
+     "detail": "공판량 전날 누계 97.35 → 전일까지 null"
+    },
+    {
+     "code": "chain-break",
+     "target": "경남/함양",
+     "detail": "공판금액 전날 누계 15979960 → 전일까지 null"
+    },
+    {
+     "code": "chain-break",
+     "target": "경남/거창",
+     "detail": "공판량 전날 누계 618.7 → 전일까지 null"
+    },
+    {
+     "code": "chain-break",
+     "target": "경남/거창",
+     "detail": "공판금액 전날 누계 89409840 → 전일까지 null"
+    }
+   ]
+  },
+  {
+   "date": "2007-09-11",
+   "sourceSeq": 10,
+   "source": "comparison",
+   "issues": [
+    {
+     "code": "header-mismatch",
+     "detail": "머리글 날짜 2007-09-10 ≠ 게시물 2007-09-11"
+    }
+   ]
+  },
+  {
+   "date": "2007-09-12",
+   "sourceSeq": 12,
+   "source": "comparison",
+   "issues": [
+    {
+     "code": "header-mismatch",
+     "detail": "머리글 날짜 2007-09-10 ≠ 게시물 2007-09-12"
+    }
+   ]
+  },
+  {
+   "date": "2007-09-23",
+   "sourceSeq": 24,
+   "source": "comparison",
+   "issues": [
+    {
+     "code": "chain-break",
+     "target": "강원/원주",
+     "detail": "공판량 전날 누계 48.63 → 전일까지 0"
+    },
+    {
+     "code": "chain-break",
+     "target": "강원/원주",
+     "detail": "공판금액 전날 누계 3633972 → 전일까지 0"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/영천",
+     "detail": "공판금액 전날 누계 58767250 → 전일까지 58769250"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/봉화",
+     "detail": "공판금액 전날 누계 350148580 → 전일까지 345784580"
+    }
+   ]
+  },
+  {
+   "date": "2007-09-24",
+   "sourceSeq": 25,
+   "source": "comparison",
+   "issues": [
+    {
+     "code": "chain-break",
+     "target": "강원/원주",
+     "detail": "공판량 전날 누계 55.42 → 전일까지 104.05"
+    },
+    {
+     "code": "chain-break",
+     "target": "강원/원주",
+     "detail": "공판금액 전날 누계 4129667 → 전일까지 7763639"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/영천",
+     "detail": "공판금액 전날 누계 76862071 → 전일까지 76860071"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/봉화",
+     "detail": "공판금액 전날 누계 460530530 → 전일까지 464894530"
+    }
+   ]
+  },
+  {
+   "date": "2007-09-25",
+   "sourceSeq": 26,
+   "source": "comparison",
+   "issues": [
+    {
+     "code": "header-mismatch",
+     "detail": "머리글 날짜 2007-09-24 ≠ 게시물 2007-09-25"
+    }
+   ]
+  },
+  {
+   "date": "2007-09-26",
+   "sourceSeq": 27,
+   "source": "comparison",
+   "issues": [
+    {
+     "code": "header-mismatch",
+     "detail": "머리글 날짜 2007-09-24 ≠ 게시물 2007-09-26"
+    },
+    {
+     "code": "chain-break",
+     "target": "강원/인제",
+     "detail": "공판금액 전날 누계 263122943 → 전일까지 262859207"
+    }
+   ]
+  },
+  {
+   "date": "2007-09-29",
+   "sourceSeq": 31,
+   "source": "comparison",
+   "issues": [
+    {
+     "code": "chain-break",
+     "target": "경남/함양",
+     "detail": "공판량 전날 누계 1086.44 → 전일까지 944.05"
+    },
+    {
+     "code": "chain-break",
+     "target": "경남/함양",
+     "detail": "공판금액 전날 누계 104327229 → 전일까지 90817512"
+    },
+    {
+     "code": "chain-break",
+     "target": "경남/거창",
+     "detail": "공판량 전날 누계 4208.31 → 전일까지 4350.7"
+    },
+    {
+     "code": "chain-break",
+     "target": "경남/거창",
+     "detail": "공판금액 전날 누계 405149183 → 전일까지 418658900"
+    }
+   ]
+  },
+  {
+   "date": "2007-09-30",
+   "sourceSeq": 32,
+   "source": "comparison",
+   "issues": [
+    {
+     "code": "chain-break",
+     "target": "경남/함양",
+     "detail": "공판량 전날 누계 978.74 → 전일까지 1121.13"
+    },
+    {
+     "code": "chain-break",
+     "target": "경남/함양",
+     "detail": "공판금액 전날 누계 94077474 → 전일까지 107587191"
+    },
+    {
+     "code": "chain-break",
+     "target": "경남/거창",
+     "detail": "공판량 전날 누계 4551.5 → 전일까지 4409.11"
+    },
+    {
+     "code": "chain-break",
+     "target": "경남/거창",
+     "detail": "공판금액 전날 누계 441624860 → 전일까지 428115143"
+    }
+   ]
+  },
+  {
+   "date": "2007-10-05",
+   "sourceSeq": 39,
+   "source": "comparison",
+   "issues": [
+    {
+     "code": "chain-break",
+     "target": "강원/홍천",
+     "detail": "공판량 전날 누계 5458.1 → 전일까지 5395.3"
+    },
+    {
+     "code": "chain-break",
+     "target": "강원/홍천",
+     "detail": "공판금액 전날 누계 437037812 → 전일까지 430408382"
+    },
+    {
+     "code": "chain-break",
+     "target": "강원/고성",
+     "detail": "공판량 전날 누계 2443.89 → 전일까지 2310.29"
+    },
+    {
+     "code": "chain-break",
+     "target": "강원/고성",
+     "detail": "공판금액 전날 누계 222362290 → 전일까지 205882730"
+    },
+    {
+     "code": "chain-break",
+     "target": "강원/강릉",
+     "detail": "공판량 전날 누계 3071.33 → 전일까지 2942.69"
+    },
+    {
+     "code": "chain-break",
+     "target": "강원/강릉",
+     "detail": "공판금액 전날 누계 255555973 → 전일까지 244135332"
+    },
+    {
+     "code": "chain-break",
+     "target": "강원/삼척",
+     "detail": "공판량 전날 누계 4841.94 → 전일까지 4719.94"
+    },
+    {
+     "code": "chain-break",
+     "target": "강원/삼척",
+     "detail": "공판금액 전날 누계 379462626 → 전일까지 366749610"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/포항",
+     "detail": "공판량 전날 누계 2633.59 → 전일까지 2588.11"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/포항",
+     "detail": "공판금액 전날 누계 199893611 → 전일까지 196363563"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/안동",
+     "detail": "공판량 전날 누계 6349.15 → 전일까지 6267.75"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/안동",
+     "detail": "공판금액 전날 누계 483427419 → 전일까지 476607919"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/영천",
+     "detail": "공판량 전날 누계 2137.8 → 전일까지 2081.1"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/영천",
+     "detail": "공판금액 전날 누계 180201858 → 전일까지 173020053"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/상주",
+     "detail": "공판량 전날 누계 5067.15 → 전일까지 5014.45"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/상주",
+     "detail": "공판금액 전날 누계 353899275 → 전일까지 349382805"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/문경",
+     "detail": "공판량 전날 누계 9232.2 → 전일까지 9002.5"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/문경",
+     "detail": "공판금액 전날 누계 735665640 → 전일까지 722082320"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/의성",
+     "detail": "공판량 전날 누계 1991.2 → 전일까지 1955.3"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/의성",
+     "detail": "공판금액 전날 누계 154304128 → 전일까지 150961828"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/청송",
+     "detail": "공판량 전날 누계 6762.22 → 전일까지 6655.1"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/청송",
+     "detail": "공판금액 전날 누계 525604737 → 전일까지 513587523"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/영덕",
+     "detail": "공판량 전날 누계 18674.23 → 전일까지 18373.33"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/영덕",
+     "detail": "공판금액 전날 누계 1456198921 → 전일까지 1432018095"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/청도",
+     "detail": "공판량 전날 누계 4029.4 → 전일까지 3950.7"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/청도",
+     "detail": "공판금액 전날 누계 465264750 → 전일까지 452053810"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/봉화",
+     "detail": "공판량 전날 누계 11666.3 → 전일까지 11520.8"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/봉화",
+     "detail": "공판금액 전날 누계 1084419789 → 전일까지 1069504309"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/울진",
+     "detail": "공판량 전날 누계 10090.2 → 전일까지 9855.05"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/울진",
+     "detail": "공판금액 전날 누계 777256754 → 전일까지 751129459"
+    },
+    {
+     "code": "chain-break",
+     "target": "경남/함양",
+     "detail": "공판량 전날 누계 1238.55 → 전일까지 1225.63"
+    },
+    {
+     "code": "chain-break",
+     "target": "경남/함양",
+     "detail": "공판금액 전날 누계 121061769 → 전일까지 120077813"
+    },
+    {
+     "code": "chain-break",
+     "target": "경남/거창",
+     "detail": "공판량 전날 누계 5150.91 → 전일까지 5091.61"
+    },
+    {
+     "code": "chain-break",
+     "target": "경남/거창",
+     "detail": "공판금액 전날 누계 502427233 → 전일까지 496188273"
+    }
+   ]
+  },
+  {
+   "date": "2007-10-06",
+   "sourceSeq": 40,
+   "source": "comparison",
+   "issues": [
+    {
+     "code": "chain-break",
+     "target": "강원/홍천",
+     "detail": "공판량 전날 누계 5458.1 → 전일까지 5512.1"
+    },
+    {
+     "code": "chain-break",
+     "target": "강원/홍천",
+     "detail": "공판금액 전날 누계 437037812 → 전일까지 443643517"
+    },
+    {
+     "code": "chain-break",
+     "target": "강원/고성",
+     "detail": "공판량 전날 누계 2443.89 → 전일까지 2542.9"
+    },
+    {
+     "code": "chain-break",
+     "target": "강원/고성",
+     "detail": "공판금액 전날 누계 222362290 → 전일까지 234950955"
+    },
+    {
+     "code": "chain-break",
+     "target": "강원/강릉",
+     "detail": "공판량 전날 누계 3071.33 → 전일까지 3268.84"
+    },
+    {
+     "code": "chain-break",
+     "target": "강원/강릉",
+     "detail": "공판금액 전날 누계 255555973 → 전일까지 282180724"
+    },
+    {
+     "code": "chain-break",
+     "target": "강원/삼척",
+     "detail": "공판량 전날 누계 4841.94 → 전일까지 4959.62"
+    },
+    {
+     "code": "chain-break",
+     "target": "강원/삼척",
+     "detail": "공판금액 전날 누계 379462626 → 전일까지 393429696"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/포항",
+     "detail": "공판량 전날 누계 2633.59 → 전일까지 2668.17"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/포항",
+     "detail": "공판금액 전날 누계 199893611 → 전일까지 203494683"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/안동",
+     "detail": "공판량 전날 누계 6349.15 → 전일까지 6490.85"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/안동",
+     "detail": "공판금액 전날 누계 483427419 → 전일까지 496140379"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/영천",
+     "detail": "공판량 전날 누계 2137.8 → 전일까지 2162.2"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/영천",
+     "detail": "공판금액 전날 누계 180201858 → 전일까지 182719003"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/상주",
+     "detail": "공판량 전날 누계 5067.15 → 전일까지 5163.35"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/상주",
+     "detail": "공판금액 전날 누계 353899275 → 전일까지 362682200"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/문경",
+     "detail": "공판량 전날 누계 9232.2 → 전일까지 9384.2"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/문경",
+     "detail": "공판금액 전날 누계 735665640 → 전일까지 748445110"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/의성",
+     "detail": "공판량 전날 누계 1991.2 → 전일까지 2005.9"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/의성",
+     "detail": "공판금액 전날 누계 154304128 → 전일까지 156335728"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/청송",
+     "detail": "공판량 전날 누계 6762.22 → 전일까지 6888.37"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/청송",
+     "detail": "공판금액 전날 누계 525604737 → 전일까지 537670472"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/영덕",
+     "detail": "공판량 전날 누계 18674.23 → 전일까지 18905.93"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/영덕",
+     "detail": "공판금액 전날 누계 1456198921 → 전일까지 1476943941"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/청도",
+     "detail": "공판량 전날 누계 4029.4 → 전일까지 4095.9"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/청도",
+     "detail": "공판금액 전날 누계 465264750 → 전일까지 477897390"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/봉화",
+     "detail": "공판량 전날 누계 11666.3 → 전일까지 11787.5"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/봉화",
+     "detail": "공판금액 전날 누계 1084419789 → 전일까지 1093902439"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/울진",
+     "detail": "공판량 전날 누계 10090.2 → 전일까지 10282.5"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/울진",
+     "detail": "공판금액 전날 누계 777256754 → 전일까지 799555709"
+    },
+    {
+     "code": "chain-break",
+     "target": "경남/함양",
+     "detail": "공판량 전날 누계 1238.55 → 전일까지 1258.26"
+    },
+    {
+     "code": "chain-break",
+     "target": "경남/함양",
+     "detail": "공판금액 전날 누계 121061769 → 전일까지 123101135"
+    },
+    {
+     "code": "chain-break",
+     "target": "경남/거창",
+     "detail": "공판량 전날 누계 5150.91 → 전일까지 5255.51"
+    },
+    {
+     "code": "chain-break",
+     "target": "경남/거창",
+     "detail": "공판금액 전날 누계 502427233 → 전일까지 514082833"
+    }
+   ]
+  },
+  {
+   "date": "2007-10-14",
+   "sourceSeq": 48,
+   "source": "comparison",
+   "issues": [
+    {
+     "code": "chain-break",
+     "target": "강원/고성",
+     "detail": "공판량 전날 누계 3047.08 → 전일까지 3000.7"
+    },
+    {
+     "code": "chain-break",
+     "target": "강원/고성",
+     "detail": "공판금액 전날 누계 300270296 → 전일까지 295670483"
+    },
+    {
+     "code": "chain-break",
+     "target": "강원/삼척",
+     "detail": "공판량 전날 누계 5882.46 → 전일까지 5711.2"
+    },
+    {
+     "code": "chain-break",
+     "target": "강원/삼척",
+     "detail": "공판금액 전날 누계 512682432 → 전일까지 495022627"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/포항",
+     "detail": "공판량 전날 누계 3900.72 → 전일까지 3548.47"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/포항",
+     "detail": "공판금액 전날 누계 404126573 → 전일까지 345989923"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/안동",
+     "detail": "공판량 전날 누계 6856.95 → 전일까지 6792.35"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/안동",
+     "detail": "공판금액 전날 누계 542518309 → 전일까지 533310329"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/상주",
+     "detail": "공판량 전날 누계 5555.45 → 전일까지 5489.2"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/상주",
+     "detail": "공판금액 전날 누계 411523420 → 전일까지 404706195"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/문경",
+     "detail": "공판량 전날 누계 9976.15 → 전일까지 9895.55"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/문경",
+     "detail": "공판금액 전날 누계 822609800 → 전일까지 813706660"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/의성",
+     "detail": "공판량 전날 누계 2181.9 → 전일까지 2157.2"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/의성",
+     "detail": "공판금액 전날 누계 179897649 → 전일까지 176714119"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/청송",
+     "detail": "공판량 전날 누계 7367.25 → 전일까지 7264.85"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/청송",
+     "detail": "공판금액 전날 누계 603018153 → 전일까지 589804963"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/영덕",
+     "detail": "공판량 전날 누계 22171.34 → 전일까지 21566.14"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/영덕",
+     "detail": "공판금액 전날 누계 1901169367 → 전일까지 1821793192"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/청도",
+     "detail": "공판량 전날 누계 5511.5 → 전일까지 5198.2"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/청도",
+     "detail": "공판금액 전날 누계 721716480 → 전일까지 667992780"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/울진",
+     "detail": "공판량 전날 누계 12265.45 → 전일까지 11866.15"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/울진",
+     "detail": "공판금액 전날 누계 1071116259 → 전일까지 1019146809"
+    },
+    {
+     "code": "chain-break",
+     "target": "경남/함양",
+     "detail": "공판량 전날 누계 1319.64 → 전일까지 1312.79"
+    },
+    {
+     "code": "chain-break",
+     "target": "경남/함양",
+     "detail": "공판금액 전날 누계 131691735 → 전일까지 130657380"
+    },
+    {
+     "code": "chain-break",
+     "target": "경남/거창",
+     "detail": "공판량 전날 누계 5707.41 → 전일까지 5648.51"
+    },
+    {
+     "code": "chain-break",
+     "target": "경남/거창",
+     "detail": "공판금액 전날 누계 576520423 → 전일까지 567934393"
+    }
+   ]
+  },
+  {
+   "date": "2007-10-15",
+   "sourceSeq": 49,
+   "source": "comparison",
+   "issues": [
+    {
+     "code": "chain-break",
+     "target": "강원/고성",
+     "detail": "공판량 전날 누계 3047.08 → 전일까지 3084.17"
+    },
+    {
+     "code": "chain-break",
+     "target": "강원/고성",
+     "detail": "공판금액 전날 누계 300270296 → 전일까지 304094523"
+    },
+    {
+     "code": "chain-break",
+     "target": "강원/삼척",
+     "detail": "공판량 전날 누계 5882.46 → 전일까지 6033.14"
+    },
+    {
+     "code": "chain-break",
+     "target": "강원/삼척",
+     "detail": "공판금액 전날 누계 512682432 → 전일까지 530478433"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/포항",
+     "detail": "공판량 전날 누계 3900.72 → 전일까지 4468.71"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/포항",
+     "detail": "공판금액 전날 누계 404126573 → 전일까지 477600938"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/안동",
+     "detail": "공판량 전날 누계 6856.95 → 전일까지 6911.65"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/안동",
+     "detail": "공판금액 전날 누계 542518309 → 전일까지 549578089"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/상주",
+     "detail": "공판량 전날 누계 5555.45 → 전일까지 5604"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/상주",
+     "detail": "공판금액 전날 누계 411523420 → 전일까지 417189370"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/문경",
+     "detail": "공판량 전날 누계 9976.15 → 전일까지 10078.25"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/문경",
+     "detail": "공판금액 전날 누계 822609800 → 전일까지 833947090"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/의성",
+     "detail": "공판량 전날 누계 2181.9 → 전일까지 2204.3"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/의성",
+     "detail": "공판금액 전날 누계 179897649 → 전일까지 182431929"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/청송",
+     "detail": "공판량 전날 누계 7367.25 → 전일까지 7451.25"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/청송",
+     "detail": "공판금액 전날 누계 603018153 → 전일까지 612270143"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/영덕",
+     "detail": "공판량 전날 누계 22171.34 → 전일까지 23114.24"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/영덕",
+     "detail": "공판금액 전날 누계 1901169367 → 전일까지 2005585274"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/청도",
+     "detail": "공판량 전날 누계 5511.5 → 전일까지 5916.5"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/청도",
+     "detail": "공판금액 전날 누계 721716480 → 전일까지 782143320"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/울진",
+     "detail": "공판량 전날 누계 12265.45 → 전일까지 12936.2"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/울진",
+     "detail": "공판금액 전날 누계 1071116259 → 전일까지 1141091567"
+    },
+    {
+     "code": "chain-break",
+     "target": "경남/함양",
+     "detail": "공판량 전날 누계 1319.64 → 전일까지 1343.09"
+    },
+    {
+     "code": "chain-break",
+     "target": "경남/함양",
+     "detail": "공판금액 전날 누계 131691735 → 전일까지 134889610"
+    },
+    {
+     "code": "chain-break",
+     "target": "경남/거창",
+     "detail": "공판량 전날 누계 5707.41 → 전일까지 5784.31"
+    },
+    {
+     "code": "chain-break",
+     "target": "경남/거창",
+     "detail": "공판금액 전날 누계 576520423 → 전일까지 586537513"
+    }
+   ]
+  },
+  {
+   "date": "2007-10-17",
+   "sourceSeq": 52,
+   "source": "comparison",
+   "issues": [
+    {
+     "code": "chain-break",
+     "target": "강원/고성",
+     "detail": "공판량 전날 누계 3163.29 → 전일까지 3122.7"
+    },
+    {
+     "code": "chain-break",
+     "target": "강원/고성",
+     "detail": "공판금액 전날 누계 311009550 → 전일까지 307664109"
+    },
+    {
+     "code": "chain-break",
+     "target": "강원/삼척",
+     "detail": "공판량 전날 누계 6356.94 → 전일까지 6177.04"
+    },
+    {
+     "code": "chain-break",
+     "target": "강원/삼척",
+     "detail": "공판금액 전날 누계 559511849 → 전일까지 544714261"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/포항",
+     "detail": "공판량 전날 누계 5606.11 → 전일까지 5113.04"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/포항",
+     "detail": "공판금액 전날 누계 620421995 → 전일까지 551225798"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/안동",
+     "detail": "공판량 전날 누계 7081 → 전일까지 6996.15"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/안동",
+     "detail": "공판금액 전날 누계 566115824 → 전일까지 558048239"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/상주",
+     "detail": "공판량 전날 누계 5683.95 → 전일까지 5629.75"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/상주",
+     "detail": "공판금액 전날 누계 424719505 → 전일까지 420158890"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/문경",
+     "detail": "공판량 전날 누계 10263.25 → 전일까지 10190.75"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/문경",
+     "detail": "공판금액 전날 누계 850712500 → 전일까지 844772090"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/의성",
+     "detail": "공판량 전날 누계 2226.4 → 전일까지 2215.7"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/의성",
+     "detail": "공판금액 전날 누계 184653529 → 전일까지 183621029"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/청송",
+     "detail": "공판량 전날 누계 7625.35 → 전일까지 7549.75"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/청송",
+     "detail": "공판금액 전날 누계 629467653 → 전일까지 622351353"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/영덕",
+     "detail": "공판량 전날 누계 24949.04 → 전일까지 24083.89"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/영덕",
+     "detail": "공판금액 전날 누계 2171242186 → 전일까지 2092408098"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/청도",
+     "detail": "공판량 전날 누계 6575.1 → 전일까지 6245.5"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/청도",
+     "detail": "공판금액 전날 누계 868158380 → 전일까지 825839930"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/울진",
+     "detail": "공판량 전날 누계 14135.05 → 전일까지 13579.55"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/울진",
+     "detail": "공판금액 전날 누계 1259727982 → 전일까지 1203067767"
+    },
+    {
+     "code": "chain-break",
+     "target": "경남/함양",
+     "detail": "공판량 전날 누계 1390.13 → 전일까지 1373.39"
+    },
+    {
+     "code": "chain-break",
+     "target": "경남/함양",
+     "detail": "공판금액 전날 누계 139836449 → 전일까지 138050050"
+    },
+    {
+     "code": "chain-break",
+     "target": "경남/거창",
+     "detail": "공판량 전날 누계 5936.21 → 전일까지 5843.61"
+    },
+    {
+     "code": "chain-break",
+     "target": "경남/거창",
+     "detail": "공판금액 전날 누계 604517193 → 전일까지 594380543"
+    }
+   ]
+  },
+  {
+   "date": "2007-10-18",
+   "sourceSeq": 53,
+   "source": "comparison",
+   "issues": [
+    {
+     "code": "chain-break",
+     "target": "강원/고성",
+     "detail": "공판량 전날 누계 3163.29 → 전일까지 3194.54"
+    },
+    {
+     "code": "chain-break",
+     "target": "강원/고성",
+     "detail": "공판금액 전날 누계 311009550 → 전일까지 313316640"
+    },
+    {
+     "code": "chain-break",
+     "target": "강원/삼척",
+     "detail": "공판량 전날 누계 6356.94 → 전일까지 6465.24"
+    },
+    {
+     "code": "chain-break",
+     "target": "강원/삼척",
+     "detail": "공판금액 전날 누계 559511849 → 전일까지 569969629"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/포항",
+     "detail": "공판량 전날 누계 5606.11 → 전일까지 6159.42"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/포항",
+     "detail": "공판금액 전날 누계 620421995 → 전일까지 685710364"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/안동",
+     "detail": "공판량 전날 누계 7081 → 전일까지 7147.1"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/안동",
+     "detail": "공판금액 전날 누계 566115824 → 전일까지 572585734"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/상주",
+     "detail": "공판량 전날 누계 5683.95 → 전일까지 5708.75"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/상주",
+     "detail": "공판금액 전날 누계 424719505 → 전일까지 426380495"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/문경",
+     "detail": "공판량 전날 누계 10263.25 → 전일까지 10315.45"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/문경",
+     "detail": "공판금액 전날 누계 850712500 → 전일까지 855207530"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/청송",
+     "detail": "공판량 전날 누계 7625.35 → 전일까지 7682.75"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/청송",
+     "detail": "공판금액 전날 누계 629467653 → 전일까지 635641403"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/영덕",
+     "detail": "공판량 전날 누계 24949.04 → 전일까지 25644.09"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/영덕",
+     "detail": "공판금액 전날 누계 2171242186 → 전일까지 2237164128"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/청도",
+     "detail": "공판량 전날 누계 6575.1 → 전일까지 6865.3"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/청도",
+     "detail": "공판금액 전날 누계 868158380 → 전일까지 902816430"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/울진",
+     "detail": "공판량 전날 누계 14135.05 → 전일까지 14587.45"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/울진",
+     "detail": "공판금액 전날 누계 1259727982 → 전일까지 1303339252"
+    },
+    {
+     "code": "chain-break",
+     "target": "경남/함양",
+     "detail": "공판량 전날 누계 1390.13 → 전일까지 1405.88"
+    },
+    {
+     "code": "chain-break",
+     "target": "경남/함양",
+     "detail": "공판금액 전날 누계 139836449 → 전일까지 141535449"
+    },
+    {
+     "code": "chain-break",
+     "target": "경남/거창",
+     "detail": "공판량 전날 누계 5936.21 → 전일까지 5994.46"
+    },
+    {
+     "code": "chain-break",
+     "target": "경남/거창",
+     "detail": "공판금액 전날 누계 604517193 → 전일까지 610235748"
+    }
+   ]
+  },
+  {
+   "date": "2007-10-31",
+   "sourceSeq": 66,
+   "source": "comparison",
+   "issues": [
+    {
+     "code": "chain-break",
+     "target": "경북/포항",
+     "detail": "공판량 전날 누계 9871.99 → 전일까지 9770.23"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/포항",
+     "detail": "공판금액 전날 누계 1152042169 → 전일까지 1141277616"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/영덕",
+     "detail": "공판량 전날 누계 30214.58 → 전일까지 30031.48"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/영덕",
+     "detail": "공판금액 전날 누계 2686520560 → 전일까지 2672238598"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/청도",
+     "detail": "공판량 전날 누계 8563.02 → 전일까지 8539.52"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/청도",
+     "detail": "공판금액 전날 누계 1125303082 → 전일까지 1122931962"
+    },
+    {
+     "code": "chain-break",
+     "target": "경남/함양",
+     "detail": "공판량 전날 누계 1538.76 → 전일까지 1535.54"
+    },
+    {
+     "code": "chain-break",
+     "target": "경남/함양",
+     "detail": "공판금액 전날 누계 153080999 → 전일까지 152834799"
+    }
+   ]
+  },
+  {
+   "date": "2007-11-01",
+   "sourceSeq": 67,
+   "source": "comparison",
+   "issues": [
+    {
+     "code": "chain-break",
+     "target": "강원/홍천",
+     "detail": "공판량 전날 누계 5547.8 → 전일까지 218.06"
+    },
+    {
+     "code": "chain-break",
+     "target": "강원/홍천",
+     "detail": "공판금액 전날 누계 447808737 → 전일까지 44570858"
+    },
+    {
+     "code": "chain-break",
+     "target": "강원/원주",
+     "detail": "공판량 전날 누계 244.05 → 전일까지 0"
+    },
+    {
+     "code": "chain-break",
+     "target": "강원/원주",
+     "detail": "공판금액 전날 누계 17755298 → 전일까지 0"
+    },
+    {
+     "code": "chain-break",
+     "target": "강원/인제",
+     "detail": "공판량 전날 누계 4328.32 → 전일까지 602.55"
+    },
+    {
+     "code": "chain-break",
+     "target": "강원/인제",
+     "detail": "공판금액 전날 누계 306972122 → 전일까지 100411828"
+    },
+    {
+     "code": "chain-break",
+     "target": "강원/고성",
+     "detail": "공판량 전날 누계 3300.7 → 전일까지 716.68"
+    },
+    {
+     "code": "chain-break",
+     "target": "강원/고성",
+     "detail": "공판금액 전날 누계 319902685 → 전일까지 90682288"
+    },
+    {
+     "code": "chain-break",
+     "target": "강원/강릉",
+     "detail": "공판량 전날 누계 4355.61 → 전일까지 235.96"
+    },
+    {
+     "code": "chain-break",
+     "target": "강원/강릉",
+     "detail": "공판금액 전날 누계 447772844 → 전일까지 27014771"
+    },
+    {
+     "code": "chain-break",
+     "target": "강원/삼척",
+     "detail": "공판량 전날 누계 6818.82 → 전일까지 3031.44"
+    },
+    {
+     "code": "chain-break",
+     "target": "강원/삼척",
+     "detail": "공판금액 전날 누계 601198769 → 전일까지 370472093"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/포항",
+     "detail": "공판량 전날 누계 9871.99 → 전일까지 3153.48"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/포항",
+     "detail": "공판금액 전날 누계 1152042169 → 전일까지 495995401"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/안동",
+     "detail": "공판량 전날 누계 7311.5 → 전일까지 1224.3"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/안동",
+     "detail": "공판금액 전날 누계 587441184 → 전일까지 141929705"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/영천",
+     "detail": "공판량 전날 누계 2162.2 → 전일까지 0"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/영천",
+     "detail": "공판금액 전날 누계 182719003 → 전일까지 0"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/상주",
+     "detail": "공판량 전날 누계 5752.25 → 전일까지 0"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/상주",
+     "detail": "공판금액 전날 누계 429785980 → 전일까지 0"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/문경",
+     "detail": "공판량 전날 누계 10383.75 → 전일까지 558.5"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/문경",
+     "detail": "공판금액 전날 누계 860948680 → 전일까지 71065110"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/의성",
+     "detail": "공판량 전날 누계 2226.4 → 전일까지 136.8"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/의성",
+     "detail": "공판금액 전날 누계 184653529 → 전일까지 16407820"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/청송",
+     "detail": "공판량 전날 누계 7842.63 → 전일까지 1958.83"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/청송",
+     "detail": "공판금액 전날 누계 650549103 → 전일까지 286830164"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/영덕",
+     "detail": "공판량 전날 누계 30214.58 → 전일까지 14564.28"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/영덕",
+     "detail": "공판금액 전날 누계 2686520560 → 전일까지 1995346543"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/청도",
+     "detail": "공판량 전날 누계 8563.02 → 전일까지 0"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/청도",
+     "detail": "공판금액 전날 누계 1125303082 → 전일까지 0"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/예천",
+     "detail": "공판량 전날 누계 3284.15 → 전일까지 452.45"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/예천",
+     "detail": "공판금액 전날 누계 293961044 → 전일까지 62498953"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/봉화",
+     "detail": "공판량 전날 누계 12267.35 → 전일까지 1335.08"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/봉화",
+     "detail": "공판금액 전날 누계 1154984831 → 전일까지 173570545"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/울진",
+     "detail": "공판량 전날 누계 17092.5 → 전일까지 7497.06"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/울진",
+     "detail": "공판금액 전날 누계 1534029969 → 전일까지 854995614"
+    },
+    {
+     "code": "chain-break",
+     "target": "경남/함양",
+     "detail": "공판량 전날 누계 1538.76 → 전일까지 0"
+    },
+    {
+     "code": "chain-break",
+     "target": "경남/함양",
+     "detail": "공판금액 전날 누계 153080999 → 전일까지 0"
+    },
+    {
+     "code": "chain-break",
+     "target": "경남/거창",
+     "detail": "공판량 전날 누계 6188.86 → 전일까지 544.75"
+    },
+    {
+     "code": "chain-break",
+     "target": "경남/거창",
+     "detail": "공판금액 전날 누계 631836678 → 전일까지 83305081"
+    }
+   ]
+  },
+  {
+   "date": "2008-09-07",
+   "sourceSeq": 6,
+   "source": "original",
+   "issues": [
+    {
+     "code": "header-mismatch",
+     "detail": "머리글 날짜 2007-09-07 ≠ 게시물 2008-09-07"
+    }
+   ]
+  },
+  {
+   "date": "2008-09-13",
+   "sourceSeq": 13,
+   "source": "original",
+   "issues": [
+    {
+     "code": "chain-break",
+     "target": "경북/청송",
+     "detail": "공판금액 전날 누계 104835256 → 전일까지 104828716"
+    }
+   ]
+  },
+  {
+   "date": "2008-09-23",
+   "sourceSeq": 24,
+   "source": "original",
+   "issues": [
+    {
+     "code": "chain-break",
+     "target": "경남/거창",
+     "detail": "공판량 전날 누계 546.96 → 전일까지 541.67"
+    }
+   ]
+  },
+  {
+   "date": "2008-09-26",
+   "sourceSeq": 27,
+   "source": "original",
+   "issues": [
+    {
+     "code": "missing-price",
+     "target": "경북/울진",
+     "detail": "gradeBelow 수량 13.65kg, 단가 없음"
+    }
+   ]
+  },
+  {
+   "date": "2008-10-21",
+   "sourceSeq": 56,
+   "source": "original",
+   "issues": [
+    {
+     "code": "chain-break",
+     "target": "강원/홍천",
+     "detail": "공판량 전날 누계 157.05 → 전일까지 218.06"
+    },
+    {
+     "code": "chain-break",
+     "target": "강원/홍천",
+     "detail": "공판금액 전날 누계 22815895 → 전일까지 44570858"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/포항",
+     "detail": "공판량 전날 누계 3135.46 → 전일까지 3074.45"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/포항",
+     "detail": "공판금액 전날 누계 493204198 → 전일까지 471449235"
+    }
+   ]
+  },
+  {
+   "date": "2008-10-26",
+   "sourceSeq": 61,
+   "source": "original",
+   "issues": [
+    {
+     "code": "total-sum",
+     "target": "계/계",
+     "detail": "grade3Stopped 수량 합 0.54 ≠ null"
+    }
+   ]
+  },
+  {
+   "date": "2009-10-02",
+   "sourceSeq": 89,
+   "source": "original",
+   "issues": [
+    {
+     "code": "chain-break",
+     "target": "강원/고성",
+     "detail": "공판량 전날 누계 176.51 → 전일까지 172.86"
+    },
+    {
+     "code": "chain-break",
+     "target": "강원/고성",
+     "detail": "공판금액 전날 누계 61909935 → 전일까지 60716750"
+    }
+   ]
+  },
+  {
+   "date": "2009-10-05",
+   "sourceSeq": 93,
+   "source": "original",
+   "issues": [
+    {
+     "code": "header-mismatch",
+     "detail": "제목 연도 2008 ≠ 게시물 2009-10-05"
+    }
+   ]
+  },
+  {
+   "date": "2009-10-06",
+   "sourceSeq": 94,
+   "source": "original",
+   "issues": [
+    {
+     "code": "chain-break",
+     "target": "강원/고성",
+     "detail": "공판량 전날 누계 177.44 → 전일까지 181.09"
+    },
+    {
+     "code": "chain-break",
+     "target": "강원/고성",
+     "detail": "공판금액 전날 누계 61964875 → 전일까지 63158060"
+    }
+   ]
+  },
+  {
+   "date": "2009-10-19",
+   "sourceSeq": 107,
+   "source": "original",
+   "issues": [
+    {
+     "code": "chain-break",
+     "target": "경북/영덕",
+     "detail": "공판금액 전날 누계 1475736669 → 전일까지 1475465270"
+    }
+   ]
+  },
+  {
+   "date": "2009-10-26",
+   "sourceSeq": 114,
+   "source": "original",
+   "issues": [
+    {
+     "code": "total-sum",
+     "target": "계/계",
+     "detail": "grade3Stopped 수량 합 15.31 ≠ null"
+    }
+   ]
+  },
+  {
+   "date": "2010-09-27",
+   "sourceSeq": 139,
+   "source": "original",
+   "issues": [
+    {
+     "code": "chain-break",
+     "target": "경북/영덕",
+     "detail": "공판량 전날 누계 1022.65 → 전일까지 1017.65"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/영덕",
+     "detail": "공판금액 전날 누계 132616799 → 전일까지 132101799"
+    }
+   ]
+  },
+  {
+   "date": "2010-09-29",
+   "sourceSeq": 141,
+   "source": "original",
+   "issues": [
+    {
+     "code": "chain-break",
+     "target": "강원/홍천",
+     "detail": "공판금액 전날 누계 177491310 → 전일까지 177390780"
+    }
+   ]
+  },
+  {
+   "date": "2010-10-02",
+   "sourceSeq": 144,
+   "source": "original",
+   "issues": [
+    {
+     "code": "chain-break",
+     "target": "경남/함양",
+     "detail": "공판금액 전날 누계 8153144 → 전일까지 8125244"
+    }
+   ]
+  },
+  {
+   "date": "2010-10-04",
+   "sourceSeq": 146,
+   "source": "original",
+   "issues": [
+    {
+     "code": "chain-break",
+     "target": "경북/영덕",
+     "detail": "공판량 전날 누계 21239.31 → 전일까지 21298.77"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/영덕",
+     "detail": "공판금액 전날 누계 1852034193 → 전일까지 1856407507"
+    }
+   ]
+  },
+  {
+   "date": "2010-10-10",
+   "sourceSeq": 152,
+   "source": "original",
+   "issues": [
+    {
+     "code": "chain-break",
+     "target": "경북/영덕",
+     "detail": "공판량 전날 누계 74819.42 → 전일까지 74808.82"
+    },
+    {
+     "code": "chain-break",
+     "target": "경북/영덕",
+     "detail": "공판금액 전날 누계 4712192554 → 전일까지 4709743194"
+    }
+   ]
+  },
+  {
+   "date": "2011-09-25",
+   "sourceSeq": 191,
+   "source": "original",
+   "issues": [
+    {
+     "code": "chain-break",
+     "target": "강원/강릉",
+     "detail": "공판량 전날 누계 404.69 → 전일까지 409.69"
+    },
+    {
+     "code": "chain-break",
+     "target": "강원/강릉",
+     "detail": "공판금액 전날 누계 104468503 → 전일까지 106336003"
+    }
+   ]
+  },
+  {
+   "date": "2011-09-26",
+   "sourceSeq": 192,
+   "source": "original",
+   "issues": [
+    {
+     "code": "chain-break",
+     "target": "경북/안동",
+     "detail": "공판금액 전날 누계 72471417 → 전일까지 72438417"
+    }
+   ]
+  },
+  {
+   "date": "2012-10-07",
+   "sourceSeq": 249,
+   "source": "original",
+   "issues": [
+    {
+     "code": "subtotal-sum",
+     "target": "경북/소계",
+     "detail": "grade1 수량 합 34.88 ≠ null"
+    },
+    {
+     "code": "subtotal-sum",
+     "target": "경북/소계",
+     "detail": "grade2 수량 합 72.42 ≠ null"
+    },
+    {
+     "code": "subtotal-sum",
+     "target": "경북/소계",
+     "detail": "grade3Stopped 수량 합 33.43 ≠ null"
+    },
+    {
+     "code": "subtotal-sum",
+     "target": "경북/소계",
+     "detail": "grade3Estimated 수량 합 562.76 ≠ null"
+    },
+    {
+     "code": "subtotal-sum",
+     "target": "경북/소계",
+     "detail": "gradeBelow 수량 합 1359.62 ≠ null"
+    }
+   ]
+  }
+ ]
+}

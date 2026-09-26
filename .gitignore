@@ -45,3 +45,6 @@ storybook-static
 
 # 외부 API 활용가이드 원본 (로컬 참고용)
 *.docx
+
+# 옛 공판 게시판 원본 (권리 미확정 — 정제 결과만 추적)
+/data/legacy-auction/raw/
