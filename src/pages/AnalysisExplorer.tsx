@@ -6,11 +6,13 @@ import SeasonStrip from "../components/AnalysisExplorer/SeasonStrip";
 import ExplorerControls from "../components/AnalysisExplorer/Controls";
 import ExplorerView from "../components/AnalysisExplorer/views";
 import ExplorerSummary from "../components/AnalysisExplorer/Summary";
+import NarrowScreenNotice from "../components/AnalysisExplorer/NarrowScreenNotice";
 import { requestRawCsv, useExplorerData, useExplorerMeta, usePrefetchExplorerData } from "../hooks/useAnalysisEngine";
 import { ANALYSIS_TEMPLATES, buildTemplateQuery } from "../utils/analysisQuery/templates";
 import { prefetchExplorerData } from "../workers/explorerDataCache";
 import useAnalysisQuery from "../hooks/useAnalysisQuery";
 import usePageMeta from "../hooks/usePageMeta";
+import useNarrowScreenGate from "../hooks/useNarrowScreenGate";
 import isInSeason from "../utils/isInSeason";
 import { PAGE_META } from "../const/Seo";
 import { EXPLORER_DATA_CACHE, EXPLORER_LAYOUT } from "../const/AnalysisLayout";
@@ -139,21 +141,27 @@ const ExplorerSkeleton = () => (
   </Stack>
 );
 
-/** 데이터 분석 탐색기 페이지 */
+/** 데이터를 불러와 탐색기를 연다 — 안내 화면에서는 마운트하지 않아 데이터도 받지 않는다 */
+const ExplorerLoader = () => {
+  const { meta, version, loading, error } = useExplorerMeta();
+
+  if (error) return <Typography color="error">데이터를 불러오지 못했습니다: {error}</Typography>;
+  if (loading || !meta) return <ExplorerSkeleton />;
+  return <ExplorerContent meta={meta} version={version} />;
+};
+
+/** 데이터 분석 탐색기 페이지 — 큰 화면 전용, 좁은 화면은 안내 후 선택 */
 const AnalysisExplorer = () => {
   usePageMeta(PAGE_META.dataAnalysis);
-  const { meta, version, loading, error } = useExplorerMeta();
+  const { showNotice, proceed } = useNarrowScreenGate(
+    EXPLORER_LAYOUT.MIN_VIEWPORT_WIDTH,
+    EXPLORER_LAYOUT.NARROW_BYPASS_KEY,
+  );
 
   return (
     <Box component="main" sx={{ minWidth: 0, bgcolor: "surface.base" }}>
       <Container maxWidth="xl" sx={{ py: { xs: 2, md: 3 } }}>
-        {error ? (
-          <Typography color="error">데이터를 불러오지 못했습니다: {error}</Typography>
-        ) : loading || !meta ? (
-          <ExplorerSkeleton />
-        ) : (
-          <ExplorerContent meta={meta} version={version} />
-        )}
+        {showNotice ? <NarrowScreenNotice onProceed={proceed} /> : <ExplorerLoader />}
       </Container>
     </Box>
   );
