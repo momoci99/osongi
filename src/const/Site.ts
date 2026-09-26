@@ -13,6 +13,18 @@ export const DATA_SOURCE = {
   url: "https://iforest.nfcf.or.kr/forest/user.tdf?a=user.songi.SongiApp&c=1001&mc=CYB_FIF_DGS_SNI&pmsh_item_c=01",
 } as const;
 
+/**
+ * 기상 데이터 출처 — 공공누리 제1유형(출처표시). 출처 표시가 이용 조건이므로 빼지 않는다.
+ * 기상청이 이 서비스를 보증하는 듯한 표현은 쓰지 않는다.
+ */
+export const WEATHER_DATA_SOURCE = {
+  name: "기상청 지상(종관, ASOS) 일자료 조회서비스",
+  url: "https://www.data.go.kr/data/15059093/openapi.do",
+  license: "공공누리 제1유형",
+  licenseUrl: "https://www.kogl.or.kr/info/licenseType1.do",
+  notice: "공공데이터포털(data.go.kr) 제공 자료를 관측소별로 가공해 분석 탐색기 날씨 뷰에 표시합니다.",
+} as const;
+
 /** 운영자 연락처 (데이터 중단 요청 창구 겸용) */
 export const CONTACT_EMAIL = "ykmo.work@gmail.com";
 

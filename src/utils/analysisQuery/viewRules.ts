@@ -84,6 +84,15 @@ export const VIEW_RULES: Record<AnalysisView, ViewRule> = {
     align: false,
     commonUnits: false,
   },
+  /** 날씨는 공판량과 관측값을 날짜로 맞대 보는 뷰 — 연도별 일 공판량만 쓴다 */
+  weather: {
+    metrics: ["quantity"],
+    groupBy: ["year"],
+    granularity: ["day"],
+    compare: ["none"],
+    align: false,
+    commonUnits: false,
+  },
   table: {
     metrics: ALL_METRICS,
     groupBy: ["year", "none", "region", "union", "grade"],

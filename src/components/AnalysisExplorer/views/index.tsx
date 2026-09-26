@@ -11,6 +11,7 @@ import RankChart from "../charts/RankChart";
 import CompositionChart from "../charts/CompositionChart";
 import Relation from "../charts/Relation";
 import Coverage from "../charts/Coverage";
+import WeatherChart from "../charts/WeatherChart";
 import { EXPLORER_LAYOUT } from "../../../const/AnalysisLayout";
 import { GROUP_BY_LABELS, METRIC_LABELS, VIEW_LABELS } from "../../../utils/analysisQuery/labels";
 import { coerceQueryToView } from "../../../utils/analysisQuery/viewRules";
@@ -31,7 +32,7 @@ type ExplorerViewProps = {
 };
 
 /** 차트가 있는 뷰 */
-const CHART_VIEWS: AnalysisView[] = ["overlay", "timeline", "heatmap", "rank", "composition", "relation", "coverage"];
+const CHART_VIEWS: AnalysisView[] = ["overlay", "timeline", "heatmap", "rank", "composition", "relation", "coverage", "weather"];
 
 /** 선 차트 뷰 */
 const LINE_VIEWS: AnalysisView[] = ["overlay", "timeline"];
@@ -40,6 +41,7 @@ const LINE_VIEWS: AnalysisView[] = ["overlay", "timeline"];
 const describeView = (query: AnalysisQuery): string => {
   if (isSeasonSummaryQuery(query)) return "시즌별 개시·피크·총량";
   if (query.view === "coverage") return "조합별 시즌 공판일";
+  if (query.view === "weather") return "일 공판량 · 강수 · 기온 (기상청 ASOS)";
   if (query.view === "relation") {
     /** 등급이 섞이면 등급 구성 차이가 가격 차이로 보이므로 한 등급을 권한다 */
     return query.grades.length === 1
@@ -95,6 +97,8 @@ const ViewChart = ({ data, onQueryChange, ongoingYear }: ViewChartProps) => {
       return data.relation ? <Relation query={query} model={data.relation} /> : null;
     case "coverage":
       return data.coverage ? <Coverage coverage={data.coverage} /> : null;
+    case "weather":
+      return <WeatherChart result={result} />;
     default:
       return <LineChart query={query} result={result} comparison={comparison} />;
   }

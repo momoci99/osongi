@@ -16,6 +16,7 @@ export const VIEW_LABELS: Record<AnalysisView, string> = {
   composition: "구성",
   relation: "관계",
   coverage: "커버리지",
+  weather: "날씨",
   table: "표",
 };
 

@@ -60,8 +60,16 @@ describe("URL 쿼리 직렬화", () => {
   });
 
   it("파라미터가 없으면 폴백 그대로", () => {
-    const fallback = makeQuery({ view: "heatmap" });
+    const fallback = makeQuery({ view: "heatmap", groupBy: "year", metric: "quantity" });
     expect(parseAnalysisQuery(new URLSearchParams(), fallback)).toEqual(fallback);
+  });
+
+  it("뷰에 맞지 않는 파라미터 조합은 탭 전환과 같은 규칙으로 보정한다", () => {
+    const parsed = parseAnalysisQuery(new URLSearchParams("view=weather&metric=unitPrice&by=union"), makeQuery());
+    expect(parsed.view).toBe("weather");
+    expect(parsed.metric).toBe("quantity");
+    expect(parsed.groupBy).toBe("year");
+    expect(parsed.granularity).toBe("day");
   });
 });
 
