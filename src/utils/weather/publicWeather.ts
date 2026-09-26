@@ -1,5 +1,6 @@
 import {
   WEATHER_COLLECTION_WINDOW,
+  WEATHER_FIRST_YEAR,
   WEATHER_PUBLIC_DECIMALS,
   WEATHER_PUBLIC_FIELDS,
 } from "../../const/Weather";
@@ -72,6 +73,10 @@ export const buildStationWeatherFile = (
   generatedAt,
   startMonthDay: WEATHER_START_MONTH_DAY,
   years: Object.fromEntries(
-    [...raws].sort((a, b) => a.year - b.year).map((raw) => [String(raw.year), toPublicYearValues(raw)]),
+    /** 2013 이전 원본은 옛 공판 검증(분석 전용)용이라 앱 공개 파일에서 뺀다 */
+    raws
+      .filter((raw) => raw.year >= WEATHER_FIRST_YEAR)
+      .sort((a, b) => a.year - b.year)
+      .map((raw) => [String(raw.year), toPublicYearValues(raw)]),
   ),
 });
