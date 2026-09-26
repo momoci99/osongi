@@ -4,11 +4,13 @@ import ExplorerHeader from "../components/AnalysisExplorer/ExplorerHeader";
 import TemplateBar from "../components/AnalysisExplorer/TemplateBar";
 import SeasonStrip from "../components/AnalysisExplorer/SeasonStrip";
 import ExplorerControls from "../components/AnalysisExplorer/Controls";
+import ViewTabs from "../components/AnalysisExplorer/Controls/ViewTabs";
 import ExplorerView from "../components/AnalysisExplorer/views";
 import ExplorerSummary from "../components/AnalysisExplorer/Summary";
 import NarrowScreenNotice from "../components/AnalysisExplorer/NarrowScreenNotice";
 import { requestRawCsv, useExplorerData, useExplorerMeta, usePrefetchExplorerData } from "../hooks/useAnalysisEngine";
 import { ANALYSIS_TEMPLATES, buildTemplateQuery } from "../utils/analysisQuery/templates";
+import { coerceQueryToView } from "../utils/analysisQuery/viewRules";
 import { prefetchExplorerData } from "../workers/explorerDataCache";
 import useAnalysisQuery from "../hooks/useAnalysisQuery";
 import usePageMeta from "../hooks/usePageMeta";
@@ -86,7 +88,6 @@ const ExplorerContent = ({ meta, version }: ExplorerContentProps) => {
         latestDate={meta.latestDate}
         onTimeChange={(time) => updateQuery({ time })}
       />
-      <ExplorerControls query={query} onQueryChange={setQuery} onPrefetch={prefetch} />
       {error ? <Typography color="error">결과를 계산하지 못했습니다: {error}</Typography> : null}
       <Box
         sx={{
@@ -94,37 +95,52 @@ const ExplorerContent = ({ meta, version }: ExplorerContentProps) => {
           gap: EXPLORER_LAYOUT.SECTION_GAP,
           gridTemplateColumns: {
             xs: "minmax(0, 1fr)",
-            [EXPLORER_LAYOUT.ASIDE_BREAKPOINT]: `minmax(0, 1fr) ${EXPLORER_LAYOUT.ASIDE_WIDTH}px`,
+            [EXPLORER_LAYOUT.SIDEBAR_BREAKPOINT]: `${EXPLORER_LAYOUT.SIDEBAR_WIDTH}px minmax(0, 1fr)`,
           },
           alignItems: "start",
         }}
       >
-        {data ? (
-          <>
-            {/** 좁은 화면에서도 차트가 먼저 — 요약이 위에 있으면 차트가 한 화면 넘게 밀린다 */}
-            <Box sx={{ minWidth: 0 }}>
-              <ExplorerView
-                data={data}
-                pending={pending}
-                selectedQuery={query}
-                onQueryChange={setQuery}
-                requestRawCsv={() => requestRawCsv(data.query, version)}
-                ongoingYear={ongoingYear}
-              />
-            </Box>
-            <Box component="aside" sx={{ position: { [EXPLORER_LAYOUT.ASIDE_BREAKPOINT]: "sticky" }, top: EXPLORER_LAYOUT.STICKY_TOP }}>
-              <ExplorerSummary
-                query={data.query}
-                result={data.result}
-                scopeUnionCount={data.scopeUnionCount}
-                pending={pending}
-                revision={data}
-              />
-            </Box>
-          </>
-        ) : (
-          <ResultSkeleton />
-        )}
+        {/** 필터는 스크롤해도 따라와 차트를 보면서 바로 바꿀 수 있게 한다 */}
+        <Box
+          component="aside"
+          aria-label="필터"
+          sx={{
+            position: { [EXPLORER_LAYOUT.SIDEBAR_BREAKPOINT]: "sticky" },
+            top: EXPLORER_LAYOUT.STICKY_TOP,
+            maxHeight: { [EXPLORER_LAYOUT.SIDEBAR_BREAKPOINT]: `calc(100vh - ${EXPLORER_LAYOUT.STICKY_TOP + 16}px)` },
+            overflowY: "auto",
+            borderRadius: "12px",
+          }}
+        >
+          <ExplorerControls query={query} onQueryChange={setQuery} />
+        </Box>
+        <Stack gap={EXPLORER_LAYOUT.SECTION_GAP} sx={{ minWidth: 0 }}>
+          {data ? (
+            <ExplorerView
+              data={data}
+              pending={pending}
+              selectedQuery={query}
+              onQueryChange={setQuery}
+              requestRawCsv={() => requestRawCsv(data.query, version)}
+              ongoingYear={ongoingYear}
+              tabs={
+                <ViewTabs
+                  view={query.view}
+                  onChange={(view) => setQuery(coerceQueryToView(query, view))}
+                  onPrefetch={(view) => prefetch(coerceQueryToView(query, view))}
+                />
+              }
+              summary={
+                /** 날씨 뷰는 가격 대신 날씨 요약을 차트 안에서 그린다 */
+                data.query.view === "weather" ? null : (
+                  <ExplorerSummary query={data.query} result={data.result} scopeUnionCount={data.scopeUnionCount} />
+                )
+              }
+            />
+          ) : (
+            <ResultSkeleton />
+          )}
+        </Stack>
       </Box>
     </Stack>
   );

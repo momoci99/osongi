@@ -2,12 +2,14 @@
 
 /** 페이지 그리드 */
 export const EXPLORER_LAYOUT = {
-  /** 요약 패널 폭 (px) */
-  ASIDE_WIDTH: 300,
-  /** 요약 패널이 오른쪽에 붙는 최소 브레이크포인트 */
-  ASIDE_BREAKPOINT: "lg",
-  /** sticky 요약 패널 상단 여백 (px) — 전역 내비 높이 + 여유 */
+  /** 필터 사이드바 폭 (px) */
+  SIDEBAR_WIDTH: 264,
+  /** 필터 사이드바가 왼쪽에 붙는 최소 브레이크포인트. 미만이면 결과 위로 쌓인다 */
+  SIDEBAR_BREAKPOINT: "lg",
+  /** sticky 사이드바 상단 여백 (px) — 전역 내비 높이 + 여유 */
   STICKY_TOP: 80,
+  /** 요약 띠 칸 최소 폭 (px) — 좁으면 다음 줄로 흐른다 */
+  SUMMARY_TILE_MIN_WIDTH: 132,
   /** 섹션 간 세로 간격 (MUI spacing) */
   SECTION_GAP: 2,
   /** 메인 뷰 최소 높이 (px) */
@@ -50,6 +52,8 @@ export const SEASON_STRIP = {
 export const TEMPLATE_BAR = {
   /** 카드 최소 폭 (px). 좁은 화면은 가로 스크롤 */
   CARD_MIN_WIDTH: 168,
+  /** 한 줄 카드에서 질문 툴팁이 뜨기까지 (ms) */
+  TOOLTIP_DELAY_MS: 300,
 } as const;
 
 /** 상세 표 */
@@ -62,7 +66,7 @@ export const EXPLORER_TABLE = {
 
 /** 선 차트 (연도 겹침·추이) */
 export const LINE_CHART = {
-  HEIGHT: { MOBILE: 300, DESKTOP: 420 },
+  HEIGHT: { MOBILE: 300, DESKTOP: 460 },
   MARGIN: {
     MOBILE: { top: 16, right: 44, bottom: 36, left: 44 },
     DESKTOP: { top: 20, right: 72, bottom: 40, left: 60 },
@@ -142,7 +146,7 @@ export const HEATMAP = {
 
 /** 관계 산점도 */
 export const RELATION_CHART = {
-  HEIGHT: { MOBILE: 300, DESKTOP: 420 },
+  HEIGHT: { MOBILE: 300, DESKTOP: 460 },
   MARGIN: {
     /** top은 가로로 놓은 y축 제목 자리까지 포함한다 */
     MOBILE: { top: 28, right: 16, bottom: 48, left: 58 },
@@ -305,8 +309,15 @@ export const NORMAL_STRIP_CHART = {
 } as const;
 
 /** 평년 비교 (날씨 뷰 V2) — 누적 강수 곡선 */
+/** 평년 비교 배치 */
+export const WEATHER_NORMALS_LAYOUT = {
+  /** 점 줄·누적 강수 한 칸 최소 폭 (px) — 두 칸이 안 들어가면 위아래로 쌓인다 */
+  COLUMN_MIN_WIDTH: 460,
+} as const;
+
 export const CUMULATIVE_RAIN_CHART = {
-  HEIGHT: { MOBILE: 200, DESKTOP: 240 },
+  /** 폭 600px 미만(두 칸 배치의 한 칸)도 옆 점 줄 높이에 맞춰 키운다 */
+  HEIGHT: { MOBILE: 320, DESKTOP: 360 },
   MARGIN: {
     MOBILE: { top: 12, right: 12, bottom: 28, left: 52 },
     DESKTOP: { top: 12, right: 20, bottom: 30, left: 64 },

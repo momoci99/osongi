@@ -5,6 +5,8 @@ import { chartTooltipSx } from "../chartTooltip";
 import useDrawWeatherChart from "./useDrawWeatherChart";
 import LegendSwatch from "./LegendSwatch";
 import WeatherNormals from "../WeatherNormals";
+import WeatherSummary from "../WeatherNormals/WeatherSummary";
+import useWeatherNormals from "../WeatherNormals/useWeatherNormals";
 import useStationWeather from "../../../../hooks/useStationWeather";
 import {
   EXPLORER_LAYOUT,
@@ -69,9 +71,21 @@ const WeatherChartBody = ({ result, stations }: WeatherChartBodyProps) => {
     theme,
   });
   const { weather, weight } = theme.palette.chart;
+  const panelYears = model?.panels.map((panel) => panel.year) ?? [];
+  const normals = useWeatherNormals(files, panelYears);
+  const selectedPanel = model?.panels.find((panel) => panel.year === normals.model?.selectedYear);
+  const selectedQuantity = selectedPanel?.days.reduce((sum, day) => sum + (day.quantity ?? 0), 0) ?? 0;
 
   return (
     <Box>
+      {normals.model ? (
+        <WeatherSummary
+          model={normals.model}
+          years={panelYears}
+          onSelectYear={normals.selectYear}
+          quantity={selectedQuantity}
+        />
+      ) : null}
       <Box
         sx={{
           display: "flex",
@@ -179,7 +193,7 @@ const WeatherChartBody = ({ result, stations }: WeatherChartBodyProps) => {
         ) : null}
       </Box>
 
-      {files && model ? <WeatherNormals files={files} years={model.panels.map((p) => p.year)} /> : null}
+      {normals.model ? <WeatherNormals model={normals.model} /> : null}
     </Box>
   );
 };

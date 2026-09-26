@@ -10,6 +10,8 @@ type ExplorerPanelProps = {
   caption?: ReactNode;
   /** 머리글 오른쪽 컨트롤 */
   action?: ReactNode;
+  /** 제목 대신 쓰는 머리글 (탭 등). 대기 중에도 흐려지지 않는다 */
+  header?: ReactNode;
   children: ReactNode;
   /** 본문 안쪽 여백 제거 (표처럼 가장자리까지 채우는 콘텐츠) */
   flush?: boolean;
@@ -141,6 +143,7 @@ const ExplorerPanel = ({
   title,
   caption,
   action,
+  header,
   children,
   flush = false,
   pending = false,
@@ -163,7 +166,23 @@ const ExplorerPanel = ({
       }}
     >
       <PendingBar pending={pending} role={pending ? "progressbar" : undefined} aria-label={pending ? "결과 계산 중" : undefined} />
-      {title ? (
+      {header ? (
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: 1,
+            pl: { xs: 0.5, sm: 1 },
+            pr: { xs: 1, sm: 1.5 },
+            borderBottom: "1px solid",
+            borderColor: "surface.border",
+          }}
+        >
+          <Box sx={{ minWidth: 0, flex: 1 }}>{header}</Box>
+          {action ? <Box sx={{ display: "flex", alignItems: "center", gap: 0.5, flexShrink: 0 }}>{action}</Box> : null}
+        </Box>
+      ) : title ? (
         <Box
           sx={{
             display: "flex",
