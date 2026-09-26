@@ -55,4 +55,9 @@ describe("buildStationWeatherFile", () => {
     expect(file.startMonthDay).toBe("07-01");
     expect(file.stationId).toBe(271);
   });
+
+  it("2013 이전 연도(옛 공판 검증용)는 공개 파일에서 뺀다", () => {
+    const file = buildStationWeatherFile(271, [raw(2012, [row("2012-07-01")]), raw(2013, [row("2013-07-01")])], "t");
+    expect(Object.keys(file.years)).toEqual(["2013"]);
+  });
 });

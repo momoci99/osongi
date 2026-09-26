@@ -7,6 +7,7 @@ import { join } from "path";
 import { WEATHER_COLLECTION_WINDOW } from "../../../src/const/Weather";
 import { rainfallMm, type KmaDailyRow, type KmaRawYearFile } from "../../../src/utils/weather/kmaAsos";
 import { toNumberOrNull, type Series } from "../../../src/utils/weather/seriesStats";
+import { legacyQuantityEntries } from "./legacyAuction";
 
 const RAW_ROOT = join(process.cwd(), "data", "weather", "raw");
 const AUCTION_DATASET = join(process.cwd(), "public", "auction-data", "complete-dataset.json");
@@ -64,7 +65,7 @@ type AuctionRecord = { date: string; union: string; auctionQuantityToday: number
 
 let auctionIndex: Map<string, number> | null = null;
 
-/** 조합·날짜 → 금일 공판량(kg). 같은 키가 여러 행이면 합산 */
+/** 조합·날짜 → 금일 공판량(kg). 같은 키가 여러 행이면 합산. 2008~2012 옛 자료 포함(9-6) */
 const loadAuctionIndex = (): Map<string, number> => {
   if (auctionIndex) return auctionIndex;
   const { data } = JSON.parse(readFileSync(AUCTION_DATASET, "utf-8")) as { data: AuctionRecord[] };
@@ -72,6 +73,10 @@ const loadAuctionIndex = (): Map<string, number> => {
   for (const record of data) {
     const key = `${record.union}|${record.date}`;
     auctionIndex.set(key, (auctionIndex.get(key) ?? 0) + record.auctionQuantityToday);
+  }
+  for (const { union, date, quantity } of legacyQuantityEntries()) {
+    const key = `${union}|${date}`;
+    auctionIndex.set(key, (auctionIndex.get(key) ?? 0) + quantity);
   }
   return auctionIndex;
 };
