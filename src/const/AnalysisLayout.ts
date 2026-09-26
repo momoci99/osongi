@@ -12,6 +12,10 @@ export const EXPLORER_LAYOUT = {
   SECTION_GAP: 2,
   /** 메인 뷰 최소 높이 (px) */
   VIEW_MIN_HEIGHT: 520,
+  /** 분석 도구를 바로 여는 최소 화면 폭 (px) — 미만이면 큰 화면 안내 (가로 태블릿은 허용) */
+  MIN_VIEWPORT_WIDTH: 1024,
+  /** "그래도 보기" 선택을 세션 동안 기억하는 sessionStorage 키 */
+  NARROW_BYPASS_KEY: "osongi-analysis-narrow-bypass",
 } as const;
 
 /** 시즌 스트립 — 비시즌을 접고 연도별 시즌 창만 이어 붙인 타임라인 */
@@ -111,6 +115,8 @@ export const LINE_CHART = {
   TOOLTIP_OFFSET: 14,
   /** x 눈금 라벨 사이 최소 간격 (px) */
   MIN_TICK_GAP: 48,
+  /** 이보다 굵은 x 눈금이 적으면 보충 눈금을 섞는다 */
+  MIN_X_TICKS: 3,
   /** 툴팁 최대 폭 (px) */
   TOOLTIP_MAX_WIDTH: 320,
 } as const;

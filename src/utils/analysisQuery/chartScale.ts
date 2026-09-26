@@ -3,8 +3,12 @@ import { toSeasonDay } from "./rows";
 import { seasonWindowStart, toWindowOffset } from "./seasonWindow";
 import type { AnalysisAxis, AnalysisGranularity } from "./types";
 
-/** x축 눈금 */
-export type AxisTick = { position: number; label: string; major: boolean };
+/**
+ * x축 눈금
+ * - pinned: 도메인 밖이어도 안쪽 끝으로 당겨 그린다 (시즌 연도 라벨 전용 — 날짜 라벨은 당기면 다른 날을 가리킨다)
+ * - fine: 굵은 눈금이 부족할 때만 쓰는 보충 눈금
+ */
+export type AxisTick = { position: number; label: string; major: boolean; pinned?: boolean; fine?: boolean };
 
 /** x 값 ↔ 연속 위치 매핑 */
 export type ChartXMapping = {
@@ -19,6 +23,21 @@ export type ChartXMapping = {
 
 /** 월 첫날 MM-DD 목록 (시즌 창 안쪽) */
 const MONTH_STARTS = ["10-01", "11-01"];
+
+/** 보름 눈금 MM-DD 목록 */
+const MID_MONTHS = ["09-15", "10-15", "11-15"];
+
+/** 보충 눈금을 두는 날짜 (일) — 시즌 초처럼 구간이 짧을 때만 쓰인다 */
+const FINE_TICK_DAYS = [5, 10, 20, 25];
+
+/** 시즌 창 안쪽 보충 눈금 MM-DD 목록 */
+const FINE_MONTH_DAYS = ["09", "10", "11"].flatMap((month) =>
+  FINE_TICK_DAYS.map((day) => `${month}-${String(day).padStart(2, "0")}`),
+);
+
+/** MM-DD → "M/D" */
+const monthDayLabel = (monthDay: string): string =>
+  `${Number(monthDay.slice(0, 2))}/${Number(monthDay.slice(3))}`;
 
 /** 선을 끊는 공백 기준 */
 const gapBreakFor = (granularity: AnalysisGranularity): number =>
@@ -54,20 +73,21 @@ const buildDateMapping = (values: string[], granularity: AnalysisGranularity): C
     ticks: (segmentWidthPx) =>
       years.flatMap((year, index) => {
         const base = index * span;
-        const yearTick: AxisTick = {
-          position: base + (multiSeason ? 0 : toWindowOffset(`${year}-09-01`)),
-          label: multiSeason ? String(year) : "9/1",
-          major: multiSeason,
-        };
-        const showMonths = !multiSeason || segmentWidthPx >= LINE_CHART.MONTH_TICK_MIN_SEGMENT_WIDTH;
-        const monthTicks = showMonths
-          ? MONTH_STARTS.map((monthDay) => ({
-              position: base + toSeasonDay(`${year}-${monthDay}`, seasonWindowStart(year)) - 1,
-              label: `${Number(monthDay.slice(0, 2))}/1`,
-              major: false,
-            }))
-          : [];
-        return [yearTick, ...monthTicks];
+        const toTick = (monthDay: string, fine = false): AxisTick => ({
+          position: base + toSeasonDay(`${year}-${monthDay}`, seasonWindowStart(year)) - 1,
+          label: monthDayLabel(monthDay),
+          major: false,
+          fine,
+        });
+        if (!multiSeason) {
+          return [
+            ...["09-01", ...MONTH_STARTS, ...MID_MONTHS].map((monthDay) => toTick(monthDay)),
+            ...FINE_MONTH_DAYS.map((monthDay) => toTick(monthDay, true)),
+          ];
+        }
+        const yearTick: AxisTick = { position: base, label: String(year), major: true, pinned: true };
+        const showMonths = segmentWidthPx >= LINE_CHART.MONTH_TICK_MIN_SEGMENT_WIDTH;
+        return [yearTick, ...(showMonths ? MONTH_STARTS.map((monthDay) => toTick(monthDay)) : [])];
       }),
   };
 };
@@ -80,12 +100,19 @@ const buildMonthDayMapping = (values: string[], granularity: AnalysisGranularity
     domain: extent(values.map(toPosition)),
     boundaries: [],
     gapBreak: gapBreakFor(granularity),
-    ticks: () =>
-      ["09-01", ...MONTH_STARTS, "09-15", "10-15", "11-15"].map((monthDay) => ({
+    ticks: () => [
+      ...["09-01", ...MONTH_STARTS, ...MID_MONTHS].map((monthDay) => ({
         position: monthDayOffset(monthDay),
-        label: `${Number(monthDay.slice(0, 2))}/${Number(monthDay.slice(3))}`,
+        label: monthDayLabel(monthDay),
         major: monthDay.endsWith("-01"),
       })),
+      ...FINE_MONTH_DAYS.map((monthDay) => ({
+        position: monthDayOffset(monthDay),
+        label: monthDayLabel(monthDay),
+        major: false,
+        fine: true,
+      })),
+    ],
   };
 };
 
@@ -112,6 +139,19 @@ const buildNumericMapping = (
       return ticks;
     },
   };
+};
+
+/**
+ * 도메인 안에 그릴 눈금 후보.
+ * 시즌 연도 라벨(pinned)은 데이터 시작이 창 시작보다 늦어도 잘리지 않게 안쪽 끝으로 당기고,
+ * 시즌 초처럼 구간이 짧아 굵은 눈금이 모자랄 때만 보충 눈금을 섞는다.
+ */
+export const ticksInDomain = (ticks: AxisTick[], [start, end]: [number, number]): AxisTick[] => {
+  const inDomain = ticks
+    .map((tick) => (tick.pinned ? { ...tick, position: Math.min(Math.max(tick.position, start), end) } : tick))
+    .filter((tick) => tick.position >= start && tick.position <= end);
+  const coarse = inDomain.filter((tick) => !tick.fine);
+  return coarse.length >= LINE_CHART.MIN_X_TICKS ? coarse : inDomain;
 };
 
 /** 축 종류별 x 매핑을 만든다 */
