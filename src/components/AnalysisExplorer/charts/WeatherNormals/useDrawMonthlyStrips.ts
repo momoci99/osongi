@@ -75,15 +75,17 @@ const useDrawMonthlyStrips = ({ strips, selectedYear, theme }: UseDrawMonthlyStr
       const height = strips.length * groupHeight + (strips.length - 1) * NORMAL_STRIP_CHART.GROUP_GAP;
       const labelWidth = scaleLength(NORMAL_STRIP_CHART.MONTH_LABEL_WIDTH);
       const rankWidth = scaleLength(mobile ? NORMAL_STRIP_CHART.RANK_WIDTH.MOBILE : NORMAL_STRIP_CHART.RANK_WIDTH.DESKTOP);
-      const stripLeft = labelWidth + NORMAL_STRIP_CHART.DOT_PAD;
-      const stripRight = Math.max(stripLeft + 1, width - rankWidth - NORMAL_STRIP_CHART.DOT_PAD);
+      const extentWidth = scaleLength(NORMAL_STRIP_CHART.EXTENT_LABEL_WIDTH);
+      const stripLeft = labelWidth + extentWidth + NORMAL_STRIP_CHART.DOT_PAD;
+      const stripRight = Math.max(stripLeft + 1, width - rankWidth - extentWidth - NORMAL_STRIP_CHART.DOT_PAD);
 
       const svg = d3.select(svgEl).attr("width", width).attr("height", height);
       svg.selectAll("*").remove();
 
       const drawRow = (g: d3.Selection<SVGGElement, unknown, null, undefined>, month: MonthStrip, key: NormalMetricKey) => {
         const color = metricColor(key, theme);
-        const x = d3.scaleLinear().domain(rowDomain(month)).range([stripLeft, stripRight]);
+        const [low, high] = rowDomain(month);
+        const x = d3.scaleLinear().domain([low, high]).range([stripLeft, stripRight]);
         const cy = rowHeight / 2;
 
         g.append("text")
@@ -94,6 +96,23 @@ const useDrawMonthlyStrips = ({ strips, selectedYear, theme }: UseDrawMonthlyStr
           .attr("fill", palette.text.secondary)
           .style("font-variant-numeric", "tabular-nums")
           .text(`${month.month}월`);
+
+        /** 역대 최소·최대 값 — 줄 양 끝 점이 무슨 값인지, 줄마다 다른 눈금 범위를 바로 읽게 */
+        if (month.values.length > 1) {
+          const extentLabel = (value: number, xPos: number, anchor: "start" | "end") =>
+            g
+              .append("text")
+              .attr("x", xPos)
+              .attr("y", cy)
+              .attr("dy", "0.32em")
+              .attr("text-anchor", anchor)
+              .attr("font-size", fontSize - 1)
+              .attr("fill", palette.text.disabled)
+              .style("font-variant-numeric", "tabular-nums")
+              .text(formatNormalValue(value, key));
+          extentLabel(low, stripLeft - NORMAL_STRIP_CHART.DOT_PAD * 2, "end");
+          extentLabel(high, stripRight + NORMAL_STRIP_CHART.DOT_PAD * 2, "start");
+        }
 
         g.append("line")
           .attr("x1", stripLeft - NORMAL_STRIP_CHART.DOT_PAD)

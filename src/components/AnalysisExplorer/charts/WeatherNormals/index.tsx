@@ -68,22 +68,23 @@ const WeatherNormals = ({ files, years }: WeatherNormalsProps) => {
       <Box sx={{ px: GUTTER, pt: 1 }}>
         <SubTitle>달마다 역대 몇 번째인가</SubTitle>
         <MonthlyStripsChart strips={strips} selectedYear={selectedYear} />
-        <Box sx={{ pt: 1, display: "grid", gap: 0.25 }}>
+        <Box sx={{ display: "flex", flexWrap: "wrap", columnGap: 2, rowGap: 0.75, pt: 1.25 }}>
+          <LegendSwatch color={theme.palette.text.primary} label={`${selectedYear} 시즌`} variant="dot" />
+          <LegendSwatch color={theme.palette.text.primary} label="진행 중인 달 (순위 없음)" variant="ring" />
+          <LegendSwatch color={theme.palette.text.secondary} label="다른 해" variant="dot" opacity={0.4} />
+          <LegendSwatch color={theme.palette.text.secondary} label="역대 중앙값" variant="tick" />
+        </Box>
+        <Box sx={{ pt: 1 }}>
           <Caption>
-            점 하나가 한 해입니다. 진한 점이 {selectedYear} 시즌, 세로 눈금이 역대 중앙값입니다. 순위는 {recordRange}년
-            중 그 달 기록이 있는 해끼리 셉니다 (점에 올리면 전체 해 수). 빈 점은 진행 중인 달이라 순위를 매기지
-            않았습니다.
-          </Caption>
-          <Caption>
-            줄마다 눈금 범위가 달라 달끼리 크기를 비교하는 용도는 아닙니다. 관측일이{" "}
-            {Math.round(WEATHER_NORMAL.MIN_COVERAGE * 100)}%에 못 미치는 달은 뺐습니다.
+            순위는 {recordRange}년 중 그 달 기록이 있는 해끼리 셉니다. 줄마다 눈금 범위(양 끝 값)가 달라 달끼리 크기를
+            비교하지는 않습니다. 관측일이 {Math.round(WEATHER_NORMAL.MIN_COVERAGE * 100)}%에 못 미치는 달은 뺐습니다.
           </Caption>
         </Box>
       </Box>
 
       <Box sx={{ pt: 3 }}>
         <Box sx={{ px: GUTTER }}>
-          <SubTitle>7월부터 쌓인 비</SubTitle>
+          <SubTitle>7월부터 쌓인 비 (mm)</SubTitle>
         </Box>
         <CumulativeRainChart model={cumulative} selectedYear={selectedYear} />
         <Box sx={{ display: "flex", flexWrap: "wrap", columnGap: 2, rowGap: 0.75, px: GUTTER, pt: 1.25 }}>

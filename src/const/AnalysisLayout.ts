@@ -285,6 +285,8 @@ export const NORMAL_STRIP_CHART = {
   GROUP_GAP: 14,
   /** 왼쪽 월 라벨 폭 (px) */
   MONTH_LABEL_WIDTH: 36,
+  /** 줄 양 끝 역대 최소·최대 값 라벨 폭 (px) — 줄마다 눈금이 달라 값 범위를 직접 적는다 */
+  EXTENT_LABEL_WIDTH: 52,
   /** 오른쪽 값·순위 글 폭 (px) */
   RANK_WIDTH: { MOBILE: 118, DESKTOP: 176 },
   /** 점 좌우 여백 (px) — 끝 점이 잘리지 않게 */
