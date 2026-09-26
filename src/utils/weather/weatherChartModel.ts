@@ -14,6 +14,8 @@ export type WeatherChartDay = WeatherDay & {
 export type WeatherPanel = {
   year: number;
   days: WeatherChartDay[];
+  /** 기상 자료가 공판보다 먼저 끊길 때 마지막 관측일 — 진행 중 시즌 표시용, 끊기지 않으면 null */
+  weatherEnd: { offset: number; date: string } | null;
 };
 
 /** 날씨 뷰 전체 모델 */
@@ -66,6 +68,22 @@ const panelDomain = (quantities: Map<string, number>, years: number[]): [number,
   ];
 };
 
+/** 날씨 값이 하나라도 있는 날 */
+const hasWeather = (day: WeatherDay): boolean =>
+  day.minTa !== null || day.maxTa !== null || day.rain !== null || day.groundTemp !== null;
+
+/**
+ * 기상 자료가 마지막 공판일보다 먼저 끝나면 마지막 관측일.
+ * 기상청 자료는 하루 늦게 공개되고 하루 한 번 수집해 시즌 중에는 늘 며칠 비는데, 표시가 없으면 날씨가 없는 이유를 알 수 없다.
+ */
+export const findWeatherEnd = (days: WeatherChartDay[]): WeatherPanel["weatherEnd"] => {
+  const reversed = [...days].reverse();
+  const lastObserved = reversed.find(hasWeather);
+  const lastTrade = reversed.find((day) => day.quantity !== null);
+  if (!lastObserved || !lastTrade || lastObserved.offset >= lastTrade.offset) return null;
+  return { offset: lastObserved.offset, date: lastObserved.date };
+};
+
 const finiteMax = (values: (number | null)[], fallback: number): number => {
   const observed = values.filter((v): v is number => v !== null);
   return observed.length ? Math.max(...observed) : fallback;
@@ -92,7 +110,7 @@ export const buildWeatherChartModel = (
       offset: domain[0] + index,
       quantity: quantities.get(day.date) ?? null,
     }));
-    return { year, days };
+    return { year, days, weatherEnd: findWeatherEnd(days) };
   });
 
   const allDays = panels.flatMap((p) => p.days);

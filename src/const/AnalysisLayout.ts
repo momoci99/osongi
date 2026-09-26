@@ -230,15 +230,19 @@ export const WEATHER_CHART = {
   DOMAIN_PAD_DAYS: 10,
   /** 줄 높이 (px) */
   ROW_HEIGHT: {
-    MOBILE: { quantity: 72, rain: 44, temperature: 64 },
-    DESKTOP: { quantity: 96, rain: 52, temperature: 80 },
+    MOBILE: { quantity: 72, rain: 44, temperature: 72 },
+    DESKTOP: { quantity: 96, rain: 52, temperature: 96 },
   },
+  /** 줄 이름이 놓이는 줄 위 띠 높이 (px) — 이름이 막대·선과 겹치지 않게 플롯 밖에 둔다 */
+  ROW_LABEL_HEIGHT: 18,
   /** 한 시즌 안 줄 사이 간격 (px) */
-  ROW_GAP: 14,
+  ROW_GAP: 10,
   /** 시즌 패널 사이 간격 (px) — 연도 제목 포함 */
   PANEL_GAP: 36,
-  /** 연도 제목 높이 (px) — 첫 줄 최대 눈금 라벨과 겹치지 않을 만큼 */
-  PANEL_TITLE_HEIGHT: 34,
+  /** 연도 제목 높이 (px) */
+  PANEL_TITLE_HEIGHT: 28,
+  /** 연도 제목 왼쪽 들여쓰기 (px) — 카드 머리글 가로 여백(MUI spacing 1.75 / 2.25)과 맞춘다 */
+  TITLE_INSET: { MOBILE: 14, DESKTOP: 18 },
   MARGIN: {
     MOBILE: { top: 8, right: 12, bottom: 28, left: 52 },
     DESKTOP: { top: 8, right: 20, bottom: 30, left: 64 },
@@ -247,16 +251,28 @@ export const WEATHER_CHART = {
   BAR_GAP: 1,
   /** 옮긴 강수 참고 막대 불투명도 */
   SHIFTED_RAIN_OPACITY: 0.28,
-  /** 기온 밴드 불투명도 — 다크 표면에서는 같은 값이 탁한 갈색으로 가라앉아 따로 둔다 */
-  TEMPERATURE_BAND_OPACITY: { light: 0.22, dark: 0.26 },
+  /** 기온 밴드 채움 불투명도 — 면은 옅게 깔고 윤곽선으로 범위를 읽게 한다 */
+  TEMPERATURE_BAND_OPACITY: { light: 0.14, dark: 0.1 },
+  /** 기온 밴드 위아래 윤곽선 불투명도 */
+  TEMPERATURE_EDGE_OPACITY: 0.6,
   /** 지면온도 선 두께 (px) */
   GROUND_STROKE: 2,
-  /** 각 줄 y 눈금 개수 */
-  Y_TICK_COUNT: 3,
+  /** 지면온도 선 뒤 표면색 후광 두께 (px) — 밴드 윤곽과 겹쳐도 선이 떠 보이게 */
+  GROUND_HALO_WIDTH: 5,
+  /** 줄별 y 눈금 개수 — 낮은 강수 줄은 2개면 충분하다 */
+  Y_TICK_COUNT: { quantity: 3, rain: 2, temperature: 3 },
   /** 기온 축 위아래 여유 (°C) */
   TEMPERATURE_PAD: 1,
   /** 호버 안내선 불투명도 */
   GUIDE_OPACITY: 0.6,
+  /** 라벨 눈금 날짜 (일) */
+  LABEL_TICK_DAYS: ["01", "15"],
+  /** 라벨 없는 보조 눈금 날짜 (일) */
+  MINOR_TICK_DAYS: ["05", "10", "20", "25"],
+  /** 보조 눈금 길이 (px) */
+  MINOR_TICK_LENGTH: 4,
+  /** 기상 자료 끝 표시 라벨과 선 사이 간격 (px) */
+  WEATHER_END_LABEL_GAP: 6,
 } as const;
 
 /** 평년 비교 (날씨 뷰 V2) — 월별 점 분포 */
