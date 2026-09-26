@@ -71,6 +71,21 @@ describe("RegionDetail", () => {
     expect(screen.getByText(/10%/)).toBeInTheDocument();
   });
 
+  it("비교 기준 단가가 없으면 캡션에서 대비 문구를 뺀다", async () => {
+    const offSeason = makeRegionManifest();
+    offSeason.unions["봉화"] = { ...offSeason.unions["봉화"], season: null };
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({ ok: true, status: 200, json: async () => offSeason })
+    );
+    await renderAt("/region/경북/봉화");
+
+    expect(
+      await screen.findByRole("navigation", { name: "경북의 다른 조합 시세" })
+    ).toBeInTheDocument();
+    expect(screen.queryByText("대비 단가 차이", { exact: false })).not.toBeInTheDocument();
+  });
+
   it("조합 페이지 제목·canonical을 조합 기준으로 갱신한다", async () => {
     await renderAt("/region/경북/봉화");
 

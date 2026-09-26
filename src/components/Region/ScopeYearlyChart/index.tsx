@@ -9,6 +9,8 @@ import type { FireEvent } from "../../../utils/wildfire/unionFires";
 
 type ScopeYearlyChartProps = {
   yearly: YearStat[];
+  /** 아직 끝나지 않은 시즌 연도 */
+  ongoingYear?: number;
   scopeName: string;
   /** 이 범위 조합들의 대형 산불 */
   fires?: FireEvent[];
@@ -44,12 +46,19 @@ const LegendItem = ({ color, label, shape }: LegendItemProps) => (
 /** 연도별 공판량·평균 단가 추이 (D3) */
 const ScopeYearlyChart = ({
   yearly,
+  ongoingYear,
   scopeName,
   fires = NO_FIRES,
   height = YEARLY_TREND_CHART.HEIGHT,
 }: ScopeYearlyChartProps) => {
   const theme = useTheme();
-  const { containerRef, svgRef } = useDrawYearlyTrend({ yearly, fires, height, theme });
+  const { containerRef, svgRef } = useDrawYearlyTrend({
+    yearly,
+    ongoingYear,
+    fires,
+    height,
+    theme,
+  });
   const firstYear = yearly[0]?.year;
   const lastYear = yearly[yearly.length - 1]?.year;
   /** 차트 연도 범위 밖(공판 기록 이전) 산불은 목록에서도 뺀다 */

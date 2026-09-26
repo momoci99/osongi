@@ -12,6 +12,8 @@ import drawFireMarkers, { groupBySeason } from "./drawFireMarkers";
 
 type UseDrawYearlyTrendParams = {
   yearly: YearStat[];
+  /** 아직 끝나지 않은 시즌 연도. 막대를 미완 표기로 그린다 */
+  ongoingYear?: number;
   /** 대형 산불 (없으면 빈 배열) */
   fires: FireEvent[];
   height: number;
@@ -46,7 +48,13 @@ const formatYearTick = (year: number, first: number, last: number): string =>
  * 물량이 많은 해가 곧 고가인 해는 아니라는 점이 이 페이지의 핵심 정보라
  * 두 계열을 같은 x축에 묶어야 비교가 성립한다.
  */
-const useDrawYearlyTrend = ({ yearly, fires, height, theme }: UseDrawYearlyTrendParams) => {
+const useDrawYearlyTrend = ({
+  yearly,
+  ongoingYear,
+  fires,
+  height,
+  theme,
+}: UseDrawYearlyTrendParams) => {
   const { containerRef, width } = useContainerSize();
   const svgRef = useRef<SVGSVGElement | null>(null);
 
@@ -212,19 +220,45 @@ const useDrawYearlyTrend = ({ yearly, fires, height, theme }: UseDrawYearlyTrend
         )
         .attr("rx", YEARLY_TREND_CHART.BAR_RADIUS)
         .attr("fill", theme.palette.chart.weight.main)
-        .attr("opacity", YEARLY_TREND_CHART.BAR_OPACITY)
+        .attr("fill-opacity", (slot) =>
+          slot.year === ongoingYear
+            ? YEARLY_TREND_CHART.ONGOING_BAR_OPACITY
+            : YEARLY_TREND_CHART.BAR_OPACITY
+        )
+        .attr("stroke", (slot) =>
+          slot.year === ongoingYear ? theme.palette.chart.weight.main : "none"
+        )
+        .attr("stroke-dasharray", YEARLY_TREND_CHART.ONGOING_BAR_DASH)
         .on("mousemove", (event: MouseEvent, slot) => {
           tooltip
             .style("opacity", "1")
             .style("left", `${event.pageX + 12}px`)
             .style("top", `${event.pageY - 12}px`)
             .html(
-              `<strong>${slot.year}년</strong><br/>공판량 ${Math.round(
+              `<strong>${slot.year}년${
+                slot.year === ongoingYear ? " · 시즌 진행 중" : ""
+              }</strong><br/>공판량 ${Math.round(
                 slot.stat.totalQuantityKg
               ).toLocaleString()}kg<br/>평균 단가 ${slot.stat.avgPricePerKg.toLocaleString()}원/kg`
             );
         })
         .on("mouseleave", () => tooltip.style("opacity", "0"));
+
+      const ongoing = recorded.find((slot) => slot.year === ongoingYear);
+      if (ongoing) {
+        root
+          .append("text")
+          .attr("x", (x(ongoing.year) ?? 0) + x.bandwidth() / 2)
+          .attr(
+            "y",
+            yQuantity(ongoing.stat.totalQuantityKg / KILOGRAMS_PER_TON) -
+              YEARLY_TREND_CHART.ONGOING_LABEL_GAP
+          )
+          .attr("text-anchor", "middle")
+          .attr("fill", theme.palette.text.secondary)
+          .attr("font-size", YEARLY_TREND_CHART.FONT_SIZE)
+          .text("진행 중");
+      }
 
       /** 기록이 없는 해에서는 선을 끊는다 */
       const line = d3
@@ -260,7 +294,7 @@ const useDrawYearlyTrend = ({ yearly, fires, height, theme }: UseDrawYearlyTrend
         removeD3Tooltip();
       };
     },
-    [yearly, fires, height, theme, width]
+    [yearly, ongoingYear, fires, height, theme, width]
   );
 
   return { containerRef, svgRef };

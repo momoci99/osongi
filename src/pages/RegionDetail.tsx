@@ -13,6 +13,7 @@ import {
   unionPath,
 } from "../const/Regions";
 import { toScopeMetaFacts } from "../utils/regionNarrative";
+import isInSeason from "../utils/isInSeason";
 import ScopeHeader from "../components/Region/ScopeHeader";
 import ScopeHero from "../components/Region/ScopeHero";
 import ScopeStatSummary from "../components/Region/ScopeStatSummary";
@@ -55,6 +56,13 @@ const buildLinkItems = (
  */
 const compareBaseline = (stats: ScopeStats): number | null | undefined =>
   stats.season?.avgPricePerKg;
+
+/** 비교 기준 단가가 없으면 차이를 그리지 않으므로 캡션에서도 뺀다 */
+const rankCaption = (stats: ScopeStats, isUnion: boolean): string => {
+  const base = `${stats.latestSeasonYear} 시즌 물량순`;
+  if (compareBaseline(stats) == null) return base;
+  return `${base} · ${isUnion ? stats.name : "지역 평균"} 대비 단가 차이`;
+};
 
 type ScopeBodyProps = {
   stats: ScopeStats;
@@ -103,7 +111,12 @@ const ScopeBody = ({ stats, manifest, union }: ScopeBodyProps) => {
       )}
 
       {stats.yearly.length > 0 && (
-        <ScopeYearlyChart yearly={stats.yearly} scopeName={stats.name} fires={fires} />
+        <ScopeYearlyChart
+          yearly={stats.yearly}
+          ongoingYear={isInSeason(manifest.latestDate) ? stats.latestSeasonYear : undefined}
+          scopeName={stats.name}
+          fires={fires}
+        />
       )}
 
       <ScopeRankList
@@ -112,11 +125,7 @@ const ScopeBody = ({ stats, manifest, union }: ScopeBodyProps) => {
             ? `${stats.region}의 다른 조합 시세`
             : `${stats.region} 조합별 시세`
         }
-        caption={
-          isUnion
-            ? `${stats.latestSeasonYear} 시즌 물량순 · ${stats.name} 대비 단가 차이`
-            : `${stats.latestSeasonYear} 시즌 물량순 · 지역 평균 대비 단가 차이`
-        }
+        caption={rankCaption(stats, isUnion)}
         items={linkItems}
         emptyMessage="연결된 조합 페이지가 없습니다."
         compareToPricePerKg={compareBaseline(stats)}

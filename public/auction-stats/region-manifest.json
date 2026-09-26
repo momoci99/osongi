@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-20T22:15:12.332Z",
-  "latestDate": "2026-09-17",
+  "generatedAt": "2026-09-26T11:48:22.963Z",
+  "latestDate": "2026-09-25",
   "latestSeasonYear": 2026,
   "regions": {
     "강원": {
@@ -9,41 +9,41 @@
       "latestSeasonYear": 2026,
       "season": {
         "startDate": "2026-09-15",
-        "endDate": "2026-09-17",
-        "totalQuantityKg": 356.22,
-        "totalAmountWon": 171781886,
-        "avgPricePerKg": 482235
+        "endDate": "2026-09-25",
+        "totalQuantityKg": 5442.44,
+        "totalAmountWon": 2212774443,
+        "avgPricePerKg": 406578
       },
       "grades": [
         {
           "gradeKey": "grade1",
-          "quantityKg": 12.69,
-          "avgUnitPriceWon": 1224870
+          "quantityKg": 101.36,
+          "avgUnitPriceWon": 1214968
         },
         {
           "gradeKey": "grade2",
-          "quantityKg": 19.07,
-          "avgUnitPriceWon": 913218
+          "quantityKg": 171.65,
+          "avgUnitPriceWon": 920218
         },
         {
           "gradeKey": "grade3Stopped",
-          "quantityKg": 58.73,
-          "avgUnitPriceWon": 619741
+          "quantityKg": 657.47,
+          "avgUnitPriceWon": 566215
         },
         {
           "gradeKey": "grade3Estimated",
-          "quantityKg": 63,
-          "avgUnitPriceWon": 581701
+          "quantityKg": 1024.42,
+          "avgUnitPriceWon": 481046
         },
         {
           "gradeKey": "gradeBelow",
-          "quantityKg": 189.34,
-          "avgUnitPriceWon": 333043
+          "quantityKg": 3209,
+          "avgUnitPriceWon": 310247
         },
         {
           "gradeKey": "mixedGrade",
-          "quantityKg": 13.39,
-          "avgUnitPriceWon": 203166
+          "quantityKg": 278.54,
+          "avgUnitPriceWon": 254988
         }
       ],
       "yearly": [
@@ -127,49 +127,44 @@
         },
         {
           "year": 2026,
-          "totalQuantityKg": 356.22,
-          "totalAmountWon": 171781886,
-          "avgPricePerKg": 482235
+          "totalQuantityKg": 5442.44,
+          "totalAmountWon": 2212774443,
+          "avgPricePerKg": 406578
         }
       ],
       "peak": {
-        "date": "2026-09-17",
+        "date": "2026-09-18",
         "gradeKey": "grade1",
-        "priceWon": 1371100
+        "priceWon": 1673400
       },
       "latestDaily": {
-        "date": "2026-09-17",
-        "totalQuantityKg": 256.17,
+        "date": "2026-09-25",
+        "totalQuantityKg": 70.04,
         "grades": [
           {
             "gradeKey": "grade1",
-            "quantityKg": 10.39,
-            "avgUnitPriceWon": 1222128
+            "quantityKg": 1,
+            "avgUnitPriceWon": 600000
           },
           {
             "gradeKey": "grade2",
-            "quantityKg": 13.79,
-            "avgUnitPriceWon": 907710
+            "quantityKg": 2.45,
+            "avgUnitPriceWon": 520100
           },
           {
             "gradeKey": "grade3Stopped",
-            "quantityKg": 43.49,
-            "avgUnitPriceWon": 638354
+            "quantityKg": 13.51,
+            "avgUnitPriceWon": 400000
           },
           {
             "gradeKey": "grade3Estimated",
-            "quantityKg": 40.94,
-            "avgUnitPriceWon": 587750
+            "quantityKg": 14.48,
+            "avgUnitPriceWon": 400000
           },
           {
             "gradeKey": "gradeBelow",
-            "quantityKg": 138.95,
-            "avgUnitPriceWon": 344705
-          },
-          {
-            "gradeKey": "mixedGrade",
-            "quantityKg": 8.61,
-            "avgUnitPriceWon": 223300
+            "quantityKg": 38.6,
+            "avgUnitPriceWon": 333000
           }
         ]
       },
@@ -187,8 +182,40 @@
       "name": "경북",
       "region": "경북",
       "latestSeasonYear": 2026,
-      "season": null,
-      "grades": [],
+      "season": {
+        "startDate": "2026-09-21",
+        "endDate": "2026-09-25",
+        "totalQuantityKg": 847.39,
+        "totalAmountWon": 325544967,
+        "avgPricePerKg": 384174
+      },
+      "grades": [
+        {
+          "gradeKey": "grade1",
+          "quantityKg": 8.54,
+          "avgUnitPriceWon": 713478
+        },
+        {
+          "gradeKey": "grade2",
+          "quantityKg": 23.75,
+          "avgUnitPriceWon": 672574
+        },
+        {
+          "gradeKey": "grade3Stopped",
+          "quantityKg": 70.7,
+          "avgUnitPriceWon": 498831
+        },
+        {
+          "gradeKey": "grade3Estimated",
+          "quantityKg": 283.32,
+          "avgUnitPriceWon": 436905
+        },
+        {
+          "gradeKey": "gradeBelow",
+          "quantityKg": 461.08,
+          "avgUnitPriceWon": 313236
+        }
+      ],
       "yearly": [
         {
           "year": 2013,
@@ -267,10 +294,50 @@
           "totalQuantityKg": 80372.63,
           "totalAmountWon": 15132251588,
           "avgPricePerKg": 188276
+        },
+        {
+          "year": 2026,
+          "totalQuantityKg": 847.39,
+          "totalAmountWon": 325544967,
+          "avgPricePerKg": 384174
         }
       ],
-      "peak": null,
-      "latestDaily": null,
+      "peak": {
+        "date": "2026-09-22",
+        "gradeKey": "grade1",
+        "priceWon": 1218000
+      },
+      "latestDaily": {
+        "date": "2026-09-25",
+        "totalQuantityKg": 102.89,
+        "grades": [
+          {
+            "gradeKey": "grade2",
+            "quantityKg": 3.35,
+            "avgUnitPriceWon": 529100
+          },
+          {
+            "gradeKey": "grade3Stopped",
+            "quantityKg": 11.3,
+            "avgUnitPriceWon": 441222
+          },
+          {
+            "gradeKey": "grade3Estimated",
+            "quantityKg": 35.47,
+            "avgUnitPriceWon": 427189
+          },
+          {
+            "gradeKey": "gradeBelow",
+            "quantityKg": 50.93,
+            "avgUnitPriceWon": 333567
+          },
+          {
+            "gradeKey": "grade1",
+            "quantityKg": 1.84,
+            "avgUnitPriceWon": 573760
+          }
+        ]
+      },
       "unions": [
         "의성",
         "안동",
@@ -468,8 +535,30 @@
       "name": "양구",
       "region": "강원",
       "latestSeasonYear": 2026,
-      "season": null,
-      "grades": [],
+      "season": {
+        "startDate": "2026-09-21",
+        "endDate": "2026-09-23",
+        "totalQuantityKg": 6,
+        "totalAmountWon": 1638220,
+        "avgPricePerKg": 273037
+      },
+      "grades": [
+        {
+          "gradeKey": "grade3Stopped",
+          "quantityKg": 1.34,
+          "avgUnitPriceWon": 395746
+        },
+        {
+          "gradeKey": "grade3Estimated",
+          "quantityKg": 0.71,
+          "avgUnitPriceWon": 381690
+        },
+        {
+          "gradeKey": "gradeBelow",
+          "quantityKg": 3.95,
+          "avgUnitPriceWon": 211878
+        }
+      ],
       "yearly": [
         {
           "year": 2013,
@@ -536,17 +625,83 @@
           "totalQuantityKg": 2694,
           "totalAmountWon": 594201987,
           "avgPricePerKg": 220565
+        },
+        {
+          "year": 2026,
+          "totalQuantityKg": 6,
+          "totalAmountWon": 1638220,
+          "avgPricePerKg": 273037
         }
       ],
-      "peak": null,
-      "latestDaily": null
+      "peak": {
+        "date": "2026-09-21",
+        "gradeKey": "grade3Stopped",
+        "priceWon": 500000
+      },
+      "latestDaily": {
+        "date": "2026-09-23",
+        "totalQuantityKg": 4.31,
+        "grades": [
+          {
+            "gradeKey": "grade3Stopped",
+            "quantityKg": 0.9,
+            "avgUnitPriceWon": 352000
+          },
+          {
+            "gradeKey": "grade3Estimated",
+            "quantityKg": 0.35,
+            "avgUnitPriceWon": 352000
+          },
+          {
+            "gradeKey": "gradeBelow",
+            "quantityKg": 3.06,
+            "avgUnitPriceWon": 202000
+          }
+        ]
+      },
+      "quantityRank": {
+        "rank": 11,
+        "of": 11
+      }
     },
     "인제": {
       "name": "인제",
       "region": "강원",
       "latestSeasonYear": 2026,
-      "season": null,
-      "grades": [],
+      "season": {
+        "startDate": "2026-09-18",
+        "endDate": "2026-09-24",
+        "totalQuantityKg": 171.41,
+        "totalAmountWon": 66102008,
+        "avgPricePerKg": 385637
+      },
+      "grades": [
+        {
+          "gradeKey": "grade1",
+          "quantityKg": 3.77,
+          "avgUnitPriceWon": 956387
+        },
+        {
+          "gradeKey": "grade2",
+          "quantityKg": 11.3,
+          "avgUnitPriceWon": 794841
+        },
+        {
+          "gradeKey": "grade3Stopped",
+          "quantityKg": 36.1,
+          "avgUnitPriceWon": 443316
+        },
+        {
+          "gradeKey": "grade3Estimated",
+          "quantityKg": 36.06,
+          "avgUnitPriceWon": 420593
+        },
+        {
+          "gradeKey": "gradeBelow",
+          "quantityKg": 84.18,
+          "avgUnitPriceWon": 265436
+        }
+      ],
       "yearly": [
         {
           "year": 2013,
@@ -625,10 +780,44 @@
           "totalQuantityKg": 8550.57,
           "totalAmountWon": 1976732133,
           "avgPricePerKg": 231181
+        },
+        {
+          "year": 2026,
+          "totalQuantityKg": 171.41,
+          "totalAmountWon": 66102008,
+          "avgPricePerKg": 385637
         }
       ],
-      "peak": null,
-      "latestDaily": null
+      "peak": {
+        "date": "2026-09-19",
+        "gradeKey": "grade1",
+        "priceWon": 1055900
+      },
+      "latestDaily": {
+        "date": "2026-09-24",
+        "totalQuantityKg": 9.25,
+        "grades": [
+          {
+            "gradeKey": "grade3Stopped",
+            "quantityKg": 1.16,
+            "avgUnitPriceWon": 360000
+          },
+          {
+            "gradeKey": "grade3Estimated",
+            "quantityKg": 2.15,
+            "avgUnitPriceWon": 353700
+          },
+          {
+            "gradeKey": "gradeBelow",
+            "quantityKg": 5.94,
+            "avgUnitPriceWon": 285500
+          }
+        ]
+      },
+      "quantityRank": {
+        "rank": 7,
+        "of": 11
+      }
     },
     "고성": {
       "name": "고성",
@@ -636,36 +825,41 @@
       "latestSeasonYear": 2026,
       "season": {
         "startDate": "2026-09-16",
-        "endDate": "2026-09-17",
-        "totalQuantityKg": 76.04,
-        "totalAmountWon": 31789476,
-        "avgPricePerKg": 418063
+        "endDate": "2026-09-24",
+        "totalQuantityKg": 1221.48,
+        "totalAmountWon": 450791308,
+        "avgPricePerKg": 369053
       },
       "grades": [
         {
           "gradeKey": "grade1",
-          "quantityKg": 1.36,
-          "avgUnitPriceWon": 1188654
+          "quantityKg": 10.45,
+          "avgUnitPriceWon": 1152374
         },
         {
           "gradeKey": "grade2",
-          "quantityKg": 4.18,
-          "avgUnitPriceWon": 934232
+          "quantityKg": 31.28,
+          "avgUnitPriceWon": 935652
         },
         {
           "gradeKey": "grade3Stopped",
-          "quantityKg": 11.35,
-          "avgUnitPriceWon": 514930
+          "quantityKg": 127.35,
+          "avgUnitPriceWon": 604702
         },
         {
           "gradeKey": "grade3Estimated",
-          "quantityKg": 13,
-          "avgUnitPriceWon": 508294
+          "quantityKg": 215.94,
+          "avgUnitPriceWon": 417322
         },
         {
           "gradeKey": "gradeBelow",
-          "quantityKg": 46.15,
-          "avgUnitPriceWon": 299362
+          "quantityKg": 778.53,
+          "avgUnitPriceWon": 294005
+        },
+        {
+          "gradeKey": "mixedGrade",
+          "quantityKg": 57.93,
+          "avgUnitPriceWon": 232434
         }
       ],
       "yearly": [
@@ -749,50 +943,55 @@
         },
         {
           "year": 2026,
-          "totalQuantityKg": 76.04,
-          "totalAmountWon": 31789476,
-          "avgPricePerKg": 418063
+          "totalQuantityKg": 1221.48,
+          "totalAmountWon": 450791308,
+          "avgPricePerKg": 369053
         }
       ],
       "peak": {
-        "date": "2026-09-17",
+        "date": "2026-09-18",
         "gradeKey": "grade1",
-        "priceWon": 1250000
+        "priceWon": 1673400
       },
       "latestDaily": {
-        "date": "2026-09-17",
-        "totalQuantityKg": 49.01,
+        "date": "2026-09-24",
+        "totalQuantityKg": 174.61,
         "grades": [
           {
             "gradeKey": "grade1",
-            "quantityKg": 1.06,
-            "avgUnitPriceWon": 1250000
+            "quantityKg": 0.2,
+            "avgUnitPriceWon": 713900
           },
           {
             "gradeKey": "grade2",
-            "quantityKg": 2.86,
-            "avgUnitPriceWon": 963000
+            "quantityKg": 2.26,
+            "avgUnitPriceWon": 613900
           },
           {
             "gradeKey": "grade3Stopped",
-            "quantityKg": 7.08,
-            "avgUnitPriceWon": 583100
+            "quantityKg": 7.37,
+            "avgUnitPriceWon": 450900
           },
           {
             "gradeKey": "grade3Estimated",
-            "quantityKg": 8.2,
-            "avgUnitPriceWon": 523100
+            "quantityKg": 30.98,
+            "avgUnitPriceWon": 392200
           },
           {
             "gradeKey": "gradeBelow",
-            "quantityKg": 29.81,
-            "avgUnitPriceWon": 308330
+            "quantityKg": 126.29,
+            "avgUnitPriceWon": 308784
+          },
+          {
+            "gradeKey": "mixedGrade",
+            "quantityKg": 7.51,
+            "avgUnitPriceWon": 245900
           }
         ]
       },
       "quantityRank": {
         "rank": 3,
-        "of": 4
+        "of": 11
       }
     },
     "양양": {
@@ -801,36 +1000,36 @@
       "latestSeasonYear": 2026,
       "season": {
         "startDate": "2026-09-17",
-        "endDate": "2026-09-17",
-        "totalQuantityKg": 112.36,
-        "totalAmountWon": 59258430,
-        "avgPricePerKg": 527398
+        "endDate": "2026-09-24",
+        "totalQuantityKg": 1892.47,
+        "totalAmountWon": 815975384,
+        "avgPricePerKg": 431170
       },
       "grades": [
         {
           "gradeKey": "grade1",
-          "quantityKg": 8.06,
-          "avgUnitPriceWon": 1201900
+          "quantityKg": 63.83,
+          "avgUnitPriceWon": 1289590
         },
         {
           "gradeKey": "grade2",
-          "quantityKg": 6.23,
-          "avgUnitPriceWon": 800900
+          "quantityKg": 63.23,
+          "avgUnitPriceWon": 923937
         },
         {
           "gradeKey": "grade3Stopped",
-          "quantityKg": 24.42,
-          "avgUnitPriceWon": 637200
+          "quantityKg": 257.94,
+          "avgUnitPriceWon": 553156
         },
         {
           "gradeKey": "grade3Estimated",
-          "quantityKg": 15.13,
-          "avgUnitPriceWon": 560900
+          "quantityKg": 383.83,
+          "avgUnitPriceWon": 483438
         },
         {
           "gradeKey": "gradeBelow",
-          "quantityKg": 58.52,
-          "avgUnitPriceWon": 350900
+          "quantityKg": 1123.64,
+          "avgUnitPriceWon": 308819
         }
       ],
       "yearly": [
@@ -914,50 +1113,50 @@
         },
         {
           "year": 2026,
-          "totalQuantityKg": 112.36,
-          "totalAmountWon": 59258430,
-          "avgPricePerKg": 527398
+          "totalQuantityKg": 1892.47,
+          "totalAmountWon": 815975384,
+          "avgPricePerKg": 431170
         }
       ],
       "peak": {
-        "date": "2026-09-17",
+        "date": "2026-09-21",
         "gradeKey": "grade1",
-        "priceWon": 1201900
+        "priceWon": 1578800
       },
       "latestDaily": {
-        "date": "2026-09-17",
-        "totalQuantityKg": 112.36,
+        "date": "2026-09-24",
+        "totalQuantityKg": 376.52,
         "grades": [
           {
             "gradeKey": "grade1",
-            "quantityKg": 8.06,
-            "avgUnitPriceWon": 1201900
+            "quantityKg": 6.33,
+            "avgUnitPriceWon": 1017590
           },
           {
             "gradeKey": "grade2",
-            "quantityKg": 6.23,
-            "avgUnitPriceWon": 800900
+            "quantityKg": 7.23,
+            "avgUnitPriceWon": 917590
           },
           {
             "gradeKey": "grade3Stopped",
-            "quantityKg": 24.42,
-            "avgUnitPriceWon": 637200
+            "quantityKg": 35.25,
+            "avgUnitPriceWon": 537590
           },
           {
             "gradeKey": "grade3Estimated",
-            "quantityKg": 15.13,
-            "avgUnitPriceWon": 560900
+            "quantityKg": 86.33,
+            "avgUnitPriceWon": 437590
           },
           {
             "gradeKey": "gradeBelow",
-            "quantityKg": 58.52,
-            "avgUnitPriceWon": 350900
+            "quantityKg": 241.38,
+            "avgUnitPriceWon": 330100
           }
         ]
       },
       "quantityRank": {
-        "rank": 2,
-        "of": 4
+        "rank": 1,
+        "of": 11
       }
     },
     "강릉": {
@@ -966,41 +1165,41 @@
       "latestSeasonYear": 2026,
       "season": {
         "startDate": "2026-09-16",
-        "endDate": "2026-09-17",
-        "totalQuantityKg": 122.67,
-        "totalAmountWon": 57401521,
-        "avgPricePerKg": 467934
+        "endDate": "2026-09-24",
+        "totalQuantityKg": 1452.17,
+        "totalAmountWon": 581267527,
+        "avgPricePerKg": 400275
       },
       "grades": [
         {
           "gradeKey": "grade1",
-          "quantityKg": 2.22,
-          "avgUnitPriceWon": 1325942
+          "quantityKg": 13.73,
+          "avgUnitPriceWon": 1164862
         },
         {
           "gradeKey": "grade2",
-          "quantityKg": 5.08,
-          "avgUnitPriceWon": 1006594
+          "quantityKg": 29.97,
+          "avgUnitPriceWon": 988536
         },
         {
           "gradeKey": "grade3Stopped",
-          "quantityKg": 13.1,
-          "avgUnitPriceWon": 680185
+          "quantityKg": 80.79,
+          "avgUnitPriceWon": 673964
         },
         {
           "gradeKey": "grade3Estimated",
-          "quantityKg": 25.45,
-          "avgUnitPriceWon": 622043
+          "quantityKg": 257.42,
+          "avgUnitPriceWon": 555280
         },
         {
           "gradeKey": "gradeBelow",
-          "quantityKg": 63.43,
-          "avgUnitPriceWon": 344988
+          "quantityKg": 849.65,
+          "avgUnitPriceWon": 330369
         },
         {
           "gradeKey": "mixedGrade",
-          "quantityKg": 13.39,
-          "avgUnitPriceWon": 203166
+          "quantityKg": 220.61,
+          "avgUnitPriceWon": 260911
         }
       ],
       "yearly": [
@@ -1078,55 +1277,55 @@
         },
         {
           "year": 2026,
-          "totalQuantityKg": 122.67,
-          "totalAmountWon": 57401521,
-          "avgPricePerKg": 467934
+          "totalQuantityKg": 1452.17,
+          "totalAmountWon": 581267527,
+          "avgPricePerKg": 400275
         }
       ],
       "peak": {
-        "date": "2026-09-17",
+        "date": "2026-09-18",
         "gradeKey": "grade1",
-        "priceWon": 1371100
+        "priceWon": 1420000
       },
       "latestDaily": {
-        "date": "2026-09-17",
-        "totalQuantityKg": 69.36,
+        "date": "2026-09-24",
+        "totalQuantityKg": 224.93,
         "grades": [
           {
             "gradeKey": "grade1",
-            "quantityKg": 0.81,
-            "avgUnitPriceWon": 1371100
+            "quantityKg": 0.97,
+            "avgUnitPriceWon": 651000
           },
           {
             "gradeKey": "grade2",
-            "quantityKg": 2.63,
-            "avgUnitPriceWon": 1050000
+            "quantityKg": 2.78,
+            "avgUnitPriceWon": 551000
           },
           {
             "gradeKey": "grade3Stopped",
-            "quantityKg": 6.45,
-            "avgUnitPriceWon": 701100
+            "quantityKg": 5.44,
+            "avgUnitPriceWon": 468700
           },
           {
             "gradeKey": "grade3Estimated",
-            "quantityKg": 12.53,
-            "avgUnitPriceWon": 649000
+            "quantityKg": 31.7,
+            "avgUnitPriceWon": 385000
           },
           {
             "gradeKey": "gradeBelow",
-            "quantityKg": 38.33,
-            "avgUnitPriceWon": 367900
+            "quantityKg": 125.16,
+            "avgUnitPriceWon": 332000
           },
           {
             "gradeKey": "mixedGrade",
-            "quantityKg": 8.61,
-            "avgUnitPriceWon": 223300
+            "quantityKg": 58.88,
+            "avgUnitPriceWon": 285500
           }
         ]
       },
       "quantityRank": {
-        "rank": 1,
-        "of": 4
+        "rank": 2,
+        "of": 11
       }
     },
     "삼척": {
@@ -1135,36 +1334,36 @@
       "latestSeasonYear": 2026,
       "season": {
         "startDate": "2026-09-15",
-        "endDate": "2026-09-17",
-        "totalQuantityKg": 45.15,
-        "totalAmountWon": 23332459,
-        "avgPricePerKg": 516777
+        "endDate": "2026-09-25",
+        "totalQuantityKg": 698.91,
+        "totalAmountWon": 296999995,
+        "avgPricePerKg": 424947
       },
       "grades": [
         {
           "gradeKey": "grade1",
-          "quantityKg": 1.05,
-          "avgUnitPriceWon": 1234400
+          "quantityKg": 9.58,
+          "avgUnitPriceWon": 959629
         },
         {
           "gradeKey": "grade2",
-          "quantityKg": 3.58,
-          "avgUnitPriceWon": 951642
+          "quantityKg": 35.87,
+          "avgUnitPriceWon": 882618
         },
         {
           "gradeKey": "grade3Stopped",
-          "quantityKg": 9.86,
-          "avgUnitPriceWon": 616841
+          "quantityKg": 153.95,
+          "avgUnitPriceWon": 530014
         },
         {
           "gradeKey": "grade3Estimated",
-          "quantityKg": 9.42,
-          "avgUnitPriceWon": 607426
+          "quantityKg": 130.46,
+          "avgUnitPriceWon": 450260
         },
         {
           "gradeKey": "gradeBelow",
-          "quantityKg": 21.24,
-          "avgUnitPriceWon": 321349
+          "quantityKg": 369.05,
+          "avgUnitPriceWon": 313807
         }
       ],
       "yearly": [
@@ -1248,50 +1447,50 @@
         },
         {
           "year": 2026,
-          "totalQuantityKg": 45.15,
-          "totalAmountWon": 23332459,
-          "avgPricePerKg": 516777
+          "totalQuantityKg": 698.91,
+          "totalAmountWon": 296999995,
+          "avgPricePerKg": 424947
         }
       ],
       "peak": {
-        "date": "2026-09-17",
+        "date": "2026-09-18",
         "gradeKey": "grade1",
-        "priceWon": 1250000
+        "priceWon": 1320000
       },
       "latestDaily": {
-        "date": "2026-09-17",
-        "totalQuantityKg": 25.44,
+        "date": "2026-09-25",
+        "totalQuantityKg": 70.04,
         "grades": [
           {
             "gradeKey": "grade1",
-            "quantityKg": 0.46,
-            "avgUnitPriceWon": 1250000
+            "quantityKg": 1,
+            "avgUnitPriceWon": 600000
           },
           {
             "gradeKey": "grade2",
-            "quantityKg": 2.07,
-            "avgUnitPriceWon": 972000
+            "quantityKg": 2.45,
+            "avgUnitPriceWon": 520100
           },
           {
             "gradeKey": "grade3Stopped",
-            "quantityKg": 5.54,
-            "avgUnitPriceWon": 641000
+            "quantityKg": 13.51,
+            "avgUnitPriceWon": 400000
           },
           {
             "gradeKey": "grade3Estimated",
-            "quantityKg": 5.08,
-            "avgUnitPriceWon": 621000
+            "quantityKg": 14.48,
+            "avgUnitPriceWon": 400000
           },
           {
             "gradeKey": "gradeBelow",
-            "quantityKg": 12.29,
-            "avgUnitPriceWon": 331100
+            "quantityKg": 38.6,
+            "avgUnitPriceWon": 333000
           }
         ]
       },
       "quantityRank": {
         "rank": 4,
-        "of": 4
+        "of": 11
       }
     },
     "의성": {
@@ -1470,8 +1669,40 @@
       "name": "청송",
       "region": "경북",
       "latestSeasonYear": 2026,
-      "season": null,
-      "grades": [],
+      "season": {
+        "startDate": "2026-09-22",
+        "endDate": "2026-09-25",
+        "totalQuantityKg": 58.28,
+        "totalAmountWon": 23277188,
+        "avgPricePerKg": 399403
+      },
+      "grades": [
+        {
+          "gradeKey": "grade1",
+          "quantityKg": 1.48,
+          "avgUnitPriceWon": 674514
+        },
+        {
+          "gradeKey": "grade2",
+          "quantityKg": 2.32,
+          "avgUnitPriceWon": 550749
+        },
+        {
+          "gradeKey": "grade3Stopped",
+          "quantityKg": 6.7,
+          "avgUnitPriceWon": 481767
+        },
+        {
+          "gradeKey": "grade3Estimated",
+          "quantityKg": 21.02,
+          "avgUnitPriceWon": 432793
+        },
+        {
+          "gradeKey": "gradeBelow",
+          "quantityKg": 26.76,
+          "avgUnitPriceWon": 324216
+        }
+      ],
       "yearly": [
         {
           "year": 2013,
@@ -1550,17 +1781,88 @@
           "totalQuantityKg": 7247.56,
           "totalAmountWon": 1472457890,
           "avgPricePerKg": 203166
+        },
+        {
+          "year": 2026,
+          "totalQuantityKg": 58.28,
+          "totalAmountWon": 23277188,
+          "avgPricePerKg": 399403
         }
       ],
-      "peak": null,
-      "latestDaily": null
+      "peak": {
+        "date": "2026-09-22",
+        "gradeKey": "grade1",
+        "priceWon": 713000
+      },
+      "latestDaily": {
+        "date": "2026-09-25",
+        "totalQuantityKg": 8.74,
+        "grades": [
+          {
+            "gradeKey": "grade2",
+            "quantityKg": 0.32,
+            "avgUnitPriceWon": 561900
+          },
+          {
+            "gradeKey": "grade3Stopped",
+            "quantityKg": 0.9,
+            "avgUnitPriceWon": 471900
+          },
+          {
+            "gradeKey": "grade3Estimated",
+            "quantityKg": 4.28,
+            "avgUnitPriceWon": 421100
+          },
+          {
+            "gradeKey": "gradeBelow",
+            "quantityKg": 3.24,
+            "avgUnitPriceWon": 321100
+          }
+        ]
+      },
+      "quantityRank": {
+        "rank": 10,
+        "of": 11
+      }
     },
     "영덕": {
       "name": "영덕",
       "region": "경북",
       "latestSeasonYear": 2026,
-      "season": null,
-      "grades": [],
+      "season": {
+        "startDate": "2026-09-21",
+        "endDate": "2026-09-25",
+        "totalQuantityKg": 346.38,
+        "totalAmountWon": 131596237,
+        "avgPricePerKg": 379919
+      },
+      "grades": [
+        {
+          "gradeKey": "grade1",
+          "quantityKg": 2.12,
+          "avgUnitPriceWon": 927665
+        },
+        {
+          "gradeKey": "grade2",
+          "quantityKg": 7.61,
+          "avgUnitPriceWon": 748949
+        },
+        {
+          "gradeKey": "grade3Stopped",
+          "quantityKg": 33.4,
+          "avgUnitPriceWon": 451249
+        },
+        {
+          "gradeKey": "grade3Estimated",
+          "quantityKg": 104.5,
+          "avgUnitPriceWon": 431535
+        },
+        {
+          "gradeKey": "gradeBelow",
+          "quantityKg": 198.75,
+          "avgUnitPriceWon": 320820
+        }
+      ],
       "yearly": [
         {
           "year": 2013,
@@ -1639,17 +1941,93 @@
           "totalQuantityKg": 17988.73,
           "totalAmountWon": 3416094963,
           "avgPricePerKg": 189902
+        },
+        {
+          "year": 2026,
+          "totalQuantityKg": 346.38,
+          "totalAmountWon": 131596237,
+          "avgPricePerKg": 379919
         }
       ],
-      "peak": null,
-      "latestDaily": null
+      "peak": {
+        "date": "2026-09-22",
+        "gradeKey": "grade1",
+        "priceWon": 1218000
+      },
+      "latestDaily": {
+        "date": "2026-09-25",
+        "totalQuantityKg": 48.89,
+        "grades": [
+          {
+            "gradeKey": "grade1",
+            "quantityKg": 0.35,
+            "avgUnitPriceWon": 600000
+          },
+          {
+            "gradeKey": "grade2",
+            "quantityKg": 0.69,
+            "avgUnitPriceWon": 600000
+          },
+          {
+            "gradeKey": "grade3Stopped",
+            "quantityKg": 7.8,
+            "avgUnitPriceWon": 441000
+          },
+          {
+            "gradeKey": "grade3Estimated",
+            "quantityKg": 11.7,
+            "avgUnitPriceWon": 441000
+          },
+          {
+            "gradeKey": "gradeBelow",
+            "quantityKg": 28.35,
+            "avgUnitPriceWon": 343138
+          }
+        ]
+      },
+      "quantityRank": {
+        "rank": 5,
+        "of": 11
+      }
     },
     "포항": {
       "name": "포항",
       "region": "경북",
       "latestSeasonYear": 2026,
-      "season": null,
-      "grades": [],
+      "season": {
+        "startDate": "2026-09-21",
+        "endDate": "2026-09-25",
+        "totalQuantityKg": 162.65,
+        "totalAmountWon": 62851343,
+        "avgPricePerKg": 386421
+      },
+      "grades": [
+        {
+          "gradeKey": "grade1",
+          "quantityKg": 1.39,
+          "avgUnitPriceWon": 673973
+        },
+        {
+          "gradeKey": "grade2",
+          "quantityKg": 5.07,
+          "avgUnitPriceWon": 602875
+        },
+        {
+          "gradeKey": "grade3Stopped",
+          "quantityKg": 10.92,
+          "avgUnitPriceWon": 539496
+        },
+        {
+          "gradeKey": "grade3Estimated",
+          "quantityKg": 75.9,
+          "avgUnitPriceWon": 422796
+        },
+        {
+          "gradeKey": "gradeBelow",
+          "quantityKg": 69.37,
+          "avgUnitPriceWon": 300944
+        }
+      ],
       "yearly": [
         {
           "year": 2013,
@@ -1710,10 +2088,54 @@
           "totalQuantityKg": 8228.26,
           "totalAmountWon": 1789108451,
           "avgPricePerKg": 217435
+        },
+        {
+          "year": 2026,
+          "totalQuantityKg": 162.65,
+          "totalAmountWon": 62851343,
+          "avgPricePerKg": 386421
         }
       ],
-      "peak": null,
-      "latestDaily": null
+      "peak": {
+        "date": "2026-09-23",
+        "gradeKey": "grade1",
+        "priceWon": 1000800
+      },
+      "latestDaily": {
+        "date": "2026-09-25",
+        "totalQuantityKg": 32.1,
+        "grades": [
+          {
+            "gradeKey": "grade1",
+            "quantityKg": 0.77,
+            "avgUnitPriceWon": 574700
+          },
+          {
+            "gradeKey": "grade2",
+            "quantityKg": 1.08,
+            "avgUnitPriceWon": 554700
+          },
+          {
+            "gradeKey": "grade3Stopped",
+            "quantityKg": 1.72,
+            "avgUnitPriceWon": 440000
+          },
+          {
+            "gradeKey": "grade3Estimated",
+            "quantityKg": 14.91,
+            "avgUnitPriceWon": 420000
+          },
+          {
+            "gradeKey": "gradeBelow",
+            "quantityKg": 13.62,
+            "avgUnitPriceWon": 320000
+          }
+        ]
+      },
+      "quantityRank": {
+        "rank": 8,
+        "of": 11
+      }
     },
     "청도": {
       "name": "청도",
@@ -1950,8 +2372,40 @@
       "name": "예천",
       "region": "경북",
       "latestSeasonYear": 2026,
-      "season": null,
-      "grades": [],
+      "season": {
+        "startDate": "2026-09-21",
+        "endDate": "2026-09-24",
+        "totalQuantityKg": 192.03,
+        "totalAmountWon": 75357719,
+        "avgPricePerKg": 392427
+      },
+      "grades": [
+        {
+          "gradeKey": "grade1",
+          "quantityKg": 0.28,
+          "avgUnitPriceWon": 914000
+        },
+        {
+          "gradeKey": "grade2",
+          "quantityKg": 3.21,
+          "avgUnitPriceWon": 832008
+        },
+        {
+          "gradeKey": "grade3Stopped",
+          "quantityKg": 15.62,
+          "avgUnitPriceWon": 603836
+        },
+        {
+          "gradeKey": "grade3Estimated",
+          "quantityKg": 55.46,
+          "avgUnitPriceWon": 478426
+        },
+        {
+          "gradeKey": "gradeBelow",
+          "quantityKg": 117.46,
+          "avgUnitPriceWon": 310451
+        }
+      ],
       "yearly": [
         {
           "year": 2013,
@@ -2024,10 +2478,49 @@
           "totalQuantityKg": 3793.06,
           "totalAmountWon": 721328856,
           "avgPricePerKg": 190171
+        },
+        {
+          "year": 2026,
+          "totalQuantityKg": 192.03,
+          "totalAmountWon": 75357719,
+          "avgPricePerKg": 392427
         }
       ],
-      "peak": null,
-      "latestDaily": null
+      "peak": {
+        "date": "2026-09-23",
+        "gradeKey": "grade1",
+        "priceWon": 914000
+      },
+      "latestDaily": {
+        "date": "2026-09-24",
+        "totalQuantityKg": 68.22,
+        "grades": [
+          {
+            "gradeKey": "grade2",
+            "quantityKg": 0.65,
+            "avgUnitPriceWon": 830000
+          },
+          {
+            "gradeKey": "grade3Stopped",
+            "quantityKg": 2.11,
+            "avgUnitPriceWon": 630000
+          },
+          {
+            "gradeKey": "grade3Estimated",
+            "quantityKg": 24.04,
+            "avgUnitPriceWon": 430000
+          },
+          {
+            "gradeKey": "gradeBelow",
+            "quantityKg": 41.42,
+            "avgUnitPriceWon": 319999
+          }
+        ]
+      },
+      "quantityRank": {
+        "rank": 6,
+        "of": 11
+      }
     },
     "영주": {
       "name": "영주",
@@ -2157,8 +2650,40 @@
       "name": "울진",
       "region": "경북",
       "latestSeasonYear": 2026,
-      "season": null,
-      "grades": [],
+      "season": {
+        "startDate": "2026-09-21",
+        "endDate": "2026-09-25",
+        "totalQuantityKg": 88.05,
+        "totalAmountWon": 32462480,
+        "avgPricePerKg": 368682
+      },
+      "grades": [
+        {
+          "gradeKey": "grade1",
+          "quantityKg": 3.27,
+          "avgUnitPriceWon": 591874
+        },
+        {
+          "gradeKey": "grade2",
+          "quantityKg": 5.54,
+          "avgUnitPriceWon": 590087
+        },
+        {
+          "gradeKey": "grade3Stopped",
+          "quantityKg": 4.06,
+          "avgUnitPriceWon": 405066
+        },
+        {
+          "gradeKey": "grade3Estimated",
+          "quantityKg": 26.44,
+          "avgUnitPriceWon": 414808
+        },
+        {
+          "gradeKey": "gradeBelow",
+          "quantityKg": 48.74,
+          "avgUnitPriceWon": 300490
+        }
+      ],
       "yearly": [
         {
           "year": 2013,
@@ -2231,10 +2756,54 @@
           "totalQuantityKg": 2875.59,
           "totalAmountWon": 561119463,
           "avgPricePerKg": 195132
+        },
+        {
+          "year": 2026,
+          "totalQuantityKg": 88.05,
+          "totalAmountWon": 32462480,
+          "avgPricePerKg": 368682
         }
       ],
-      "peak": null,
-      "latestDaily": null
+      "peak": {
+        "date": "2026-09-21",
+        "gradeKey": "grade1",
+        "priceWon": 1000000
+      },
+      "latestDaily": {
+        "date": "2026-09-25",
+        "totalQuantityKg": 13.16,
+        "grades": [
+          {
+            "gradeKey": "grade1",
+            "quantityKg": 0.72,
+            "avgUnitPriceWon": 560000
+          },
+          {
+            "gradeKey": "grade2",
+            "quantityKg": 1.26,
+            "avgUnitPriceWon": 460000
+          },
+          {
+            "gradeKey": "grade3Stopped",
+            "quantityKg": 0.88,
+            "avgUnitPriceWon": 414200
+          },
+          {
+            "gradeKey": "grade3Estimated",
+            "quantityKg": 4.58,
+            "avgUnitPriceWon": 421000
+          },
+          {
+            "gradeKey": "gradeBelow",
+            "quantityKg": 5.72,
+            "avgUnitPriceWon": 325500
+          }
+        ]
+      },
+      "quantityRank": {
+        "rank": 9,
+        "of": 11
+      }
     },
     "영천": {
       "name": "영천",

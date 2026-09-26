@@ -16,6 +16,11 @@ export const YEARLY_TREND_CHART = {
   MOBILE_MAX_TICKS: 7,
   BAR_RADIUS: 3,
   BAR_OPACITY: 0.85,
+  /** 진행 중인 시즌 막대. 완료 연도보다 옅게 칠하고 점선 테두리로 미완임을 드러낸다 */
+  ONGOING_BAR_OPACITY: 0.35,
+  ONGOING_BAR_DASH: "3,2",
+  /** 진행 중 막대 위 라벨 간격 (px) */
+  ONGOING_LABEL_GAP: 6,
   LINE_WIDTH: 2,
   DOT_RADIUS: 3,
   FONT_SIZE: 11,

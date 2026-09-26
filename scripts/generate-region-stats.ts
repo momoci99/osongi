@@ -67,7 +67,7 @@ type ScopeAccumulator = {
   seasonAmountWon: number;
   /** 최신 시즌 최고 단가 */
   peak: { date: string; gradeKey: string; priceWon: number } | null;
-  /** 최신 데이터 날짜의 등급별 스냅샷 */
+  /** 최신 시즌 중 이 스코프가 마지막으로 거래한 날의 등급별 스냅샷 */
   latestDaily: {
     date: string;
     totalQuantityKg: number;
@@ -133,7 +133,7 @@ const accumulate = (
   accumulator: ScopeAccumulator,
   day: DayRecord,
   records: AuctionRecordRaw[],
-  options: { isLatestSeason: boolean; isLatestDate: boolean; inSeasonMonth: boolean }
+  options: { isLatestSeason: boolean; inSeasonMonth: boolean }
 ): void => {
   const yearBucket =
     accumulator.yearly.get(day.year) ??
@@ -157,7 +157,8 @@ const accumulate = (
     if (options.isLatestSeason && options.inSeasonMonth) {
       accumulator.seasonQuantityKg += todayQuantityKg;
       accumulator.seasonAmountWon += todayAmountWon;
-      accumulator.seasonDates.add(day.date);
+      /** 경매 전에 수집된 거래 0건 날짜가 시즌 기간 끝으로 잡히지 않게 한다 */
+      if (todayQuantityKg > 0) accumulator.seasonDates.add(day.date);
     }
 
     for (const gradeKey of GRADE_KEYS) {
@@ -180,7 +181,7 @@ const accumulate = (
         }
       }
 
-      if (options.isLatestDate) {
+      if (options.isLatestSeason) {
         const existing = dailyGrades.get(gradeKey);
         if (existing) {
           const totalQuantityKg = existing.quantityKg + quantityKg;
@@ -195,7 +196,8 @@ const accumulate = (
     }
   }
 
-  if (options.isLatestDate) {
+  /** 날짜 오름차순으로 누적하므로 마지막으로 거래가 있던 날이 남는다 */
+  if (options.isLatestSeason && dayQuantityKg > 0) {
     accumulator.latestDaily = {
       date: day.date,
       totalQuantityKg: dayQuantityKg,
@@ -281,7 +283,10 @@ if (days.length === 0) {
   throw new Error("auction-data 가 비어 있어 region-manifest 를 생성할 수 없다.");
 }
 
-const latestDate = days[days.length - 1].date;
+/** 전 조합 거래가 0인 날(경매 전 수집분)은 최신 공판일로 치지 않는다 */
+const hasTrade = (day: DayRecord): boolean =>
+  day.records.some((record) => parseNumber(record.auctionQuantity.today) > 0);
+const latestDate = (days.findLast(hasTrade) ?? days[days.length - 1]).date;
 const latestSeasonYear = Number(latestDate.slice(0, 4));
 
 const regionAccumulators = new Map<string, ScopeAccumulator>();
@@ -294,7 +299,6 @@ for (const day of days) {
   const inSeasonMonth =
     month >= MUSHROOM_SEASON.START_MONTH && month <= MUSHROOM_SEASON.END_MONTH;
   const isLatestSeason = day.year === latestSeasonYear;
-  const isLatestDate = day.date === latestDate;
 
   const byRegion = new Map<string, AuctionRecordRaw[]>();
   const byUnion = new Map<string, AuctionRecordRaw[]>();
@@ -313,13 +317,13 @@ for (const day of days) {
   for (const [region, records] of byRegion) {
     const accumulator = regionAccumulators.get(region) ?? createAccumulator();
     regionAccumulators.set(region, accumulator);
-    accumulate(accumulator, day, records, { isLatestSeason, isLatestDate, inSeasonMonth });
+    accumulate(accumulator, day, records, { isLatestSeason, inSeasonMonth });
   }
 
   for (const [union, records] of byUnion) {
     const accumulator = unionAccumulators.get(union) ?? createAccumulator();
     unionAccumulators.set(union, accumulator);
-    accumulate(accumulator, day, records, { isLatestSeason, isLatestDate, inSeasonMonth });
+    accumulate(accumulator, day, records, { isLatestSeason, inSeasonMonth });
   }
 }
 

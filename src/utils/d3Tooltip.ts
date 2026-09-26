@@ -16,6 +16,10 @@ export function createD3Tooltip(theme: Theme): d3.Selection<HTMLDivElement, unkn
     .append("div")
     .attr("class", TOOLTIP_SELECTOR)
     .style("position", "absolute")
+    /** 호버 전에는 숨긴다. 좌표가 없으면 body 끝에 빈 상자로 붙어 페이지 높이까지 늘린다 */
+    .style("opacity", "0")
+    .style("top", "0")
+    .style("left", "0")
     .style("background", theme.palette.background.paper)
     .style("border", `1px solid ${theme.palette.divider}`)
     .style("border-radius", "8px")
