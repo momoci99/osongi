@@ -1,40 +1,45 @@
 {
-  "generatedAt": "2026-09-29T06:25:11.006Z",
+  "generatedAt": "2026-09-29T13:33:30.823Z",
   "latestSeasonSummary": {
     "year": 2026,
     "startDate": "2026-09-15",
     "endDate": "2026-09-29",
-    "totalQuantityKg": 10977.44,
-    "totalAmountWon": 3961711364.76,
-    "avgPricePerKg": 360895.74,
+    "totalQuantityKg": 12106.09,
+    "totalAmountWon": 4301971455.98,
+    "avgPricePerKg": 355355.98,
     "highestPrice": {
       "date": "2026-09-18",
       "gradeKey": "grade1",
       "price": 1673400
     },
     "lowestPrice": {
-      "date": "2026-09-28",
+      "date": "2026-09-29",
       "gradeKey": "mixedGrade",
-      "price": 151100
+      "price": 142777
     }
   },
   "regionSeasonSummaries": {
     "강원": {
-      "totalQuantityKg": 8832.95,
-      "totalAmountWon": 3233408042.88,
-      "avgPricePerKg": 366062.08
+      "totalQuantityKg": 9424.66,
+      "totalAmountWon": 3415291732.56,
+      "avgPricePerKg": 362378.24
     },
     "경북": {
-      "totalQuantityKg": 2144.49,
-      "totalAmountWon": 728302375.53,
-      "avgPricePerKg": 339615.65
+      "totalQuantityKg": 2579.03,
+      "totalAmountWon": 854645862.55,
+      "avgPricePerKg": 331382.68
+    },
+    "경남": {
+      "totalQuantityKg": 102.4,
+      "totalAmountWon": 32032907,
+      "avgPricePerKg": 312821.36
     }
   },
   "monthlyPatterns": [
     {
       "month": 9,
-      "avgQuantityKg": 50788.85,
-      "avgPriceWon": 180345.76,
+      "avgQuantityKg": 50869.47,
+      "avgPriceWon": 180537.72,
       "yearCount": 14
     },
     {
@@ -53,13 +58,18 @@
   "regionRanking": [
     {
       "region": "강원",
-      "avgPriceWon": 366062.08,
-      "totalQuantityKg": 8832.95
+      "avgPriceWon": 362378.24,
+      "totalQuantityKg": 9424.66
     },
     {
       "region": "경북",
-      "avgPriceWon": 339615.65,
-      "totalQuantityKg": 2144.49
+      "avgPriceWon": 331382.68,
+      "totalQuantityKg": 2579.03
+    },
+    {
+      "region": "경남",
+      "avgPriceWon": 312821.36,
+      "totalQuantityKg": 102.4
     }
   ]
 }
