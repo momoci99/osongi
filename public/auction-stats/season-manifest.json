@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-09-30T06:09:54.686Z",
+  "generatedAt": "2026-09-30T13:10:32.650Z",
   "latestSeasonSummary": {
     "year": 2026,
     "startDate": "2026-09-15",
     "endDate": "2026-09-30",
-    "totalQuantityKg": 12106.09,
-    "totalAmountWon": 4301971455.98,
-    "avgPricePerKg": 355355.98,
+    "totalQuantityKg": 13187.15,
+    "totalAmountWon": 4653050702.34,
+    "avgPricePerKg": 352847.33,
     "highestPrice": {
       "date": "2026-09-18",
       "gradeKey": "grade1",
@@ -20,26 +20,26 @@
   },
   "regionSeasonSummaries": {
     "강원": {
-      "totalQuantityKg": 9424.66,
-      "totalAmountWon": 3415291732.56,
-      "avgPricePerKg": 362378.24
+      "totalQuantityKg": 9958.35,
+      "totalAmountWon": 3595649301.32,
+      "avgPricePerKg": 361068.78
     },
     "경북": {
-      "totalQuantityKg": 2579.03,
-      "totalAmountWon": 854645862.55,
-      "avgPricePerKg": 331382.68
+      "totalQuantityKg": 3073.6,
+      "totalAmountWon": 1008291861.91,
+      "avgPricePerKg": 328049.15
     },
     "경남": {
-      "totalQuantityKg": 102.4,
-      "totalAmountWon": 32032907,
-      "avgPricePerKg": 312821.36
+      "totalQuantityKg": 155.2,
+      "totalAmountWon": 49108487,
+      "avgPricePerKg": 316420.66
     }
   },
   "monthlyPatterns": [
     {
       "month": 9,
-      "avgQuantityKg": 50869.47,
-      "avgPriceWon": 180537.72,
+      "avgQuantityKg": 50946.69,
+      "avgPriceWon": 180756.31,
       "yearCount": 14
     },
     {
@@ -58,18 +58,18 @@
   "regionRanking": [
     {
       "region": "강원",
-      "avgPriceWon": 362378.24,
-      "totalQuantityKg": 9424.66
+      "avgPriceWon": 361068.78,
+      "totalQuantityKg": 9958.35
     },
     {
       "region": "경북",
-      "avgPriceWon": 331382.68,
-      "totalQuantityKg": 2579.03
+      "avgPriceWon": 328049.15,
+      "totalQuantityKg": 3073.6
     },
     {
       "region": "경남",
-      "avgPriceWon": 312821.36,
-      "totalQuantityKg": 102.4
+      "avgPriceWon": 316420.66,
+      "totalQuantityKg": 155.2
     }
   ]
 }
