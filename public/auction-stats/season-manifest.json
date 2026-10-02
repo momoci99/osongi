@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-10-02T06:28:48.191Z",
+  "generatedAt": "2026-10-02T13:21:32.030Z",
   "latestSeasonSummary": {
     "year": 2026,
     "startDate": "2026-09-15",
-    "endDate": "2026-10-01",
-    "totalQuantityKg": 14009.98,
-    "totalAmountWon": 4946243411.96,
-    "avgPricePerKg": 353051.43,
+    "endDate": "2026-10-02",
+    "totalQuantityKg": 14562.1,
+    "totalAmountWon": 5173678305.06,
+    "avgPricePerKg": 355283.81,
     "highestPrice": {
       "date": "2026-09-18",
       "gradeKey": "grade1",
@@ -20,19 +20,19 @@
   },
   "regionSeasonSummaries": {
     "강원": {
-      "totalQuantityKg": 10330.56,
-      "totalAmountWon": 3736214443.32,
-      "avgPricePerKg": 361666.21
+      "totalQuantityKg": 10591.63,
+      "totalAmountWon": 3849603910.32,
+      "avgPricePerKg": 363457.17
     },
     "경북": {
-      "totalQuantityKg": 3463.82,
-      "totalAmountWon": 1138012105.53,
-      "avgPricePerKg": 328542.51
+      "totalQuantityKg": 3725.76,
+      "totalAmountWon": 1239742686.63,
+      "avgPricePerKg": 332748.94
     },
     "경남": {
-      "totalQuantityKg": 215.6,
-      "totalAmountWon": 72015811,
-      "avgPricePerKg": 334025.1
+      "totalQuantityKg": 244.71,
+      "totalAmountWon": 84330656,
+      "avgPricePerKg": 344614.67
     }
   },
   "monthlyPatterns": [
@@ -44,8 +44,8 @@
     },
     {
       "month": 10,
-      "avgQuantityKg": 56455.57,
-      "avgPriceWon": 167384.66,
+      "avgQuantityKg": 56495.01,
+      "avgPriceWon": 167555.37,
       "yearCount": 14
     },
     {
@@ -58,18 +58,18 @@
   "regionRanking": [
     {
       "region": "강원",
-      "avgPriceWon": 361666.21,
-      "totalQuantityKg": 10330.56
+      "avgPriceWon": 363457.17,
+      "totalQuantityKg": 10591.63
     },
     {
       "region": "경남",
-      "avgPriceWon": 334025.1,
-      "totalQuantityKg": 215.6
+      "avgPriceWon": 344614.67,
+      "totalQuantityKg": 244.71
     },
     {
       "region": "경북",
-      "avgPriceWon": 328542.51,
-      "totalQuantityKg": 3463.82
+      "avgPriceWon": 332748.94,
+      "totalQuantityKg": 3725.76
     }
   ]
 }
