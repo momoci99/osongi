@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-10-03T10:50:17.591Z",
+  "generatedAt": "2026-10-03T15:00:02.249Z",
   "latestSeasonSummary": {
     "year": 2026,
     "startDate": "2026-09-15",
     "endDate": "2026-10-03",
-    "totalQuantityKg": 14562.1,
-    "totalAmountWon": 5173678305.06,
-    "avgPricePerKg": 355283.81,
+    "totalQuantityKg": 15108.04,
+    "totalAmountWon": 5417953382.79,
+    "avgPricePerKg": 358613.92,
     "highestPrice": {
       "date": "2026-09-18",
       "gradeKey": "grade1",
@@ -20,19 +20,19 @@
   },
   "regionSeasonSummaries": {
     "강원": {
-      "totalQuantityKg": 10591.63,
-      "totalAmountWon": 3849603910.32,
-      "avgPricePerKg": 363457.17
+      "totalQuantityKg": 10860.72,
+      "totalAmountWon": 3975192996.32,
+      "avgPricePerKg": 366015.6
     },
     "경북": {
-      "totalQuantityKg": 3725.76,
-      "totalAmountWon": 1239742686.63,
-      "avgPricePerKg": 332748.94
+      "totalQuantityKg": 3970.64,
+      "totalAmountWon": 1343782848.36,
+      "avgPricePerKg": 338429.79
     },
     "경남": {
-      "totalQuantityKg": 244.71,
-      "totalAmountWon": 84330656,
-      "avgPricePerKg": 344614.67
+      "totalQuantityKg": 276.68,
+      "totalAmountWon": 98976486,
+      "avgPricePerKg": 357729.09
     }
   },
   "monthlyPatterns": [
@@ -44,8 +44,8 @@
     },
     {
       "month": 10,
-      "avgQuantityKg": 56495.01,
-      "avgPriceWon": 167555.37,
+      "avgQuantityKg": 56534,
+      "avgPriceWon": 167748.43,
       "yearCount": 14
     },
     {
@@ -58,18 +58,18 @@
   "regionRanking": [
     {
       "region": "강원",
-      "avgPriceWon": 363457.17,
-      "totalQuantityKg": 10591.63
+      "avgPriceWon": 366015.6,
+      "totalQuantityKg": 10860.72
     },
     {
       "region": "경남",
-      "avgPriceWon": 344614.67,
-      "totalQuantityKg": 244.71
+      "avgPriceWon": 357729.09,
+      "totalQuantityKg": 276.68
     },
     {
       "region": "경북",
-      "avgPriceWon": 332748.94,
-      "totalQuantityKg": 3725.76
+      "avgPriceWon": 338429.79,
+      "totalQuantityKg": 3970.64
     }
   ]
 }
