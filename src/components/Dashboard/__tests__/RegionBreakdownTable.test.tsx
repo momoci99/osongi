@@ -18,6 +18,7 @@ const renderTable = (props: Partial<Parameters<typeof RegionBreakdownTable>[0]> 
     <ThemeProvider theme={theme}>
       <RegionBreakdownTable
         scopeLabel="경북"
+        latestDate="2026-10-05"
         regionData={regionData}
         dayComparison={dayComparison}
         {...props}

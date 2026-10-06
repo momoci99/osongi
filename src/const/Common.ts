@@ -79,3 +79,9 @@ export const REGION_BREAKDOWN_TABLE = {
   /** 전일 대비 배지 최소 폭 (px). 행마다 폭이 달라 들쭉날쭉해지는 것을 막는다 */
   CHANGE_BADGE_MIN_WIDTH: 64,
 } as const;
+
+/** 대시보드 차트 빈 상태 */
+export const DASHBOARD_CHART_EMPTY = {
+  /** 안내 영역 최소 높이 (px). 카드가 제목만 남아 납작해지지 않게 한다 */
+  MIN_HEIGHT: 160,
+} as const;

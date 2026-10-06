@@ -54,6 +54,10 @@ export interface WeeklyPriceDatum {
 export type WeeklyManifest = {
   generatedAt: string;
   weeklyData: WeeklyPriceDatum[];
+  /** 지역별 7일 추이 (옛 매니페스트에는 없다) */
+  regionWeeklyData?: Record<string, WeeklyPriceDatum[]>;
+  /** 조합별 7일 추이 (옛 매니페스트에는 없다) */
+  unionWeeklyData?: Record<string, WeeklyPriceDatum[]>;
 };
 
 // Weekly data zod schemas
@@ -67,6 +71,8 @@ export const WeeklyPriceDatumSchema = z.object({
 export const WeeklyManifestSchema = z.object({
   generatedAt: z.string(),
   weeklyData: z.array(WeeklyPriceDatumSchema),
+  regionWeeklyData: z.record(z.string(), z.array(WeeklyPriceDatumSchema)).optional(),
+  unionWeeklyData: z.record(z.string(), z.array(WeeklyPriceDatumSchema)).optional(),
 });
 
 export type WeeklyPriceDatumType = z.infer<typeof WeeklyPriceDatumSchema>;

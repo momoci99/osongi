@@ -15,7 +15,8 @@ interface SettingsState {
   // 내 지역 설정
   myRegion: RegionType | null;
   myUnion: string | null;
-  setMyRegion: (region: RegionType) => void;
+  /** null 은 전국 */
+  setMyRegion: (region: RegionType | null) => void;
   setMyUnion: (union: string | null) => void;
   hasCompletedOnboarding: boolean;
   completeOnboarding: () => void;
