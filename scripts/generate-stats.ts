@@ -397,6 +397,7 @@ interface ExtendedDailyOutput {
   latestDate: string | null;
   latestDaily: SummaryOutputShape["latestDaily"] & {
     regionGradeBreakdown: Record<string, RegionGradeEntry[]>;
+    unionGradeBreakdown: Record<string, RegionGradeEntry[]>;
     previousDayComparison: {
       previousDate: string;
       gradeChanges: DayOverDayChange[];
@@ -416,6 +417,8 @@ let secondLatestDateStr: string | null = null;
 
 // Build region-grade breakdown for latest date
 const regionGradeBreakdown: Record<string, RegionGradeEntry[]> = {};
+/** 조합별 등급 시세. 지역은 범위가 넓어 내 조합 시세를 따로 보여준다 */
+const unionGradeBreakdown: Record<string, RegionGradeEntry[]> = {};
 let previousDayComparison: ExtendedDailyOutput["latestDaily"] extends infer T
   ? T extends { previousDayComparison: infer P }
     ? P
@@ -430,27 +433,39 @@ if (latestDateStr) {
     const gradeKeys = ["grade1", "grade2", "grade3Stopped", "grade3Estimated", "gradeBelow", "mixedGrade"] as const;
 
     // Per-region aggregation
-    const regionAgg: Record<string, Record<string, { qty: number; priceWeightedSum: number }>> = {};
+    type GradeAgg = Record<string, { qty: number; priceWeightedSum: number }>;
+    const regionAgg: Record<string, GradeAgg> = {};
+    const unionAgg: Record<string, GradeAgg> = {};
     for (const rec of raw) {
-      const region = rec.region;
-      if (!regionAgg[region]) regionAgg[region] = {};
+      const regionGrades = regionAgg[rec.region] || (regionAgg[rec.region] = {});
+      const unionGrades = unionAgg[rec.union] || (unionAgg[rec.union] = {});
       for (const g of gradeKeys) {
         const qty = parseNumber(rec[g].quantity);
         const price = parseNumber(rec[g].unitPrice);
         if (qty > 0 && price > 0) {
-          const entry = regionAgg[region][g] || (regionAgg[region][g] = { qty: 0, priceWeightedSum: 0 });
-          entry.qty += qty;
-          entry.priceWeightedSum += qty * price;
+          for (const agg of [regionGrades, unionGrades]) {
+            const entry = agg[g] || (agg[g] = { qty: 0, priceWeightedSum: 0 });
+            entry.qty += qty;
+            entry.priceWeightedSum += qty * price;
+          }
         }
       }
     }
 
-    for (const [region, grades] of Object.entries(regionAgg)) {
-      regionGradeBreakdown[region] = Object.entries(grades).map(([gradeKey, v]) => ({
+    const toGradeEntries = (grades: GradeAgg): RegionGradeEntry[] =>
+      Object.entries(grades).map(([gradeKey, v]) => ({
         gradeKey,
         quantityKg: parseFloat(v.qty.toFixed(2)),
         unitPriceWon: v.qty > 0 ? parseFloat((v.priceWeightedSum / v.qty).toFixed(2)) : 0,
       }));
+
+    for (const [region, grades] of Object.entries(regionAgg)) {
+      regionGradeBreakdown[region] = toGradeEntries(grades);
+    }
+    /** 거래가 없는 조합은 빈 목록이 되므로 싣지 않는다 */
+    for (const [union, grades] of Object.entries(unionAgg)) {
+      const entries = toGradeEntries(grades);
+      if (entries.length > 0) unionGradeBreakdown[union] = entries;
     }
   } catch {
     // ignore
@@ -746,6 +761,7 @@ const summaryOutput = {
     ? {
         ...latestDaily,
         regionGradeBreakdown,
+        unionGradeBreakdown,
         previousDayComparison,
       }
     : null,

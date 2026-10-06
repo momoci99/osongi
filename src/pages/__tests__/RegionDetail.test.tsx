@@ -4,6 +4,7 @@ import { MemoryRouter, Route, Routes } from "react-router";
 import { ThemeProvider } from "@mui/material/styles";
 import { theme } from "../../theme";
 import { SITE_URL } from "../../const/Site";
+import { WILDFIRE_PUBLIC_PATH } from "../../const/Wildfire";
 import { makeRegionManifest } from "../../test-fixtures/region";
 
 /**
@@ -29,11 +30,21 @@ const renderAt = async (path: string) => {
 
 const manifest = makeRegionManifest();
 
+/** 산불 파일 요청에는 빈 목록, 그 밖에는 주어진 매니페스트로 응답한다 */
+const mockManifestFetch = (body: unknown) =>
+  vi.fn((url: string) =>
+    Promise.resolve({
+      ok: true,
+      status: 200,
+      json: async () => (url === WILDFIRE_PUBLIC_PATH ? { unions: [] } : body),
+    })
+  );
+
 beforeEach(() => {
   document.head.innerHTML = "";
   vi.stubGlobal(
     "fetch",
-    vi.fn().mockResolvedValue({ ok: true, status: 200, json: async () => manifest })
+    mockManifestFetch(manifest)
   );
 });
 
@@ -76,7 +87,7 @@ describe("RegionDetail", () => {
     offSeason.unions["봉화"] = { ...offSeason.unions["봉화"], season: null };
     vi.stubGlobal(
       "fetch",
-      vi.fn().mockResolvedValue({ ok: true, status: 200, json: async () => offSeason })
+      mockManifestFetch(offSeason)
     );
     await renderAt("/region/경북/봉화");
 
@@ -115,6 +126,40 @@ describe("RegionDetail", () => {
         name: "봉화 연도별 공판량과 평균 단가 추이 차트",
       })
     ).toBeInTheDocument();
+  });
+
+  describe("구역 순서", () => {
+    /** 앞 요소가 뒤 요소보다 문서상 먼저 나오는지 */
+    const isBefore = (a: HTMLElement, b: HTMLElement) =>
+      Boolean(a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING);
+
+    const findSections = async () => ({
+      daily: await screen.findByRole("heading", { name: /최신 공판일 시세/ }),
+      season: screen.getByRole("heading", { name: "2025 시즌 등급별 시세" }),
+      chart: screen.getByRole("img", { name: /연도별 공판량과 평균 단가 추이 차트/ }),
+    });
+
+    afterEach(() => {
+      vi.doUnmock("../../utils/isInSeason");
+    });
+
+    it("시즌 중에는 최신 공판일 시세가 맨 위, 연도별 차트가 맨 아래에 온다", async () => {
+      vi.doMock("../../utils/isInSeason", () => ({ default: () => true }));
+      await renderAt("/region/경북/봉화");
+      const { daily, season, chart } = await findSections();
+      const rank = screen.getByRole("heading", { name: "경북의 다른 조합 시세" });
+
+      expect(isBefore(daily, season)).toBe(true);
+      expect(isBefore(rank, chart)).toBe(true);
+    });
+
+    it("시즌 외에는 시즌 등급표가 먼저 온다", async () => {
+      vi.doMock("../../utils/isInSeason", () => ({ default: () => false }));
+      await renderAt("/region/경북/봉화");
+      const { daily, season } = await findSections();
+
+      expect(isBefore(season, daily)).toBe(true);
+    });
   });
 
   it("없는 지역이면 허브로 돌려보낸다", async () => {

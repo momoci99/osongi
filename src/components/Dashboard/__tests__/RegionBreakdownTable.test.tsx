@@ -17,7 +17,7 @@ const renderTable = (props: Partial<Parameters<typeof RegionBreakdownTable>[0]> 
   render(
     <ThemeProvider theme={theme}>
       <RegionBreakdownTable
-        myRegion="경북"
+        scopeLabel="경북"
         regionData={regionData}
         dayComparison={dayComparison}
         {...props}
@@ -52,6 +52,6 @@ describe("RegionBreakdownTable", () => {
 
   it("데이터가 없으면 안내 문구를 보여준다", () => {
     renderTable({ regionData: [] });
-    expect(screen.getByText(/경북 지역의 거래 데이터가 없습니다/)).toBeInTheDocument();
+    expect(screen.getByText(/경북의 최신 공판일 거래가 없습니다/)).toBeInTheDocument();
   });
 });

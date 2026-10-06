@@ -35,6 +35,10 @@ export const DailyDataScheme = z.object({
     regionGradeBreakdown: z
       .record(z.string(), z.array(GradeBreakdownSchema))
       .optional(),
+    /** 조합별 등급 시세. 거래가 있었던 조합만 담긴다 */
+    unionGradeBreakdown: z
+      .record(z.string(), z.array(GradeBreakdownSchema))
+      .optional(),
     // V2: 전일 대비 변동
     previousDayComparison: z
       .object({
