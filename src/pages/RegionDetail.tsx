@@ -79,6 +79,44 @@ const ScopeBody = ({ stats, manifest, union }: ScopeBodyProps) => {
   const scopeUnions = isUnion ? [union] : (manifest.regions[stats.region]?.unions ?? []);
   const fires = fireFile ? groupFireEvents(fireFile.unions, scopeUnions) : undefined;
 
+  /** 시즌 중에는 오늘 시세를 맨 위로, 지난 연도 추이는 맨 아래로 */
+  const inSeason = isInSeason(manifest.latestDate);
+  const seasonTable = (
+    <ScopeGradeTable
+      grades={stats.grades}
+      caption={`${stats.latestSeasonYear} 시즌 등급별 시세`}
+      emptyMessage={`${stats.latestSeasonYear} 시즌 등급별 집계가 아직 없습니다.`}
+    />
+  );
+  const dailyTable = latestDaily && latestDaily.grades.length > 0 && (
+    <ScopeGradeTable
+      grades={latestDaily.grades}
+      caption={`최신 공판일 시세 (${latestDaily.date})`}
+      emptyMessage="최신 공판일 거래가 없습니다."
+    />
+  );
+  const yearlyChart = stats.yearly.length > 0 && (
+    <ScopeYearlyChart
+      yearly={stats.yearly}
+      ongoingYear={inSeason ? stats.latestSeasonYear : undefined}
+      scopeName={stats.name}
+      fires={fires}
+    />
+  );
+  const rankList = (
+    <ScopeRankList
+      title={
+        isUnion
+          ? `${stats.region}의 다른 조합 시세`
+          : `${stats.region} 조합별 시세`
+      }
+      caption={rankCaption(stats, isUnion)}
+      items={linkItems}
+      emptyMessage="연결된 조합 페이지가 없습니다."
+      compareToPricePerKg={compareBaseline(stats)}
+    />
+  );
+
   return (
     <>
       <ScopeHero
@@ -96,40 +134,21 @@ const ScopeBody = ({ stats, manifest, union }: ScopeBodyProps) => {
         <ScopeHeader stats={stats} latestDate={manifest.latestDate} />
       </ScopeHero>
 
-      <ScopeGradeTable
-        grades={stats.grades}
-        caption={`${stats.latestSeasonYear} 시즌 등급별 시세`}
-        emptyMessage={`${stats.latestSeasonYear} 시즌 등급별 집계가 아직 없습니다.`}
-      />
-
-      {latestDaily && latestDaily.grades.length > 0 && (
-        <ScopeGradeTable
-          grades={latestDaily.grades}
-          caption={`최신 공판일 시세 (${latestDaily.date})`}
-          emptyMessage="최신 공판일 거래가 없습니다."
-        />
+      {inSeason ? (
+        <>
+          {dailyTable}
+          {seasonTable}
+          {rankList}
+          {yearlyChart}
+        </>
+      ) : (
+        <>
+          {seasonTable}
+          {dailyTable}
+          {yearlyChart}
+          {rankList}
+        </>
       )}
-
-      {stats.yearly.length > 0 && (
-        <ScopeYearlyChart
-          yearly={stats.yearly}
-          ongoingYear={isInSeason(manifest.latestDate) ? stats.latestSeasonYear : undefined}
-          scopeName={stats.name}
-          fires={fires}
-        />
-      )}
-
-      <ScopeRankList
-        title={
-          isUnion
-            ? `${stats.region}의 다른 조합 시세`
-            : `${stats.region} 조합별 시세`
-        }
-        caption={rankCaption(stats, isUnion)}
-        items={linkItems}
-        emptyMessage="연결된 조합 페이지가 없습니다."
-        compareToPricePerKg={compareBaseline(stats)}
-      />
     </>
   );
 };
