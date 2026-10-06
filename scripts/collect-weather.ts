@@ -3,9 +3,9 @@
   기상청 ASOS 일자료 수집기 → data/weather/raw/{stationId}/{year}.json
 
   조합 매핑 지점 + 지온 검증 지점을 연도별 수집 창(07-01~11-30) 단위로 받는다.
-  완료된 연도 파일은 건너뛰므로 중단 후 다시 실행하면 이어서 받는다.
+  완료된 연도 파일은 건너뛰고, 미완료 파일은 마지막으로 받은 날 다음 날부터만 받는다.
   호출 한도 초과(22)를 만나면 받은 데까지 저장하고 멈춘다.
-  기상 서버 부담을 줄이려고 실패 시 재시도하지 않는다 — 미완료 파일은 다음 날 실행에서 다시 받는다.
+  기상 서버 부담을 줄이려고 실패 시 재시도하지 않는다 — 못 받은 날짜는 다음 날 실행에서 이어 받는다.
 
   실행: npm run collect-weather                 (전 기간)
         npm run collect-weather -- --from 2025  (특정 연도부터)
@@ -18,10 +18,11 @@ import {
   buildDailyRequestUrl,
   collectionRange,
   collectionStationIds,
+  appendRows,
   KmaApiError,
   maskServiceKey,
-  needsFetch,
   parseDailyResponse,
+  pendingRange,
   type CollectionRange,
   type KmaDailyRow,
   type KmaRawYearFile,
@@ -117,17 +118,19 @@ const main = async () => {
 
   for (const stationId of stationIds) {
     for (let year = from; year <= to; year++) {
-      const range = collectionRange(year, now);
-      if (!range || !needsFetch(readRaw(stationId, year))) {
+      const window = collectionRange(year, now);
+      const existing = readRaw(stationId, year);
+      const range = window && pendingRange(existing, window);
+      if (!range) {
         skipped++;
         continue;
       }
 
       try {
         const rows = await fetchStationRange(serviceKey, stationId, range);
-        writeRaw({ stationId, year, ...range, fetchedAt: now.toISOString(), rows });
+        writeRaw(appendRows(existing, { stationId, year, ...range, fetchedAt: now.toISOString() }, rows));
         fetched++;
-        console.log(`  ✓ ${stationId} ${year} (${rows.length}일)`);
+        console.log(`  ✓ ${stationId} ${year} ${range.startDt}~${range.endDt} (${rows.length}일)`);
       } catch (error) {
         const message = maskServiceKey(describeError(error), serviceKey);
         if (error instanceof KmaApiError && error.code === KMA_RESULT_CODE.QUOTA_EXCEEDED) {

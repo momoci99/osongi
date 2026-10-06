@@ -17,6 +17,8 @@ export const KMA_ASOS_DAILY = {
   REQUEST_INTERVAL_MS: 300,
   /** 요청 하나의 제한 시간 — 포털이 응답 없이 붙잡고 있는 경우 대비 */
   REQUEST_TIMEOUT_MS: 30_000,
+  /** 이어받을 때 이미 받은 마지막 며칠을 겹쳐 다시 받는다 — 기상청 사후 보정 반영용 */
+  REFETCH_OVERLAP_DAYS: 3,
 } as const;
 
 /** 공공데이터포털 응답 코드 */

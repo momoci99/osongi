@@ -173,9 +173,43 @@ export const parseDailyResponse = (
   };
 };
 
-/** 원본 파일을 다시 받아야 하는지 — 없거나 미완료면 true */
-export const needsFetch = (existing: KmaRawYearFile | null): boolean =>
-  existing === null || !existing.complete;
+/** YYYYMMDD 에 일수를 더한다 */
+const addDaysYmd = (ymd: string, days: number): string => {
+  const date = Date.UTC(Number(ymd.slice(0, 4)), Number(ymd.slice(4, 6)) - 1, Number(ymd.slice(6, 8)));
+  return new Date(date + days * MS_PER_DAY).toISOString().slice(0, 10).replaceAll("-", "");
+};
+
+/**
+ * 이번에 요청할 구간.
+ * 기존 파일이 있으면 새 날짜 + 이미 받은 마지막 며칠(사후 보정 반영)만 받는다.
+ * 완료됐거나 새 날짜가 없으면 null (호출 안 함).
+ */
+export const pendingRange = (
+  existing: KmaRawYearFile | null,
+  range: CollectionRange,
+): CollectionRange | null => {
+  if (!existing) return range;
+  if (existing.complete) return null;
+  if (existing.endDt >= range.endDt) return null;
+  const overlapStart = addDaysYmd(existing.endDt, 1 - KMA_ASOS_DAILY.REFETCH_OVERLAP_DAYS);
+  const startDt = overlapStart > range.startDt ? overlapStart : range.startDt;
+  return { ...range, startDt };
+};
+
+/** 기존 파일에 새로 받은 행을 이어 붙인다 — 같은 날짜는 새 행으로 바꾼다 */
+export const appendRows = (
+  existing: KmaRawYearFile | null,
+  base: Omit<KmaRawYearFile, "rows">,
+  rows: KmaDailyRow[],
+): KmaRawYearFile => {
+  const newDates = new Set(rows.map((row) => row.tm));
+  const kept = (existing?.rows ?? []).filter((row) => !newDates.has(row.tm));
+  return {
+    ...base,
+    startDt: existing?.startDt ?? base.startDt,
+    rows: [...kept, ...rows].sort((a, b) => a.tm.localeCompare(b.tm)),
+  };
+};
 
 /**
  * 일강수량(mm). 빈 값은 무강수(0) — ASOS 는 강수가 없으면 비워서 준다.

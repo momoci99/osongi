@@ -2,14 +2,15 @@ import { describe, expect, it } from "vitest";
 import { REGION_UNION_MAP } from "../../../const/Common";
 import { SOIL_TEMP_STATION_IDS, UNION_WEATHER_STATION } from "../../../const/Weather";
 import {
+  appendRows,
   buildDailyRequestUrl,
   collectionRange,
   collectionStationIds,
   KmaApiError,
   latestAvailableYmd,
   maskServiceKey,
-  needsFetch,
   parseDailyResponse,
+  pendingRange,
   rainfallMm,
   type KmaDailyRow,
   type KmaRawYearFile,
@@ -152,16 +153,50 @@ describe("parseDailyResponse", () => {
   });
 });
 
-describe("needsFetch", () => {
-  const file = (complete: boolean) => ({ complete }) as KmaRawYearFile;
+describe("pendingRange", () => {
+  const range = { startDt: "20261001", endDt: "20261005", complete: false };
+  const file = (endDt: string, complete = false) =>
+    ({ startDt: "20260701", endDt, complete, rows: [] }) as unknown as KmaRawYearFile;
 
-  it("파일이 없거나 미완료면 다시 받는다", () => {
-    expect(needsFetch(null)).toBe(true);
-    expect(needsFetch(file(false))).toBe(true);
+  it("파일이 없으면 수집 창 전체를 받는다", () => {
+    expect(pendingRange(null, range)).toEqual(range);
   });
 
-  it("완료된 파일은 건너뛴다", () => {
-    expect(needsFetch(file(true))).toBe(false);
+  it("기존 파일이 있으면 마지막 3일을 겹쳐 새 날짜까지 받는다", () => {
+    expect(pendingRange(file("20261004"), range)).toEqual({ ...range, startDt: "20261002" });
+  });
+
+  it("겹쳐 받는 구간은 월초를 넘어 거슬러 올라가도 바르다", () => {
+    const octRange = { ...range, startDt: "20260701" };
+    expect(pendingRange(file("20261001"), octRange)?.startDt).toBe("20260929");
+  });
+
+  it("겹쳐 받는 구간은 수집 창 시작 전으로 가지 않는다", () => {
+    const julyRange = { startDt: "20260701", endDt: "20260703", complete: false };
+    expect(pendingRange(file("20260701"), julyRange)?.startDt).toBe("20260701");
+  });
+
+  it("새 날짜가 없거나 완료된 파일은 호출하지 않는다", () => {
+    expect(pendingRange(file("20261005"), range)).toBeNull();
+    expect(pendingRange(file("20261130", true), range)).toBeNull();
+  });
+});
+
+describe("appendRows", () => {
+  const row = (tm: string, avgTa = "20") => ({ tm, avgTa }) as KmaDailyRow;
+  const base = { stationId: 90, year: 2026, startDt: "20261005", endDt: "20261005", complete: false, fetchedAt: "t" };
+
+  it("기존 행 뒤에 이어 붙이고 시작일은 기존 파일 것을 유지한다", () => {
+    const existing = { ...base, startDt: "20260701", endDt: "20261004", rows: [row("2026-10-04")] };
+    const merged = appendRows(existing, base, [row("2026-10-05")]);
+    expect(merged.startDt).toBe("20260701");
+    expect(merged.endDt).toBe("20261005");
+    expect(merged.rows.map((r) => r.tm)).toEqual(["2026-10-04", "2026-10-05"]);
+  });
+
+  it("같은 날짜는 새 행으로 바꾼다", () => {
+    const existing = { ...base, rows: [row("2026-10-05", "1")] };
+    expect(appendRows(existing, base, [row("2026-10-05", "2")]).rows).toEqual([row("2026-10-05", "2")]);
   });
 });
 
