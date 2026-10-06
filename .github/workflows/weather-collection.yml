@@ -29,7 +29,10 @@ jobs:
       - name: 의존성 설치
         run: npm ci
 
+      # 일부 지점이 실패해도 받은 자료는 커밋하고, 마지막 단계에서 실패로 표시한다
       - name: 기상 일자료 수집 (올해만)
+        id: collect
+        continue-on-error: true
         env:
           KMA_SERVICE_KEY: ${{ secrets.KMA_SERVICE_KEY }}
         run: npm run collect-weather -- --from "$(TZ=Asia/Seoul date +%Y)"
@@ -52,4 +55,10 @@ jobs:
             git pull --rebase && git push && exit 0
             sleep $((attempt * 10))
           done
+          exit 1
+
+      - name: 수집 실패 표시
+        if: steps.collect.outcome == 'failure'
+        run: |
+          echo "::error::일부 지점 수집 실패 — 받은 자료만 커밋했습니다. 수집 단계 로그를 확인하세요."
           exit 1

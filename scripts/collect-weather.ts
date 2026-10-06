@@ -5,6 +5,7 @@
   조합 매핑 지점 + 지온 검증 지점을 연도별 수집 창(07-01~11-30) 단위로 받는다.
   완료된 연도 파일은 건너뛰므로 중단 후 다시 실행하면 이어서 받는다.
   호출 한도 초과(22)를 만나면 받은 데까지 저장하고 멈춘다.
+  기상 서버 부담을 줄이려고 실패 시 재시도하지 않는다 — 미완료 파일은 다음 날 실행에서 다시 받는다.
 
   실행: npm run collect-weather                 (전 기간)
         npm run collect-weather -- --from 2025  (특정 연도부터)
@@ -69,6 +70,24 @@ const writeRaw = (file: KmaRawYearFile) => {
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
+/** 응답 본문을 받아 해석한다 — HTTP 오류는 상태 코드를 담아 던진다 */
+const fetchPage = async (url: string) => {
+  const response = await fetch(url, {
+    signal: AbortSignal.timeout(KMA_ASOS_DAILY.REQUEST_TIMEOUT_MS),
+  });
+  const text = await response.text();
+  if (!response.ok) {
+    throw new KmaApiError(`HTTP_${response.status}`, text.slice(0, 200));
+  }
+  return parseDailyResponse(text);
+};
+
+/** 오류 메시지 — fetch 실패는 원인(ECONNRESET 등)을 덧붙인다 */
+const describeError = (error: unknown): string => {
+  const cause = error instanceof Error && error.cause ? ` (cause: ${String(error.cause)})` : "";
+  return `${String(error)}${cause}`;
+};
+
 /** 한 지점·기간의 전 페이지를 받는다 */
 const fetchStationRange = async (
   serviceKey: string,
@@ -77,8 +96,9 @@ const fetchStationRange = async (
 ): Promise<KmaDailyRow[]> => {
   const rows: KmaDailyRow[] = [];
   for (let pageNo = 1; ; pageNo++) {
-    const response = await fetch(buildDailyRequestUrl(serviceKey, stationId, range, pageNo));
-    const page = parseDailyResponse(await response.text());
+    const page = await fetchPage(
+      buildDailyRequestUrl(serviceKey, stationId, range, pageNo),
+    );
     rows.push(...page.rows);
     if (rows.length >= page.totalCount || page.rows.length === 0) return rows;
     await sleep(KMA_ASOS_DAILY.REQUEST_INTERVAL_MS);
@@ -109,7 +129,7 @@ const main = async () => {
         fetched++;
         console.log(`  ✓ ${stationId} ${year} (${rows.length}일)`);
       } catch (error) {
-        const message = maskServiceKey(String(error), serviceKey);
+        const message = maskServiceKey(describeError(error), serviceKey);
         if (error instanceof KmaApiError && error.code === KMA_RESULT_CODE.QUOTA_EXCEEDED) {
           console.error(`⛔ 호출 한도 초과 — 여기까지 저장. 내일 다시 실행하면 이어서 받습니다.\n   ${message}`);
           process.exit(1);

@@ -155,10 +155,14 @@ export const parseDailyResponse = (
     throw new KmaApiError("NON_JSON", reason ?? text.slice(0, 200));
   }
 
-  const code = json.response?.header?.resultCode ?? "UNKNOWN";
+  const header = json.response?.header;
+  if (!header?.resultCode) {
+    throw new KmaApiError("UNKNOWN", text.slice(0, 200));
+  }
+  const code = header.resultCode;
   if (code === KMA_RESULT_CODE.NO_DATA) return { rows: [], totalCount: 0 };
   if (code !== KMA_RESULT_CODE.OK) {
-    throw new KmaApiError(code, json.response?.header?.resultMsg ?? "");
+    throw new KmaApiError(code, header.resultMsg ?? "");
   }
 
   const body = json.response?.body;

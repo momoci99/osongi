@@ -146,6 +146,10 @@ describe("parseDailyResponse", () => {
     const xml = "<OpenAPI_ServiceResponse><cmmMsgHeader><returnAuthMsg>SERVICE_KEY_IS_NOT_REGISTERED_ERROR</returnAuthMsg></cmmMsgHeader></OpenAPI_ServiceResponse>";
     expect(() => parseDailyResponse(xml)).toThrow("SERVICE_KEY_IS_NOT_REGISTERED_ERROR");
   });
+
+  it("헤더 없는 JSON 은 원문 일부를 담아 UNKNOWN 으로 던진다", () => {
+    expect(() => parseDailyResponse('{"error":"gateway"}')).toThrow('[UNKNOWN] {"error":"gateway"}');
+  });
 });
 
 describe("needsFetch", () => {

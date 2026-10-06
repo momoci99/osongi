@@ -15,6 +15,8 @@ export const KMA_ASOS_DAILY = {
   PREV_DAY_OPEN_HOUR_KST: 11,
   /** 순차 호출 간격 — 초당 한도(30tps)와 무관하게 여유를 둔다 */
   REQUEST_INTERVAL_MS: 300,
+  /** 요청 하나의 제한 시간 — 포털이 응답 없이 붙잡고 있는 경우 대비 */
+  REQUEST_TIMEOUT_MS: 30_000,
 } as const;
 
 /** 공공데이터포털 응답 코드 */
