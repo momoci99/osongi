@@ -4,7 +4,7 @@ import useDashboardManifests from "../hooks/useDashboardManifests";
 import usePageMeta from "../hooks/usePageMeta";
 import { PAGE_META } from "../const/Seo";
 import isInSeason from "../utils/isInSeason";
-import { resolveBreakdownScope, tradedUnionsOf } from "../utils/breakdownScope";
+import { resolveDashboardScope, tradedUnionsOf } from "../utils/dashboardScope";
 import DashboardHeader from "../components/Dashboard/DashboardHeader";
 import RegionBreakdownTable from "../components/Dashboard/RegionBreakdownTable";
 import DashboardKpiRow from "../components/Dashboard/DashboardKpiRow";
@@ -51,7 +51,13 @@ const Dashboard = () => {
     );
   }
 
-  const scope = resolveBreakdownScope(latestDaily, myRegion, myUnion);
+  const scope = resolveDashboardScope({
+    latestDaily,
+    latestDate,
+    weekly: weeklyData,
+    myRegion,
+    myUnion,
+  });
 
   return (
     <Container maxWidth="lg" sx={{ pt: 2, pb: 4 }}>
@@ -63,20 +69,20 @@ const Dashboard = () => {
           inSeason={true}
           tradedUnions={tradedUnionsOf(latestDaily)}
         />
-        {scope && (
-          <RegionBreakdownTable
-            scopeLabel={scope.label}
-            regionData={scope.rows}
-            dayComparison={scope.dayComparison}
-          />
-        )}
+        <RegionBreakdownTable
+          scopeLabel={scope.label}
+          latestDate={latestDate}
+          regionData={scope.gradeRows}
+          dayComparison={scope.dayComparison}
+        />
       </Box>
 
-      <DashboardKpiRow latestDaily={latestDaily} latestDate={latestDate} />
+      <DashboardKpiRow kpis={scope.kpis} latestDate={latestDate} />
 
       <DashboardCharts
-        gradeBreakdown={latestDaily.gradeBreakdown}
-        weeklyData={weeklyData.weeklyData}
+        scopeLabel={scope.label}
+        gradeBreakdown={scope.gradeRows}
+        weeklyData={scope.weekly}
         latestDate={latestDate}
       />
     </Container>

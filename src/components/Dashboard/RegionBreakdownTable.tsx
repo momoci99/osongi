@@ -23,8 +23,9 @@ type RegionGradeItem = {
 };
 
 type RegionBreakdownTableProps = {
-  /** 표가 보여주는 범위 이름 (예: "경북", "봉화 조합") */
+  /** 표가 보여주는 범위 이름 (예: "전국", "경북", "봉화 조합") */
   scopeLabel: string;
+  latestDate: string;
   regionData: RegionGradeItem[];
   dayComparison: DailyDataType["latestDaily"]["previousDayComparison"];
 };
@@ -120,14 +121,21 @@ const GradeCell = ({ item }: GradeCellProps) => {
 /** 내 지역·조합 등급별 수량·단가·전일 대비. 좁은 화면에서는 수량 열을 등급 셀로 합친다 */
 const RegionBreakdownTable = ({
   scopeLabel,
+  latestDate,
   regionData,
   dayComparison,
 }: RegionBreakdownTableProps) => {
   const theme = useTheme();
+  const title = (
+    <Typography variant="subtitle1">
+      {scopeLabel} 등급별 시세 — {latestDate}
+    </Typography>
+  );
 
   if (regionData.length === 0) {
     return (
       <DashboardCard>
+        {title}
         <Typography
           variant="body2"
           sx={{
@@ -144,6 +152,7 @@ const RegionBreakdownTable = ({
 
   return (
     <DashboardCard>
+      {title}
       <TableContainer>
         <Table size="small">
           <TableHead>

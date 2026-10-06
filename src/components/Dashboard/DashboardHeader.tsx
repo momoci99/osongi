@@ -25,6 +25,10 @@ type DashboardHeaderProps = {
   tradedUnions?: string[];
 };
 
+/** "전국"은 지역 미선택(null)과 같다. Select 는 빈 문자열 값을 쓸 수 있다 */
+const NATIONAL_VALUE = "";
+const NATIONAL_LABEL = "전국";
+
 type RegionSelectorProps = {
   compact?: boolean;
 };
@@ -55,14 +59,19 @@ const RegionSelector = ({ compact = false }: RegionSelectorProps) => {
       )}
       <Select
         data-testid={TEST_IDS.REGION_SELECT}
-        value={myRegion ?? ""}
+        value={myRegion ?? NATIONAL_VALUE}
         onChange={(e) =>
-          setMyRegion(e.target.value as (typeof AVAILABLE_REGIONS)[number])
+          setMyRegion(
+            (e.target.value || null) as (typeof AVAILABLE_REGIONS)[number] | null,
+          )
         }
+        displayEmpty
+        renderValue={(selected) => selected || NATIONAL_LABEL}
         size="small"
         variant="outlined"
         sx={headerSelectSx(theme)}
       >
+        <MenuItem value={NATIONAL_VALUE}>{NATIONAL_LABEL}</MenuItem>
         {AVAILABLE_REGIONS.map((region) => (
           <MenuItem key={region} value={region}>
             {region}

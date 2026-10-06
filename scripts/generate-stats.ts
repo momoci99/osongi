@@ -81,6 +81,10 @@ interface WeeklyPriceDatum {
 interface WeeklyOutputShape {
   generatedAt: string;
   weeklyData: WeeklyPriceDatum[];
+  /** 지역별 7일 추이. 대시보드에서 지역을 고르면 차트도 그 지역 기준으로 바뀐다 */
+  regionWeeklyData: Record<string, WeeklyPriceDatum[]>;
+  /** 조합별 7일 추이 */
+  unionWeeklyData: Record<string, WeeklyPriceDatum[]>;
 }
 
 const yearlyAgg: Record<string, YearlyAggregation> = {};
@@ -296,6 +300,8 @@ if (latestDateStr) {
 
 // Weekly data generation (last 7 days from latest date)
 const weeklyData: WeeklyPriceDatum[] = [];
+const regionWeeklyData: Record<string, WeeklyPriceDatum[]> = {};
+const unionWeeklyData: Record<string, WeeklyPriceDatum[]> = {};
 if (latestDateParts) {
   const [latestY, latestM, latestD] = latestDateParts as [
     number,
@@ -332,44 +338,45 @@ if (latestDateParts) {
         "mixedGrade",
       ] as const;
 
-      // Aggregate by grade for this day
-      const dayGradeAgg: Record<
-        string,
-        { quantity: number; unitPriceSum: number; weightSum: number }
-      > = {};
+      type DayGradeAgg = Record<string, { quantity: number; weightedPriceSum: number }>;
+      const nationalAgg: DayGradeAgg = {};
+      const regionAgg: Record<string, DayGradeAgg> = {};
+      const unionAgg: Record<string, DayGradeAgg> = {};
 
       for (const rec of raw) {
+        const targets = [
+          nationalAgg,
+          regionAgg[rec.region] || (regionAgg[rec.region] = {}),
+          unionAgg[rec.union] || (unionAgg[rec.union] = {}),
+        ];
         for (const gradeKey of gradeKeys) {
           const qty = parseNumber(rec[gradeKey].quantity);
           const unitPrice = parseNumber(rec[gradeKey].unitPrice);
+          if (qty <= 0 || unitPrice <= 0) continue;
 
-          if (qty > 0 && unitPrice > 0) {
-            const entry =
-              dayGradeAgg[gradeKey] ||
-              (dayGradeAgg[gradeKey] = {
-                quantity: 0,
-                unitPriceSum: 0,
-                weightSum: 0,
-              });
+          for (const agg of targets) {
+            const entry = agg[gradeKey] || (agg[gradeKey] = { quantity: 0, weightedPriceSum: 0 });
             entry.quantity += qty;
-            entry.unitPriceSum += qty * unitPrice; // Weighted sum for average
-            entry.weightSum += qty; // Total weight for average calculation
+            entry.weightedPriceSum += qty * unitPrice;
           }
         }
       }
 
-      // Convert to final format
-      for (const [gradeKey, agg] of Object.entries(dayGradeAgg)) {
-        if (agg.weightSum > 0) {
-          weeklyData.push({
-            date: dateStr,
-            gradeKey,
-            quantityKg: parseFloat(agg.quantity.toFixed(2)),
-            unitPriceWon: parseFloat(
-              (agg.unitPriceSum / agg.weightSum).toFixed(2)
-            ),
-          });
-        }
+      /** 수량 가중 평균 단가로 하루치 등급 행을 만든다 */
+      const toDayRows = (agg: DayGradeAgg): WeeklyPriceDatum[] =>
+        Object.entries(agg).map(([gradeKey, v]) => ({
+          date: dateStr,
+          gradeKey,
+          quantityKg: parseFloat(v.quantity.toFixed(2)),
+          unitPriceWon: parseFloat((v.weightedPriceSum / v.quantity).toFixed(2)),
+        }));
+
+      weeklyData.push(...toDayRows(nationalAgg));
+      for (const [region, agg] of Object.entries(regionAgg)) {
+        (regionWeeklyData[region] ||= []).push(...toDayRows(agg));
+      }
+      for (const [union, agg] of Object.entries(unionAgg)) {
+        (unionWeeklyData[union] ||= []).push(...toDayRows(agg));
       }
     } catch {
       console.warn(`No data found for ${dateStr}, skipping...`);
@@ -770,6 +777,8 @@ const summaryOutput = {
 const weeklyOutput: WeeklyOutputShape = {
   generatedAt: new Date().toISOString(),
   weeklyData,
+  regionWeeklyData,
+  unionWeeklyData,
 };
 
 mkdirSync(OUTPUT_DIR, { recursive: true });
