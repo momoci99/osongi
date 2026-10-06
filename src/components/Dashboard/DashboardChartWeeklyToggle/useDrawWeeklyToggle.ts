@@ -67,7 +67,7 @@ export const useDrawWeeklyToggle = ({
     const margin = selectMargin(
       containerWidth,
       { top: 20, right: 20, bottom: 100, left: 60 },
-      { top: 20, right: 120, bottom: 60, left: 80 },
+      { top: 20, right: 170, bottom: 60, left: 80 },
     );
     const innerWidth = containerWidth - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
@@ -184,7 +184,7 @@ export const useDrawWeeklyToggle = ({
       .style("font-weight", "500")
       .text(chartMode === "price" ? "단가 (원/kg)" : "수량 (kg)");
 
-    drawLegend({
+    const legendRows = drawLegend({
       mainGroup,
       series,
       innerWidth,
@@ -193,6 +193,11 @@ export const useDrawWeeklyToggle = ({
       theme,
       legendFontSize: fontSize.LEGEND,
     });
+    /** 좁은 화면에서 범례가 하단 여백을 넘치면 넘친 줄만큼 SVG 를 늘려 잘리지 않게 한다 */
+    const overflowRows = isMobile
+      ? Math.max(0, legendRows - MOBILE_LEGEND_ROWS_IN_MARGIN)
+      : 0;
+    svg.attr("height", height + overflowRows * LEGEND_ROW_HEIGHT);
 
     return () => {
       removeD3Tooltip();
@@ -327,6 +332,13 @@ const drawSeries = ({
     });
 };
 
+/** 모바일 범례 항목 사이 가로 간격 (px) */
+const MOBILE_LEGEND_ITEM_GAP = 14;
+/** 범례 줄 간격 (px) */
+const LEGEND_ROW_HEIGHT = 25;
+/** 모바일 하단 여백 안에 들어가는 범례 줄 수 */
+const MOBILE_LEGEND_ROWS_IN_MARGIN = 3;
+
 type DrawLegendParams = {
   mainGroup: d3.Selection<SVGGElement, unknown, null, undefined>;
   series: WeeklyToggleSeries[];
@@ -339,6 +351,9 @@ type DrawLegendParams = {
 
 /**
  * 등급 범례를 반응형 위치에 렌더링합니다.
+ * 모바일은 항목 글자 폭을 재서 한 줄에 들어가는 만큼 놓고 넘치면 다음 줄로 보낸다.
+ * 고정 3열이면 "3등품(생장정지품)"처럼 긴 라벨이 옆 항목을 덮는다.
+ * @returns 그린 범례 줄 수
  */
 const drawLegend = ({
   mainGroup,
@@ -348,7 +363,7 @@ const drawLegend = ({
   isMobile,
   theme,
   legendFontSize,
-}: DrawLegendParams) => {
+}: DrawLegendParams): number => {
   const legend = mainGroup
     .append("g")
     .attr(
@@ -358,15 +373,11 @@ const drawLegend = ({
         : `translate(${innerWidth + 20}, 20)`,
     );
 
+  let cursorX = 0;
+  let row = 0;
+
   series.forEach((gradeSeries, index) => {
-    const legendItem = legend
-      .append("g")
-      .attr(
-        "transform",
-        isMobile
-          ? `translate(${(index % 3) * (innerWidth / 3)}, ${Math.floor(index / 3) * 25})`
-          : `translate(0, ${index * 25})`,
-      );
+    const legendItem = legend.append("g");
 
     legendItem
       .append("line")
@@ -384,9 +395,10 @@ const drawLegend = ({
       .attr("r", 3)
       .attr("fill", gradeSeries.color);
 
-    legendItem
+    const textX = isMobile ? 20 : 25;
+    const label = legendItem
       .append("text")
-      .attr("x", isMobile ? 20 : 25)
+      .attr("x", textX)
       .attr("y", 0)
       .attr("dy", "0.35em")
       .style("fill", theme.palette.text.primary)
@@ -396,7 +408,27 @@ const drawLegend = ({
           gradeSeries.gradeKey as keyof typeof GradeKeyToKorean
         ] || gradeSeries.gradeKey,
       );
+
+    if (!isMobile) {
+      legendItem.attr("transform", `translate(0, ${index * LEGEND_ROW_HEIGHT})`);
+      return;
+    }
+
+    /** jsdom 처럼 글자 폭을 잴 수 없는 환경에서는 0으로 둔다 */
+    const textWidth = label.node()?.getComputedTextLength?.() ?? 0;
+    const itemWidth = textX + textWidth;
+    if (cursorX > 0 && cursorX + itemWidth > innerWidth) {
+      cursorX = 0;
+      row += 1;
+    }
+    legendItem.attr(
+      "transform",
+      `translate(${cursorX}, ${row * LEGEND_ROW_HEIGHT})`,
+    );
+    cursorX += itemWidth + MOBILE_LEGEND_ITEM_GAP;
   });
+
+  return isMobile ? row + 1 : series.length;
 };
 
 export default useDrawWeeklyToggle;
