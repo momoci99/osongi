@@ -4,6 +4,7 @@ import useDashboardManifests from "../hooks/useDashboardManifests";
 import usePageMeta from "../hooks/usePageMeta";
 import { PAGE_META } from "../const/Seo";
 import isInSeason from "../utils/isInSeason";
+import { resolveBreakdownScope, tradedUnionsOf } from "../utils/breakdownScope";
 import DashboardHeader from "../components/Dashboard/DashboardHeader";
 import RegionBreakdownTable from "../components/Dashboard/RegionBreakdownTable";
 import DashboardKpiRow from "../components/Dashboard/DashboardKpiRow";
@@ -14,6 +15,7 @@ const Dashboard = () => {
   usePageMeta(PAGE_META.dashboard);
 
   const myRegion = useSettingsStore((s) => s.myRegion);
+  const myUnion = useSettingsStore((s) => s.myUnion);
   const { data, isRefreshing, handleRefresh } = useDashboardManifests();
 
   if (!data) {
@@ -49,9 +51,7 @@ const Dashboard = () => {
     );
   }
 
-  const regionData = myRegion
-    ? latestDaily.regionGradeBreakdown?.[myRegion]
-    : null;
+  const scope = resolveBreakdownScope(latestDaily, myRegion, myUnion);
 
   return (
     <Container maxWidth="lg" sx={{ pt: 2, pb: 4 }}>
@@ -61,12 +61,13 @@ const Dashboard = () => {
           isRefreshing={isRefreshing}
           onRefresh={handleRefresh}
           inSeason={true}
+          tradedUnions={tradedUnionsOf(latestDaily)}
         />
-        {myRegion && regionData && (
+        {scope && (
           <RegionBreakdownTable
-            myRegion={myRegion}
-            regionData={regionData}
-            dayComparison={latestDaily.previousDayComparison}
+            scopeLabel={scope.label}
+            regionData={scope.rows}
+            dayComparison={scope.dayComparison}
           />
         )}
       </Box>

@@ -23,7 +23,8 @@ type RegionGradeItem = {
 };
 
 type RegionBreakdownTableProps = {
-  myRegion: string;
+  /** 표가 보여주는 범위 이름 (예: "경북", "봉화 조합") */
+  scopeLabel: string;
   regionData: RegionGradeItem[];
   dayComparison: DailyDataType["latestDaily"]["previousDayComparison"];
 };
@@ -116,9 +117,9 @@ const GradeCell = ({ item }: GradeCellProps) => {
   );
 };
 
-/** 내 지역 등급별 수량·단가·전일 대비. 좁은 화면에서는 수량 열을 등급 셀로 합친다 */
+/** 내 지역·조합 등급별 수량·단가·전일 대비. 좁은 화면에서는 수량 열을 등급 셀로 합친다 */
 const RegionBreakdownTable = ({
-  myRegion,
+  scopeLabel,
   regionData,
   dayComparison,
 }: RegionBreakdownTableProps) => {
@@ -135,8 +136,7 @@ const RegionBreakdownTable = ({
             py: 3,
           }}
         >
-          {myRegion} 지역의 거래 데이터가 없습니다. 시즌 중 공판이 진행되면
-          데이터가 표시됩니다.
+          {scopeLabel}의 최신 공판일 거래가 없습니다.
         </Typography>
       </DashboardCard>
     );

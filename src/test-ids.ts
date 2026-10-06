@@ -6,5 +6,6 @@ export const TEST_IDS = {
   /** 초기화가 끝나 실제 화면이 붙은 상태 */
   APP_CONTENT: "app-content",
   REGION_SELECT: "region-select",
+  UNION_SELECT: "union-select",
   APP_FOOTER: "app-footer",
 } as const;

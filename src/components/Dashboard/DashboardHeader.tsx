@@ -12,6 +12,8 @@ import RefreshIcon from "@mui/icons-material/Refresh";
 import { AVAILABLE_REGIONS } from "../../const/Common";
 import { TEST_IDS } from "../../test-ids";
 import { useSettingsStore } from "../../stores/useSettingsStore";
+import headerSelectSx from "./headerSelectSx";
+import UnionSelector from "./UnionSelector";
 
 type DashboardHeaderProps = {
   latestDate: string;
@@ -19,6 +21,8 @@ type DashboardHeaderProps = {
   onRefresh: () => void;
   /** true → 시즌 중 (컴팩트 레이아웃), false → 시즌 외 (넓은 레이아웃) */
   inSeason: boolean;
+  /** 최신 공판일에 거래가 있었던 조합 (시즌 중 조합 셀렉터용) */
+  tradedUnions?: string[];
 };
 
 type RegionSelectorProps = {
@@ -57,15 +61,7 @@ const RegionSelector = ({ compact = false }: RegionSelectorProps) => {
         }
         size="small"
         variant="outlined"
-        sx={{
-          minWidth: { xs: 88, sm: 100 },
-          height: { xs: 36, sm: 40 },
-          fontSize: { xs: "0.8125rem", sm: "0.875rem" },
-          fontWeight: 600,
-          "& .MuiOutlinedInput-notchedOutline": {
-            borderColor: theme.palette.divider,
-          },
-        }}
+        sx={headerSelectSx(theme)}
       >
         {AVAILABLE_REGIONS.map((region) => (
           <MenuItem key={region} value={region}>
@@ -143,6 +139,7 @@ const InSeasonHeader = ({
   latestDate,
   isRefreshing,
   onRefresh,
+  tradedUnions = [],
 }: Omit<DashboardHeaderProps, "inSeason">) => {
   const theme = useTheme();
 
@@ -165,6 +162,7 @@ const InSeasonHeader = ({
         }}
       />
       <RegionSelector compact />
+      <UnionSelector tradedUnions={tradedUnions} />
       <Box sx={{ display: "flex", alignItems: "center", gap: 0.5, ml: "auto" }}>
         <Typography
           variant="caption"
