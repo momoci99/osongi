@@ -13,10 +13,25 @@ jobs:
     - uses: actions/setup-node@v7
       with:
         node-version: lts/*
+        cache: "npm"
     - name: Install dependencies
       run: npm ci
+    # 브라우저 캐시는 Playwright 버전이 바뀔 때만 무효화한다
+    - name: Get Playwright version
+      id: playwright-version
+      run: echo "version=$(npx playwright --version | awk '{print $2}')" >> "$GITHUB_OUTPUT"
+    - name: Cache Playwright browsers
+      uses: actions/cache@v6
+      id: playwright-cache
+      with:
+        path: ~/.cache/ms-playwright
+        key: ${{ runner.os }}-playwright-${{ steps.playwright-version.outputs.version }}
+    # 설정에서 쓰는 프로젝트가 chromium뿐이라 chromium만 설치한다
     - name: Install Playwright Browsers
-      run: npx playwright install --with-deps
+      if: steps.playwright-cache.outputs.cache-hit != 'true'
+      run: npx playwright install chromium
+    - name: Install Playwright system dependencies
+      run: npx playwright install-deps chromium
     - name: Run Playwright tests
       run: npx playwright test
     - uses: actions/upload-artifact@v7
