@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-06T14:36:05.990Z",
+  "generatedAt": "2026-10-07T06:42:17.511Z",
   "yearly": {
     "2013": {
       "totalQuantityKg": 60764.76,
@@ -158,15 +158,15 @@
       }
     },
     "2026": {
-      "totalQuantityKg": 15972.52,
-      "totalAmountWon": 5858752860.62,
+      "totalQuantityKg": 16267.47,
+      "totalAmountWon": 6019232859.8,
       "topRegion": {
         "region": "강원",
-        "quantityKg": 11255.08
+        "quantityKg": 11363.07
       },
       "topUnion": {
         "union": "양양",
-        "quantityKg": 3815.71
+        "quantityKg": 3840.39
       }
     }
   },
@@ -225,8 +225,8 @@
         "totalAmountWon": 7452348106.29
       },
       "2026": {
-        "totalQuantityKg": 11255.08,
-        "totalAmountWon": 4190429791
+        "totalQuantityKg": 11363.07,
+        "totalAmountWon": 4251646813.93
       }
     },
     "경북": {
@@ -283,8 +283,8 @@
         "totalAmountWon": 15132251587.82
       },
       "2026": {
-        "totalQuantityKg": 4399.56,
-        "totalAmountWon": 1548865382.62
+        "totalQuantityKg": 4569.17,
+        "totalAmountWon": 1638710894.87
       }
     },
     "경남": {
@@ -341,8 +341,8 @@
         "totalAmountWon": 1845892426.16
       },
       "2026": {
-        "totalQuantityKg": 317.88,
-        "totalAmountWon": 119457687
+        "totalQuantityKg": 335.23,
+        "totalAmountWon": 128875151
       }
     }
   }
