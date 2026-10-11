@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-10-11T06:38:02.373Z",
+  "generatedAt": "2026-10-11T13:38:42.133Z",
   "latestSeasonSummary": {
     "year": 2026,
     "startDate": "2026-09-15",
     "endDate": "2026-10-11",
-    "totalQuantityKg": 16918.53,
-    "totalAmountWon": 6441982916.51,
-    "avgPricePerKg": 380764.93,
+    "totalQuantityKg": 17013.67,
+    "totalAmountWon": 6498658837.55,
+    "avgPricePerKg": 381966.9,
     "highestPrice": {
-      "date": "2026-10-10",
+      "date": "2026-10-11",
       "gradeKey": "grade1",
-      "price": 2002000
+      "price": 2020000
     },
     "lowestPrice": {
       "date": "2026-09-29",
@@ -20,14 +20,14 @@
   },
   "regionSeasonSummaries": {
     "강원": {
-      "totalQuantityKg": 11600.41,
-      "totalAmountWon": 4406845378.74,
-      "avgPricePerKg": 379887.04
+      "totalQuantityKg": 11634.44,
+      "totalAmountWon": 4426672003.74,
+      "avgPricePerKg": 380480.02
     },
     "경북": {
-      "totalQuantityKg": 4982.89,
-      "totalAmountWon": 1906261334.66,
-      "avgPricePerKg": 382561.39
+      "totalQuantityKg": 5044,
+      "totalAmountWon": 1943110630.7,
+      "avgPricePerKg": 385232.08
     },
     "경남": {
       "totalQuantityKg": 335.23,
@@ -44,8 +44,8 @@
     },
     {
       "month": 10,
-      "avgQuantityKg": 56663.32,
-      "avgPriceWon": 168656.45,
+      "avgQuantityKg": 56670.12,
+      "avgPriceWon": 168707.66,
       "yearCount": 14
     },
     {
@@ -57,19 +57,19 @@
   ],
   "regionRanking": [
     {
+      "region": "경북",
+      "avgPriceWon": 385232.08,
+      "totalQuantityKg": 5044
+    },
+    {
       "region": "경남",
       "avgPriceWon": 384438,
       "totalQuantityKg": 335.23
     },
     {
-      "region": "경북",
-      "avgPriceWon": 382561.39,
-      "totalQuantityKg": 4982.89
-    },
-    {
       "region": "강원",
-      "avgPriceWon": 379887.04,
-      "totalQuantityKg": 11600.41
+      "avgPriceWon": 380480.02,
+      "totalQuantityKg": 11634.44
     }
   ]
 }
