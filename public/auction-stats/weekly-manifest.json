@@ -1,42 +1,6 @@
 {
-  "generatedAt": "2026-10-22T05:36:36.860Z",
+  "generatedAt": "2026-10-22T10:50:49.448Z",
   "weeklyData": [
-    {
-      "date": "2026-10-15",
-      "gradeKey": "grade3Stopped",
-      "quantityKg": 0.21,
-      "unitPriceWon": 1487761.9
-    },
-    {
-      "date": "2026-10-15",
-      "gradeKey": "grade3Estimated",
-      "quantityKg": 3.43,
-      "unitPriceWon": 1319754.11
-    },
-    {
-      "date": "2026-10-15",
-      "gradeKey": "gradeBelow",
-      "quantityKg": 17.92,
-      "unitPriceWon": 656580.47
-    },
-    {
-      "date": "2026-10-15",
-      "gradeKey": "mixedGrade",
-      "quantityKg": 13.32,
-      "unitPriceWon": 421660.66
-    },
-    {
-      "date": "2026-10-15",
-      "gradeKey": "grade2",
-      "quantityKg": 0.45,
-      "unitPriceWon": 1672355.56
-    },
-    {
-      "date": "2026-10-15",
-      "gradeKey": "grade1",
-      "quantityKg": 0.2,
-      "unitPriceWon": 1450000
-    },
     {
       "date": "2026-10-16",
       "gradeKey": "grade2",
@@ -234,28 +198,46 @@
       "gradeKey": "mixedGrade",
       "quantityKg": 10.44,
       "unitPriceWon": 412746
+    },
+    {
+      "date": "2026-10-22",
+      "gradeKey": "grade1",
+      "quantityKg": 0.3,
+      "unitPriceWon": 1760000
+    },
+    {
+      "date": "2026-10-22",
+      "gradeKey": "grade2",
+      "quantityKg": 0.27,
+      "unitPriceWon": 1760000
+    },
+    {
+      "date": "2026-10-22",
+      "gradeKey": "grade3Stopped",
+      "quantityKg": 0.5,
+      "unitPriceWon": 1760000
+    },
+    {
+      "date": "2026-10-22",
+      "gradeKey": "grade3Estimated",
+      "quantityKg": 1.5,
+      "unitPriceWon": 1660000
+    },
+    {
+      "date": "2026-10-22",
+      "gradeKey": "gradeBelow",
+      "quantityKg": 2.39,
+      "unitPriceWon": 853700
+    },
+    {
+      "date": "2026-10-22",
+      "gradeKey": "mixedGrade",
+      "quantityKg": 5.8,
+      "unitPriceWon": 393157
     }
   ],
   "regionWeeklyData": {
     "강원": [
-      {
-        "date": "2026-10-15",
-        "gradeKey": "grade3Stopped",
-        "quantityKg": 0.1,
-        "unitPriceWon": 1357900
-      },
-      {
-        "date": "2026-10-15",
-        "gradeKey": "grade3Estimated",
-        "quantityKg": 0.38,
-        "unitPriceWon": 1357900
-      },
-      {
-        "date": "2026-10-15",
-        "gradeKey": "gradeBelow",
-        "quantityKg": 9.22,
-        "unitPriceWon": 617900
-      },
       {
         "date": "2026-10-16",
         "gradeKey": "grade2",
@@ -282,42 +264,6 @@
       }
     ],
     "경북": [
-      {
-        "date": "2026-10-15",
-        "gradeKey": "grade3Estimated",
-        "quantityKg": 3.05,
-        "unitPriceWon": 1315001.51
-      },
-      {
-        "date": "2026-10-15",
-        "gradeKey": "gradeBelow",
-        "quantityKg": 8.7,
-        "unitPriceWon": 697572.87
-      },
-      {
-        "date": "2026-10-15",
-        "gradeKey": "mixedGrade",
-        "quantityKg": 13.32,
-        "unitPriceWon": 421660.66
-      },
-      {
-        "date": "2026-10-15",
-        "gradeKey": "grade2",
-        "quantityKg": 0.45,
-        "unitPriceWon": 1672355.56
-      },
-      {
-        "date": "2026-10-15",
-        "gradeKey": "grade3Stopped",
-        "quantityKg": 0.11,
-        "unitPriceWon": 1605818.18
-      },
-      {
-        "date": "2026-10-15",
-        "gradeKey": "grade1",
-        "quantityKg": 0.2,
-        "unitPriceWon": 1450000
-      },
       {
         "date": "2026-10-16",
         "gradeKey": "grade3Estimated",
@@ -515,6 +461,42 @@
         "gradeKey": "mixedGrade",
         "quantityKg": 10.44,
         "unitPriceWon": 412746
+      },
+      {
+        "date": "2026-10-22",
+        "gradeKey": "grade1",
+        "quantityKg": 0.3,
+        "unitPriceWon": 1760000
+      },
+      {
+        "date": "2026-10-22",
+        "gradeKey": "grade2",
+        "quantityKg": 0.27,
+        "unitPriceWon": 1760000
+      },
+      {
+        "date": "2026-10-22",
+        "gradeKey": "grade3Stopped",
+        "quantityKg": 0.5,
+        "unitPriceWon": 1760000
+      },
+      {
+        "date": "2026-10-22",
+        "gradeKey": "grade3Estimated",
+        "quantityKg": 1.5,
+        "unitPriceWon": 1660000
+      },
+      {
+        "date": "2026-10-22",
+        "gradeKey": "gradeBelow",
+        "quantityKg": 2.39,
+        "unitPriceWon": 853700
+      },
+      {
+        "date": "2026-10-22",
+        "gradeKey": "mixedGrade",
+        "quantityKg": 5.8,
+        "unitPriceWon": 393157
       }
     ],
     "경남": []
@@ -526,24 +508,6 @@
     "양양": [],
     "강릉": [],
     "삼척": [
-      {
-        "date": "2026-10-15",
-        "gradeKey": "grade3Stopped",
-        "quantityKg": 0.1,
-        "unitPriceWon": 1357900
-      },
-      {
-        "date": "2026-10-15",
-        "gradeKey": "grade3Estimated",
-        "quantityKg": 0.38,
-        "unitPriceWon": 1357900
-      },
-      {
-        "date": "2026-10-15",
-        "gradeKey": "gradeBelow",
-        "quantityKg": 9.22,
-        "unitPriceWon": 617900
-      },
       {
         "date": "2026-10-16",
         "gradeKey": "grade2",
@@ -572,24 +536,6 @@
     "안동": [],
     "청송": [],
     "영덕": [
-      {
-        "date": "2026-10-15",
-        "gradeKey": "grade3Estimated",
-        "quantityKg": 0.54,
-        "unitPriceWon": 938990
-      },
-      {
-        "date": "2026-10-15",
-        "gradeKey": "gradeBelow",
-        "quantityKg": 3.18,
-        "unitPriceWon": 711900
-      },
-      {
-        "date": "2026-10-15",
-        "gradeKey": "mixedGrade",
-        "quantityKg": 3.74,
-        "unitPriceWon": 411900
-      },
       {
         "date": "2026-10-16",
         "gradeKey": "grade3Estimated",
@@ -628,36 +574,6 @@
       }
     ],
     "포항": [
-      {
-        "date": "2026-10-15",
-        "gradeKey": "grade2",
-        "quantityKg": 0.29,
-        "unitPriceWon": 1800000
-      },
-      {
-        "date": "2026-10-15",
-        "gradeKey": "grade3Stopped",
-        "quantityKg": 0.07,
-        "unitPriceWon": 1700000
-      },
-      {
-        "date": "2026-10-15",
-        "gradeKey": "grade3Estimated",
-        "quantityKg": 1.21,
-        "unitPriceWon": 1370000
-      },
-      {
-        "date": "2026-10-15",
-        "gradeKey": "gradeBelow",
-        "quantityKg": 3.1,
-        "unitPriceWon": 701200
-      },
-      {
-        "date": "2026-10-15",
-        "gradeKey": "mixedGrade",
-        "quantityKg": 7.46,
-        "unitPriceWon": 423900
-      },
       {
         "date": "2026-10-16",
         "gradeKey": "grade2",
@@ -855,6 +771,42 @@
         "gradeKey": "mixedGrade",
         "quantityKg": 10.44,
         "unitPriceWon": 412746
+      },
+      {
+        "date": "2026-10-22",
+        "gradeKey": "grade1",
+        "quantityKg": 0.3,
+        "unitPriceWon": 1760000
+      },
+      {
+        "date": "2026-10-22",
+        "gradeKey": "grade2",
+        "quantityKg": 0.27,
+        "unitPriceWon": 1760000
+      },
+      {
+        "date": "2026-10-22",
+        "gradeKey": "grade3Stopped",
+        "quantityKg": 0.5,
+        "unitPriceWon": 1760000
+      },
+      {
+        "date": "2026-10-22",
+        "gradeKey": "grade3Estimated",
+        "quantityKg": 1.5,
+        "unitPriceWon": 1660000
+      },
+      {
+        "date": "2026-10-22",
+        "gradeKey": "gradeBelow",
+        "quantityKg": 2.39,
+        "unitPriceWon": 853700
+      },
+      {
+        "date": "2026-10-22",
+        "gradeKey": "mixedGrade",
+        "quantityKg": 5.8,
+        "unitPriceWon": 393157
       }
     ],
     "청도": [],
@@ -863,42 +815,6 @@
     "예천": [],
     "봉화": [],
     "울진": [
-      {
-        "date": "2026-10-15",
-        "gradeKey": "grade1",
-        "quantityKg": 0.2,
-        "unitPriceWon": 1450000
-      },
-      {
-        "date": "2026-10-15",
-        "gradeKey": "grade2",
-        "quantityKg": 0.16,
-        "unitPriceWon": 1441000
-      },
-      {
-        "date": "2026-10-15",
-        "gradeKey": "grade3Stopped",
-        "quantityKg": 0.04,
-        "unitPriceWon": 1441000
-      },
-      {
-        "date": "2026-10-15",
-        "gradeKey": "grade3Estimated",
-        "quantityKg": 1.3,
-        "unitPriceWon": 1420000
-      },
-      {
-        "date": "2026-10-15",
-        "gradeKey": "gradeBelow",
-        "quantityKg": 2.42,
-        "unitPriceWon": 674100
-      },
-      {
-        "date": "2026-10-15",
-        "gradeKey": "mixedGrade",
-        "quantityKg": 2.12,
-        "unitPriceWon": 431000
-      },
       {
         "date": "2026-10-16",
         "gradeKey": "grade3Estimated",
