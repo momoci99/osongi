@@ -73,8 +73,8 @@ jobs:
           git status
           if [ -n "$(git status --porcelain)" ]; then
             echo "새로운 공판 데이터가 수집되었습니다."
-            git commit -m "🍄 공판 데이터 자동 수집 $(date +'%Y-%m-%d %H:%M KST')"
-            git push
+            git commit -m "🍄 공판 데이터 자동 수집 $(TZ=Asia/Seoul date +'%Y-%m-%d %H:%M KST')"
+            git pull --rebase && git push
           else
             echo "수집할 새로운 데이터가 없습니다."
           fi
