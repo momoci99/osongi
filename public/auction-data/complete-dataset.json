@@ -1,9 +1,9 @@
 {
-  "version": "2026-10-27T06:05:21.970Z",
+  "version": "2026-10-27T13:04:16.158Z",
   "totalRecords": 17253,
   "dateRange": {
     "earliest": "2013-09-13",
-    "latest": "2026-10-26"
+    "latest": "2026-10-27"
   },
   "regions": [
     "강원",
@@ -413942,25 +413942,25 @@
       "date": "2026-10-27",
       "region": "경북",
       "union": "포항",
-      "lastUpdated": "2026-10-26 16:45:35.0",
+      "lastUpdated": "2026-10-27 16:41:23.0",
       "auctionQuantityUntilYesterday": 961.21,
-      "auctionQuantityToday": 0,
-      "auctionQuantityTotal": 961.21,
+      "auctionQuantityToday": 3.98,
+      "auctionQuantityTotal": 965.19,
       "auctionAmountUntilYesterday": 453411200.64,
-      "auctionAmountToday": 0,
-      "auctionAmountTotal": 453411200.64,
+      "auctionAmountToday": 1646400,
+      "auctionAmountTotal": 455057600.64,
       "grade1Quantity": 0,
       "grade1UnitPrice": 0,
       "grade2Quantity": 0,
       "grade2UnitPrice": 0,
-      "grade3StoppedQuantity": 0,
-      "grade3StoppedUnitPrice": 0,
-      "grade3EstimatedQuantity": 0,
-      "grade3EstimatedUnitPrice": 0,
-      "gradeBelowQuantity": 0,
-      "gradeBelowUnitPrice": 0,
-      "mixedGradeQuantity": 0,
-      "mixedGradeUnitPrice": 0
+      "grade3StoppedQuantity": 0.12,
+      "grade3StoppedUnitPrice": 920000,
+      "grade3EstimatedQuantity": 0.85,
+      "grade3EstimatedUnitPrice": 720000,
+      "gradeBelowQuantity": 1.39,
+      "gradeBelowUnitPrice": 420000,
+      "mixedGradeQuantity": 1.62,
+      "mixedGradeUnitPrice": 210000
     },
     {
       "date": "2026-10-27",
