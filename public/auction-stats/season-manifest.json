@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-10-31T13:28:18.225Z",
+  "generatedAt": "2026-11-01T07:15:51.826Z",
   "latestSeasonSummary": {
     "year": 2026,
     "startDate": "2026-09-15",
-    "endDate": "2026-10-31",
+    "endDate": "2026-11-01",
     "totalQuantityKg": 17468.27,
     "totalAmountWon": 6790162511.57,
     "avgPricePerKg": 388714.08,
@@ -50,9 +50,9 @@
     },
     {
       "month": 11,
-      "avgQuantityKg": 485.22,
+      "avgQuantityKg": 447.89,
       "avgPriceWon": 157541.94,
-      "yearCount": 12
+      "yearCount": 13
     }
   ],
   "regionRanking": [
